@@ -1,0 +1,33 @@
+2014-07-28 David Gill <davidgil@usc.edu>
+
+* Support for CVM-S5
+* Dynamic loading of models
+* Introduction of new Python querying and plotting API (PyCVM)
+* Improved documentation
+* Minor bug fixes on various compute systems
+
+2014-03-31 David Gill <davidgil@usc.edu>
+
+* Added utilities to generate small-scale heterogeneities
+* CVM-S4.26 official support
+* Broadband 1D model support (model used in CyberShake 14.2 study)
+* Added vs30 calculator, vs30_query
+* Scripts to plot horizontal slices, cross-sections, vs30 maps, and Z-maps
+* Documentation enhancements
+* Improved error handling
+* Official supported systems list, plus bug fixes for those systems
+
+2013-09-08 David Gill <davidgil@usc.edu>
+
+* Added setup script for UCVM
+* Added feature improvements
+* Installable on Mac OS X
+
+2012-02-09 Patrick Small <patrices@usc.edu>
+
+* Release of UCVM 12.2.0
+
+2011-08-22  Patrick Small <patrices@usc.edu>
+
+* Release candidate preparation
+

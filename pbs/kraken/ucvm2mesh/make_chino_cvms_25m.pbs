@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#PBS -q medium
+#PBS -l size=600
+#PBS -l walltime=4:00:00
+#PBS -o /lustre/scratch/${USER}/cvm2mesh/trunk/pbs/kraken/make_chino_cvms_25m.out
+#PBS -e /lustre/scratch/${USER}/cvm2mesh/trunk/pbs/kraken/make_chino_cvms_25m.err
+#PBS -V
+#PBS -A TG-MCA03S012
+
+
+CVM_TYPE=cvms
+HOME_DIR=/lustre/scratch/${USER}/cvm2mesh/trunk/src
+
+cd ${HOME_DIR}
+
+echo "Starting jobs"
+date
+
+aprun -n 300 -S 3 ./mesh-create-MPI -f ../conf/kraken/chino_${CVM_TYPE}_25m.conf
+
+echo "Jobs done"
+date
+exit 0

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#########PBS -q small
+#########PBS -q longsmall
+#PBS -l size=24
+#PBS -l walltime=1:00:00
+#PBS -o /lustre/widow/scratch/spatrick/cvm2mesh/trunk/src/test_cvms_core24.out
+#PBS -e /lustre/widow/scratch/spatrick/cvm2mesh/trunk/src/test_cvms_core24.err
+#PBS -V
+#PBS -A GEO708
+
+cd /lustre/widow/scratch/spatrick/cvm2mesh/trunk/src
+
+aprun -n 24 ./mesh-create-MPI -f ../conf/jaguar/test_cvms_core24.conf
+
+echo "Jobs done"
+date
+exit 0

@@ -1,0 +1,98 @@
+==============================================================================
+INSTALL
+==============================================================================
+
+UCVM - Unified Community Velocity Model Framework
+Release 14.7.0
+July 28, 2014
+http://scec.usc.edu/scecpedia/UCVM_14.7.0
+
+2.0 Installation (Easy Way)
+================
+
+The basic install of UCVM is simple:
+
+$ tar zxvf ucvm-14.7.0.tar.gz
+$ cd UCVM
+$ ./ucvm_setup.py
+
+Then simply answer all the questions in the script. It will ask you which models
+you would like to install (CVM-S5, CVM-S4, CVM-H, and CenCal).
+
+The script will then automatically download and install the models you selected.
+
+The default is to link dynamically. If you would like to enable static linking, please
+use the argument -s. E.g. ./ucvm_setup.py -s
+
+3.0 Installation (Hard Way)
+================
+
+3.1 Quick Start
+
+The steps to install the minimum distribution are as follows:
+
+$ tar zxvf ucvm-14.7.0.tar.gz
+$ cd UCVM
+$ ./configure --prefix=${UCVM_INSTALL_DIR} 
+  --with-etree-include-path="${ETREE_DIR}/libsrc" 
+  --with-etree-lib-path="${ETREE_DIR}/libsrc" 
+  --with-proj4-include-path="${PROJ4_DIR}/include" 
+  --with-proj4-lib-path="${PROJ4_DIR}/lib"
+$ make
+$ make check
+$ make install
+
+Where ${UCVM_INSTALL_DIR} is the directory where you wish to install UCVM, and 
+${ETREE_DIR} and ${PROJ4_DIR} are the paths where the Etree and Proj.4 
+packages are installed. The 'make check' command executes a set of unit and 
+acceptance tests which confirms that the package was built successfully. All 
+the tests should pass.
+
+With this setup, only the "1d", "lin-thurber", and "cmrg" standard models 
+will be available for query. To install support for another standard model,
+please see the following section.
+
+
+3.2 Installation with a Standard Velocity Model
+
+If you wish to link in a external standard velocity model, you must tell the 
+configure script where it can find the model libraries, headers, and model 
+files. This is done with the '--with-model_name-lib-path', 
+'--with-model_name-include-path', '--with-model_name-model-path' (and
+optionally '--with-model_name-extmodel-path', '--with-gctpc-lib-path') options. 
+
+For example, to link UCVM with the SCEC CVM-H velocity model, run configure 
+with the following commands:
+
+$ ./configure --prefix=${UCVM_INSTALL_DIR} 
+  --with-etree-include-path="${ETREE_DIR}/libsrc" 
+  --with-etree-lib-path="${ETREE_DIR}/libsrc" 
+  --with-proj4-include-path="${PROJ4_DIR}/include" 
+  --with-proj4-lib-path="${PROJ4_DIR}/lib"
+  --with-cvmh-include-path="${CVMH_DIR}/include" 
+  --with-cvmh-lib-path="${CVMH_DIR}/lib" 
+  --with-gctpc-lib-path="${CVMH_DIR}/gctpc/lib"
+  --with-cvmh-model-path="${CVMH_DIR}/bin"
+$ make
+$ make check
+$ make install
+
+Where ${CVMH_DIR} is the directory where SCEC CVM-H is installed. Note that 
+SCEC CVM-H 11.9.1 has a dependency on the GCTPC projection package (which is
+distributed with CVM-H, but UCVM needs to link that library as well). The 
+configure script is told where to find it with the '--with-gctpc-lib-path' 
+option. The rest of the make process is generally the same as the quick start 
+example, except now the package tests will include CVM-H tests to verify that 
+the linking was successful.
+
+Any number of supported velocity models may be linked into UCVM in this 
+manner, using the appropriate options. Execute './configure --help' to see the 
+full list of support models and their options.
+
+3.0 Additional Information
+================
+
+For additional information about UCVM, please read the README file and visit
+the product web site at http://scec.usc.edu/scecpedia/UCVM_14.7.0.
+
+

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#PBS -q small
+#PBS -l size=12
+#PBS -l walltime=6:00:00
+#PBS -o /lustre/scratch/patricks/opt/ucvm/pbs/kraken/cybershake_smoothed_1hz_etree_optimize.out
+#PBS -e /lustre/scratch/patricks/opt/ucvm/pbs/kraken/cybershake_smoothed_1hz_etree_optimize.err
+#PBS -V
+#PBS -A TG-MCA03S012
+
+IOBUF_PARAMS='*:size=64M';export IOBUF_PARAMS;
+HOME_DIR=/lustre/scratch/patricks/opt/ucvm/bin
+
+cd ${HOME_DIR}
+
+echo "Starting jobs"
+date
+
+aprun -n 1 ./ecoalesce /lustre/scratch/patricks/opt/etree/cybershake_smoothed_1hz_250ms.e /lustre/scratch/patricks/opt/etree/cybershake_smoothed_1hz_250ms.ec
+
+echo "Jobs done"
+date
+exit 0

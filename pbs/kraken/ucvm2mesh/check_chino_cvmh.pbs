@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#PBS -q small
+#PBS -l size=12
+#PBS -l walltime=2:00:00
+#PBS -o /lustre/scratch/${USER}/cvm2mesh/trunk/pbs/kraken/check_chino_cvmh.out
+#PBS -e /lustre/scratch/${USER}/cvm2mesh/trunk/pbs/kraken/check_chino_cvmh.err
+#PBS -V
+#PBS -A TG-MCA03S012
+
+
+HOME_DIR=/lustre/scratch/${USER}/cvm2mesh/trunk/src
+
+cd ${HOME_DIR}
+
+echo "Starting jobs"
+date
+
+aprun -n 1 ./mesh-check /lustre/scratch/${USER}/mesh_chino_cvmh_ijk12_25m.media IJK-12
+
+echo "Jobs done"
+date
+exit 0

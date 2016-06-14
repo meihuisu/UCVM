@@ -1,0 +1,24 @@
+#!/bin/sh
+
+########PBS -q medium
+#PBS -l size=1008
+#PBS -l walltime=2:00:00
+#PBS -o /lustre/widow2/scratch/spatrick/tmp/meshing/make_m8_cvmh_80m.out
+#PBS -e /lustre/widow2/scratch/spatrick/tmp/meshing/make_m8_cvmh_80m.err
+#PBS -V
+#PBS -A GEO015
+
+UCVM_DIR=/lustre/widow2/scratch/spatrick/opt/ucvm-12.2.0/bin
+HOME_DIR=/lustre/widow2/scratch/spatrick/tmp/meshing
+#IOBUF_PARAMS='*:size=64M:count=4';export IOBUF_PARAMS;
+
+cd ${HOME_DIR}
+
+echo "Starting jobs"
+date
+
+aprun -n 500 -S 4 ${UCVM_DIR}/ucvm2mesh-mpi -f ${HOME_DIR}/m8_cvmh_80m.conf
+
+echo "Jobs done"
+date
+exit 0

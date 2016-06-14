@@ -1,0 +1,25 @@
+#!/bin/sh
+
+#PBS -q small
+#PBS -l size=180
+#PBS -l walltime=2:00:00
+#PBS -o /lustre/scratch/${USER}/cvm2mesh/trunk/pbs/kraken/make_m8_cvmh_250m.out
+#PBS -e /lustre/scratch/${USER}/cvm2mesh/trunk/pbs/kraken/make_m8_cvmh_250m.err
+#PBS -V
+#PBS -A TG-MCA03S012
+
+
+CVM_TYPE=cvmh
+HOME_DIR=/lustre/scratch/${USER}/cvm2mesh/trunk/src
+
+cd ${HOME_DIR}
+
+echo "Starting jobs"
+date
+
+aprun -n 85 -S 3 ./mesh-create-MPI -f ../conf/kraken/m8_${CVM_TYPE}_250m.conf
+
+
+echo "Jobs done"
+date
+exit 0

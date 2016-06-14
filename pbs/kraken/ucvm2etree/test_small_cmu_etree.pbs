@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#PBS -q small
+#PBS -l size=24
+#PBS -l walltime=0:10:00
+#PBS -o /lustre/scratch/patricks/opt/ucvm/pbs/kraken/test_small_cmu_etree.out
+#PBS -e /lustre/scratch/patricks/opt/ucvm/pbs/kraken/test_small_cmu_etree.err
+#PBS -V
+#PBS -A TG-MCA03S012
+
+IOBUF_PARAMS='*:size=64M';export IOBUF_PARAMS;
+HOME_DIR=/lustre/scratch/patricks/opt/ucvm/src/ucvm2etree
+
+cd ${HOME_DIR}
+
+echo "Starting jobs"
+date
+
+aprun -n 9 -S 3 ./ucvm2etree-extract-MPI -f ../../conf/kraken/cmu_chino_cvmh_0.5hz_200ms.conf
+
+aprun -n 8 ./ucvm2etree-sort-MPI -f ../../conf/kraken/cmu_chino_cvmh_0.5hz_200ms.conf
+
+aprun -n 8 ./ucvm2etree-merge-MPI -f ../../conf/kraken/cmu_chino_cvmh_0.5hz_200ms.conf
+
+echo "Jobs done"
+date
+exit 0

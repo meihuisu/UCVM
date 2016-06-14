@@ -1,0 +1,22 @@
+#!/bin/sh
+
+########PBS -q medium
+#PBS -l size=2136
+#PBS -l walltime=6:00:00
+#PBS -o /tmp/work/spatrick/cvm2mesh/trunk/pbs/jaguar/make_m8_cvms_40m.out
+#PBS -e /tmp/work/spatrick/cvm2mesh/trunk/pbs/jaguar/make_m8_cvms_40m.err
+#PBS -V
+#PBS -A GEO708
+
+HOME_DIR=/tmp/work/spatrick/cvm2mesh/trunk/src
+
+cd ${HOME_DIR}
+
+echo "Starting jobs"
+date
+
+aprun -n 2125 ./mesh-create-MPI -f ../conf/jaguar/m8_cvms_40m.conf
+
+echo "Jobs done"
+date
+exit 0

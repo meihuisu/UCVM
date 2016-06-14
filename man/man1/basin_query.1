@@ -1,0 +1,64 @@
+.Dd 9/8/13               \" DATE 
+.Dt UCVM 1      \" Program name and manual section number 
+.Os Linux
+.Sh NAME                 \" Section Header - required - don't modify 
+.Nm basin_query
+.\" The following lines are read in generating the apropos(man -k) database. Use only key
+.\" words here as the database is built based on the words here and in the .ND line. 
+.Sh SYNOPSIS             \" Section Header - required - don't modify
+.Nm
+.Op Fl h
+.Op Fl f Ar config-file
+.Op Fl m Ar model
+.Op Fl v Ar vs-threshold
+.Op Fl p Ar usermap
+.Op Fl z Ar zmin,zmax
+.Op Fl d Ar max-depth
+.Op Fl i Ar interval
+< file.in
+.Sh DESCRIPTION          \" Section Header - required - don't modify
+The command
+.Nm
+allows you to retrieve the depth at which 
+.Ar vs-threshold
+is first crossed. By default,
+.Ar vs-threshold
+is set to be 1000m/s, but that can easily be changed.
+.Pp
+.Bl -tag -width -indent 
+Common Paramters
+.It Fl f
+Location of the UCVM configuration file. Typically, this is ../conf/ucvm.conf.
+.It Fl m
+Model to query. Usually
+.Ar model
+is either cvms, cvmh, cvmsi, or cencal.
+.It Fl v
+Vs threshold to use. By default this is 1000m/s, but other common values include 2500m/s and 3000m/s.
+.El
+.Pp
+.Bl -tag -width -indent 
+Less Used Parameters
+.It Fl p
+Custom vs30 and elevation map location.
+.It Fl z
+Custom depth range for GTL/crust interpolation. 
+.It Fl d
+Maximum depth, in meters, to search. Default is 15000m.
+.It Fl i
+Interval, in meters, go go by when searching for the depth. Default is 20m. So
+.Nm
+will get the Vs value at 0m, 20m, 40m, and so on.
+.El
+.Sh EXAMPLE
+.Pp                      \" Inserts a space
+.Nm
+-f ../conf/ucvm.conf -m cvms -v 2500
+.Pp
+	Input: -118 34 Ctrl-D
+.Pp
+	Output: -118.0000    34.0000   4780.000   4780.000
+.Sh SEE ALSO 
+.\" List links in ascending order by section, alphabetically within a section.
+.\" Please do not reference files that do not exist without filing a bug report
+.Xr ucvm_query 1

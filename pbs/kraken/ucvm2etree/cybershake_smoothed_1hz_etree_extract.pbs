@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#PBS -q medium
+#PBS -l size=3084
+#PBS -l walltime=2:00:00
+#PBS -o /lustre/scratch/patricks/opt/ucvm/pbs/kraken/cybershake_smoothed_1hz_etree_extract.out
+#PBS -e /lustre/scratch/patricks/opt/ucvm/pbs/kraken/cybershake_smoothed_1hz_etree_extract.err
+#PBS -V
+#PBS -A TG-MCA03S012
+
+IOBUF_PARAMS='*:size=64M:count=4';export IOBUF_PARAMS;
+HOME_DIR=/lustre/scratch/patricks/opt/ucvm/src/ucvm2etree
+
+cd ${HOME_DIR}
+
+echo "Starting jobs"
+date
+
+aprun -n 1025 -S 2 ./ucvm2etree-extract-MPI -f ../../conf/kraken/cybershake_smoothed_1hz_250ms.conf
+
+#aprun -n 512 ./ucvm2etree-sort-MPI -f ../../conf/kraken/cybershake_smoothed_1hz_250ms.conf
+
+#aprun -n 512 ./ucvm2etree-merge-MPI -f ../../conf/kraken/cybershake_smoothed_1hz_250ms.conf
+
+echo "Jobs done"
+date
+exit 0

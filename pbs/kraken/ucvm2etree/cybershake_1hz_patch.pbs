@@ -1,0 +1,32 @@
+#!/bin/sh
+
+#PBS -q small
+#PBS -l size=12
+#PBS -l walltime=4:00:00
+#PBS -o /lustre/scratch/patricks/opt/ucvm/pbs/kraken/cybershake_1hz_patch.out
+#PBS -e /lustre/scratch/patricks/opt/ucvm/pbs/kraken/cybershake_1hz_patch.err
+#PBS -V
+#PBS -A TG-MCA03S012
+
+IOBUF_PARAMS='*:size=64M';export IOBUF_PARAMS;
+HOME_DIR=/lustre/scratch/patricks/opt/ucvm/src/patch
+
+cd ${HOME_DIR}
+
+echo "Starting jobs"
+date
+
+aprun -n 1 ./patchmodel -f ../../conf/kraken/cencal_p1.conf
+aprun -n 1 ./patchmodel -f ../../conf/kraken/cencal_p2.conf
+aprun -n 1 ./patchmodel -f ../../conf/kraken/cencal_p3.conf
+aprun -n 1 ./patchmodel -f ../../conf/kraken/cencal_p4.conf
+
+aprun -n 1 ./patchmodel -f ../../conf/kraken/cvmh_p1.conf
+aprun -n 1 ./patchmodel -f ../../conf/kraken/cvmh_p2.conf
+aprun -n 1 ./patchmodel -f ../../conf/kraken/cvmh_p3.conf
+aprun -n 1 ./patchmodel -f ../../conf/kraken/cvmh_p4.conf
+
+
+echo "Jobs done"
+date
+exit 0

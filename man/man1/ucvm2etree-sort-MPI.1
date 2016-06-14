@@ -1,0 +1,162 @@
+.Dd 9/8/13               \" DATE 
+.Dt UCVM 1      \" Program name and manual section number 
+.Os Linux
+.Sh NAME                 \" Section Header - required - don't modify 
+.Nm ucvm2etree-sort-MPI
+.\" The following lines are read in generating the apropos(man -k) database. Use only key
+.\" words here as the database is built based on the words here and in the .ND line. 
+.Sh SYNOPSIS             \" Section Header - required - don't modify
+.Nm
+.Op Fl h
+.Fl f 
+.Ar config
+.Sh DESCRIPTION          \" Section Header - required - don't modify
+Notice: This command is intended to be run as a MPI job (e.g. mpirun ./ucvm-sort-MPI).
+Please do not attempt to run it as a regular process.
+
+The command
+.Nm
+sorts the extracted components of an e-tree from the
+.Nm ucvm2etree-extract-MPI
+command. It does so by reading in the specifications in a given configuration file, 
+.Ar config .
+
+Specifically, it sorts the sub-etrees produced by ucvm2etree-extract-MPI so that 
+each file is in local pre-order (Z-order). Again, the is an embarrassingly parallel 
+operation. Each rank in the job reads in one of the sub-etrees produced by the previous 
+program, sorts the octants in Z-order, and writes the sorted octants to a new sub-etree. 
+The sorter must be run on 2^Y cores where Y>0. The worker pool must be large enough to 
+allow each worker to load all the octants from its assigned file into memory. By default, 
+this octant limit is 20M octants. If a rank reports that the size of the sub-etree 
+exceeds memory capacity, the 20M buffer size constant may be increased if memory allows, 
+or alternatively, cvmbycols-extract-MPI may be rerun with a larger job size to reduce 
+the number of octants per file.
+.Pp
+You would typically run this command after 
+.Nm ucvm2etree-extract-MPI 
+and before
+.Nm ucvm2etree-merge-MPI . 
+.Pp
+.Bl -tag -width -indent 
+.It Fl h
+Displays the help message.
+.It Fl f
+Uses configuration file, 
+.Ar config .
+.El
+.Sh EXAMPLE
+mpirun -np 768 
+.Nm
+-f ./ucvm2etree_example.conf
+.Pp
+Where ucvm2etree_example.conf is:
+.Pp
+# Domain corners coordinates (clockwise, degrees):
+
+proj=geo-bilinear 
+.br
+lon_0=-119.288842
+.br
+lat_0=34.120549
+
+lon_1=-118.354016
+.br
+lat_1=35.061096
+
+lon_2=-116.846030
+.br
+lat_2=34.025873
+
+lon_3=-117.780976
+.br
+lat_3=33.096503
+
+# Domain dimensions (meters):
+.br
+x-size=180000.0000
+.br
+y-size=135000.0000
+.br
+z-size=61875.0000
+
+# Blocks partition parameters:
+.br
+nx=32
+.br
+ny=24
+
+# Max freq, points per wavelength, Vs min
+.br
+max_freq=0.5
+.br
+ppwl=4.0
+.br
+vs_min=200.0
+
+# Max allowed size of octants in meters
+.br
+max_octsize=10000.0
+
+# Etree parameters and info
+.br
+title=ChinoHills_0.5Hz_200ms
+.br
+author=D_Gill
+.br
+date=05/2011
+.br
+outputfile=./cmu_cvmh_chino_0.5hz_200ms.e
+.br
+format=etree
+
+# UCVM parameters
+.br
+ucvmstr=cvms
+.br
+ucvm_interp_zrange=0.0,350.0
+.br
+ucvmconf=../../conf/kraken/ucvm.conf
+
+# Scratch
+.br
+scratch=/lustre/scratch/scecdave/scratch
+
+#
+.br
+# Buffering parameters used by MPI version only
+.br
+#
+.br
+# Etree buffer size in MB
+.br
+buf_etree_cache=128
+.br
+# Max octants to buffer for flat file during extraction
+.br
+buf_extract_mem_max_oct=4194304
+.br
+# Max octants to save in flat file before reporting full during extraction
+.br
+buf_extract_ffile_max_oct=16000000
+.br
+# Max octants to read from input flat file during sorting
+.br
+buf_sort_ffile_max_oct=20000000
+.br
+# Minimum number of octants between reports during merging
+.br
+buf_merge_report_min_oct=10000000
+.br
+# MPI send/recv octant buffer size during merging
+.br
+buf_merge_sendrecv_buf_oct=4096
+.br
+# Etree read/write octant buffer size during merging
+.br
+buf_merge_io_buf_oct=4194304
+.Sh SEE ALSO 
+.\" List links in ascending order by section, alphabetically within a section.
+.\" Please do not reference files that do not exist without filing a bug report
+.Xr ucvm2etree-sort-MPI 1 ,
+.Xr ucvm2etree-merge-MPI 1 ,
+.Xr ucvm2etree 1

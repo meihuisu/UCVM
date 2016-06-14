@@ -1,0 +1,32 @@
+.Dd 9/8/13               \" DATE 
+.Dt UCVM 1      \" Program name and manual section number 
+.Os Linux
+.Sh NAME                 \" Section Header - required - don't modify 
+.Nm mesh-check
+.\" The following lines are read in generating the apropos(man -k) database. Use only key
+.\" words here as the database is built based on the words here and in the .ND line. 
+.Sh SYNOPSIS             \" Section Header - required - don't modify
+.Nm
+input
+format 
+.Sh DESCRIPTION          \" Section Header - required - don't modify
+The command
+.Nm
+does a basic quality assurance check of a mesh file. It checks to make sure that each
+record in the file is of the correct size. Furthermore, it checks to make sure that
+each value is not NaN, infinity, or negative.
+.Pp
+.Bl -tag -width -indent 
+.It input
+The input mesh to check.
+.It format
+The mesh format. Can be either IJK-12, IJK-20, or IJK-32
+.El
+.Sh EXAMPLE
+.Nm
+new_mesh.mesh IJK-12
+.Sh SEE ALSO 
+.\" List links in ascending order by section, alphabetically within a section.
+.\" Please do not reference files that do not exist without filing a bug report
+.Xr mesh-op 1 ,
+.Xr mesh-strip-ijk 1

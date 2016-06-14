@@ -1,0 +1,107 @@
+.Dd 9/8/13               \" DATE 
+.Dt UCVM 1      \" Program name and manual section number 
+.Os Linux
+.Sh NAME                 \" Section Header - required - don't modify 
+.Nm ucvm2mesh-mpi
+.\" The following lines are read in generating the apropos(man -k) database. Use only key
+.\" words here as the database is built based on the words here and in the .ND line. 
+.Sh SYNOPSIS             \" Section Header - required - don't modify
+.Nm
+.Op Fl h
+.Fl f 
+.Ar config
+.Sh DESCRIPTION          \" Section Header - required - don't modify
+Notice: 
+.Nm
+is meant to be run as a MPI job, not as a standalone executable.
+
+The command
+.Nm
+generates a mesh in either IJK-12, IJK-20, IJK-32, or SORD format. Unlike its serial version,
+.Nm ucvm2mesh
+this command can use multiple cores to generate the mesh.
+It does so by reading in the specifications in a given configuration file, 
+.Ar config .
+.Pp
+This mesh can then be used in forward 3D wave propagation simulation software such
+as AWP-ODC.
+.Pp
+.Bl -tag -width -indent 
+.It Fl h
+Displays the help message.
+.It Fl f
+Uses configuration file, 
+.Ar config .
+.El
+.Sh EXAMPLE
+mpirun -np [procs]
+.Nm
+-f ./ucvm2mesh_example.conf
+.Pp
+Where ucvm2mesh_example.conf is:
+.Pp
+# List of CVMs to query
+.br
+ucvmlist=cvmh
+
+# UCVM conf file
+.br
+ucvmconf=../conf/kraken/ucvm.conf
+
+# Gridding cell centered or vertex
+.br
+gridtype=CENTER
+
+# Spacing of cells
+.br
+spacing=2000.0
+
+# Projection
+.br
+proj=+proj=utm +datum=WGS84 +zone=11
+.br
+rot=-40.0
+.br
+x0=-122.3
+.br
+y0=34.7835
+.br
+z0=0.0
+
+# Number of cells along each dim
+.br
+nx=384
+.br
+ny=248
+.br
+nz=25
+
+# Partitioning of grid among processors
+.br
+px=2
+.br
+py=2
+.br
+pz=5
+
+# Vs/Vp minimum
+.br
+vp_min=0
+.br
+vs_min=0
+
+# Mesh and grid files, format
+.br
+meshfile=/lustre/scratch/user/mesh_cvmh_ijk12_2000m.media
+.br
+gridfile=/lustre/scratch/user/mesh_cvmh_ijk12_2000m.grid
+.br
+meshtype=IJK-12
+
+# Location of scratch dir
+.br
+scratch=/lustre/scratch/user/scratch
+.Sh SEE ALSO 
+.\" List links in ascending order by section, alphabetically within a section.
+.\" Please do not reference files that do not exist without filing a bug report
+.Xr ucvm2mesh 1

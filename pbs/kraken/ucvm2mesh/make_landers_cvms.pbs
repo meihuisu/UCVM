@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#PBS -q small
+#PBS -l size=120
+#PBS -l walltime=04:00:00
+#PBS -o /lustre/scratch/${USER}/cvm2mesh/trunk/pbs/kraken/make_landers_cvms.out
+#PBS -e /lustre/scratch/${USER}/cvm2mesh/trunk/pbs/kraken/make_landers_cvms.err
+#PBS -V
+#PBS -A TG-MCA03S012
+
+
+CVM_TYPE=cvms
+HOME_DIR=/lustre/scratch/${USER}/cvm2mesh/trunk/src
+
+cd ${HOME_DIR}
+
+
+aprun -n 60 -S 3 ./mesh-create-MPI -f ../conf/kraken/landers_${CVM_TYPE}_100m.conf
+
+
+exit 0

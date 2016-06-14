@@ -1,0 +1,88 @@
+{
+	"h2ologin": {
+		"1": {
+			"command": "/bin/bash -login -c 'module list'",
+			"listenOn": "stderr",
+			"condition": "'iobuf' in",
+			"not": "UCVM achieves better performance with the iobuf library loaded on Blue Waters.\nPlease type 'module load iobuf' (without quotes) in the command line."
+		},
+		"2": {
+			"command": "/bin/bash -login -c 'module list'",
+			"listenOn": "stderr",
+			"condition": "'PrgEnv-gnu' in",
+			"not": "UCVM requires the GNU compilers to be loaded on Blue Waters.\nTo load the GNU compilers, please type the following in the command line:\n\nmodule swap PrgEnv-cray PrgEnv-gnu"
+		},
+		"vars": {
+			"use_iobuf": "True",
+			"dynamic_flag": {
+				"value": "False",
+				"not": "\nBlue Waters does not support dynamic linking. Auto switching to static linking."
+			}
+		}	
+	}, 
+
+	"titan": {
+		"1": {
+			"command": "/bin/bash -login -c 'module list'",
+			"listenOn": "stderr",
+			"condition": "'iobuf' in",
+			"not": "UCVM achieves better performance with the iobuf library loaded on Titan.\nPlease type 'module load iobuf' (without quotes) in the command line."
+		},
+		"2": {
+			"command": "/bin/bash -login -c 'module list'",
+			"listenOn": "stderr",
+			"condition": "'PrgEnv-gnu' in",
+			"not": "UCVM requires the GNU compilers to be loaded on Titan.\nTo load the GNU compilers, please type the following in the command line:\n\nmodule swap PrgEnv-pgi PrgEnv-gnu"
+		},
+		"vars": {
+			"use_iobuf": "True",
+			"dynamic_flag": {
+				"value": "False",
+				"not": "\nTitan does not support dynamic linking. Auto switching to static linking."
+			}
+		}	
+	}, 
+	
+	"all": {
+		"'titan-ext' in socket.gethostname()": {
+			"message": "Please note that on the head nodes, UCVM will throw an illegal instruction error.\nYou must run UCVM on the compute nodes.",
+			"code": "True = True"
+		},
+		"platform.system() == 'Darwin'": {
+			"message": "Please note: Mac OS X does not support static linking. UCVM will be compiled dynamically. At the end\nof this installation process, there will be a couple of extra minor steps to make UCVM work.",
+			"code": "dynamic_flag = True"
+		},
+		"'stampede.tacc.utexas.edu' in socket.gethostname() and dynamic_flag == False": {
+			"message": "Please note: Static linking of UCVM does not work on TACC Stampede. UCVM will be compiled dynamically. At the end\nof this installation process, there will be a couple of extra minor steps to make UCVM work.",
+			"code": "dynamic_flag = True"		
+		},
+		"('Ubuntu' in platform.platform() or 'Debian' in platform.platform()) and which('gcc') == None": {
+			"message": "GCC is required to install and build UCVM. Please run the following command:\nsudo apt-get install build-essential",
+			"code": "error_out = True"
+		},
+		"('Ubuntu' in platform.platform() or 'Debian' in platform.platform()) and which('aclocal') == None": {
+			"message": "Automake is required to install and build UCVM. Please run the following command:\nsudo apt-get install automake",
+			"code": "error_out = True"
+		},
+		"('Ubuntu' in platform.platform() or 'Debian' in platform.platform()) and which('gfortran') == None": {
+			"message": "GFortran is required to install and build UCVM. Please run the following command:\nsudo apt-get install gfortran",
+			"code": "error_out = True"
+		}, 
+		"'Debian' in platform.platform()": {
+			"message": "Debian systems require UCVM to be linked dynamically. At the end\nof this installation process, there will be a couple of extra minor steps to make UCVM work.",
+			"code": "dynamic_flag = True"
+		},
+		"'Ubuntu' in platform.platform()": {
+			"message": "Ubuntu systems require UCVM to be linked dynamically. At the end\nof this installation process, there will be a couple of extra minor steps to make UCVM work.",
+			"code": "dynamic_flag = True"
+		},
+		"('centos' in platform.platform() or 'redhat' in platform.platform()) and (which('gcc') == None or which('aclocal') == None or which('gfortran') == None)": {
+			"message": "GCC, GFortran, and aclocal are required to install and build UCVM. Please run the following command:\nsudo yum groupinstall \"Development Tools\"",
+			"code": "error_out = True"
+		},
+		"('centos' in platform.platform() or 'redhat' in platform.platform()) and dynamic_flag == False and not 'glibc-static' in Popen([\"rpm\", \"-qa\"], stdout=PIPE).communicate()[0]": {
+			"message": "Static linking requires glibc-static. Please run the following command:\nsudo yum install glibc-static",
+			"code": "error_out = True"
+		}
+	}
+}

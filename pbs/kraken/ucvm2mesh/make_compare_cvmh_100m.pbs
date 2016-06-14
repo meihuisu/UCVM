@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#PBS -q small
+#PBS -l size=408
+#PBS -l walltime=1:00:00
+#PBS -o /lustre/scratch/${USER}/cvm2mesh/trunk/pbs/kraken/make_compare_cvmh_100m.out
+#PBS -e /lustre/scratch/${USER}/cvm2mesh/trunk/pbs/kraken/make_compare_cvmh_100m.err
+#PBS -V
+#PBS -A TG-MCA03S012
+
+IOBUF_PARAMS='*:size=64M:count=4';export IOBUF_PARAMS;
+
+CVM_TYPE=cvmh
+HOME_DIR=/lustre/scratch/${USER}/cvm2mesh/trunk/src
+
+cd ${HOME_DIR}
+
+echo "Starting jobs"
+date
+
+aprun -n 200 -S 3 ./mesh-create-MPI -f ../conf/kraken/compare_${CVM_TYPE}_100m.conf
+
+
+echo "Jobs done"
+date
+exit 0

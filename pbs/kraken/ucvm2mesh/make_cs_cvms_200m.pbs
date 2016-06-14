@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#PBS -q small
+#PBS -l size=408
+#PBS -l walltime=1:00:00
+#PBS -o /lustre/scratch/${USER}/ucvm/pbs/kraken/ucvm2mesh/make_cs_cvms_200m.out
+#PBS -e /lustre/scratch/${USER}/ucvm/pbs/kraken/ucvm2mesh/make_cs_cvms_200m.err
+#PBS -V
+#PBS -A TG-MCA03S012
+
+IOBUF_PARAMS='*:size=64M:count=4';export IOBUF_PARAMS;
+
+CVM_TYPE=cvms
+CONF_DIR=/lustre/scratch/${USER}/ucvm/conf/kraken/ucvm2mesh
+RUN_DIR=/lustre/scratch/${USER}/ucvm/pbs/kraken/ucvm2mesh
+BIN_DIR=/lustre/scratch/${USER}/opt/ucvm-11.11.0_RC/bin
+
+cd ${RUN_DIR}
+
+echo "Starting jobs"
+date
+
+aprun -n 200 -S 3 ${BIN_DIR}/ucvm2mesh-mpi -f ${CONF_DIR}/cs_${CVM_TYPE}_200m.conf
+
+
+echo "Jobs done"
+date
+exit 0

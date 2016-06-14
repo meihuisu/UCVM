@@ -1,0 +1,67 @@
+.Dd 9/8/13               \" DATE 
+.Dt UCVM 1      \" Program name and manual section number 
+.Os Linux
+.Sh NAME                 \" Section Header - required - don't modify 
+.Nm ucvm_query
+.\" The following lines are read in generating the apropos(man -k) database. Use only key
+.\" words here as the database is built based on the words here and in the .ND line. 
+.Sh SYNOPSIS             \" Section Header - required - don't modify
+.Nm
+.Op Fl h
+.Op Fl f Ar config
+.Op Fl m Ar model
+.Op Fl c Ar coordtype
+.Op Fl p Ar map
+.Op Fl v
+.Op Fl z Ar zmin,zmax
+.Sh DESCRIPTION          \" Section Header - required - don't modify
+The command
+.Nm
+queries an installed velocity model to retreive its material properties at a particular 
+latitude and longitude.
+.Pp
+Any set of crustal and GTL velocity models may be selected and queried in order of 
+preference. Points may be queried by (lon,lat,dep) or (lon,lat,elev) and the coordinate 
+conversions for a particular model are handled transparently. 
+.Pp
+.Bl -tag -width -indent 
+Common Paramters
+.It Fl h
+Displays the help message.
+.It Fl f
+Location of the configuration file, 
+.Ar config ,
+that tells the program which velocity models are installed.
+.It Fl m
+A comma-separated list of models to query.
+.El
+.Pp
+.Bl -tag -width -indent
+Less Used Parameters
+.It Fl c
+Z-coordinate mode. Geo-depth (default) is "gd", but queries can also be done by elevation
+as specified by "ge".
+.It Fl p
+User-defined map of vs30 and elevation data.
+.It Fl v
+Display model version information only.
+.It Fl z
+Specifies depth range for gtl/crust interpolation.
+.El
+.Sh EXAMPLE
+.Nm
+-f ../conf/ucvm.conf -m cvms
+.Pp
+Input format is:
+.br
+	lon lat Z
+
+Output format is:
+.br
+	lon lat Z surf vs30 crustal cr_vp cr_vs cr_rho gtl gtl_vp gtl_vs gtl_rho cmb_algo cmb_vp cmb_vs cmb_rho
+
+If running in interactive mode, please use Ctrl-D to end the input.
+.Sh SEE ALSO 
+.\" List links in ascending order by section, alphabetically within a section.
+.\" Please do not reference files that do not exist without filing a bug report
+.Xr basin_query 1

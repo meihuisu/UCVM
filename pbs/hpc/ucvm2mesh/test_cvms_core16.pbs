@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#PBS -q default
+#PBS -l arch=x86_64,walltime=1:30:00,nodes=4:ppn=4
+#PBS -V
+#PBS -e /home/rcf-104/patrices/cvm2mesh/trunk/pbs/hpc/test_cvms_core16.err
+#PBS -o /home/rcf-104/patrices/cvm2mesh/trunk/pbs/hpc/test_cvms_core16.out
+
+SRC_DIR=/home/rcf-104/patrices/cvm2mesh/trunk/src
+
+cd /scratch
+cp ${SRC_DIR}/mesh-create-MPI .
+cp ${SRC_DIR}/../conf/hpc/*.conf .
+
+#mkdir cvms
+#cd cvms
+#cp /home/rcf-104/patrices/utils/cvms/src/* .
+#cd ..
+
+mpirun -np 16 ./mesh-create-MPI -o ${SRC_DIR} -f test_cvms_core16.conf
+
+
+echo "Jobs done"
+date
+exit 0

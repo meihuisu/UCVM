@@ -1,0 +1,4 @@
+PROJECT_NAME	= UCVM
+PROJECT_NUMBER	= 14.6.0
+SOURCE_BROWSER	= YES
+INPUT 			= cybershake.py depth_profile.py common.py

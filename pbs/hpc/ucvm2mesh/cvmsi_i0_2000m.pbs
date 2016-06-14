@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#PBS -q nbns
+#PBS -l arch=x86_64,pmem=2000mb,pvmem=3000mb,walltime=0:30:00,nodes=13:ppn=2
+#PBS -V
+#PBS -e /home/rcf-104/patrices/cvm2mesh/trunk/pbs/hpc/cvmsi_i0_2000m.err
+#PBS -o /home/rcf-104/patrices/cvm2mesh/trunk/pbs/hpc/cvmsi_i0_2000m.out
+
+SRC_DIR=/home/rcf-104/patrices/cvm2mesh/trunk/src
+
+cd /scratch
+cp ${SRC_DIR}/mesh-create-MPI .
+cp ${SRC_DIR}/../conf/hpc/*.conf .
+
+
+mpirun -np 25 ./mesh-create-MPI -o ${SRC_DIR} -f cvmsi_i0_2000m.conf
+
+
+echo "Jobs done"
+date
+exit 0

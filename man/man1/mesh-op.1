@@ -1,0 +1,44 @@
+.Dd 9/8/13               \" DATE 
+.Dt UCVM 1      \" Program name and manual section number 
+.Os Linux
+.Sh NAME                 \" Section Header - required - don't modify 
+.Nm mesh-op
+.\" The following lines are read in generating the apropos(man -k) database. Use only key
+.\" words here as the database is built based on the words here and in the .ND line. 
+.Sh SYNOPSIS             \" Section Header - required - don't modify
+.Nm
+op
+inmesh1
+inmesh2
+format
+outmesh
+.Sh DESCRIPTION          \" Section Header - required - don't modify
+The command
+.Nm
+subtracts 
+.Ar inmesh2
+from 
+.Ar inmesh1
+and outputs the difference to
+.Ar outmesh .
+.Pp
+.Bl -tag -width -indent 
+.It op
+The operation. Currently the only supported operation is "diff".
+.It inmesh1
+The first mesh to read.
+.It inmesh2
+The second mesh to read.
+.It format
+Supported formats include IJK-12, IJK-20, and IJK-32.
+.It outmesh
+The mesh that represents inmesh1 - inmesh2.
+.El
+.Sh EXAMPLE
+.Nm
+diff ./inmesh1 ./inmesh2 IJK-12 ./outmesh
+.Sh SEE ALSO 
+.\" List links in ascending order by section, alphabetically within a section.
+.\" Please do not reference files that do not exist without filing a bug report
+.Xr mesh-check 1 ,
+.Xr mesh-strip-ijk 1

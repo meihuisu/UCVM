@@ -1,0 +1,61 @@
+.Dd 9/8/13               \" DATE 
+.Dt UCVM 1      \" Program name and manual section number 
+.Os Linux
+.Sh NAME                 \" Section Header - required - don't modify 
+.Nm grd2etree
+.\" The following lines are read in generating the apropos(man -k) database. Use only key
+.\" words here as the database is built based on the words here and in the .ND line. 
+.Sh SYNOPSIS             \" Section Header - required - don't modify
+.Nm
+.Op Fl h
+-f config
+.Sh DESCRIPTION          \" Section Header - required - don't modify
+The command
+.Nm
+extracts a SCEC-formatted Etree map from a set of DEM and Vs30 grid files 
+in ArcGIS Gridfloat format.
+.Pp
+.Bl -tag -width -indent 
+Common Paramters
+.It Fl h
+Shows the help message.
+.It Fl f
+Specifies the location of the configuration file to use.
+.El
+.Sh EXAMPLE
+.Pp                      \" Inserts a space
+.Nm
+-f ./grd2float_sample.conf
+.Pp
+Where grd2float_sample.conf looks like:
+.Pp
+# grd2etree UCM Map config file
+.Pp
+# Domain corners coordinates (degrees):
+proj=+proj=aeqd +lat_0=36.0 +lon_0=-120.0 +x_0=0.0 +y_0=0.0
+lon_0=-129.75
+lat_0=40.75
+rot=55.0
+.Pp
+# Domain dimensions (meters):
+x-size=1800000.0
+y-size=900000.0
+.Pp
+# Spacing
+spacing=250.0
+.Pp
+# Etree parameters and info
+title=UCVM_Elev_Vs30_Map_Wills_Wald
+author=P_Small
+date=05/2011
+outputfile=../../model/ucvm/ucvm.e
+.Pp
+# Grid data directories
+elev_hr_dir=/home/scec-00/USER/opt/ned
+elev_lr_dir=/home/scec-00/USER/opt/bath
+vs30_hr_dir=/home/scec-00/USER/opt/vs30/wills_gridfloat
+vs30_lr_dir=/home/scec-00/USER/opt/vs30/wald_gridfloat
+.Sh SEE ALSO 
+.\" List links in ascending order by section, alphabetically within a section.
+.\" Please do not reference files that do not exist without filing a bug report
+.Xr grd_query 1

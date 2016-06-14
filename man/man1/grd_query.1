@@ -1,0 +1,42 @@
+.Dd 9/8/13               \" DATE 
+.Dt UCVM 1      \" Program name and manual section number 
+.Os Linux
+.Sh NAME                 \" Section Header - required - don't modify 
+.Nm grd_query
+.\" The following lines are read in generating the apropos(man -k) database. Use only key
+.\" words here as the database is built based on the words here and in the .ND line. 
+.Sh SYNOPSIS             \" Section Header - required - don't modify
+.Nm
+.Op Fl h
+.Op Fl e
+.Op Fl v
+-d datadir
+.Op Fl b Ar bkgdir
+< file.in
+.Sh DESCRIPTION          \" Section Header - required - don't modify
+The command
+.Nm
+queries data from a set of ArcGIS grid files in GridFloat format.
+.Pp
+.Bl -tag -width -indent 
+.It Fl h
+Shows the help message.
+.It Fl e
+Employ GRD bathymetry heuristic.
+.It Fl v
+Employ GRD vs30 heuristic.
+.It Fl d
+Main ArcGIS Gridfloat data directory. Default is ./ned.
+.It Fl b
+Background/Bathymetry data directory. Default is ./bath.
+.El
+.Sh EXAMPLE
+Input format is:
+        lon lat
+
+Output format is:
+        lon lat val valid
+.Sh SEE ALSO 
+.\" List links in ascending order by section, alphabetically within a section.
+.\" Please do not reference files that do not exist without filing a bug report
+.Xr grd2etree 1
