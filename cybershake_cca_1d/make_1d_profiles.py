@@ -81,6 +81,47 @@ def generate_and_save_plot(prop):
     plt.savefig(FILENAME.replace("[prop]", prop))
 
 
+def generate_and_save_tri_plot():
+    """
+    Generates and saves the 1D profile that shows all the properties listed in LABELS on one
+    profile, like we did with the Southern California CyberShake 1D profile.
+    :return: Nothing.
+    """
+
+    # Create the plot object.
+    plot = Plot("CyberShake CCA 1D Depth Profile All", "Units", "Depth (m)",
+                None, 7, 10)
+
+    # Find the min_x, max_x values.
+    min_x = 9999
+    max_x = -1
+
+    for prop in LABELS.keys():
+        if "start" in LABELS[prop]["x_ticks"] and LABELS[prop]["x_ticks"]["start"] < min_x:
+            min_x = LABELS[prop]["x_ticks"]["start"]
+        if "min" in LABELS[prop]["x_ticks"] and LABELS[prop]["x_ticks"]["min"] < min_x:
+            min_x = LABELS[prop]["x_ticks"]["min"]
+        if "end" in LABELS[prop]["x_ticks"] and LABELS[prop]["x_ticks"]["end"] > max_x:
+            max_x = LABELS[prop]["x_ticks"]["end"]
+        if "max" in LABELS[prop]["x_ticks"] and LABELS[prop]["x_ticks"]["max"] > max_x:
+            max_x = LABELS[prop]["x_ticks"]["max"]
+
+    plt.xticks(np.arange(float(min_x), float(max_x) + 0.01, 0.5))
+
+    plt.yticks(np.arange(0, DEPTH + 0.5, Y_TICKS))
+    plt.grid(True)
+    plt.xlim(xmin=min_x, xmax=max_x)
+
+    for prop in LABELS.keys():
+        # Get the material properties.
+        depth_profile = DepthProfile(Point(-118, 34, 0), DEPTH, INTERVAL, MODEL)
+        depth_profile.addtoplot(plot, prop, customlabels={
+            "vp": "Vp", "vs": "Vs", "density": "Density"
+        })
+
+    plt.savefig(FILENAME.replace("[prop]", "all"))
+
+
 def main():
     """
     The main function for our program.
@@ -89,6 +130,8 @@ def main():
 
     for key in LABELS.keys():
         generate_and_save_plot(key)
+
+    generate_and_save_tri_plot()
 
     return 0
 
