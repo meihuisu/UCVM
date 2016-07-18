@@ -25,7 +25,6 @@ def main():
     Generates the 1D profile given the constants above.
     :return: Zero on success.
     """
-
     # Get the material properties.
     depth_profile = DepthProfile(Point(-118, 34, 0), DEPTH, INTERVAL, MODEL)
     depth_profile.plot(PROP_TO_PLOT, FILENAME)
