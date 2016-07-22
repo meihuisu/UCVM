@@ -11,3 +11,7 @@ A brief description of what each script does is as follows:
 - depth_profiles_cvms426_ucvm15100.py: Creates a suite of profiles from
   a given velocity model, points, etc. and saves them as well as a text
   description of the material properties to various files.
+- extract_horizontal_slice_text.py: Creates a suite of text-based 
+  horizontal slices from a given set of one or more velocity models at
+  one or more specified depths. This allows for specifying relatively
+  arbitrary parallelograms.
