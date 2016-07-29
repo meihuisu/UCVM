@@ -17,6 +17,7 @@ import xml.dom.minidom
 import os
 from math import log
 from subprocess import Popen, PIPE, CalledProcessError
+import shutil
 
 
 UCVM_INFORMATION = {
@@ -30,6 +31,8 @@ UCVM_INFORMATION = {
 
 _HYPOCENTER_BASE = "http://hypocenter.usc.edu/research/ucvm/" + UCVM_INFORMATION["version"]
 _HYPOCENTER_MODEL_LIST = _HYPOCENTER_BASE + "/model_list.xml"
+
+INSTALL_REQUIRES = ["h5py", "xmltodict", "humanize", "pyproj"]
 
 
 class OnlyGetScriptPath(install):
@@ -130,8 +133,14 @@ print(
     "to operate. Additional velocity, elevation, and Vs30 models are available for download.\n"
     "These models cover various regions within the world, "
     "\n"
-    "Specify which of the following models you wish to download and install with UCVM:\n"
 )
+
+if shutil.which("mpicc") is not None:
+    print("Setup has detected that you have MPI installed on your computer. UCVM will be\n"
+          "installed with MPI support.\n")
+    INSTALL_REQUIRES.append("mpi4py")
+
+print("Specify which of the following models you wish to download and install with UCVM:\n")
 
 model_list = get_list_of_installable_internet_models()
 
@@ -195,11 +204,7 @@ setup(name=UCVM_INFORMATION["short_name"],
                    'ucvm.models': 'ucvm/models'},
       package_data={'ucvm.models': ['ucvm/models/installed.xml']},
       data_files=[("ucvm/models", ["ucvm/models/installed.xml"])],
-      install_requires=[
-          "h5py",
-          "xmltodict",
-          "humanize"
-      ],
+      install_requires=INSTALL_REQUIRES,
       scripts=['ucvm/bin/ucvm_query', 'ucvm/bin/ucvm_model_manager'],
       zip_safe=False
       )

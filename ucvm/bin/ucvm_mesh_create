@@ -1,9 +1,78 @@
 #!/usr/bin/env python
 """
-Generates a binary float mesh from a given model string.
+Generates a binary float mesh from a given model string. This utility can read in legacy UCVM
+15.10.0 and below configuration files as well as use the new XML configuration format. If no
+file-format is specified, then this utility will ask a series of prompts before generating the
+mesh.
 
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
-:created:   July 28, 2016
-:modified:  July 28, 2016
+:created:   July 29, 2016
+:modified:  July 29, 2016
 """
+import sys
+import xmltodict
+
+from ucvm.src.framework.ucvm import UCVM
+from ucvm.src.framework.awp_mesh import ask_questions, mesh_extract
+
+
+def usage() -> None:
+    """
+    Displays the help text associated with this utility.
+    :return: Nothing.
+    """
+    UCVM.print_with_replacements(
+        "\n"
+        "ucvm_mesh_create - UCVM Version [version]\n"
+        "\n"
+        "Creates a mesh or a mesh configuration file with the given parameters. This generates\n"
+        "a binary float mesh that is compatible with wave propagation code such as AWP-ODC. If\n"
+        "your wave propagation code (such as Hercules) uses the e-tree format, then you need\n"
+        "to use the ucvm_etree_create_mpi utility."
+        "\n"
+        "-c, --config-only c:   Generates the XML-style configuration file only. No mesh will be\n"
+        "                       made at the end of the questions.\n"
+        "-f, --file f:          Specifies the configuration file from which this utility should\n"
+        "                       read. Note that this auto-detects a legacy (before UCVM 15.10.0)\n"
+        "                       style configuration file vs. the new XML format.\n"
+    )
+
+
+def main() -> int:
+    """
+    The main UCVM model manager function.
+    :return: 0 if successful. Raises an error code otherwise, if not.
+    """
+    try:
+        options = UCVM.parse_options([
+            {"short": "c", "long": "config-only", "value": True, "required": False},
+            {"short": "f", "long": "file", "value": True, "required": False}
+        ], usage)
+    except ValueError as v_err:
+        print("[ERROR]: " + str(v_err) + "\n")
+        sys.exit(-1)
+
+    if options["config-only"] is not None:
+        with open(options["config-only"], "w") as fd:
+            fd.write(xmltodict.unparse({"root": ask_questions()}, pretty=True))
+        print(
+            "\n"
+            "Your mesh configuration file has been saved to " + options["config-only"] + ".\n"
+            "\n"
+            "To extract a mesh with your new configuration, run\n"
+            "ucvm_mesh_create -f " + options["config-only"] + ""
+            "\n"
+        )
+        return 0
+
+    if options["file"] is not None:
+        with open(options["file"], "r") as fd:
+            mesh_information = xmltodict.parse(fd.read())["root"]
+    else:
+        mesh_information = ask_questions()
+
+    mesh_extract(mesh_information)
+
+if __name__ == "__main__":
+    sys.exit(main())

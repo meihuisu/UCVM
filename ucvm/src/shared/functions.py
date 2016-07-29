@@ -2,6 +2,52 @@ import math
 import numpy as np
 from collections import namedtuple
 
+from pyproj import Proj
+
+
+def ask_and_validate(question: str, validation_function: callable=None, hint: str="", **kwargs) \
+        -> str:
+    """
+    Asks a question and checks it against the validation function. If the validation function
+    fails, it says so and also displays the hint to the user if that is provided.
+    :param question: The question to ask on the command line.
+    :param validation_function: The validation function to which the answer should be checked.
+    :param hint: The hint to display if the user inputs the wrong data.
+    :return: The answer as a string.
+    """
+    ask_again = True
+    answer = None
+    while ask_again:
+        answer = input(question + " ")
+        if validation_function is not None:
+            if validation_function(answer, **kwargs):
+                ask_again = False
+            else:
+                print("Sorry, that answer is not valid. Please try again.")
+                if hint:
+                    print("Hint: " + hint)
+        else:
+            ask_again = False
+
+    return answer
+
+
+def is_valid_proj4_string(projection: str) -> bool:
+    if projection.strip() is "":
+        return True  # A blank projection is defined to just be the UCVM default one.
+
+    try:
+        Proj(projection)
+        return True
+    except RuntimeError:
+        return False
+
+
+def is_acceptable_value(answer: str, **kwargs) -> bool:
+    if "allowed" in kwargs:
+        return answer in kwargs["allowed"]
+    return False
+
 
 def is_number(s):
     """

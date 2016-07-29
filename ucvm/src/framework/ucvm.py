@@ -24,11 +24,13 @@ from ucvm.src.model import UCVM_MODEL_LIST_FILE
 
 class UCVM:
 
+    initialized_models = {}     #: dict: Dictionary of already initialized model classes.
+
     def __init__(self):
         pass
 
-    @staticmethod
-    def query(points: List[SeismicData], models: OrderedDict) -> bool:
+    @classmethod
+    def query(cls, points: List[SeismicData], models: OrderedDict) -> bool:
         """
         Given a list of points and a model, returns a list of SeismicData objects.
         :param list points: A list of points (UCVM will auto-convert projections).
@@ -40,8 +42,9 @@ class UCVM:
 
         for model_type, list_of_models in models.items():
             for model in list_of_models:
-                model = model()
-                model.query(points)
+                if model not in cls.initialized_models:
+                    cls.initialized_models[model] = model()
+                cls.initialized_models[model].query(points)
 
         return True
 

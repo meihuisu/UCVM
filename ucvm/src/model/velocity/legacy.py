@@ -22,7 +22,8 @@ class LegacyVelocityModel(VelocityModel):
 
     _shared_object = {
         "path": "",
-        "object": None
+        "object": None,
+        "has_initialized": False
     }
 
     def __init__(self, **kwargs):
@@ -31,12 +32,13 @@ class LegacyVelocityModel(VelocityModel):
                                "ucvm_model.xml")) as fd:
             doc = xmltodict.parse(fd.read())
 
-        self._shared_object["path"] = os.path.join(
-            os.path.dirname(inspect.getfile(self.__class__)),
-            "lib",
-            str(doc["root"]["build"]["library"]).split("/")[-1] + ".so"
-        )
-        self._shared_object["object"] = cdll.LoadLibrary(self._shared_object["path"])
+        if not self._shared_object["has_initialized"]:
+            self._shared_object["path"] = os.path.join(
+                os.path.dirname(inspect.getfile(self.__class__)),
+                "lib",
+                str(doc["root"]["build"]["library"]).split("/")[-1] + ".so"
+            )
+            self._shared_object["object"] = cdll.LoadLibrary(self._shared_object["path"])
 
     def _query(self, data: List[SeismicData]) -> bool:
         """

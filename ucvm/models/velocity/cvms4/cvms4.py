@@ -4,7 +4,7 @@ Defines the CVM-S4 model UCVM Python interface.
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
 :created:   July 12, 2016
-:modified:  July 21, 2016
+:modified:  July 29, 2016
 """
 import os
 import inspect
@@ -27,7 +27,8 @@ class CVMS4VelocityModel(LegacyVelocityModel):
                       encode("ASCII"))
         errcode = c_int(0)
 
-        self._shared_object["object"].cvms_init_(mp, byref(errcode))
+        if self._shared_object["has_initialized"] is False:
+            self._shared_object["object"].cvms_init_(mp, byref(errcode))
 
         if errcode.value != 0:
             raise RuntimeError("CVM-S4 not initialized properly.")

@@ -66,21 +66,21 @@ class Point:
     def __init__(self, x, y, z, depth_elev=DEPTH, metadata=None,
                  projection=None):
         if is_number(x):
-            self.x_value = x  #: float: X co-ordinate (set in constructor).
+            self.x_value = float(x)  #: float: X co-ordinate (set in constructor).
         else:
             raise TypeError("X co-ordinate must be a number.")
 
         if is_number(y):
-            self.y_value = y  #: float: Y co-ordinate (set in constructor).
+            self.y_value = float(y)  #: float: Y co-ordinate (set in constructor).
         else:
             raise TypeError("Y co-ordinate must be a number.")
 
         if is_number(z):
-            self.z_value = z  #: float: Z co-ordinate (set in constructor). Depth or elevation.
+            self.z_value = float(z)  #: float: Z co-ordinate (set in constructor). Depth/elevation.
         else:
             raise TypeError("Z co-ordinate must be a number.")
 
-        if z < 0 and depth_elev == self.DEPTH:
+        if self.z_value < 0 and depth_elev == self.DEPTH:
             raise ValueError("Depth must be a positive number (i.e. z = 100 means 100m below the \
                               surface).")
 
