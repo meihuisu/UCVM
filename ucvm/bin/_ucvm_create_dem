@@ -1,0 +1,162 @@
+#!/usr/bin/env python
+"""
+This file creates a UCVM-compatible digital elevation model from USGS GridFloat data. The data set
+that this script reads from is elevation data sampled at 1/3 arc-second resolution directly from the
+USGS website: nationalmap.gov. In there, one can get various data. This reads data from 1/3
+arc-second DEM (3DEP).
+
+Each data file contains 1 degree by 1 degree of data (NAD83, GRS80 ellipsoid projection). Because
+UCVM uses WGS84 default projection, this script converts the data into the UCVM projection for
+easier storage.
+
+:copyright: Southern California Earthquake Center
+:author:    David Gill <davidgil@usc.edu>
+:created:   July 14, 2016
+:modified:  July 14, 2016
+"""
+
+import fnmatch
+import os
+import re
+import struct
+import sys
+
+import h5py
+import numpy as np
+
+try:
+    import mpl_toolkits.basemap.pyproj as pyproj
+except ImportError as the_err:
+    print("UCVM requires PyProj to be installed. Please install PyProj and then re-run \
+           this script.")
+    pyproj = None  # Needed to remove the warning in PyCharm
+    raise
+
+try:
+    from UCVM import UCVM
+except ImportError:
+    from ucvm.src.framework.ucvm import UCVM
+
+
+def usage() -> None:
+    """
+    Prints out the usage information for this utility.
+    :return: Nothing.
+    """
+    UCVM.print_with_replacements(
+        "\n"
+        "ucvm_create_dem - UCVM Version [version]\n"
+        "\n"
+        "This utility creates a UCVM-compatible digital elevation model from 1/3 arc-second\n"
+        "GridFloat files. These files can be downloaded directly from nationalmap.gov, a USGS\n"
+        "website. This utility takes two parameters:\n"
+        "\n"
+        "-i, --input-dir d:     The directory containing the GridFloat files. Each file has name\n"
+        "                       floatn[start latitude]w[start longitude].flt.\n"
+        "-o, --output-file f:   The UCVM-compatible DEM file which can be added to the list of \n"
+        "                       DEMs either in the user's DEM directory or (if -r) is specified, \n"
+        "                       it is automatically added.\n"
+        "-r, --register:        If selected, the DEM is automatically added into UCVM.\n"
+    )
+
+
+def parse_dem_header(header_file: str) -> dict:
+    """
+    Parses the DEM header files. We can then use this information to tile together the grid points
+    and create the end result data file.
+    :param header_file: The header file as a string.
+    :return: A dictionary containing all the header elements, converted to floats and ints as
+             necessary.
+    """
+    file_open = open(header_file)
+    parts = {}
+
+    for line in file_open:
+        tokens = line.split()
+        parts[tokens[0]] = tokens[1]
+
+    parts["cellsize"] = float(parts["cellsize"])
+    parts["xllcorner"] = float(parts["xllcorner"])
+    parts["yllcorner"] = float(parts["yllcorner"])
+    parts["ncols"] = int(parts["ncols"])
+    parts["nrows"] = int(parts["nrows"])
+
+    file_open.close()
+
+    return parts
+
+
+def main() -> int:
+    """
+    The main function which handles the creation of the UCVM-compatible DEM.
+    :return: Zero when successful. Exits with non-zero code if not.
+    """
+    try:
+        options = UCVM.parse_options([
+            {"short": "i", "long": "input-dir", "value": True, "required": True},
+            {"short": "o", "long": "output-file", "value": True, "required": True},
+            {"short": "r", "long": "register", "value": False, "required": False}
+        ], usage)
+    except ValueError as v_err:
+        print("[ERROR]: " + str(v_err) + "\n")
+        sys.exit(-1)
+
+    print("\nUCVM Create DEM\n\nGetting file list...")
+
+    # Get a list of all the files to convert.
+    temp_file_list = [f for f in os.listdir(options["input-dir"])
+                      if os.path.isfile(os.path.join(options["input-dir"], f))]
+
+    out_file = h5py.File(options["output-file"], "w")
+
+    for file in temp_file_list:
+        if fnmatch.fnmatch(file, "floatn*w*_13.flt"):
+            print("Creating data set from file " + file + "...")
+            header = parse_dem_header(os.path.join(options["input-dir"],
+                                                   file.replace(".flt", ".hdr")))
+            match = re.match(r"floatn(\d+)([we])(\d+)_13.flt", file)
+
+            lat = int(match.group(1)) - 1
+
+            multiplier = 1
+            if match.group(2) == "w":
+                multiplier = -1
+
+            lon = multiplier * int(match.group(3))
+
+            grp = out_file.create_group("/dem/" + str(lon) + "/" + str(lat))
+
+            # Attach the metadata to it.
+            grp.attrs.create("cell size", header["cellsize"])
+            grp.attrs.create("x lower left corner", header["xllcorner"])
+            grp.attrs.create("y lower left corner", header["yllcorner"])
+            grp.attrs.create("num columns", header["ncols"])
+            grp.attrs.create("num rows", header["nrows"])
+
+            arr = np.arange(header["ncols"] * header["nrows"])
+
+            # Now read in the floats.
+            fin = open(os.path.join(options["input-dir"], file), "rb")
+
+            counter = 0
+
+            while counter < header["ncols"] * header["nrows"]:
+                try:
+                    bytes_val = fin.read(4)
+                    input_data = struct.unpack('f', bytes_val)
+                    arr[counter] = input_data[0]
+                    counter += 1
+                except EOFError:
+                    break
+
+            arr = arr.reshape((header["ncols"], header["nrows"]))
+
+            grp.create_dataset("data", (header["ncols"], header["nrows"]), chunks=True,
+                               compression="gzip", data=arr)
+
+            fin.close()
+
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())

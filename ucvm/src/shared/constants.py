@@ -1,0 +1,3 @@
+UCVM_DEFAULT_PROJECTION = "+proj=latlong +datum=WGS84"
+UCVM_DEPTH = 0
+UCVM_ELEVATION = 1
