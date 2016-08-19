@@ -35,7 +35,7 @@ except ImportError as the_err:
 try:
     from UCVM import UCVM
 except ImportError:
-    from ucvm.src.framework.ucvm import UCVM
+    from ucvm.src.framework.ucvm_back import UCVM
 
 
 def usage() -> None:

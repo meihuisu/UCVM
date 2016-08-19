@@ -1,8 +1,53 @@
 import math
 import numpy as np
+import xmltodict
+from typing import List
 from collections import namedtuple
 
 from pyproj import Proj
+
+
+def parse_xmltodict_one_or_many(item: xmltodict.OrderedDict, keypath: str) -> List[dict]:
+    """
+    Given a base XMLtoDict object and a tag path using slashes as separators, return a list
+    of dictionary items that correspond to the tags. If the path doesn't exist, None is
+    returned.
+    :param item: The base XMLtoDict object.
+    :param keypath: The key path, separated by slashes.
+    :return: The list of dictionary objects, if it exists, an empty array otherwise.
+    """
+    keys = keypath.split("/")
+    eval_str = "item"
+    ret_list = []
+    for key in keys:
+        eval_str += "[\"" + key + "\"]"
+
+    try:
+        new_item = eval(eval_str)
+    except KeyError:
+        return []
+    except TypeError:
+        return []
+    else:
+        if isinstance(new_item, list):
+            for obj in new_item:
+                new_dict = {}
+                for key, val in obj.items():
+                    new_dict[key] = val
+                ret_list.append(new_dict)
+        else:
+            ret_dict = {}
+            if isinstance(new_item, str):
+                ret_list = [{"#text": new_item}]
+            else:
+                for key, val in new_item.items():
+                    ret_dict[key] = val
+                ret_list = [ret_dict]
+
+    j = item
+    j["p"] = "y"    # Fix PyCharm warning for unused parameter.
+
+    return ret_list
 
 
 def ask_and_validate(question: str, validation_function: callable=None, hint: str="", **kwargs) \
@@ -44,8 +89,11 @@ def is_valid_proj4_string(projection: str) -> bool:
 
 
 def is_acceptable_value(answer: str, **kwargs) -> bool:
+    answer_cpy = answer
+    if "lower" in kwargs:
+        answer_cpy = answer_cpy.lower()
     if "allowed" in kwargs:
-        return answer in kwargs["allowed"]
+        return answer_cpy in kwargs["allowed"]
     return False
 
 
@@ -162,3 +210,29 @@ def calculate_bilinear_value(point: namedtuple, rectangle: namedtuple,
     # Do bilinear interpolation...
     return bilinear_interpolation(height - gridded_y, gridded_x,
                                   [llgridpoint, lrgridpoint, ulgridpoint, urgridpoint])
+
+
+def calculate_scaled_density(vp: float) -> float:
+    """
+    Calculates the scaled density parameter based on Vp.
+    :param vp: The P-wave velocity in m/s.
+    :return: The scaled density parameter.
+    """
+    return 1865.0 + 0.1579 * vp
+
+
+def calculate_scaled_vs(vp: float, density: float) -> float:
+    """
+    Calculates the scaled Vs parameter based on Vp and density.
+    :param vp: The P-wave velocity in m/s.
+    :param density: The density.
+    :return: The scaled Vs parameter.
+    """
+    nu = 0.40 - ((density - 2060.0) * 0.15 / 440.0)
+
+    if density < 2060.0:
+        nu = 0.40
+    elif density > 2500.0:
+        nu = 0.25
+
+    return vp * math.sqrt((0.5 - nu) / (1.0 - nu))

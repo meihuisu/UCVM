@@ -43,9 +43,13 @@ class Model:
             "query_by": UCVM_DEPTH
         }
 
+        if "model_location" in kwargs:
+            self.model_location = kwargs["model_location"]
+        else:
+            self.model_location = os.path.join(os.path.dirname(inspect.getfile(self.__class__)))
+
         # Get the metadata.
-        with open(os.path.join(os.path.dirname(inspect.getfile(self.__class__)),
-                               "ucvm_model.xml")) as fd:
+        with open(os.path.join(self.model_location, "ucvm_model.xml")) as fd:
             doc = xmltodict.parse(fd.read())
 
         self._public_metadata["id"] = doc["root"]["information"]["id"]
@@ -69,7 +73,7 @@ class Model:
             pass
 
         try:
-            if str(doc["root"]["internal"]["projection"]).lower().strip() is not "default":
+            if str(doc["root"]["internal"]["projection"]).lower().strip() != "default":
                 self._private_metadata["projection"] = doc["root"]["internal"]["projection"]
                 if self._private_metadata["projection"] == "DEFAULT":
                     self._private_metadata["projection"] = UCVM_DEFAULT_PROJECTION
@@ -77,13 +81,13 @@ class Model:
             pass
 
         try:
-            if str(doc["root"]["internal"]["public"]).lower().strip() is not "yes":
+            if str(doc["root"]["internal"]["public"]).lower().strip() != "yes":
                 self._private_metadata["public"] = False
         except KeyError:
             pass
 
         try:
-            if str(doc["root"]["internal"]["query_by"]).lower().strip() is not "depth":
+            if str(doc["root"]["internal"]["query_by"]).lower().strip() != "depth":
                 self._private_metadata["query_by"] = UCVM_ELEVATION
         except KeyError:
             pass
@@ -93,7 +97,7 @@ class Model:
         except KeyError:
             pass
 
-    def query(self, data: List[SeismicData]) -> bool:
+    def query(self, data: List[SeismicData], **kwargs) -> bool:
         """
         Queries the model and adds in the necessary data.
         :param list data: A list of SeismicData classes that contain Points to query.
@@ -104,10 +108,11 @@ class Model:
 
         for datum in data:
             datum.convert_point_to_projection(self._private_metadata["projection"])
+            datum.set_point_to_depth_or_elev(self._private_metadata["query_by"])
 
         # Now that we have converted all of the points to the model projection, let's pass them
         # into the model and retrieve back the properties.
-        return self._query(data)
+        return self._query(data, **kwargs)
 
     def get_metadata(self):
         """
@@ -130,28 +135,8 @@ class Model:
     def get_model_dir(self) -> str:
         return os.path.dirname(inspect.getfile(self.__class__))
 
-    @staticmethod
     @abstractmethod
-    def get_all_models() -> List[str]:
-        """
-        Get all models of this type. So if we call VelocityModel.get_all_models() we get all
-        velocity models registered with UCVM.
-        :return: A list of string identifiers for each model.
-        """
-        pass
-
-    @staticmethod
-    def load_model(identifier: str) -> object:
-        """
-        Given a string identifier, loads the corresponding model. Or, if this model does not exist,
-        we simply return None.
-        :param identifier: The string identifier of the model to retrieve.
-        :return: The instantiated model object or None.
-        """
-        pass
-
-    @abstractmethod
-    def _query(self, data: List[SeismicData]) -> bool:
+    def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """
         Internal (override) query method for the model.
         :param list data: A list of SeismicData classes.
