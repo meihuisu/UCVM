@@ -72,8 +72,6 @@ class CVMS4VelocityModel(VelocityModel):
         for i in range(0, len(points)):
             density[i] = 0.0
 
-        start_time = time.time()
-
         cvms_query_(&nn, lon, lat, dep, vp, vs, density, &retcode)
 
         # Now we need to go through the material properties and add them to the SeismicData objects.

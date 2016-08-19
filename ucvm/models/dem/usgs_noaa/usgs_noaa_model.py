@@ -45,6 +45,8 @@ class USGSNOAAElevationModel(ElevationModel):
         self._opened_file = h5py.File(os.path.join(self.get_model_dir(), "data", self.DATA_FILE),
                                       "r")
 
+        self._bucket_groups = {}
+
     def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """
         Internal (override) query method for the model.
@@ -54,27 +56,32 @@ class USGSNOAAElevationModel(ElevationModel):
         for datum in data:
             bucket = "/dem/" + str(math.floor(datum.converted_point.x_value)) + \
                      "/" + str(math.floor(datum.converted_point.y_value) - 1)
-            group = self._opened_file.get(bucket)
+            if bucket not in self._bucket_groups:
+                group = self._opened_file.get(bucket)
 
-            if group is None:
-                datum.set_elevation_data(ElevationProperties(None, "no data"))
-                continue
+                if group is None:
+                    datum.set_elevation_data(ElevationProperties(None, "no data"))
+                    continue
 
-            opened_data = np.array(group.get("data"))
+                self._bucket_groups[bucket] = {
+                    "data": np.array(group.get("data")),
+                    "rect": SimpleRotatedRectangle(
+                        group.attrs.get("x lower left corner"),
+                        group.attrs.get("y lower left corner"),
+                        0,
+                        group.attrs.get("cell size"),
+                        group.attrs.get("cell size")
+                    )
+                }
 
             bilinear_point = SimplePoint(datum.converted_point.x_value,
                                          datum.converted_point.y_value,
                                          0)
 
-            bilinear_rect = SimpleRotatedRectangle(group.attrs.get("x lower left corner"),
-                                                   group.attrs.get("y lower left corner"),
-                                                   0,
-                                                   group.attrs.get("cell size"),
-                                                   group.attrs.get("cell size"))
-
             datum.set_elevation_data(
                 ElevationProperties(
-                    calculate_bilinear_value(bilinear_point, bilinear_rect, opened_data),
+                    calculate_bilinear_value(bilinear_point, self._bucket_groups[bucket]["rect"],
+                                             self._bucket_groups[bucket]["data"]),
                     self._public_metadata["id"]
                 )
             )

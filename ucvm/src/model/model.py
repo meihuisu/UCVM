@@ -18,7 +18,7 @@ from abc import abstractmethod
 from typing import List
 
 from ucvm.src.shared import UCVM_DEFAULT_PROJECTION, UCVM_DEPTH, UCVM_ELEVATION
-from ucvm.src.shared.properties import SeismicData
+from ucvm.src.shared.properties import SeismicData, VelocityProperties
 
 
 class Model:
