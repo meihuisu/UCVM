@@ -84,6 +84,9 @@ class Plot:
             "max_lat": np.amax(y_points)
         }
 
+        colormap = cm.RdBu
+        norm = mcolors.Normalize(vmin=self.bounds[0], vmax=self.bounds[len(self.bounds) - 1])
+
         if map_plot:
             # Check to see if we have pickled this particular basemap instance.
             m = basemap.Basemap(projection='cyl',
@@ -105,16 +108,13 @@ class Plot:
             m.drawcountries()
             m.drawcoastlines()
 
-            colormap = cm.RdBu
-            norm = mcolors.Normalize(vmin=self.bounds[0], vmax=self.bounds[len(self.bounds) - 1])
-
             t = m.pcolor(x_points, y_points, data, cmap=colormap, norm=norm)
+        else:
+            t = plt.imshow(data, cmap=colormap, norm=norm)
 
-            print(self.ticks, self.bounds)
+        cax = plt.axes([0.125, 0.05, 0.775, 0.02])
+        cbar = plt.colorbar(t, cax=cax, orientation='horizontal', ticks=self.ticks)
 
-            cax = plt.axes([0.125, 0.05, 0.775, 0.02])
-            cbar = plt.colorbar(t, cax=cax, orientation='horizontal', ticks=self.ticks)
-
-            cbar.set_label(self.plot_cbar_label)
+        cbar.set_label(self.plot_cbar_label)
 
         plt.show()

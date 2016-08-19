@@ -29,7 +29,7 @@ def usage() -> None:
         "\n"
         "Extracts and/or plots a horizontal slice through a given velocity model. If no\n"
         "parameters are given, then a series of questions are asked to determine what the user\n"
-        "would like to do."
+        "would like to do.\n"
         "\n"
         "-f, --file f:          The configuration file to read from.\n"
         "-a, --advanced:        If this flag is set, advanced questions will be asked."
