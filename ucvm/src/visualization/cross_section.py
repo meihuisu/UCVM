@@ -19,7 +19,7 @@ from collections import namedtuple
 from ucvm.src.shared.errors import display_and_raise_error
 
 CrossSectionProperties = namedtuple("CrossSectionProperties",
-                                    "width_spacing height_spacing end")
+                                    "width_spacing height_spacing end property")
 
 
 class CrossSection(Plot):
@@ -47,6 +47,9 @@ class CrossSection(Plot):
 
         self.sd_array = []
         self.extracted_data = None
+
+        self.bounds = []
+        self.ticks = []
 
         if "title" in self.extras:
             self.plot_title = self.extras["title"]
@@ -77,7 +80,12 @@ class CrossSection(Plot):
             dictionary["end_point"]["projection"]
         )
 
-        cross_section_properties = dictionary["cross_section_properties"]
+        cross_section_properties = CrossSectionProperties(
+            dictionary["cross_section_properties"]["width_spacing"],
+            dictionary["cross_section_properties"]["height_spacing"],
+            dictionary["cross_section_properties"]["end"],
+            dictionary["cross_section_properties"]["property"]
+        )
         cvm_list = dictionary["cvm_list"]
 
         return CrossSection(start_point, end_point, cross_section_properties, cvm_list)
@@ -133,4 +141,35 @@ class CrossSection(Plot):
         num_x = len(self.extracted_data[0]) / 5
 
         datapoints = np.arange(num_y * num_x, dtype=float).reshape(num_y, num_x)
+
+        if str(self.cross_section_properties.property).lower().strip() == "vp":
+            position = 0
+            self.bounds = [0, 0.35, 0.70, 1.00, 1.35, 1.70, 2.55, 3.40, 4.25, 5.10, 5.95, 6.80,
+                           7.65, 8.50]
+            self.ticks = [0, 0.85, 1.70, 2.55, 3.40, 4.25, 5.10, 5.95, 6.80, 7.65, 8.50]
+        elif str(self.cross_section_properties.property).lower().strip() == "vs":
+            position = 1
+            self.bounds = [0, 0.20, 0.40, 0.60, 0.80, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00,
+                           4.50, 5.00]
+            self.ticks = [0, 0.50, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00, 4.50, 5.00]
+        elif str(self.cross_section_properties.property).lower().strip() == "density":
+            position = 2
+            self.bounds = [0, 0.20, 0.40, 0.60, 0.80, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00,
+                           4.50, 5.00]
+            self.ticks = [0, 0.50, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00, 4.50, 5.00]
+        elif str(self.extras["plot_properties"]["property"]).lower().strip() == "qp":
+            position = 3
+        elif str(self.extras["plot_properties"]["property"]).lower().strip() == "qs":
+            position = 4
+        else:
+            position = 0
+
+        for y in range(num_y):
+            for x in range(num_x):
+                x_val = x * 5
+                datapoints[y][x] = self.extracted_data[y][x_val + position]
+
+        # Ok, now that we have the 2D array of lons, lats, and data, let's call on our inherited
+        # classes show_plot function to actually show the plot.
+        super(CrossSection, self).show_plot(None, None, datapoints, False)
 

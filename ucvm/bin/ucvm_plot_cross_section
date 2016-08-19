@@ -5,8 +5,177 @@ Defines the utility that walks the user through plotting a cross section.
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
 :created:   August 17, 2016
-:modified:  August 18, 2016
+:modified:  August 19, 2016
 """
+import sys
+import xmltodict
 
+from ucvm.src.framework.ucvm import UCVM
+from ucvm.src.shared.functions import ask_and_validate, is_number, is_acceptable_value, \
+    is_valid_proj4_string
+from ucvm.src.shared.properties import UCVM_DEPTH, UCVM_ELEVATION, UCVM_DEFAULT_PROJECTION
+from ucvm.src.visualization.cross_section import CrossSection
+
+
+def usage() -> None:
+    """
+    Displays the help text associated with this utility.
+    :return: Nothing.
+    """
+    UCVM.print_with_replacements(
+        "\n"
+        "ucvm_plot_cross_section - UCVM Version [version]\n"
+        "\n"
+        "Plots a cross-section given a series of questions.\n"
+        "\n"
+        "-f, --file f:          The configuration file to read from."
+    )
+
+
+def ask_questions() -> dict:
+    """
+    Asks the necessary questions.
+    :return: The compiled question dictionary if successful, None if not.
+    """
+    answers = {
+        "start_point": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "depth_elev": 0,
+            "projection": ""
+        },
+        "end_point": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "depth_elev": 0,
+            "projection": ""
+        },
+        "cross_section_properties": {
+            "width_spacing": 0,
+            "height_spacing": 0,
+            "property": "",
+            "end": 0
+        },
+        "cvm_list": ""
+    }
+
+    # Get list of installed models.
+    installed_models = {}
+    counter = 1
+    for model in UCVM.get_list_of_installed_models()["velocity"]:
+        installed_models[counter] = model["name"]
+
+    print("\nGenerating a cross-section requires various parameters to be defined (such \n"
+          "as the start point, ending point, and so on). The following questions will guide\n"
+          "you through the definition of those parameters.")
+
+    answers["start_point"]["x"] = \
+        float(ask_and_validate("\nWhat is the X or longitudinal coordinate of the start point?",
+                               is_number, "Answer must be a number."))
+    answers["start_point"]["y"] = \
+        float(ask_and_validate("What is the Y or latitudinal coordinate of the start point?",
+                               is_number, "Answer must be a number."))
+
+    answers["end_point"]["x"] = \
+        float(ask_and_validate("\nWhat is the X or longitudinal coordinate of the end point?",
+                               is_number, "Answer must be a number."))
+    answers["end_point"]["y"] = \
+        float(ask_and_validate("What is the Y or latitudinal coordinate of the end point?",
+                               is_number, "Answer must be a number."))
+
+    top_depth_or_elev = \
+        float(ask_and_validate("\nWhat is the top depth or elevation for your cross-section?",
+                               is_number, "Answer must be a number"))
+
+    bottom_depth_or_elev = \
+        float(ask_and_validate("What is the bottom depth or elevation for your cross-section?",
+                               is_number, "Answer must be a number"))
+
+    depth_elev = \
+        ask_and_validate("\nAre your top and bottom numbers depth (by default) or elevation?\n"
+                         "Type 'd' or enter for depth, 'e' for elevation:", is_acceptable_value,
+                         "Type the character 'd' for depth or 'e' for elevation.",
+                         allowed=["d", "e", ""])
+
+    if str(depth_elev).lower().strip() == "e":
+        depth_elev = UCVM_ELEVATION
+    else:
+        depth_elev = UCVM_DEPTH
+
+    projection = \
+        ask_and_validate("\nIn which projection are your points specified?\n"
+                         "The default for UCVM is WGS84 latitude and longitude. To accept\n"
+                         "the default projection, simply hit enter:", is_valid_proj4_string,
+                         "The answer must be a valid Proj.4 projection.")
+
+    if str(projection).strip() == "":
+        projection = UCVM_DEFAULT_PROJECTION
+
+    answers["start_point"]["z"] = top_depth_or_elev
+    answers["end_point"]["z"] = top_depth_or_elev
+    answers["start_point"]["depth_elev"] = depth_elev
+    answers["end_point"]["depth_elev"] = depth_elev
+    answers["start_point"]["projection"] = projection
+    answers["end_point"]["projection"] = projection
+
+    answers["cross_section_properties"]["end"] = bottom_depth_or_elev
+
+    answers["cross_section_properties"]["width_spacing"] = \
+        ask_and_validate("\nWhat horizontal spacing be, in meters, for each extracted point?",
+                         is_number, "Answer must be a number")
+    answers["cross_section_properties"]["height_spacing"] = \
+        ask_and_validate("What vertical spacing be, in meters, for each extracted point?",
+                         is_number, "Answer must be a number")
+
+    answers["cross_section_properties"]["property"] = \
+        ask_and_validate("\nWhich property or properties (comma-separated) should be plotted?\n"
+                         "Acceptable answers include Vp, Vs, density, Qp, or Qs:")
+
+    print("\nYou must select the velocity model(s) from which you would like to retrieve this\n"
+          "data. You can either enter in your model(s) as text (e.g. CVM-S4.usgs_noaa) or you\n"
+          "can select from one of the predefined ones in the list below.")
+
+    for index, name in installed_models.items():
+        print(str(index) + ") " + name)
+
+    answers["cvm_list"] = ask_and_validate("\nWhich velocity model would you like?")
+    try:
+        int(answers["cvm_list"])
+        answers["cvm_list"] = installed_models[int(answers["cvm_list"])]
+    except TypeError:
+        pass
+
+    return answers
+
+
+def main() -> int:
+    """
+    The main UCVM depth profile function.
+    :return: 0 if successful. Raises an error code otherwise, if not.
+    """
+    try:
+        options = UCVM.parse_options([
+            {"short": "f", "long": "file", "value": True, "required": False}
+        ], usage)
+    except ValueError as v_err:
+        print("[ERROR]: " + str(v_err) + "\n")
+        sys.exit(-1)
+
+    if options["file"] is not None:
+        with open(options["file"], "r") as fd:
+            section_info = xmltodict.parse(fd.read())["root"]
+    else:
+        section_info = ask_questions()
+        with open("cross_section.xml", "w") as fd:
+            fd.write(xmltodict.unparse({"root": section_info}, pretty=True))
+
+    CrossSection.from_dictionary(section_info).plot()
+
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
 
 
