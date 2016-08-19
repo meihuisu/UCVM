@@ -12,7 +12,7 @@ import numpy as np
 
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.visualization.plot import Plot
-from ucvm.src.shared.properties import Point, SeismicData
+from ucvm.src.shared.properties import Point, SeismicData, UCVM_DEPTH
 
 from collections import namedtuple
 
@@ -63,26 +63,28 @@ class CrossSection(Plot):
     @classmethod
     def from_dictionary(cls, dictionary: dict):
         start_point = Point(
-            dictionary["start_point"]["x"],
-            dictionary["start_point"]["y"],
-            dictionary["start_point"]["z"],
-            dictionary["start_point"]["depth_elev"],
+            float(dictionary["start_point"]["x"]),
+            float(dictionary["start_point"]["y"]),
+            float(dictionary["start_point"]["z"]),
+            int(dictionary["start_point"]["depth_elev"]),
             {},
             dictionary["start_point"]["projection"]
         )
 
         end_point = Point(
-            dictionary["end_point"]["x"],
-            dictionary["end_point"]["y"],
-            dictionary["end_point"]["z"],
-            dictionary["end_point"]["depth_elev"],
+            float(dictionary["end_point"]["x"]),
+            float(dictionary["end_point"]["y"]),
+            float(dictionary["end_point"]["z"]),
+            int(dictionary["end_point"]["depth_elev"]),
             {},
             dictionary["end_point"]["projection"]
         )
 
         cross_section_properties = CrossSectionProperties(
             float(dictionary["cross_section_properties"]["width_spacing"]),
-            float(dictionary["cross_section_properties"]["height_spacing"]),
+            float(dictionary["cross_section_properties"]["height_spacing"]) if
+            int(dictionary["start_point"]["depth_elev"]) == UCVM_DEPTH else
+            -1 * float(dictionary["cross_section_properties"]["height_spacing"]),
             float(dictionary["cross_section_properties"]["end"]),
             dictionary["cross_section_properties"]["property"]
         )
@@ -108,10 +110,10 @@ class CrossSection(Plot):
                 y = y1 + i * (y2 - y1) / float(num_prof)
                 lon, lat = proj(x, y, inverse=True)
                 self.sd_array.append(
-                    SeismicData(Point(lon, lat, j))
+                    SeismicData(Point(lon, lat, j, int(self.start_point.depth_elev)))
                 )
 
-        UCVM.query(self.sd_array, self.cvms, ["velocity"])
+        UCVM.query(self.sd_array, self.cvms, ["elevation", "velocity"])
 
         num_x = num_prof + 1
         num_y = int(math.ceil(self.cross_section_properties.end - self.start_point.z_value) /
@@ -122,16 +124,23 @@ class CrossSection(Plot):
         for y in range(int(num_y)):
             for x in range(int(num_x)):
                 x_val = x * 5
-                self.extracted_data[y][x_val] = \
-                    self.sd_array[y * num_x + x].velocity_properties.vp
-                self.extracted_data[y][x_val + 1] = \
-                    self.sd_array[y * num_x + x].velocity_properties.vs
-                self.extracted_data[y][x_val + 2] = \
-                    self.sd_array[y * num_x + x].velocity_properties.density
-                self.extracted_data[y][x_val + 3] = \
-                    self.sd_array[y * num_x + x].velocity_properties.qp
-                self.extracted_data[y][x_val + 4] = \
-                    self.sd_array[y * num_x + x].velocity_properties.qs
+                if self.sd_array[y * num_x + x].velocity_properties is not None:
+                    vp_val = self.sd_array[y * num_x + x].velocity_properties.vp
+                    vs_val = self.sd_array[y * num_x + x].velocity_properties.vs
+                    density_val = self.sd_array[y * num_x + x].velocity_properties.density
+                    qp_val = self.sd_array[y * num_x + x].velocity_properties.qp
+                    qs_val = self.sd_array[y * num_x + x].velocity_properties.qs
+                else:
+                    vp_val = None
+                    vs_val = None
+                    density_val = None
+                    qp_val = None
+                    qs_val = None
+                self.extracted_data[y][x_val] = vp_val if vp_val is not None else -1
+                self.extracted_data[y][x_val + 1] = vs_val if vs_val is not None else -1
+                self.extracted_data[y][x_val + 2] = density_val if density_val is not None else -1
+                self.extracted_data[y][x_val + 3] = qp_val if qp_val is not None else -1
+                self.extracted_data[y][x_val + 4] = qs_val if qs_val is not None else -1
 
     def plot(self):
         if self.extracted_data is None:
@@ -157,9 +166,9 @@ class CrossSection(Plot):
             self.bounds = [0, 0.20, 0.40, 0.60, 0.80, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00,
                            4.50, 5.00]
             self.ticks = [0, 0.50, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00, 4.50, 5.00]
-        elif str(self.extras["plot_properties"]["property"]).lower().strip() == "qp":
+        elif str(self.cross_section_properties.property).lower().strip() == "qp":
             position = 3
-        elif str(self.extras["plot_properties"]["property"]).lower().strip() == "qs":
+        elif str(self.cross_section_properties.property).lower().strip() == "qs":
             position = 4
         else:
             position = 0
@@ -167,7 +176,10 @@ class CrossSection(Plot):
         for y in range(num_y):
             for x in range(num_x):
                 x_val = x * 5
-                datapoints[y][x] = self.extracted_data[y][x_val + position] / 1000
+                if int(self.start_point.depth_elev) == UCVM_DEPTH:
+                    datapoints[y][x] = self.extracted_data[y][x_val + position] / 1000
+                else:
+                    datapoints[num_y - y - 1][x] = self.extracted_data[y][x_val + position] / 1000
 
         # Ok, now that we have the 2D array of lons, lats, and data, let's call on our inherited
         # classes show_plot function to actually show the plot.

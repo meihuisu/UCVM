@@ -74,9 +74,6 @@ class Plot:
         :param map_plot: If set to true, the data is plotted on a map. If false, just generic data.
         :return: True, if plot was shown successfully. False if not.
         """
-
-        print(data)
-
         ranges = {
             "min_lon": np.amin(x_points),
             "max_lon": np.amax(x_points),
