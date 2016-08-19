@@ -9,8 +9,12 @@ awhile to run.
 """
 import unittest
 
-framework = __import__("framework")
-mesh = __import__("mesh")
+try:
+    import ucvm.tests.framework as framework
+    import ucvm.tests.mesh as mesh
+except ImportError:
+    framework = __import__("framework")
+    mesh = __import__("mesh")
 
 
 def suite():

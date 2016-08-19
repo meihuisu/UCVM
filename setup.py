@@ -184,7 +184,7 @@ for item in models_to_download:
     model_size = int(model_file.headers["Content-Length"])
     total_model_size += model_size
     print("   - " + (item[1][:42] + "..." if len(item[1]) > 45 else item[1]).ljust(55) +
-          (" (" + item[0] + ")").ljust(15) + sizeof_fmt(model_size).rjust(10))
+          (" (" + item[0] + ")").ljust(20) + sizeof_fmt(model_size).rjust(10))
 
 print("\nYour total download size will be: " + sizeof_fmt(total_model_size))
 
@@ -205,7 +205,7 @@ setup(name=UCVM_INFORMATION["short_name"],
       packages=["ucvm", "ucvm.src", "ucvm.src.framework", "ucvm.src.model",
                 "ucvm.src.model.velocity", "ucvm.src.model.elevation", "ucvm.src.model.vs30",
                 "ucvm.src.shared", "ucvm.src.visualization", "ucvm.models",
-                "ucvm.src.visualization.internal_basemap"],
+                "ucvm.src.visualization.internal_basemap", "ucvm.tests", "ucvm.tests.data"],
       package_dir={'ucvm': 'ucvm',
                    'ucvm.src': 'ucvm/src',
                    'ucvm.src.framework': 'ucvm/src/framework',
@@ -217,11 +217,22 @@ setup(name=UCVM_INFORMATION["short_name"],
                    'ucvm.src.visualization': 'ucvm/src/visualization',
                    'ucvm.models': 'ucvm/models',
                    'ucvm.src.visualization.internal_basemap':
-                       'ucvm/src/visualization/internal_basemap'},
-      package_data={'ucvm.models': ['ucvm/models/installed.xml']},
-      data_files=[("ucvm/models", ["ucvm/models/installed.xml"])],
+                       'ucvm/src/visualization/internal_basemap',
+                   'ucvm.tests': 'ucvm/tests',
+                   'ucvm.tests.data': 'ucvm/tests/data'},
+      package_data={'ucvm.models': ['ucvm/models/installed.xml'],
+                    'ucvm.tests.data': ['ucvm/tests/data/simple_mesh_ijk12_rotated.xml',
+                                        'ucvm/tests/data/simple_mesh_ijk12_unrotated.xml',
+                                        'ucvm/tests/data/simple_utm_mesh_ijk12_rotated.xml']},
+      data_files=[("ucvm/models", ["ucvm/models/installed.xml"]),
+                  ('ucvm/tests/data', ['ucvm/tests/data/simple_utm_mesh_ijk12_rotated.xml',
+                                       'ucvm/tests/data/simple_mesh_ijk12_unrotated.xml',
+                                       'ucvm/tests/data/simple_mesh_ijk12_rotated.xml'])],
       install_requires=INSTALL_REQUIRES,
-      scripts=['ucvm/bin/ucvm_query', 'ucvm/bin/ucvm_model_manager'],
+      scripts=['ucvm/bin/ucvm_query', 'ucvm/bin/ucvm_model_manager', 'ucvm/bin/ucvm_mesh_create',
+               'ucvm/bin/ucvm_model_manager', 'ucvm/bin/ucvm_plot_cross_section',
+               'ucvm/bin/ucvm_plot_depth_profile', 'ucvm/bin/ucvm_plot_horizontal_slice',
+               'ucvm/bin/ucvm_run_tests'],
       zip_safe=False
       )
 

@@ -11,7 +11,7 @@ import unittest
 import xmltodict
 import os
 import struct
-import math
+import inspect
 
 from contextlib import redirect_stdout
 
@@ -20,21 +20,33 @@ from ucvm.src.framework.mesh_common import InternalMesh, InternalMeshIterator
 from ucvm.src.shared.properties import SeismicData, Point
 from ucvm.src.framework.awp_mesh import mesh_extract_single
 
-test_model = __import__("test_model")
+import ucvm.tests
+
+try:
+    import ucvm.tests.test_model as test_model
+except ImportError:
+    test_model = __import__("test_model")
 
 
 class UCVMMeshTest(unittest.TestCase):
 
     def setUp(self):
-        self.im_1 = InternalMesh.from_xml_file("./data/simple_mesh_ijk12_unrotated.xml")
+        self.dir = os.path.dirname(inspect.getfile(ucvm.tests))
+        self.im_1 = InternalMesh.from_xml_file(
+            os.path.join(self.dir, "data", "simple_mesh_ijk12_unrotated.xml")
+        )
         self.sd = [SeismicData(Point(-118, 34, 0)) for _ in range(0, 101505)]
         self.im_1_iterator_1 = InternalMeshIterator(self.im_1, 0, 101505, 1005, self.sd)
         self.im_1_iterator_2 = InternalMeshIterator(self.im_1, 0, 101505, 101505, self.sd)
-        self.im_2 = InternalMesh.from_xml_file("./data/simple_mesh_ijk12_rotated.xml")
+        self.im_2 = InternalMesh.from_xml_file(
+            os.path.join(self.dir, "data", "simple_mesh_ijk12_rotated.xml")
+        )
         self.sd2 = [SeismicData(Point(-118, 34, 0)) for _ in range(0, 51005)]
         self.im_2_iterator_1 = InternalMeshIterator(self.im_2, 0, 51005, 505, self.sd2)
         self.im_2_iterator_2 = InternalMeshIterator(self.im_2, 0, 51005, 51005, self.sd2)
-        self.im_3 = InternalMesh.from_xml_file("./data/simple_utm_mesh_ijk12_rotated.xml")
+        self.im_3 = InternalMesh.from_xml_file(
+            os.path.join(self.dir, "data", "simple_utm_mesh_ijk12_rotated.xml")
+        )
         self.sd3 = [SeismicData(Point(-118, 34, 0)) for _ in range(0, 101505)]
         self.im_3_iterator_1 = InternalMeshIterator(self.im_3, 0, 101505, 202, self.sd3)
         self.im_3_iterator_2 = InternalMeshIterator(self.im_3, 0, 101505, 101505, self.sd3)
@@ -110,7 +122,7 @@ class UCVMMeshTest(unittest.TestCase):
 
     def test_generate_simple_mesh_ijk12_unrotated(self):
         UCVM.instantiated_models["testvelocitymodel"] = test_model.TestVelocityModel()
-        with open("./data/simple_mesh_ijk12_unrotated.xml") as fd:
+        with open(os.path.join(self.dir, "data", "simple_mesh_ijk12_unrotated.xml")) as fd:
             simple_mesh_ijk12_xml = xmltodict.parse(fd.read())
         simple_mesh_ijk12_xml = simple_mesh_ijk12_xml["root"]
         with redirect_stdout(open(os.devnull, "w")):
@@ -122,7 +134,7 @@ class UCVMMeshTest(unittest.TestCase):
         spacing = 0.01
 
         # Check that the mesh is valid.
-        with open("./scratch/simplemeshunrotated.data", "rb") as fd:
+        with open(os.path.join(self.dir, "scratch", "simplemeshunrotated.data"), "rb") as fd:
             for z_val in range(0, 5):
                 for y_val in range(0, 101):
                     for x_val in range(0, 201):
@@ -139,7 +151,7 @@ class UCVMMeshTest(unittest.TestCase):
 
     def test_generate_simple_mesh_ijk12_rotated(self):
         UCVM.instantiated_models["testvelocitymodel"] = test_model.TestVelocityModel()
-        with open("./data/simple_mesh_ijk12_rotated.xml") as fd:
+        with open(os.path.join(self.dir, "data", "simple_mesh_ijk12_rotated.xml")) as fd:
             simple_mesh_ijk12_xml = xmltodict.parse(fd.read())
         simple_mesh_ijk12_xml = simple_mesh_ijk12_xml["root"]
         with redirect_stdout(open(os.devnull, "w")):
@@ -147,9 +159,11 @@ class UCVMMeshTest(unittest.TestCase):
                 0: {0: "testvelocitymodel", "query_by": "depth"}
             }))
 
-        i_test = InternalMesh.from_xml_file("./data/simple_mesh_ijk12_rotated.xml")
+        i_test = InternalMesh.from_xml_file(
+            os.path.join(self.dir, "data", "simple_mesh_ijk12_rotated.xml")
+        )
 
-        with open("./scratch/simplemeshrotated.data", "rb") as fd:
+        with open(os.path.join(self.dir, "scratch", "simplemeshrotated.data"), "rb") as fd:
             for z_val in range(0, 5):
                 for y_val in range(0, 101):
                     for x_val in range(0, 101):
@@ -166,7 +180,7 @@ class UCVMMeshTest(unittest.TestCase):
 
     def test_generate_simple_utm_mesh_ijk12_rotated(self):
         UCVM.instantiated_models["testvelocitymodel"] = test_model.TestVelocityModel()
-        with open("./data/simple_utm_mesh_ijk12_rotated.xml") as fd:
+        with open(os.path.join(self.dir, "data", "simple_utm_mesh_ijk12_rotated.xml")) as fd:
             simple_mesh_ijk12_xml = xmltodict.parse(fd.read())
         simple_mesh_ijk12_xml = simple_mesh_ijk12_xml["root"]
         with redirect_stdout(open(os.devnull, "w")):
@@ -174,9 +188,11 @@ class UCVMMeshTest(unittest.TestCase):
                 0: {0: "testvelocitymodel", "query_by": "depth"}
             }))
 
-        i_test = InternalMesh.from_xml_file("./data/simple_utm_mesh_ijk12_rotated.xml")
+        i_test = InternalMesh.from_xml_file(
+            os.path.join(self.dir, "data", "simple_utm_mesh_ijk12_rotated.xml")
+        )
 
-        with open("./scratch/simpleutmmeshrotated.data", "rb") as fd:
+        with open(os.path.join(self.dir, "scratch", "simpleutmmeshrotated.data"), "rb") as fd:
             for z_val in range(0, 5):
                 for y_val in range(0, 101):
                     for x_val in range(0, 201):
@@ -196,7 +212,7 @@ class UCVMMeshTest(unittest.TestCase):
 
 def make_suite() -> unittest.TestSuite:
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(UCVMMeshTest, "test"))
+    suite.addTest(unittest.makeSuite(UCVMMeshTest, "test_internal"))
     return suite
 
 if __name__ == "__main__":

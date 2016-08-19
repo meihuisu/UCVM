@@ -17,7 +17,10 @@ from ucvm.src.shared.properties import SeismicData, Point
 from ucvm.src.shared import UCVM_ELEVATION
 from ucvm.src.shared.errors import UCVMError
 
-test_model = __import__("test_model")
+try:
+    import ucvm.tests.test_model as test_model
+except ImportError:
+    test_model = __import__("test_model")
 
 
 class UCVMFrameworkTest(unittest.TestCase):
@@ -74,14 +77,14 @@ class UCVMFrameworkTest(unittest.TestCase):
         UCVM.query(data_2, "cvms4")
         self.assertEqual(data_2[0].velocity_properties.vs, 213)
         self.assertAlmostEqual(data_2[0].elevation_properties.elevation, 276.99999870)
-        self.assertAlmostEqual(data_2[0].vs30_properties.vs30, 354.63709123)
+        self.assertAlmostEqual(data_2[0].vs30_properties.vs30, 350.96311366)
         data_3 = [
             SeismicData(Point(-118, 34, 276.99, UCVM_ELEVATION))
         ]
         UCVM.query(data_3, "cvms4.elevation")
         self.assertEqual(data_3[0].velocity_properties.vs, 213)
         self.assertAlmostEqual(data_3[0].elevation_properties.elevation, 276.99999870)
-        self.assertAlmostEqual(data_3[0].vs30_properties.vs30, 354.63709123)
+        self.assertAlmostEqual(data_3[0].vs30_properties.vs30, 350.96311366)
         with redirect_stdout(open(os.devnull, "w")):
             with self.assertRaises(UCVMError):
                 UCVM.query(data_3, "cvms4jibberish.elevation")
