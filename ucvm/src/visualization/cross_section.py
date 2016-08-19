@@ -81,9 +81,9 @@ class CrossSection(Plot):
         )
 
         cross_section_properties = CrossSectionProperties(
-            dictionary["cross_section_properties"]["width_spacing"],
-            dictionary["cross_section_properties"]["height_spacing"],
-            dictionary["cross_section_properties"]["end"],
+            float(dictionary["cross_section_properties"]["width_spacing"]),
+            float(dictionary["cross_section_properties"]["height_spacing"]),
+            float(dictionary["cross_section_properties"]["end"]),
             dictionary["cross_section_properties"]["property"]
         )
         cvm_list = dictionary["cvm_list"]
@@ -111,16 +111,16 @@ class CrossSection(Plot):
                     SeismicData(Point(lon, lat, j))
                 )
 
-        UCVM.query(self.sd_array, self.cvms)
+        UCVM.query(self.sd_array, self.cvms, ["velocity"])
 
         num_x = num_prof + 1
-        num_y = (int(self.cross_section_properties.end) - int(self.start_point.z_value)) / \
-                int(self.cross_section_properties.height_spacing) + 1
+        num_y = int(math.ceil(self.cross_section_properties.end - self.start_point.z_value) /
+                    self.cross_section_properties.height_spacing)
 
         self.extracted_data = np.arange(num_x * num_y * 5, dtype=float).reshape(num_y, num_x * 5)
 
-        for y in range(num_y):
-            for x in range(num_x):
+        for y in range(int(num_y)):
+            for x in range(int(num_x)):
                 x_val = x * 5
                 self.extracted_data[y][x_val] = \
                     self.sd_array[y * num_x + x].velocity_properties.vp
@@ -137,8 +137,8 @@ class CrossSection(Plot):
         if self.extracted_data is None:
             self.extract()
 
-        num_y = len(self.extracted_data)
-        num_x = len(self.extracted_data[0]) / 5
+        num_y = int(len(self.extracted_data))
+        num_x = int(len(self.extracted_data[0]) / 5)
 
         datapoints = np.arange(num_y * num_x, dtype=float).reshape(num_y, num_x)
 
@@ -167,9 +167,8 @@ class CrossSection(Plot):
         for y in range(num_y):
             for x in range(num_x):
                 x_val = x * 5
-                datapoints[y][x] = self.extracted_data[y][x_val + position]
+                datapoints[y][x] = self.extracted_data[y][x_val + position] / 1000
 
         # Ok, now that we have the 2D array of lons, lats, and data, let's call on our inherited
         # classes show_plot function to actually show the plot.
         super(CrossSection, self).show_plot(None, None, datapoints, False)
-
