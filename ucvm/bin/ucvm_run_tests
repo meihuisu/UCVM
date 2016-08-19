@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+"""
+Executes all the tests.
+
+:copyright: Southern California Earthquake Center
+:author:    David Gill <davidgil@usc.edu>
+:created:   August 18, 2016
+:modified:  August 19, 2016
+"""
+import sys
+import unittest
+
+from ucvm.src.framework.ucvm import UCVM
+from ucvm.tests.all import suite
+
+
+def usage() -> None:
+    """
+    Displays the help text associated with this utility.
+    :return: Nothing.
+    """
+    UCVM.print_with_replacements(
+        "\n"
+        "ucvm_run_tests - UCVM Version [version]\n"
+        "\n"
+        "Executes all the tests.\n"
+    )
+
+
+def main() -> int:
+    """
+    The main UCVM run test function.
+    :return: 0 if successful. Raises an error code otherwise, if not.
+    """
+    unittest.TextTestRunner(verbosity=2).run(suite())
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
