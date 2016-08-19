@@ -16,7 +16,7 @@ import xmltodict
 from subprocess import call
 
 from ucvm.src.framework.ucvm import UCVM
-from ucvm.src.model import parse_xmltodict_one_or_many
+from ucvm.src.shared import parse_xmltodict_one_or_many
 
 BASE_FOLDERS = ["dem", "velocity", "vs30"]
 

@@ -18,6 +18,7 @@ import os
 from math import log
 from subprocess import Popen, PIPE, CalledProcessError
 import shutil
+import sys
 
 
 UCVM_INFORMATION = {
@@ -32,7 +33,7 @@ UCVM_INFORMATION = {
 _HYPOCENTER_BASE = "http://hypocenter.usc.edu/research/ucvm/" + UCVM_INFORMATION["version"]
 _HYPOCENTER_MODEL_LIST = _HYPOCENTER_BASE + "/model_list.xml"
 
-INSTALL_REQUIRES = ["h5py", "xmltodict", "humanize", "pyproj"]
+INSTALL_REQUIRES = ["h5py", "xmltodict", "humanize", "pyproj", "Cython", "psutil", "matplotlib"]
 
 
 class OnlyGetScriptPath(install):
@@ -117,7 +118,13 @@ def get_list_of_installable_internet_models() -> dict:
 
     return installable_models
 
+download_everything = False
+if "--everything" in sys.argv:
+    download_everything = True
+    sys.argv.remove("--everything")
+
 models_to_download = [
+    ("onedimensional", "1D"),
     ("usgs_noaa", "USGS/NOAA Digital Elevation Model"),
     ("vs30_calc", "Calculated Vs30 from the model (top 30 meters slowness)")
 ]
@@ -138,7 +145,7 @@ print(
 if shutil.which("mpicc") is not None:
     print("Setup has detected that you have MPI installed on your computer. UCVM will be\n"
           "installed with MPI support.\n")
-    INSTALL_REQUIRES.append("mpi4py")
+    INSTALL_REQUIRES += ["mpi4py", "psutil"]
 
 print("Specify which of the following models you wish to download and install with UCVM:\n")
 
@@ -154,16 +161,19 @@ for key, models in model_list.items():
     for item in models:
 
         # If this model is already set to be downloaded, skip it.
-        if item["id"] in models_to_download:
+        if (item["id"], item["name"]) in models_to_download:
             continue
 
         # Ask the user if they would like to download it
         print("Name:   " + item["name"])
         print("Covers: " + item["coverage"])
         print(item["description"])
-        if str(input("Would you like to install " +
-                     item["name"] + "? Type yes or y to install: ")).strip().lower()[:1] == "y":
+        if download_everything:
             models_to_download.append((item["id"], item["name"]))
+        else:
+            if str(input("Would you like to install " +
+                     item["name"] + "? Type yes or y to install: ")).strip().lower()[:1] == "y":
+                models_to_download.append((item["id"], item["name"]))
     print("")
 
 total_model_size = 0
@@ -177,10 +187,12 @@ for item in models_to_download:
           (" (" + item[0] + ")").ljust(15) + sizeof_fmt(model_size).rjust(10))
 
 print("\nYour total download size will be: " + sizeof_fmt(total_model_size))
-if str(input("Would you like to install UCVM? "
-             "Type yes or y to start the installation: ")).strip().lower()[:1] != "y":
-    print("Aborting installation...")
-    exit(1)
+
+if not download_everything:
+    if str(input("Would you like to install UCVM? "
+                 "Type yes or y to start the installation: ")).strip().lower()[:1] != "y":
+        print("Aborting installation...")
+        exit(1)
 
 print("\nInstalling UCVM...")
 
@@ -192,7 +204,8 @@ setup(name=UCVM_INFORMATION["short_name"],
       url=UCVM_INFORMATION["url"],
       packages=["ucvm", "ucvm.src", "ucvm.src.framework", "ucvm.src.model",
                 "ucvm.src.model.velocity", "ucvm.src.model.elevation", "ucvm.src.model.vs30",
-                "ucvm.src.shared", "ucvm.models"],
+                "ucvm.src.shared", "ucvm.src.visualization", "ucvm.models",
+                "ucvm.src.visualization.internal_basemap"],
       package_dir={'ucvm': 'ucvm',
                    'ucvm.src': 'ucvm/src',
                    'ucvm.src.framework': 'ucvm/src/framework',
@@ -201,7 +214,10 @@ setup(name=UCVM_INFORMATION["short_name"],
                    'ucvm.src.model.elevation': 'ucvm/src/model/elevation',
                    'ucvm.src.model.vs30': 'ucvm/src/model/vs30',
                    'ucvm.src.shared': 'ucvm/src/shared',
-                   'ucvm.models': 'ucvm/models'},
+                   'ucvm.src.visualization': 'ucvm/src/visualization',
+                   'ucvm.models': 'ucvm/models',
+                   'ucvm.src.visualization.internal_basemap':
+                       'ucvm/src/visualization/internal_basemap'},
       package_data={'ucvm.models': ['ucvm/models/installed.xml']},
       data_files=[("ucvm/models", ["ucvm/models/installed.xml"])],
       install_requires=INSTALL_REQUIRES,

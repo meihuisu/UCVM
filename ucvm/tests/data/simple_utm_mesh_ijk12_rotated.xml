@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- Mesh projection -->
+	<projection>+proj=utm +datum=WGS84 +zone=11</projection>
+
+    <!-- Grid type - 0 is for vertex, 1 is for center -->
+	<grid_type>0</grid_type>
+
+    <!-- Mesh dimensions -->
+	<dimensions>
+		<x>201</x>  <!-- We want the mesh to go from -118, 34 to -116, 35 inclusive -->
+		<y>101</y>
+        <z>5</z>
+	</dimensions>
+
+    <!-- Scratch directory for temporary files -->
+	<scratch_dir>./scratch</scratch_dir>
+
+    <!-- Output name for mesh -->
+	<mesh_name>simple_utm_mesh_rotated</mesh_name>
+
+    <!-- The list of community velocity models -->
+	<cvm_list>testvelocitymodel</cvm_list>
+
+    <!-- The spacing in mesh projection units. So if we're doing lat, lon and we put 0.01, that -->
+    <!-- means 0.01 degrees. If we're in UTM, that means 0.01 meters -->
+	<spacing>3</spacing>
+
+    <!-- The rotation angle for the mesh -->
+	<rotation>-30.0</rotation>
+
+    <!-- The initial point. Note that if the initial point is in elevation, the entire mesh is -->
+    <!-- queried in elevation. If the point is in depth, then the mesh is in depth -->
+	<initial_point>
+		<x>-118.0</x>
+		<projection>+proj=latlong +datum=WGS84</projection>
+		<z>0.0</z>
+		<depth_elev>depth</depth_elev>
+		<y>34.0</y>
+	</initial_point>
+
+    <!-- The minimum acceptable values. If any value is encountered that is below this, it is -->
+    <!-- replaced with this number -->
+	<minimums>
+		<vp>0</vp>
+		<dn>0</dn>
+		<vs>0</vs>
+		<qs>0</qs>
+		<qp>0</qp>
+	</minimums>
+
+    <!-- The mesh type -->
+	<mesh_type>IJK-12</mesh_type>
+
+    <!-- The output directory for the mesh -->
+	<out_dir>./scratch</out_dir>
+</root>

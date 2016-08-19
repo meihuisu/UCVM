@@ -7,6 +7,7 @@ material properties.
 :created:   July 6, 2016
 :modified:  July 12, 2016
 """
+import copy
 
 from collections import namedtuple
 
@@ -20,6 +21,9 @@ except ImportError as the_err:
 
 from .constants import UCVM_DEFAULT_PROJECTION
 from .functions import is_number
+
+from ucvm.src.shared import UCVM_DEPTH, UCVM_ELEVATION
+from ucvm.src.shared.errors import display_and_raise_error
 
 VelocityProperties = namedtuple("VelocityProperties", "vp vs density qp qs " +
                                 "vp_source vs_source density_source qp_source qs_source")
@@ -59,12 +63,8 @@ class Point:
               ``Point(407650.4, 3762606.7, 0, projection="+proj=utm +datum=WGS84 +zone=11")``.
     """
 
-    DEPTH = 0  #: int: Depth constant.
-
-    ELEVATION = 1  #: int: Elevation constant.
-
-    def __init__(self, x, y, z, depth_elev=DEPTH, metadata=None,
-                 projection=None):
+    def __init__(self, x: float, y: float, z: float, depth_elev: int=UCVM_DEPTH,
+                 metadata: dict=None, projection: str=None):
         if is_number(x):
             self.x_value = float(x)  #: float: X co-ordinate (set in constructor).
         else:
@@ -80,13 +80,13 @@ class Point:
         else:
             raise TypeError("Z co-ordinate must be a number.")
 
-        if self.z_value < 0 and depth_elev == self.DEPTH:
-            raise ValueError("Depth must be a positive number (i.e. z = 100 means 100m below the \
-                              surface).")
+        if self.z_value < 0 and int(depth_elev) == UCVM_DEPTH:
+            raise ValueError("Depth must be a positive number (i.e. z = 100 means 100m below the "
+                             "surface).")
 
-        if depth_elev is not self.DEPTH and depth_elev is not self.ELEVATION:
-            raise ValueError("The point must represent either elevation relative to sea level \
-                              (Point.ELEVATION) or depth relative to the surface (Point.DEPTH)")
+        if int(depth_elev) != UCVM_DEPTH and int(depth_elev) != UCVM_ELEVATION:
+            raise ValueError("The point must represent either elevation relative to sea level "
+                             "(UCVM_ELEVATION) or depth relative to the surface (UCVM_DEPTH)")
 
         if projection is None:
             self.projection = UCVM_DEFAULT_PROJECTION  #: str: Proj.4 Point projection.
@@ -95,17 +95,6 @@ class Point:
 
         self.depth_elev = depth_elev  #: int: Depth / elevation (DEPTH = 0, ELEVATION = 1)
         self.metadata = metadata  #: dictionary: A key-value array of metadata.
-
-    def __str__(self, *args, **kwargs):
-        """
-        Returns a point in ucvm_query compatible form. This is long, lat, depth in WGS84 format.
-        """
-        point_to_print = self
-        if self.projection is not UCVM_DEFAULT_PROJECTION:
-            point_to_print = self.convert_to_projection(UCVM_DEFAULT_PROJECTION)
-
-        return "%.4f %.4f %.4f" % (float(point_to_print.x_value), float(point_to_print.y_value),
-                                   float(point_to_print.z_value))
 
     def convert_to_projection(self, projection: str):
         """
@@ -150,17 +139,20 @@ class SeismicData:
               "foo")``.
     """
 
-    def __init__(self, point: Point, extras: dict=None):
-        if point is not None and isinstance(point, Point):
-            self.original_point = point           #: Point: The point for the material properties.
-            self.converted_point = Point          #: Point: Converted point to be used for queries.
+    def __init__(self, point: Point=None, extras: dict=None):
+        if point is not None: # and isinstance(point, Point):
+            self.original_point = point              #: Point: The original point given.
+            self.converted_point = copy.copy(point)  #: Point: Converted point for queries.
         elif point is not None:
             raise TypeError("The point must be an instance of the Point class")
+        else:
+            self.original_point = Point(-118, 34, 0)
+            self.converted_point = Point(-118, 34, 0)
 
         self.elevation_properties = None          #: ElevationProperties: Elevation property data.
         self.velocity_properties = None           #: VelocityProperties: Material property data.
         self.vs30_properties = None               #: Vs30Properties: Vs30 property data.
-        self.model_dictionary = None              #: dict: The model(s) from which the data came.
+        self.model_string = None                  #: str: The string from which the data came.
 
         if extras is not None:
             self.extras = extras        #: dictionary: Extra parameters (Vs30, elevation, etc.).
@@ -206,14 +198,29 @@ class SeismicData:
         self.vs30_properties = vs30_properties
         return True
 
-    def set_model_dictionary(self, model_dictionary: dict) -> bool:
+    def set_model_string(self, model_string: dict) -> bool:
         """
-
-        :param model_dictionary:
-        :return:
+        Sets the model string from which this data came.
+        :param model_string: The model string.
+        :return: None
         """
-        self.model_dictionary = model_dictionary
+        self.model_string = model_string
         return True
+
+    def is_property_type_set(self, property_type: str) -> bool:
+        """
+        Check to see if the given property type is set.
+        :param property_type: The property type.
+        :return: True if set, false if not.
+        """
+        if property_type == "velocity":
+            return self.velocity_properties is not None
+        if property_type == "elevation":
+            return self.elevation_properties is not None
+        if property_type == "vs30":
+            return self.vs30_properties is not None
+
+        return False
 
     @classmethod
     def from_old_ucvm(cls, output_string, point=None, model=None):
@@ -256,3 +263,26 @@ class SeismicData:
         :return: Nothing.
         """
         self.converted_point = self.original_point.convert_to_projection(projection)
+
+    def set_point_to_depth_or_elev(self, depth_or_elev: int=UCVM_DEPTH) -> bool:
+        """
+        Sets the point to either be a depth or elevation. Elevation_properties must be set
+        for a conversion to happen. If it is not set, and a conversion is required, false is
+        returned.
+        :param depth_or_elev: Either UCVM_DEPTH or UCVM_ELEVATION.
+        :return: True if conversion was not needed or conversion was successful. False if not.
+        """
+        if self.converted_point.get_depth_or_elevation() == depth_or_elev:
+            return True
+
+        # A conversion is necessary.
+        if self.elevation_properties is None:
+            return False
+
+        # We have the elevation properties. Let's convert.
+        self.converted_point.z_value = \
+            self.elevation_properties.elevation - self.converted_point.z_value
+
+        self.converted_point.depth_or_elev = depth_or_elev
+
+        return True

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- Model root tag -->
+<root>
+
+    <!-- Specifies the name of the 1D model. -->
+    <name>SCEC 1D</name>
+
+    <!-- Specifies the format - either bbp for the Broadband format or scec for the historical -->
+    <!-- SCEC 1D format. -->
+    <format>scec</format>
+
+    <!-- Interpolation. None means a step function, linear means interpolate from layer n -->
+    <!-- to n + 1. -->
+    <interpolation>Linear</interpolation>
+
+    <!-- The actual data of the model. -->
+    <data>
+        <layers>
+            <layer number="1">
+                <depth>1.0</depth>
+                <vp>5.0</vp>
+            </layer>
+            <layer number="2">
+                <depth>5.0</depth>
+                <vp>5.5</vp>
+            </layer>
+            <layer number="3">
+                <depth>6.0</depth>
+                <vp>6.3</vp>
+            </layer>
+            <layer number="4">
+                <depth>10.0</depth>
+                <vp>6.3</vp>
+            </layer>
+            <layer number="5">
+                <depth>15.5</depth>
+                <vp>6.4</vp>
+            </layer>
+            <layer number="6">
+                <depth>16.5</depth>
+                <vp>6.7</vp>
+            </layer>
+            <layer number="7">
+                <depth>22.0</depth>
+                <vp>6.75</vp>
+            </layer>
+            <layer number="8">
+                <depth>31.0</depth>
+                <vp>6.8</vp>
+            </layer>
+            <layer number="9">
+                <depth>33.0</depth>
+                <vp>7.8</vp>
+            </layer>
+        </layers>
+    </data>
+</root>

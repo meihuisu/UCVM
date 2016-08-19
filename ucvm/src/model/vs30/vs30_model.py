@@ -19,19 +19,10 @@ class Vs30Model(Model):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def _query(self, data: List[SeismicData]) -> bool:
+    def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """
         Internal (override) query method for the model.
         :param list data: A list of SeismicData classes.
         :return: Returns true on success, false on fail.
-        """
-        pass
-
-    @staticmethod
-    def get_all_models() -> List[str]:
-        """
-        Get all models of this type. So if we call VelocityModel.get_all_models() we get all
-        velocity models registered with UCVM.
-        :return: A list of string identifiers for each model.
         """
         pass

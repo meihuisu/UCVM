@@ -13,23 +13,15 @@ from typing import List
 
 from ucvm.src.model.model import Model
 from ucvm.src.shared import ElevationProperties
+from ucvm.src.shared.properties import SeismicData
 
 
 class ElevationModel(Model):
 
-    def _query(self, points) -> List[ElevationProperties]:
+    def _query(self, points: List[SeismicData], **kwargs) -> List[ElevationProperties]:
         """
         Internal (override) query method for the model.
         :param list points: A list of Point classes.
         :return: A list of SeismicData classes.
-        """
-        pass
-
-    @staticmethod
-    def get_all_models() -> List[str]:
-        """
-        Get all models of this type. So if we call VelocityModel.get_all_models() we get all
-        velocity models registered with UCVM.
-        :return: A list of string identifiers for each model.
         """
         pass

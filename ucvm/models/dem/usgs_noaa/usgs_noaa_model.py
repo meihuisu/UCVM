@@ -45,7 +45,7 @@ class USGSNOAAElevationModel(ElevationModel):
         self._opened_file = h5py.File(os.path.join(self.get_model_dir(), "data", self.DATA_FILE),
                                       "r")
 
-    def _query(self, data: List[SeismicData]) -> bool:
+    def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """
         Internal (override) query method for the model.
         :param list data: A list of SeismicData classes to fill in with elevation properties.
@@ -82,4 +82,7 @@ class USGSNOAAElevationModel(ElevationModel):
         return True
 
     def __del__(self):
-        self._opened_file.close()
+        try:
+            self._opened_file.close()
+        except SystemError:
+            pass

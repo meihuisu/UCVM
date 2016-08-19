@@ -4,63 +4,17 @@ import inspect
 import shutil
 import ucvm.models
 import urllib.request
-import pkg_resources
 
-from typing import List
 from subprocess import Popen, PIPE
 from distutils.dir_util import copy_tree
 
 from .model import Model
 from .elevation import ElevationModel
 from .velocity import VelocityModel
-from .velocity import LegacyVelocityModel
 from .vs30 import Vs30Model
 
-UCVM_MODELS_DIRECTORY = os.path.dirname(inspect.getfile(ucvm.models))
-UCVM_MODEL_LIST_FILE = os.path.join(UCVM_MODELS_DIRECTORY, "installed.xml")
-_HYPOCENTER_PREFIX = "http://hypocenter.usc.edu/research/ucvm/" + \
-                     pkg_resources.require("ucvm")[0].version
-_HYPOCENTER_MODEL_LIST = _HYPOCENTER_PREFIX + "/model_list.xml"
-
-
-def parse_xmltodict_one_or_many(item: xmltodict.OrderedDict, keypath: str) -> List[dict]:
-    """
-    Given a base XMLtoDict object and a tag path using slashes as separators, return a list
-    of dictionary items that correspond to the tags. If the path doesn't exist, None is
-    returned.
-    :param item: The base XMLtoDict object.
-    :param keypath: The key path, separated by slashes.
-    :return: The list of dictionary objects, if it exists, an empty array otherwise.
-    """
-    keys = keypath.split("/")
-    eval_str = "item"
-    ret_list = []
-    for key in keys:
-        eval_str += "[\"" + key + "\"]"
-
-    try:
-        new_item = eval(eval_str)
-    except KeyError:
-        return []
-    except TypeError:
-        return []
-    else:
-        if isinstance(new_item, list):
-            for obj in new_item:
-                new_dict = {}
-                for key, val in obj.items():
-                    new_dict[key] = val
-                ret_list.append(new_dict)
-        else:
-            ret_dict = {}
-            if isinstance(new_item, str):
-                ret_list = [{"#text": new_item}]
-            else:
-                for key, val in new_item.items():
-                    ret_dict[key] = val
-                ret_list = [ret_dict]
-
-    return ret_list
+from ucvm.src.shared import UCVM_MODEL_LIST_FILE, UCVM_MODELS_DIRECTORY, HYPOCENTER_MODEL_LIST, \
+                            HYPOCENTER_PREFIX, parse_xmltodict_one_or_many
 
 
 def get_list_of_installed_models() -> list:
@@ -90,7 +44,7 @@ def get_list_of_installed_models() -> list:
 
 def get_list_of_installable_internet_models() -> dict:
     installed_models = get_list_of_installed_models()
-    model_list_xml = xmltodict.parse(urllib.request.urlopen(_HYPOCENTER_MODEL_LIST))
+    model_list_xml = xmltodict.parse(urllib.request.urlopen(HYPOCENTER_MODEL_LIST))
 
     installable_models = {
         "velocity": [],
@@ -125,7 +79,7 @@ def install_internet_ucvm_model(model_ucvm_name: str, long_name: str) -> bool:
     print("Downloading " + long_name + "...")
 
     model_file = urllib.request.URLopener()
-    model_file.retrieve(_HYPOCENTER_PREFIX + "/models/" + model_ucvm_name + ".ucv",
+    model_file.retrieve(HYPOCENTER_PREFIX + "/models/" + model_ucvm_name + ".ucv",
                         os.path.join(UCVM_MODELS_DIRECTORY, "temp", model_ucvm_name + ".ucv"))
 
     try:
@@ -185,11 +139,12 @@ def install_ucvm_model_xml(xml_file: str) -> bool:
     build = {
         "dirs": parse_xmltodict_one_or_many(doc, "root/build/data/directory"),
         "makefile": parse_xmltodict_one_or_many(doc, "root/build/makefile"),
-        "library": parse_xmltodict_one_or_many(doc, "root/build/library")
+        "library": parse_xmltodict_one_or_many(doc, "root/build/library"),
+        "setuppy": parse_xmltodict_one_or_many(doc, "root/build/setuppy")
     }
 
     # First, we execute the makefile(s).
-    if build["makefile"] is not None:
+    if len(build["makefile"]) != 0:
         for makefile in build["makefile"]:
             makefile_path = os.path.join(os.path.dirname(xml_file),
                                          os.path.dirname(makefile["#text"]))
@@ -200,13 +155,13 @@ def install_ucvm_model_xml(xml_file: str) -> bool:
             os.chdir(revert_dir)
 
     # Then we copy the library if it exists.
-    if build["library"] is not None:
+    if len(build["library"]) != 0:
         for library in build["library"]:
             shutil.copy(os.path.join(os.path.dirname(xml_file), library["#text"] + ".so"),
                         os.path.join(new_path, "lib"))
 
     # Finally, we copy the data.
-    if build["dirs"] is not None:
+    if len(build["dirs"]) != 0:
         for directory in build["dirs"]:
             copy_to = os.path.join(new_path, "data")
             if "#copyto" in directory:
@@ -217,6 +172,13 @@ def install_ucvm_model_xml(xml_file: str) -> bool:
                     pass
             copy_tree(os.path.join(os.path.dirname(xml_file), directory["#text"]), copy_to)
 
+    if len(build["setuppy"]) != 0:
+        revert_dir = os.getcwd()
+        os.chdir(os.path.dirname(xml_file))
+        p = Popen(["python3", "setup.py", "install", "--user"], stdout=PIPE, stderr=PIPE)
+        p.wait()
+        os.chdir(revert_dir)
+
     # Append the model to the model list.
     with open(UCVM_MODEL_LIST_FILE, "r") as fd:
         model_xml = xmltodict.parse(fd.read())
@@ -226,17 +188,27 @@ def install_ucvm_model_xml(xml_file: str) -> bool:
     elif xml_info["type"] not in model_xml["root"]:
         model_xml["root"][xml_info["type"]] = []
 
-    model_xml["root"][xml_info["type"]].append({
-        "@id": xml_info["id"],
-        "@file": xml_info["file"],
-        "@class": xml_info["class"]
-    })
+    if isinstance(model_xml["root"][xml_info["type"]], list):
+        model_xml["root"][xml_info["type"]].append({
+            "@id": xml_info["id"],
+            "@name": xml_info["name"],
+            "@file": xml_info["file"],
+            "@class": xml_info["class"]
+        })
+    else:
+        model_xml["root"][xml_info["type"]] = [model_xml["root"][xml_info["type"]], {
+            "@id": xml_info["id"],
+            "@name": xml_info["name"],
+            "@file": xml_info["file"],
+            "@class": xml_info["class"]
+        }]
 
     with open(UCVM_MODEL_LIST_FILE, "w") as fd:
         fd.write(xmltodict.unparse(model_xml, pretty=True))
 
     # Now that the directory has been made. Copy the XML file and the class in there.
-    shutil.copy(os.path.join(os.path.dirname(xml_file), xml_info["file"]), new_path)
+    if xml_info["file"] is not "None" and ".py" in xml_info["file"]:
+        shutil.copy(os.path.join(os.path.dirname(xml_file), xml_info["file"]), new_path)
     shutil.copy(xml_file, new_path)
 
     return True

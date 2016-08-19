@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+"""
+Defines the utility that walks the user through plotting a cross section.
+
+:copyright: Southern California Earthquake Center
+:author:    David Gill <davidgil@usc.edu>
+:created:   August 17, 2016
+:modified:  August 18, 2016
+"""
+
+
+

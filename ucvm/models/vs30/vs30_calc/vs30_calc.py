@@ -12,7 +12,7 @@ from typing import List
 
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.model.vs30.vs30_model import Vs30Model
-from ucvm.src.shared import Vs30Properties
+from ucvm.src.shared import Vs30Properties, UCVM_DEPTH
 from ucvm.src.shared.properties import SeismicData, Point
 
 
@@ -21,7 +21,7 @@ class Vs30CalcModel(Vs30Model):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def _query(self, data: List[SeismicData]) -> bool:
+    def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """
         Internal (override) query method for the model.
         :param list data: A list of SeismicData classes to fill in with elevation properties.
@@ -34,17 +34,17 @@ class Vs30CalcModel(Vs30Model):
                         datum.original_point.x_value,
                         datum.original_point.y_value,
                         z,
-                        datum.original_point.depth_elev,
+                        UCVM_DEPTH,
                         datum.original_point.metadata,
                         datum.original_point.projection
                     )
-                ) for z in range(0, 31)
+                ) for z in range(0, 30)
             ]
 
             for point in query_points:
                 point.set_elevation_data(datum.elevation_properties)
 
-            UCVM.query(query_points, {"velocity": datum.model_dictionary["velocity"]})
+            UCVM.query(query_points, datum.model_string, ["velocity"])
 
             avg_slowness = 0
 

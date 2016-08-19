@@ -31,8 +31,8 @@ from ucvm.src.shared import UCVM_DEFAULT_PROJECTION, UCVM_DEPTH, UCVM_ELEVATION
 from ucvm.src.shared.properties import Point, SeismicData
 from ucvm.src.shared.functions import is_number
 
-HEADER = "X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (m/kg^3) Source      " \
-         "Elev. (m)   Source      Vs30 (m/s)  Source"
+HEADER = "X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (m/kg^3)  Source        " \
+         "      Elev. (m)   Source      Vs30 (m/s)  Source"
 OUTPUT_FORMAT = "%-12.4%-12.4f%-12.4f%s%s%s%s%s%s%s%s"
 
 
@@ -61,8 +61,6 @@ def usage() -> None:
         "                       properties should be written.\n"
         "-p, --projection p:    Optional. Specifies a projection, p, in Proj.4 format, in which\n"
         "                       all points inputted to this utility are specified.\n"
-        "-d, --depth:           Optional. Query by depth. This is the default mode.\n"
-        "-e, --elevation:       Optional. Query by elevation. This is not the default mode.\n"
         "-a, --all-meta:        Optional. Specifies that ucvm_query should output all the\n"
         "                       metadata associated with the query. That is, it should output\n"
         "                       the references that support the query and so forth.\n"
@@ -110,18 +108,18 @@ def generate_output_line(seismicdata: SeismicData) -> str:
              if seismicdata.velocity_properties is not None else "N/A".ljust(12)
     vs_out = "%-12.4f" % seismicdata.velocity_properties.vs \
              if seismicdata.velocity_properties is not None else "N/A".ljust(12)
-    dn_out = "%-12.4f" % seismicdata.velocity_properties.density \
-             if seismicdata.velocity_properties is not None else "N/A".ljust(12)
-    vy_source = seismicdata.velocity_properties.vp_source.ljust(12) \
-                if seismicdata.velocity_properties is not None else "N/A".ljust(12)
+    dn_out = "%-13.4f" % seismicdata.velocity_properties.density \
+             if seismicdata.velocity_properties is not None else "N/A".ljust(13)
+    vy_source = seismicdata.velocity_properties.vp_source.ljust(20)[0:19] + " " \
+                if seismicdata.velocity_properties is not None else "N/A".ljust(20)[0:20]
     el_out = "%-12.4f" % seismicdata.elevation_properties.elevation \
-             if seismicdata.elevation_properties is not None else "N/A".ljust(12)
+             if seismicdata.elevation_properties.elevation is not None else "N/A".ljust(12)
     el_source = seismicdata.elevation_properties.elevation_source.ljust(12) \
-                if seismicdata.elevation_properties is not None else "N/A".ljust(12)
+                if seismicdata.elevation_properties.elevation is not None else "N/A".ljust(12)
     vs30_out = "%-12.4f" % seismicdata.vs30_properties.vs30 \
-               if seismicdata.vs30_properties is not None else "N/A".ljust(12)
+               if seismicdata.vs30_properties.vs30 is not None else "N/A".ljust(12)
     vs30_source = seismicdata.vs30_properties.vs30_source.ljust(12) \
-                  if seismicdata.vs30_properties is not None else "N/A".ljust(12)
+                  if seismicdata.vs30_properties.vs30 is not None else "N/A".ljust(12)
 
     return "%-12.4f%-12.4f%-12.4f" % \
            (seismicdata.original_point.x_value, seismicdata.original_point.y_value,
@@ -140,8 +138,6 @@ def main() -> int:
             {"short": "i", "long": "output", "value": True, "required": False},
             {"short": "o", "long": "input", "value": True, "required": False},
             {"short": "p", "long": "projection", "value": True, "required": False},
-            {"short": "d", "long": "depth", "value": False, "required": False},
-            {"short": "e", "long": "elevation", "value": False, "required": False},
             {"short": "a", "long": "all-meta", "value": False, "required": False}
         ], usage)
     except ValueError as v_err:
@@ -155,12 +151,12 @@ def main() -> int:
         "depth": UCVM_DEPTH
     }
 
-    # Go through all the options and set everything up correctly.
-    if options["depth"] is not None:
-        options_internal["depth"] = UCVM_DEPTH
-    elif options["elevation"] is not None:
-        options_internal["depth"] = UCVM_ELEVATION
+    if ".depth" in options["model"]:
+        options_internal = {"depth": UCVM_DEPTH}
+    elif ".elevation" in options["model"]:
+        options_internal = {"depth": UCVM_ELEVATION}
 
+    # Go through all the options and set everything up correctly.
     if options["input"] is not None:
         with open(options["input"]) as the_file:
             lines.append(the_file.readline())
@@ -175,9 +171,7 @@ def main() -> int:
         except ValueError as v_err:
             print("[ERROR]: " + str(v_err))
 
-    model_list = UCVM.parse_model_string(options["model"])
-
-    UCVM.query(points, model_list)
+    UCVM.query(points, options["model"])
 
     print(HEADER)
 
