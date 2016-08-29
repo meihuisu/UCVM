@@ -55,7 +55,7 @@ CCA_DEFINITION = {
     "dimensions": {
         "x": 1024,
         "y": 896,
-        "z": 5
+        "z": 100
     },
     "spacing": 500,
     "sin_angle": math.sin(math.radians(38.10)),
@@ -261,15 +261,16 @@ def main() -> int:
         counter = 0
 
         for item in highest_lowest:
-            fd.write("%2.2f min at (%4.2f, %4.2f), %2.2f max at (%4.2f, %4.2f) for depth %dm\n" %
+            fd.write("%2.3f min at (%4.2f, %4.2f), %2.3f max at (%4.2f, %4.2f) for depth %dm\n" %
                      (item[1][2], item[1][0], item[1][1], item[0][2], item[0][0], item[0][1],
                       counter * CCA_DEFINITION["spacing"]))
             if item[0][2] > highest_high[2]:
                 highest_high = item[0]
             if item[1][2] < lowest_low[2]:
                 lowest_low = item[1]
+            counter += 1
 
-        fd.write("\nMin in model: %2.2f\nMax in model %2.2f" % (lowest_low[2], highest_high[2]))
+        fd.write("\nMin in model: %2.3f\nMax in model %2.3f" % (lowest_low[2], highest_high[2]))
 
     return 0
 
