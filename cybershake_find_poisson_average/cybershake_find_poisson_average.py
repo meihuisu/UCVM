@@ -1,6 +1,6 @@
 """
 Uses PyCVM to find the poisson average (Vp/Vs) throughout a CyberShake region (as defined by
-the bounding box). If the average lies outside of the acceptable boundaries (1.6/1.7) it is flagged
+the bounding box). If the average lies outside of the acceptable boundaries (1.5/1.8) it is flagged
 and reported in the CSV.
 
 NOTE: This script must be run with the UCVM utilities folder as the working directory.
@@ -236,8 +236,6 @@ def main() -> int:
     mesh_iterator = InternalMeshIterator(
         CCA_DEFINITION["dimensions"]["x"] * CCA_DEFINITION["dimensions"]["y"]
     )
-    above_bounds = []
-    below_bounds = []
     highest_lowest = []
     counter = 1
 
@@ -248,11 +246,8 @@ def main() -> int:
             break
 
         above, below = query_ucvm_out_of_bounds(pts, counter - 1)
-        above_bounds.extend(above)
-        below_bounds.extend(below)
         highest, lowest = generate_and_save_data(
-            (above_bounds, below_bounds), "ratio_map_%dm.png" %
-                                          (counter * CCA_DEFINITION["spacing"]),
+            (above, below), "ratio_map_%dm.png" % (counter * CCA_DEFINITION["spacing"]),
             CYBERSHAKE_BOX, counter)
         print("Layer %d done: highest %f, lowest %f" % (counter, highest[2], lowest[2]))
         highest_lowest.append((highest, lowest))

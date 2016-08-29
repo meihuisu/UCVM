@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4fb1434-66a3-4840-af86-97c8afcd3ec3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cybershake_find_poisson_average/cybershake_find_poisson_average.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cybershake_find_poisson_average/cybershake_find_poisson_average.py" afterPath="$PROJECT_DIR$/cybershake_find_poisson_average/cybershake_find_poisson_average.py" />
     </list>
     <ignored path="UCVM Scripts.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,19 +36,12 @@
       <file leaf-file-name="cybershake_find_poisson_average.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cybershake_find_poisson_average/cybershake_find_poisson_average.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="62" column="1" selection-start-line="62" selection-start-column="1" selection-end-line="62" selection-end-column="1" />
+            <state relative-caret-position="159">
+              <caret line="199" column="31" selection-start-line="199" selection-start-column="31" selection-end-line="199" selection-end-column="31" />
               <folding>
                 <element signature="e#520#531#0" expanded="true" />
               </folding>
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ratio_map_500m.png" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cybershake_find_poisson_average/ratio_map_500m.png">
-          <provider selected="true" editor-type-id="images">
-            <state />
           </provider>
         </entry>
       </file>
@@ -463,7 +456,14 @@
       <option name="project" value="LOCAL" />
       <updated>1469230686342</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added code to find the minimum and maximum Vp/Vs ratio within the CCA model in UCVM 15.10.0.">
+      <created>1472511312057</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1472511312057</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -505,7 +505,8 @@
     <MESSAGE value="Added example code to find the minimum Vp, Vs, and density (as well as the grid points that those properties are at) within standard EL text-based models." />
     <MESSAGE value="Added example code to find various depth profiles for CVM-S4.26, as well as pulling the raw data." />
     <MESSAGE value="Added example code to generate text horizontal slices at multiple depths with one or more models. Utilizes the old PyCVM Python interface." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added example code to generate text horizontal slices at multiple depths with one or more models. Utilizes the old PyCVM Python interface." />
+    <MESSAGE value="Added code to find the minimum and maximum Vp/Vs ratio within the CCA model in UCVM 15.10.0." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added code to find the minimum and maximum Vp/Vs ratio within the CCA model in UCVM 15.10.0." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -803,11 +804,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cybershake_find_poisson_average/ratio_map_500m.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cybershake_find_poisson_average/ratio_csv_500m.csv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -824,10 +820,15 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cybershake_find_poisson_average/ratio_map_500m.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cybershake_find_poisson_average/cybershake_find_poisson_average.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="62" column="1" selection-start-line="62" selection-start-column="1" selection-end-line="62" selection-end-column="1" />
+        <state relative-caret-position="159">
+          <caret line="199" column="31" selection-start-line="199" selection-start-column="31" selection-end-line="199" selection-end-column="31" />
           <folding>
             <element signature="e#520#531#0" expanded="true" />
           </folding>
