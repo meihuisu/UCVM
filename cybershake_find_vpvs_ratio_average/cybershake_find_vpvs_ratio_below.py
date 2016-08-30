@@ -1,30 +1,33 @@
+#!/bin/env python
 """
-Uses PyCVM to find the poisson average (Vp/Vs) throughout a CyberShake region (as defined by
-the bounding box). If the average lies outside of the acceptable boundaries (1.5/1.8) it is flagged
-and reported in the CSV.
+Uses PyCVM to find the points that have Vp/Vs below 1.6 throughout a velocity model (as defined by
+"CCA_DEFINITION"). If the ratio falls below 1.6, then that point is flagged and reported in the CSV.
 
 NOTE: This script must be run with the UCVM utilities folder as the working directory.
 
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
-:created:   August 29, 2016
-:modified:  August 29, 2016
+:created:   August 30, 2016
+:modified:  August 30, 2016
 :target:    UCVM 14.3.0 - 15.10.0. Python 2.7 and lower.
 """
 import math
 import sys
 import csv
+import os
+import pickle
 
-import mpl_toolkits.basemap.pyproj as pyproj
 from subprocess import Popen, PIPE, STDOUT
+from typing import Iterator
+
+from mpl_toolkits import basemap
+from mpl_toolkits.basemap import pyproj
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from mpl_toolkits import basemap
 
-from typing import Iterator
 
-BOUNDS = [1.5, 1.8]  #: list: Defines the acceptable boundaries for the ratios.
+MIN_RATIO = 1.6
 
 PROJ_UTM = pyproj.Proj("+proj=utm +datum=WGS84 +zone=11")
 PROJ_LAT = pyproj.Proj("+proj=latlong +datum=WGS84")
@@ -55,7 +58,7 @@ CCA_DEFINITION = {
     "dimensions": {
         "x": 1024,
         "y": 896,
-        "z": 100
+        "z": 99
     },
     "spacing": 500,
     "sin_angle": math.sin(math.radians(38.10)),
@@ -66,13 +69,17 @@ UCVM_LOCATION = "/Users/davidgil/ucvm-15.10.0-2"  #: str: Defines where UCVM has
 
 
 class InternalMeshIterator:
+    """
+    Defines an internal mesh iterator which basically looks at the X, Y, and Z dimensions of the
+    CCA box and gets the next "num_at_a_time" points when requested.
+    """
 
     def __init__(self, num_at_a_time: int):
         self.current_point = 0
         self.start_point = 0
         self.end_point = \
             CCA_DEFINITION["dimensions"]["x"] * CCA_DEFINITION["dimensions"]["y"] * \
-            CCA_DEFINITION["dimensions"]["z"]
+            CCA_DEFINITION["dimensions"]["z"] - 1
         self.num_at_a_time = num_at_a_time
 
     def __iter__(self) -> Iterator:
@@ -116,11 +123,26 @@ class InternalMeshIterator:
 
         return ret_list
 
+    def get_current_point(self) -> int:
+        """
+        Gets the current iteration point.
+        :return: The current point as an integer.
+        """
+        return self.current_point
+
+    def get_num_at_a_time(self) -> int:
+        """
+        Gets the number of points that should be returned at once.
+        :return: The number of points that should be retrieved at once.
+        """
+        return self.num_at_a_time
+
 
 def query_ucvm_out_of_bounds(point_list: list, position: int) -> tuple:
     """
     Query the given points and return the points (as a list) that are out of the poisson bounds.
     :param list point_list: The list of all points to check poisson ratio on.
+    :param int position: Used for double-checking the query depth matches what it should be.
     :return: A list of all points out of bounds.
     """
     proc = Popen([UCVM_LOCATION + "/bin/ucvm_query", "-f", UCVM_LOCATION + "/conf/ucvm.conf",
@@ -138,26 +160,31 @@ def query_ucvm_out_of_bounds(point_list: list, position: int) -> tuple:
     output = str(proc.communicate(input=bytes(text_points))[0], "ASCII")
     output = output.split("\n")[1:-1]
 
-    below_bounds = []
-    above_bounds = []
+    below_min = []
+    highest = (0, 0, 0)
+    lowest = (0, 0, 9999)
 
     for i in range(0, len(output)):
         split_line = output[i].split()
-        vp = float(split_line[6])
-        vs = float(split_line[7])
+        vp_val = float(split_line[6])
+        vs_val = float(split_line[7])
 
-        if vs <= 0 or vp <= 0:
+        if vs_val <= 0 or vp_val <= 0:
             continue
 
-        if vp / vs > BOUNDS[1]:
-            above_bounds.append((point_list[i][0], point_list[i][1], vp / vs))
-        elif vp / vs < BOUNDS[0]:
-            below_bounds.append((point_list[i][0], point_list[i][1], vp / vs))
+        if vp_val / vs_val > highest[2]:
+            highest = (point_list[i][0], point_list[i][1], vp_val / vs_val)
+        if vp_val / vs_val < lowest[2]:
+            lowest = (point_list[i][0], point_list[i][1], vp_val / vs_val)
 
-    return above_bounds, below_bounds
+        if vp_val / vs_val < MIN_RATIO:
+            below_min.append((point_list[i][0], point_list[i][1], vp_val / vs_val))
+
+    return below_min, highest, lowest
 
 
-def generate_and_save_data(point_list: tuple, filename: str, box: dict, layer: int) -> tuple:
+def generate_and_save_data(point_list: list, filename: str, box: dict, layer: int,
+                           create_csv: bool=True) -> None:
     """
     Generates and saves the plot and CSV of points in point list. This also puts a red box around
     the point region.
@@ -168,12 +195,19 @@ def generate_and_save_data(point_list: tuple, filename: str, box: dict, layer: i
     :return: Nothing.
     """
     plt.figure(figsize=(10, 10), dpi=100)
-    map_base = basemap.Basemap(projection='cyl',
-                               llcrnrlat=33.35,
-                               urcrnrlat=39.35,
-                               llcrnrlon=-123,
-                               urcrnrlon=-115.25,
-                               resolution='f', anchor='C')
+    if os.path.exists("basemapdump.dat"):
+        with open("basemapdump.dat", "rb") as bm_pickle:
+            map_base = pickle.load(bm_pickle)
+    else:
+        map_base = basemap.Basemap(projection='cyl',
+                                   llcrnrlat=33.35,
+                                   urcrnrlat=39.35,
+                                   llcrnrlon=-123,
+                                   urcrnrlon=-115.25,
+                                   resolution='f', anchor='C')
+
+        with open("basemapdump.dat", "wb") as bm_pickle:
+            pickle.dump(map_base, bm_pickle)
 
     map_base.drawparallels([33.35, 36.35, 39.35], linewidth=1.0, labels=[1, 0, 0, 0])
     map_base.drawmeridians([-123, -119.125, -115.25], linewidth=1.0, labels=[0, 0, 0, 1])
@@ -183,24 +217,14 @@ def generate_and_save_data(point_list: tuple, filename: str, box: dict, layer: i
     map_base.drawcoastlines()
 
     csv_array = []
-
     lon_array = []
     lat_array = []
 
-    for point in point_list[0]:
+    for point in point_list:
         lon_array.append(point[0])
         lat_array.append(point[1])
-        csv_array.append([point[0], point[1], point[2]])
-
-    map_base.plot(lon_array, lat_array, "r.", markersize=0.5)
-
-    lon_array = []
-    lat_array = []
-
-    for point in point_list[1]:
-        lon_array.append(point[0])
-        lat_array.append(point[1])
-        csv_array.append([point[0], point[1], point[2]])
+        if create_csv:
+            csv_array.append([point[0], point[1], point[2]])
 
     map_base.plot(lon_array, lat_array, "b.", markersize=0.5)
 
@@ -212,65 +236,86 @@ def generate_and_save_data(point_list: tuple, filename: str, box: dict, layer: i
     map_base.plot(lon_array, lat_array, "k-")
 
     # Add the title.
-    plt.title("Vp/Vs Ratio for CCA at Depth (%dm)" % (layer * CCA_DEFINITION["spacing"]))
+    if layer != -1:
+        plt.title("Vp/Vs Low Ratio for CCA at Depth (%dm)" % (layer * CCA_DEFINITION["spacing"]))
+    else:
+        plt.title("Vp/Vs Low Ratio at Any Depth")
 
-    red_patch = mpatches.Patch(color='red', label="Vp/Vs Above %.1f" % BOUNDS[1])
-    blue_patch = mpatches.Patch(color='blue', label="Vp/Vs Below %.1f" % BOUNDS[0])
-    plt.legend(handles=[red_patch, blue_patch])
+    blue_patch = mpatches.Patch(color='blue', label="Vp/Vs Below %.1f" % MIN_RATIO)
+    plt.legend(handles=[blue_patch])
 
     plt.savefig(filename)
 
-    csv_array.sort(key=lambda x: x[2])
+    plt.close('all')
 
-    with open("ratio_csv_%dm.csv" % (layer * CCA_DEFINITION["spacing"]), "w") as fd:
-        csv_file = csv.writer(fd)
-        for item in csv_array:
-            csv_file.writerow(item)
+    if create_csv:
+        csv_array.sort(key=lambda x: x[2])
 
-    print("Plot and CSV saved.")
+        with open("below_ratio_csv_%dm.csv" % (layer * CCA_DEFINITION["spacing"]), "w") as csv_file_out:
+            csv_file = csv.writer(csv_file_out)
+            for item in csv_array:
+                csv_file.writerow(item)
 
-    return csv_array[-1], csv_array[0]
+    print("Data saved.")
 
 
 def main() -> int:
-    mesh_iterator = InternalMeshIterator(
-        CCA_DEFINITION["dimensions"]["x"] * CCA_DEFINITION["dimensions"]["y"]
-    )
+    """
+    The main method which uses the mesh iterator to find the poisson ratio for each slice.
+    :return: 0 if successful, 1 if not.
+    """
+    slice_size = CCA_DEFINITION["dimensions"]["x"] * CCA_DEFINITION["dimensions"]["y"]
+    mesh_iterator = InternalMeshIterator(slice_size)
     highest_lowest = []
+    all_below_ratio = []
+
     counter = 1
 
-    while True:
+    while counter <= CCA_DEFINITION["dimensions"]["z"]:
         try:
             pts = next(mesh_iterator)
         except StopIteration:
             break
 
-        above, below = query_ucvm_out_of_bounds(pts, counter - 1)
-        highest, lowest = generate_and_save_data(
-            (above, below), "ratio_map_%dm.png" % (counter * CCA_DEFINITION["spacing"]),
-            CYBERSHAKE_BOX, counter)
-        print("Layer %d done: highest %f, lowest %f" % (counter, highest[2], lowest[2]))
-        highest_lowest.append((highest, lowest))
+        below_ratio, highest, lowest = query_ucvm_out_of_bounds(pts, counter - 1)
+        generate_and_save_data(
+            below_ratio, "below_ratio_map_%dm.png" % ((counter - 1) * CCA_DEFINITION["spacing"]),
+            CYBERSHAKE_BOX, counter - 1)
+        print("Layer %d done: highest %f, lowest %f, %% below %f" %
+              (counter, highest[2], lowest[2], len(below_ratio) / slice_size * 100.0))
+        highest_lowest.append((highest, lowest, len(below_ratio) / slice_size * 100.0))
+        all_below_ratio.extend(below_ratio)
         counter += 1
 
-    with open("metadata.txt", "w") as fd:
-        fd.write("METADATA FOR CCA MODEL VP/VS RATIO:\n\n")
+    generate_and_save_data(
+        all_below_ratio, "all_below_ratio_map.png", CYBERSHAKE_BOX, -1, False
+    )
+
+    with open("metadata.txt", "w") as meta_file:
+        meta_file.write("METADATA FOR CCA MODEL VP/VS RATIO:\n\n")
 
         highest_high = (0, 0, 0)
         lowest_low = (0, 0, 99999)
+        avg_percent_below_ratio = 0
         counter = 0
 
         for item in highest_lowest:
-            fd.write("%2.3f min at (%4.2f, %4.2f), %2.3f max at (%4.2f, %4.2f) for depth %dm\n" %
-                     (item[1][2], item[1][0], item[1][1], item[0][2], item[0][0], item[0][1],
-                      counter * CCA_DEFINITION["spacing"]))
+            meta_file.write(
+                "%2.3f min at (%4.2f, %4.2f), %2.3f max at (%4.2f, %4.2f), %% below ratio %4.2f "
+                "for depth %dm\n" %
+                (item[1][2], item[1][0], item[1][1], item[0][2], item[0][0], item[0][1],
+                 item[2], counter * CCA_DEFINITION["spacing"]))
             if item[0][2] > highest_high[2]:
                 highest_high = item[0]
             if item[1][2] < lowest_low[2]:
                 lowest_low = item[1]
+            avg_percent_below_ratio += item[2]
             counter += 1
 
-        fd.write("\nMin in model: %2.3f\nMax in model %2.3f" % (lowest_low[2], highest_high[2]))
+        avg_percent_below_ratio /= CCA_DEFINITION["dimensions"]["z"]
+
+        meta_file.write("\nMin in model: %2.3f\nMax in model: %2.3f\nAvg %% below ratio: %4.3f" %
+                        (lowest_low[2], highest_high[2], avg_percent_below_ratio))
 
     return 0
 

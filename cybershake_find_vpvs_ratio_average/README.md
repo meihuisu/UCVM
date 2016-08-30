@@ -8,4 +8,7 @@ flagged and plotted as well as written out to the CSV file.
 Instructions on how to run the script (and use the output) are included 
 in the Python file.
 
+The other scripts are used to find the ratios from the original dataset
+and also to find the points with ratio below 1.6.
+
 Reference: https://scec.usc.edu/scecpedia/CCA_Vp/Vs_Check
