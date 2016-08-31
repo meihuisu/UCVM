@@ -80,7 +80,7 @@ def get_grid_point(origin, vertical_add, horizontal_add, grid_point):
     origin_x = origin["x"] + (grid_point["y"] * vertical_add["x"])
 
     utm_point = {"x": origin_x + grid_point["x"] * horizontal_add["x"],
-                 "y": origin_y + grid_point["y"] * horizontal_add["y"]}
+                 "y": origin_y + grid_point["x"] * horizontal_add["y"]}
 
     return convert_utm_to_latlon(utm_point)
 
