@@ -7,17 +7,17 @@
     <information>
 
         <!-- A human-friendly name identifier -->
-        <identifier>1D</identifier>
+        <identifier>CVM-S4.26</identifier>
 
         <!-- A machine-friendly identifier (lowercase alpha-numeric only) -->
-        <id>1d</id>
+        <id>cvms426</id>
 
         <!-- Describes the type of model (velocity, elevation, or vs30) -->
         <type>velocity</type>
 
         <!-- Public model description -->
         <description>
-            1D Velocity Model Package
+            Iteration 26 of Po Chen and En-Jui Lee's tomographic inversions of CVM-S4.
         </description>
 
         <!-- The license for this velocity model (all SCEC software is Apache version 2.0) -->
@@ -37,8 +37,18 @@
             limitations under the License.
         </license>
 
+        <!-- A broad description and range of the coverage region -->
         <coverage>
-            <description>Global</description>
+            <description>Southern California</description>
+            <bottom-left>
+                <e>-122.25</e>
+                <n>30</n>
+            </bottom-left>
+            <top-right>
+                <e>-113</e>
+                <n>38.5</n>
+            </top-right>
+            <depth>50000</depth>
         </coverage>
 
     </information>
@@ -47,13 +57,13 @@
     <internal>
 
         <!-- The model class that inherits from Model -->
-        <class>OneDimensionalVelocityModel</class>
+        <class>CVMS426VelocityModel</class>
 
         <!-- The main model file which contains the class, if none then it's Cython -->
-        <file>onedimensional.py</file>
+        <file>cvms426.py</file>
 
         <!-- Projection that this model uses (DEFAULT means the default UCVM WGS84 projection -->
-        <projection>DEFAULT</projection>
+        <projection>+proj=utm +zone=11 +ellps=clrk66 +datum=NAD27 +units=m +no_defs</projection>
 
         <!-- Specifies if this model is publicly available (most models should be) -->
         <public>Yes</public>
@@ -74,7 +84,7 @@
 
         <!-- Data directories -->
         <data>
-            <directory>models</directory>
+            <directory>iterations</directory>
         </data>
 
     </build>

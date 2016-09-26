@@ -178,7 +178,7 @@ def calculate_bilinear_value(point: namedtuple, rectangle: namedtuple,
     # We want a point right at the vertex.
     if math.floor(gridded_x) == math.ceil(gridded_x) and \
        math.floor(gridded_y) == math.ceil(gridded_y):
-        return data_array[gridded_y, gridded_x]
+        return data_array[int(gridded_y), int(gridded_x)]
 
     # We want a point right between two vertices.
     if math.floor(gridded_y) == math.ceil(gridded_y):
@@ -191,24 +191,24 @@ def calculate_bilinear_value(point: namedtuple, rectangle: namedtuple,
                percent * data_array[(int(gridded_x), math.ceil(gridded_y))]
 
     # This is a valid point within the rectangle. Let's find it now.
-    llgridpoint = (height - math.ceil(gridded_y), math.floor(gridded_x))
+    llgridpoint = (math.floor(gridded_y), math.floor(gridded_x))
     llgridpoint = (llgridpoint[0], llgridpoint[1],
                    data_array[llgridpoint[0], llgridpoint[1]])
 
-    lrgridpoint = (height - math.ceil(gridded_y), math.ceil(gridded_x))
+    lrgridpoint = (math.floor(gridded_y), math.ceil(gridded_x))
     lrgridpoint = (lrgridpoint[0], lrgridpoint[1],
                    data_array[lrgridpoint[0], lrgridpoint[1]])
 
-    ulgridpoint = (height - math.floor(gridded_y), math.floor(gridded_x))
+    ulgridpoint = (math.ceil(gridded_y), math.floor(gridded_x))
     ulgridpoint = (ulgridpoint[0], ulgridpoint[1],
                    data_array[ulgridpoint[0], ulgridpoint[1]])
 
-    urgridpoint = (height - math.floor(gridded_y), math.ceil(gridded_x))
+    urgridpoint = (math.ceil(gridded_y), math.ceil(gridded_x))
     urgridpoint = (urgridpoint[0], urgridpoint[1],
                    data_array[urgridpoint[0], urgridpoint[1]])
 
     # Do bilinear interpolation...
-    return bilinear_interpolation(height - gridded_y, gridded_x,
+    return bilinear_interpolation(gridded_y, gridded_x,
                                   [llgridpoint, lrgridpoint, ulgridpoint, urgridpoint])
 
 

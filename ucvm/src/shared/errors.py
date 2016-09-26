@@ -33,7 +33,10 @@ _ERROR_LIST = {
     14: "Point not specified correctly for depth profile. Please try again. If that doesn't work,",
     15: "Depth profile properties not specified correctly. Please try again. If that doesn't work,",
     16: "Starting and ending points must be of type Point. Please try again. If that doesn't work,",
-    17: "Cross-section properties not specified correctly. Please try again. If that doesn't work,"
+    17: "Cross-section properties not specified correctly. Please try again. If that doesn't work,",
+    18: "Could not load config.xml for gridded velocity model. Please try launching UCVM again. If "
+        "that doesn't work,",
+    19: "Model type not found. Please try again. If that doesn't work,"
 }
 
 

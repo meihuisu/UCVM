@@ -76,6 +76,7 @@ def ask_questions(advanced: bool) -> dict:
     counter = 1
     for model in UCVM.get_list_of_installed_models()["velocity"]:
         installed_models[counter] = model["name"]
+        counter += 1
 
     print("\nGenerating a horizontal slice requires various parameters to be defined (such \n"
           "as the origin of the slice, the length of the slice, and so on). The following\n"

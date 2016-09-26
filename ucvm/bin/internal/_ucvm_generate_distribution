@@ -13,7 +13,7 @@ import sys
 import os
 import xmltodict
 
-from subprocess import call
+from subprocess import call, check_call
 
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.shared import parse_xmltodict_one_or_many
@@ -34,6 +34,7 @@ def usage() -> None:
         "\n"
         "-b, --base-dir b:      The base directory (usually the GitHub base dir).\n"
         "-o, --output-dir o:    The output directory to contain all the files for upload.\n"
+        "-u, --upload:          If this flag is set, the models are uploaded to the server.\n"
     )
 
 
@@ -50,7 +51,8 @@ def package_and_zip_models(directory: str, output_dir: str) -> bool:
         for model in os.listdir(os.path.join(directory, folder)):
             if os.path.exists(os.path.join(directory, folder, model, "ucvm_model.xml")):
                 print("Packaging model " + model + "...")
-                call(["tar", "-cvzf", os.path.join(output_dir, "models", model + ".ucv"),
+                call(["tar", "--exclude=.DS_Store", "-cvzf",
+                      os.path.join(output_dir, "models", model + ".ucv"),
                       "-C", os.path.join(directory, folder, model), "."])
 
                 with open(os.path.join(directory, folder, model, "ucvm_model.xml"), "r") as fd:
@@ -84,7 +86,8 @@ def main() -> int:
     try:
         options = UCVM.parse_options([
             {"short": "b", "long": "base-dir", "value": True, "required": True},
-            {"short": "o", "long": "output-dir", "value": True, "required": True}
+            {"short": "o", "long": "output-dir", "value": True, "required": True},
+            {"short": "u", "long": "upload", "value": False, "required": False}
         ], usage)
     except ValueError as v_err:
         print("[ERROR]: " + str(v_err) + "\n")
@@ -99,6 +102,16 @@ def main() -> int:
         os.path.join(options["base-dir"], "ucvm/models"),
         options["output-dir"]
     )
+
+    if options["upload"] is not None:
+        # We want to upload the directory to hypocenter.
+        print("Uploading models to hypocenter...")
+        command = " ".join(
+            ["scp", "-r", os.path.join(options["output-dir"], "*"),
+             "davidgil@hypocenter.usc.edu:/var/www/html/research/ucvm/" +
+             UCVM.get_replacement_string("[version]") + "/"]
+        )
+        check_call(command, shell=True)
 
     print("All done!")
 

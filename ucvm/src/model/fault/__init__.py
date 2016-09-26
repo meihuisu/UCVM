@@ -1,0 +1,1 @@
+from .fault_model import Fault

@@ -23,7 +23,6 @@ from .constants import UCVM_DEFAULT_PROJECTION
 from .functions import is_number
 
 from ucvm.src.shared import UCVM_DEPTH, UCVM_ELEVATION
-from ucvm.src.shared.errors import display_and_raise_error
 
 VelocityProperties = namedtuple("VelocityProperties", "vp vs density qp qs " +
                                 "vp_source vs_source density_source qp_source qs_source")
@@ -62,6 +61,8 @@ class Point:
               would need to do the Proj.4 string which would be \
               ``Point(407650.4, 3762606.7, 0, projection="+proj=utm +datum=WGS84 +zone=11")``.
     """
+
+    loaded_projections = {}
 
     def __init__(self, x: float, y: float, z: float, depth_elev: int=UCVM_DEPTH,
                  metadata: dict=None, projection: str=None):
@@ -106,8 +107,17 @@ class Point:
         if projection == self.projection:
             return self
 
-        in_proj = pyproj.Proj(self.projection)
-        out_proj = pyproj.Proj(projection)
+        if self.projection in Point.loaded_projections:
+            in_proj = Point.loaded_projections[self.projection]
+        else:
+            in_proj = pyproj.Proj(self.projection)
+            Point.loaded_projections[self.projection] = in_proj
+
+        if projection in Point.loaded_projections:
+            out_proj = Point.loaded_projections[projection]
+        else:
+            out_proj = pyproj.Proj(projection)
+            Point.loaded_projections[projection] = out_proj
 
         x_new, y_new = pyproj.transform(in_proj, out_proj, self.x_value, self.y_value)
 
@@ -140,7 +150,7 @@ class SeismicData:
     """
 
     def __init__(self, point: Point=None, extras: dict=None):
-        if point is not None: # and isinstance(point, Point):
+        if point is not None:
             self.original_point = point              #: Point: The original point given.
             self.converted_point = copy.copy(point)  #: Point: Converted point for queries.
         elif point is not None:
@@ -214,7 +224,8 @@ class SeismicData:
         :return: True if set, false if not.
         """
         if property_type == "velocity":
-            return self.velocity_properties is not None
+            return self.velocity_properties is not None and \
+                   self.velocity_properties.vp is not None
         if property_type == "elevation":
             return self.elevation_properties is not None
         if property_type == "vs30":

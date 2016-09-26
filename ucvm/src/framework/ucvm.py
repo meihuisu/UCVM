@@ -103,22 +103,26 @@ class UCVM:
             models_to_query = custom_model_query
 
         for _, model_query in models_to_query.items():
-            properties_to_retrieve = desired_properties
-            if properties_to_retrieve is None:
+            if desired_properties is None:
                 properties_to_retrieve = ["velocity", "elevation", "vs30"]
+            else:
+                properties_to_retrieve = list(desired_properties)
 
             counter = 0
-            while len(properties_to_retrieve) > 0 and counter < len(model_query) - 1:
+            while len(properties_to_retrieve) > 0 and counter < len(model_query):
                 model_to_query = model_query[counter].split(";")
-
                 UCVM.get_model_instance(model_to_query[0])
 
-                if len(points_to_query) > 0:
-                    if len(model_to_query) == 1:
-                        UCVM.instantiated_models[model_to_query[0]].query(points_to_query)
-                    else:
-                        UCVM.instantiated_models[model_to_query[0]].query(points_to_query,
-                                                                          params=model_to_query[1])
+                if len(points_to_query) == 0:
+                    # If no points to query, then just move along!
+                    counter += 1
+                    continue
+
+                if len(model_to_query) == 1:
+                    UCVM.instantiated_models[model_to_query[0]].query(points_to_query)
+                else:
+                    UCVM.instantiated_models[model_to_query[0]].query(points_to_query,
+                                                                      params=model_to_query[1])
 
                 for point in points_to_query:
                     if point.is_property_type_set("velocity"):
@@ -127,16 +131,7 @@ class UCVM:
                                       model_query if is_number(k)])
                         )
 
-                if len(points) > 0:
-                    if points[0].is_property_type_set("velocity") and \
-                       "velocity" in properties_to_retrieve:
-                        properties_to_retrieve.remove("velocity")
-                    if points[0].is_property_type_set("elevation") and \
-                       "elevation" in properties_to_retrieve:
-                        properties_to_retrieve.remove("elevation")
-                    if points[0].is_property_type_set("vs30") and \
-                       "vs30" in properties_to_retrieve:
-                        properties_to_retrieve.remove("vs30")
+                properties_to_retrieve.remove(UCVM.get_model_type(model_to_query[0]))
 
                 counter += 1
 
@@ -145,6 +140,29 @@ class UCVM:
             points_to_query = [x for x in points_to_query if not x.is_property_type_set("velocity")]
 
         return True
+
+    @classmethod
+    def get_model_type(cls, model: str) -> str:
+        """
+        Given one model string, return the type of model (velocity, elevation, vs30) as a string.
+        :param str model: The model string to check.
+        :return: Velocity, vs30, or elevation depending on the model type.
+        """
+        all_models = UCVM.get_list_of_installed_models()
+
+        for item in all_models["velocity"]:
+            if item["id"] == model:
+                return "velocity"
+
+        for item in all_models["elevation"]:
+            if item["id"] == model:
+                return "elevation"
+
+        for item in all_models["vs30"]:
+            if item["id"] == model:
+                return "vs30"
+
+        display_and_raise_error(19)
 
     @classmethod
     def get_model_instance(cls, model: str) -> Model:
@@ -249,7 +267,7 @@ class UCVM:
                 search_model_list.pop(velocity_model_installed["name"], None)
 
         if velocity_model is None:
-            display_and_raise_error(3, (one_model_string,))
+            return {0: one_model_string}
 
         # Get the defaults for this velocity model.
         with open(os.path.join(UCVM_MODELS_DIRECTORY, velocity_model, "ucvm_model.xml")) as fd:
@@ -394,6 +412,14 @@ class UCVM:
         print(print_str)
 
     @classmethod
+    def get_replacement_string(cls, string: str) -> str:
+        ret_str = string
+        ret_str = ret_str.replace("[version]", pkg_resources.require("ucvm")[0].version)
+        ret_str = ret_str.replace("[year]", "20" +
+                                  pkg_resources.require("ucvm")[0].version.split(".")[0])
+        return ret_str
+
+    @classmethod
     def parse_options(cls, dict_list: list, function: callable) -> dict:
         """
         Given a list of options in format [{short, long, required=True/False, value=True/False}].
@@ -446,7 +472,8 @@ class UCVM:
         return ret_options
 
     @classmethod
-    def create_max_seismicdata_array(cls, total_points: int, processes: int) -> List[SeismicData]:
+    def create_max_seismicdata_array(cls, total_points: int=250000, processes: int=1) -> \
+            List[SeismicData]:
         """
         Returns an array of SeismicData objects.
         :param total_points: The number of SeismicData tuples required.

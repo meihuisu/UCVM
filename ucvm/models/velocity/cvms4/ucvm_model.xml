@@ -49,8 +49,19 @@
             limitations under the License.
         </license>
 
-        <!-- A brief textual description of the coverage region -->
-        <coverage>Southern California</coverage>
+        <!-- A broad description and range of the coverage region -->
+        <coverage>
+            <description>Southern California</description>
+            <bottom-left>
+                <e>-121.75</e>
+                <n>30.75</n>
+            </bottom-left>
+            <top-right>
+                <e>-112.50</e>
+                <n>38.00</n>
+            </top-right>
+            <depth>70000</depth>
+        </coverage>
 
     </information>
 

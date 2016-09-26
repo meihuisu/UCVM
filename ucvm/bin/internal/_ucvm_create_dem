@@ -60,10 +60,10 @@ def usage() -> None:
     )
 
 
-def parse_dem_header(header_file: str) -> dict:
+def parse_usgs_header(header_file: str) -> dict:
     """
-    Parses the DEM header files. We can then use this information to tile together the grid points
-    and create the end result data file.
+    Parses the USGS national map header files. We can then use this information to tile together
+    the grid points and create the end result data file.
     :param header_file: The header file as a string.
     :return: A dictionary containing all the header elements, converted to floats and ints as
              necessary.
@@ -78,6 +78,32 @@ def parse_dem_header(header_file: str) -> dict:
     parts["cellsize"] = float(parts["cellsize"])
     parts["xllcorner"] = float(parts["xllcorner"])
     parts["yllcorner"] = float(parts["yllcorner"])
+    parts["ncols"] = int(parts["ncols"])
+    parts["nrows"] = int(parts["nrows"])
+
+    file_open.close()
+
+    return parts
+
+def parse_noaa_header(bathymetry_file: str) -> dict:
+    """
+    Parses the NOAA bathymetry ArcGIS ASCII grid data header.
+    :param bathymetry_file: The bathymetry file as a string.
+    :return: A dictionary containing all the header elements, converted to floats and ints as
+             necessary.
+    """
+    file_open = open(bathymetry_file, "r")
+    parts = {}
+
+    counter = 0
+    while counter < 5:
+        tokens = file_open.readline().split()
+        parts[tokens[0]] = tokens[1]
+        counter += 1
+
+    parts["cellsize"] = float(parts["cellsize"])
+    parts["xllcorner"] = float(parts["xllcenter"])
+    parts["yllcorner"] = float(parts["yllcenter"])
     parts["ncols"] = int(parts["ncols"])
     parts["nrows"] = int(parts["nrows"])
 
@@ -110,10 +136,41 @@ def main() -> int:
     out_file = h5py.File(options["output-file"], "w")
 
     for file in temp_file_list:
-        if fnmatch.fnmatch(file, "floatn*w*_13.flt"):
-            print("Creating data set from file " + file + "...")
-            header = parse_dem_header(os.path.join(options["input-dir"],
-                                                   file.replace(".flt", ".hdr")))
+        # Handle the bathymetry data.
+        if fnmatch.fnmatch(file, "etopo1_bed_g_f4.flt"):
+            print("Creating data set from NOAA etopo1 bathymetry file " + file + "...")
+            header = parse_noaa_header(os.path.join(options["input-dir"],
+                                                    file.replace(".flt", ".hdr")))
+
+            grp = out_file.create_group("/dem/etopo1")
+
+            # Attach the metadata to it.
+            grp.attrs.create("cell size", header["cellsize"])
+            grp.attrs.create("x lower left corner", header["xllcorner"])
+            grp.attrs.create("y lower left corner", header["yllcorner"])
+            grp.attrs.create("num columns", header["ncols"])
+            grp.attrs.create("num rows", header["nrows"])
+
+            arr = np.zeros((header["nrows"], header["ncols"]), dtype="<f8")
+
+            # Now read in the floats.
+            fin = open(os.path.join(options["input-dir"], file), "rb")
+
+            for i in range(header["nrows"] - 1, -1, -1):
+                for j in range(0, header["ncols"]):
+                    bytes_val = fin.read(4)
+                    input_data = struct.unpack('f', bytes_val)
+                    arr[i][j] = input_data[0]
+
+            grp.create_dataset("data", (header["nrows"], header["ncols"]), chunks=True,
+                               compression="gzip", data=arr)
+
+            fin.close()
+
+        if fnmatch.fnmatch(file, "floatn*w*_13.flt2"):
+            print("Creating data set from USGS National Map file " + file + "...")
+            header = parse_usgs_header(os.path.join(options["input-dir"],
+                                                    file.replace(".flt", ".hdr")))
             match = re.match(r"floatn(\d+)([we])(\d+)_13.flt", file)
 
             lat = int(match.group(1)) - 1
@@ -124,7 +181,7 @@ def main() -> int:
 
             lon = multiplier * int(match.group(3))
 
-            grp = out_file.create_group("/dem/" + str(lon) + "/" + str(lat))
+            grp = out_file.create_group("/dem/nationalmap/" + str(lon) + "/" + str(lat))
 
             # Attach the metadata to it.
             grp.attrs.create("cell size", header["cellsize"])
@@ -133,14 +190,14 @@ def main() -> int:
             grp.attrs.create("num columns", header["ncols"])
             grp.attrs.create("num rows", header["nrows"])
 
-            arr = np.arange(header["ncols"] * header["nrows"])
+            arr = np.arange(header["nrows"] * header["ncols"])
 
             # Now read in the floats.
             fin = open(os.path.join(options["input-dir"], file), "rb")
 
             counter = 0
 
-            while counter < header["ncols"] * header["nrows"]:
+            while counter < header["nrows"] * header["ncols"]:
                 try:
                     bytes_val = fin.read(4)
                     input_data = struct.unpack('f', bytes_val)
@@ -149,9 +206,9 @@ def main() -> int:
                 except EOFError:
                     break
 
-            arr = arr.reshape((header["ncols"], header["nrows"]))
+            arr = arr.reshape((header["nrows"], header["ncols"]))
 
-            grp.create_dataset("data", (header["ncols"], header["nrows"]), chunks=True,
+            grp.create_dataset("data", (header["nrows"], header["ncols"]), chunks=True,
                                compression="gzip", data=arr)
 
             fin.close()

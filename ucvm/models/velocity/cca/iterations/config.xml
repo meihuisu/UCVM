@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<root>
+
+    <!-- Defines where the model float file directory is (i.e. vp.dat, vs.dat, etc.). -->
+    <model>i06</model>
+
+    <!-- Defines whether or not the model used is user-configurable (i.e. GriddedModel(i04) to -->
+    <!-- use iteration 4 -->
+    <user_configurable>Yes</user_configurable>
+
+    <!-- Defines the model dimensions. X and Y spacing are auto-calculated but z_interval is -->
+    <!-- defined. If z * z_interval is less than depth layers, then the model is extended from -->
+    <!-- the last layer down to depth (that is layer z - 1 goes from (z-1) * z_interval -->
+    <!-- to depth). -->
+    <dimensions>
+        <x>1024</x>
+        <y>896</y>
+        <z>100</z>
+        <z_interval>500</z_interval>
+        <depth>50000</depth>
+    </dimensions>
+
+    <!-- Defines the four corners of the model. This is assumed to use the ellipsoid, datum, -->
+    <!-- etc. that are specified in the UTM projection string within ucvm_model.xml. -->
+    <corners>
+        <bottom_left>
+            <e>779032.901477</e>
+            <n>3699450.983449</n>
+        </bottom_left>
+        <top_left>
+            <e>504472.106530</e>
+            <n>4050290.088321</n>
+        </top_left>
+        <top_right>
+            <e>905367.666914</e>
+            <n>4366503.431060</n>
+        </top_right>
+        <bottom_right>
+            <e>1181157.928029</e>
+            <n>4014713.414724</n>
+        </bottom_right>
+    </corners>
+
+</root>

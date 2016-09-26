@@ -81,11 +81,13 @@ class OneDimensionalVelocityModel(VelocityModel):
             if layer[0] > depth:
                 break
 
+        name_to_use = name if not interpolate else name + " (interpolated)"
+
         if previous_layer == current_layer:
             # This is the last layer so return the properties.
             return VelocityProperties(current_layer[1], current_layer[2], current_layer[3],
-                                      current_layer[4], current_layer[5], name, name, name,
-                                      name, name)
+                                      current_layer[4], current_layer[5], name_to_use, name_to_use,
+                                      name_to_use, name_to_use, name_to_use)
 
         # Otherwise, we need to either return the properties of the previous layer if no
         # interpolation or we need to interpolate.
@@ -102,13 +104,12 @@ class OneDimensionalVelocityModel(VelocityModel):
                 if previous_layer[4] is not None else None,
                 percentage * (current_layer[5] - previous_layer[5]) + previous_layer[5]
                 if previous_layer[5] is not None else None,
-                name + " (interpolated)", name + " (interpolated)", name + " (interpolated)",
-                name + " (interpolated)", name + " (interpolated)"
+                name_to_use, name_to_use, name_to_use, name_to_use, name_to_use
             )
         else:
             return VelocityProperties(previous_layer[1], previous_layer[2], previous_layer[3],
-                                      previous_layer[4], previous_layer[5], name, name, name,
-                                      name, name)
+                                      previous_layer[4], previous_layer[5], name_to_use,
+                                      name_to_use, name_to_use, name_to_use, name_to_use)
 
     def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """

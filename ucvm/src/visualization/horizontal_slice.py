@@ -4,10 +4,9 @@ Handles generating a horizontal slice for UCVM.
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
 :created:   August 12, 2016
-:modified:  August 15, 2016
+:modified:  September 8, 2016
 """
 import os
-import struct
 import xmltodict
 import numpy as np
 
@@ -43,7 +42,7 @@ class HorizontalSlice(Plot):
         # Check to see if we need to extract the data before we plot it.
         self.needs_extraction = True    #: bool: True to extract data before plotting.
         self.save_extraction = False    #: bool: True if we want to save the extraction.
-        if "save_file" in self.extras:
+        if "save_file" in self.extras and self.extras["save_file"] is not None:
             if os.path.exists(self.extras["save_file"]):
                 self.needs_extraction = False
             else:
@@ -54,16 +53,25 @@ class HorizontalSlice(Plot):
         else:
             self.QUERY_AT_ONCE = self.slice_properties.num_x * self.slice_properties.num_y
 
-        self.extracted_data = np.arange(self.slice_properties.num_x *
-                                        self.slice_properties.num_y * 5, dtype=float)
+        if self.extras["plot"]["property"] == "elevation" or \
+                        self.extras["plot"]["property"] == "vs30":
+            self.extracted_data = np.arange(self.slice_properties.num_x *
+                                            self.slice_properties.num_y, dtype="<f8")
+        else:
+            self.extracted_data = np.arange(self.slice_properties.num_x *
+                                            self.slice_properties.num_y * 5, dtype="<f8")
         self.bounds = []
         self.ticks = []
 
-        if "title" in self.extras:
-            self.plot_title = self.extras["title"]
+        if "title" in self.extras["plot"]:
+            self.plot_title = self.extras["plot"]["title"]
         else:
             self.plot_title = "Horizontal Slice Starting at (%.2f, %.2f)" % \
                               (self.origin.x_value, self.origin.y_value)
+
+        self.plot_xlabel = None
+        self.plot_ylabel = None
+        self.plot_cbar_label = None
 
         super().__init__(**kwargs)
 
@@ -94,10 +102,13 @@ class HorizontalSlice(Plot):
         cvm_list = parsed_dictionary["cvm_list"]
 
         plot_properties = parsed_dictionary["plot"]
-        save_file = parsed_dictionary["data"]["save"]
+        try:
+            save_file = parsed_dictionary["data"]["save"]
+        except KeyError:
+            save_file = None
 
         return HorizontalSlice(origin_point, slice_properties, cvm_list,
-                               plot_properties=plot_properties, save_file=save_file)
+                               plot=plot_properties, save_file=save_file)
 
     @classmethod
     def from_xml_file(cls, xml_file: str):
@@ -134,32 +145,42 @@ class HorizontalSlice(Plot):
         counter = 0
         num_queried = next(im_iterator)
         while num_queried > 0:
-            UCVM.query(init_array, self.cvms, ["velocity"])
-            for sd_prop in init_array[0:num_queried]:
-                self.extracted_data[counter] = sd_prop.velocity_properties.vp
-                self.extracted_data[counter + 1] = sd_prop.velocity_properties.vs
-                self.extracted_data[counter + 2] = sd_prop.velocity_properties.density
-                self.extracted_data[counter + 3] = sd_prop.velocity_properties.qp
-                self.extracted_data[counter + 4] = sd_prop.velocity_properties.qs
-                counter += 5
+            if self.extras["plot"]["property"] == "elevation":
+                UCVM.query(init_array, self.cvms, ["elevation"])
+                for sd_prop in init_array[0:num_queried]:
+                    self.extracted_data[counter] = sd_prop.elevation_properties.elevation
+                    counter += 1
+            elif self.extras["plot"]["property"] == "vs30":
+                UCVM.query(init_array, self.cvms, ["vs30"])
+                for sd_prop in init_array[0:num_queried]:
+                    self.extracted_data[counter] = sd_prop.vs30_properties.vs30
+                    counter += 1
+            else:
+                UCVM.query(init_array, self.cvms, ["velocity"])
+                for sd_prop in init_array[0:num_queried]:
+                    self.extracted_data[counter] = sd_prop.velocity_properties.vp
+                    self.extracted_data[counter + 1] = sd_prop.velocity_properties.vs
+                    self.extracted_data[counter + 2] = sd_prop.velocity_properties.density
+                    self.extracted_data[counter + 3] = sd_prop.velocity_properties.qp
+                    self.extracted_data[counter + 4] = sd_prop.velocity_properties.qs
+                    counter += 5
+
             try:
                 num_queried = next(im_iterator)
             except StopIteration:
                 break
 
         if self.save_extraction:
-            with open(self.extras["file_location"], "wb") as fd:
-                s = struct.pack('f' * len(self.extracted_data), *self.extracted_data)
-                fd.write(s)
+            with open(self.extras["save_file"], "wb") as fd:
+                np.save(fd, self.extracted_data)
 
     def plot(self):
         if self.needs_extraction:
             self.extract()
         else:
             # Read in the already extracted data.
-            with open(self.extras["file_location"], "rb") as fd:
-                self.extracted_data = struct.unpack('f' * self.slice_properties.num_x *
-                                                    self.slice_properties.num_y * 5 * 4, fd.read())
+            with open(self.extras["save_file"], "rb") as fd:
+                self.extracted_data = np.load(fd)
 
         init_array = UCVM.create_max_seismicdata_array(self.QUERY_AT_ONCE, 1)
 
@@ -173,25 +194,33 @@ class HorizontalSlice(Plot):
                          dtype=float).reshape(self.slice_properties.num_y,
                                               self.slice_properties.num_x)
 
-        if str(self.extras["plot_properties"]["property"]).lower().strip() == "vp":
+        if str(self.extras["plot"]["property"]).lower().strip() == "vp":
             position = 0
             self.bounds = [0, 0.35, 0.70, 1.00, 1.35, 1.70, 2.55, 3.40, 4.25, 5.10, 5.95, 6.80,
                            7.65, 8.50]
             self.ticks = [0, 0.85, 1.70, 2.55, 3.40, 4.25, 5.10, 5.95, 6.80, 7.65, 8.50]
-        elif str(self.extras["plot_properties"]["property"]).lower().strip() == "vs":
+            self.plot_cbar_label = "Vp (km/s)"
+        elif str(self.extras["plot"]["property"]).lower().strip() == "vs":
             position = 1
             self.bounds = [0, 0.20, 0.40, 0.60, 0.80, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00,
                            4.50, 5.00]
             self.ticks = [0, 0.50, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00, 4.50, 5.00]
-        elif str(self.extras["plot_properties"]["property"]).lower().strip() == "density":
+            self.plot_cbar_label = "Vs (km/s)"
+        elif str(self.extras["plot"]["property"]).lower().strip() == "density":
             position = 2
             self.bounds = [0, 0.20, 0.40, 0.60, 0.80, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00,
                            4.50, 5.00]
             self.ticks = [0, 0.50, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00, 4.50, 5.00]
-        elif str(self.extras["plot_properties"]["property"]).lower().strip() == "qp":
+            self.plot_cbar_label = "Density (kg/m^3)"
+        elif str(self.extras["plot"]["property"]).lower().strip() == "qp":
             position = 3
-        elif str(self.extras["plot_properties"]["property"]).lower().strip() == "qs":
+        elif str(self.extras["plot"]["property"]).lower().strip() == "qs":
             position = 4
+        elif str(self.extras["plot"]["property"]).lower().strip() == "elevation":
+            position = 0
+            self.bounds = [-4, -3, -2, -1, 0, 1, 2, 3, 4]
+            self.ticks = [-4, -3, -2, -1, 0, 1, 2, 3, 4]
+            self.plot_cbar_label = "Elevation (km)"
         else:
             position = 0
 
@@ -217,8 +246,12 @@ class HorizontalSlice(Plot):
                 new_pt = datum.original_point.convert_to_projection(UCVM_DEFAULT_PROJECTION)
                 lons[j][i] = new_pt.x_value
                 lats[j][i] = new_pt.y_value
-                data[j][i] = self.extracted_data[((j * self.slice_properties.num_x) + i) *
-                                                 5 + position] / 1000
+
+                if str(self.extras["plot"]["property"]).lower().strip() == "elevation":
+                    data[j][i] = self.extracted_data[j * self.slice_properties.num_x + i] / 1000
+                else:
+                    data[j][i] = self.extracted_data[((j * self.slice_properties.num_x) + i) *
+                                                     5 + position] / 1000
 
                 i += 1
                 if i == self.slice_properties.num_x:

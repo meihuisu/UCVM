@@ -39,7 +39,7 @@ from ucvm.src.shared import VelocityProperties, UCVM_DEPTH, UCVM_DEFAULT_PROJECT
 
 class TestVelocityModel(VelocityModel):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         self._public_metadata = {
             "id": "testvelocitymodel",
             "name": "TestVelocityModel",
@@ -56,7 +56,10 @@ class TestVelocityModel(VelocityModel):
             "query_by": UCVM_DEPTH
         }
 
-    def _query(self, data: List[SeismicData]) -> bool:
+        if self._public_metadata is None:   # Fix incorrect PyCharm error.
+            super().__init__(**kwargs)
+
+    def _query(self, data: List[SeismicData], **kwargs) -> bool:
         for datum in data:
             datum.set_velocity_data(
                 VelocityProperties(

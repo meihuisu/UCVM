@@ -18,7 +18,7 @@ import os
 from ucvm.src.model.elevation.elevation_model import ElevationModel
 from ucvm.src.shared import ElevationProperties, SimplePoint, SimpleRotatedRectangle, \
                             calculate_bilinear_value
-from ucvm.src.shared.properties import SeismicData
+from ucvm.src.shared.properties import SeismicData, UCVM_DEFAULT_PROJECTION
 
 
 class USGSNOAAElevationModel(ElevationModel):
@@ -47,6 +47,89 @@ class USGSNOAAElevationModel(ElevationModel):
 
         self._bucket_groups = {}
 
+    def _get_nationalmap_data(self, datum: SeismicData) -> bool:
+        """
+        Attempts to get elevation properties from National Map data.
+        :param datum: The data point from which to get elevation properties.
+        :return: True, if successful, false if not found.
+        """
+        bucket = "/dem/nationalmap/" + str(math.floor(datum.converted_point.x_value)) + \
+                 "/" + str(math.floor(datum.converted_point.y_value) - 1)
+
+        if bucket not in self._bucket_groups:
+            group = self._opened_file.get(bucket)
+
+            if group is None:
+                return False
+
+            self._bucket_groups[bucket] = {
+                "data": np.array(group.get("data")),
+                "rect": SimpleRotatedRectangle(
+                    group.attrs.get("x lower left corner"),
+                    group.attrs.get("y lower left corner"),
+                    0,
+                    group.attrs.get("cell size"),
+                    group.attrs.get("cell size")
+                )
+            }
+
+        bilinear_point = SimplePoint(
+            datum.converted_point.x_value,
+            datum.converted_point.y_value,
+            0
+        )
+
+        datum.set_elevation_data(ElevationProperties(
+            calculate_bilinear_value(bilinear_point, self._bucket_groups[bucket]["rect"],
+                                     self._bucket_groups[bucket]["data"]),
+            self._public_metadata["id"]
+        ))
+
+        return True
+
+    def _get_etopo1_data(self, datum: SeismicData) -> bool:
+        """
+        Attempts to get elevation properties from etopo1 data.
+        :param datum: The data point from which to get elevation properties.
+        :return: True, if successful, false if not found.
+        """
+        bucket = "/dem/etopo1"
+
+        if bucket not in self._bucket_groups:
+            group = self._opened_file.get(bucket)
+
+            if group is None:
+                return False
+
+            self._bucket_groups[bucket] = {
+                "data": np.array(group.get("data")),
+                "rect": SimpleRotatedRectangle(
+                    group.attrs.get("x lower left corner"),
+                    group.attrs.get("y lower left corner"),
+                    0,
+                    group.attrs.get("cell size"),
+                    group.attrs.get("cell size")
+                )
+            }
+
+        datum.converted_point = datum.original_point.convert_to_projection(UCVM_DEFAULT_PROJECTION)
+
+        bilinear_point = SimplePoint(
+            datum.converted_point.x_value,
+            datum.converted_point.y_value,
+            0
+        )
+
+        print(bilinear_point)
+
+        datum.set_elevation_data(ElevationProperties(
+            calculate_bilinear_value(bilinear_point, self._bucket_groups[bucket]["rect"],
+                                     self._bucket_groups[bucket]["data"]),
+            self._public_metadata["id"]
+        ))
+
+        return True
+
     def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """
         Internal (override) query method for the model.
@@ -54,37 +137,9 @@ class USGSNOAAElevationModel(ElevationModel):
         :return: True if function was successful, false if not.
         """
         for datum in data:
-            bucket = "/dem/" + str(math.floor(datum.converted_point.x_value)) + \
-                     "/" + str(math.floor(datum.converted_point.y_value) - 1)
-            if bucket not in self._bucket_groups:
-                group = self._opened_file.get(bucket)
-
-                if group is None:
+            if not self._get_nationalmap_data(datum):
+                if not self._get_etopo1_data(datum):
                     datum.set_elevation_data(ElevationProperties(None, "no data"))
-                    continue
-
-                self._bucket_groups[bucket] = {
-                    "data": np.array(group.get("data")),
-                    "rect": SimpleRotatedRectangle(
-                        group.attrs.get("x lower left corner"),
-                        group.attrs.get("y lower left corner"),
-                        0,
-                        group.attrs.get("cell size"),
-                        group.attrs.get("cell size")
-                    )
-                }
-
-            bilinear_point = SimplePoint(datum.converted_point.x_value,
-                                         datum.converted_point.y_value,
-                                         0)
-
-            datum.set_elevation_data(
-                ElevationProperties(
-                    calculate_bilinear_value(bilinear_point, self._bucket_groups[bucket]["rect"],
-                                             self._bucket_groups[bucket]["data"]),
-                    self._public_metadata["id"]
-                )
-            )
 
         return True
 

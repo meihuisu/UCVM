@@ -209,6 +209,13 @@ def install_ucvm_model_xml(xml_file: str) -> bool:
     # Now that the directory has been made. Copy the XML file and the class in there.
     if xml_info["file"] is not "None" and ".py" in xml_info["file"]:
         shutil.copy(os.path.join(os.path.dirname(xml_file), xml_info["file"]), new_path)
+
+    # If there's a test_id.py file, copy that to the path.
+    if os.path.exists(os.path.join(os.path.dirname(xml_file), "test_" + xml_info["id"] + ".py")):
+        shutil.copy(
+            os.path.join(os.path.dirname(xml_file), "test_" + xml_info["id"] + ".py"),
+            new_path
+        )
     shutil.copy(xml_file, new_path)
 
     return True

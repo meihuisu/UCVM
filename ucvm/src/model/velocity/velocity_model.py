@@ -8,11 +8,10 @@ other classes (such as the LegacyModel class) inherit from this.
 :modified:  July 19, 2016
 """
 
-from abc import abstractmethod
 from typing import List
 
 from ucvm.src.model.model import Model
-from ucvm.src.shared.properties import SeismicData
+from ucvm.src.shared.properties import SeismicData, VelocityProperties
 
 
 class VelocityModel(Model):
@@ -31,3 +30,18 @@ class VelocityModel(Model):
         :return: True on success, false on failure.
         """
         pass
+
+    @classmethod
+    def _set_velocity_properties_none(cls, sd: SeismicData) -> None:
+        """
+        Helper method to set the SeismicData velocity properties to just be none (i.e. no
+        material properties found).
+        :param sd: The SeismicData object to set.
+        :return: Nothing
+        """
+        sd.set_velocity_data(
+            VelocityProperties(
+                None, None, None, None, None,
+                None, None, None, None, None
+            )
+        )

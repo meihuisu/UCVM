@@ -47,7 +47,9 @@
         </license>
 
         <!-- A brief textual description of the coverage region -->
-        <coverage>California</coverage>
+        <coverage>
+            <description>California</description>
+        </coverage>
 
     </information>
 

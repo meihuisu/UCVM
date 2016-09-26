@@ -5,7 +5,7 @@ This calculates the slowness at the top 30 meters and returns that information.
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
 :created:   July 21, 2016
-:modified:  July 21, 2016
+:modified:  September 6, 2016
 """
 
 from typing import List
@@ -28,30 +28,38 @@ class Vs30CalcModel(Vs30Model):
         :return: True if function was successful, false if not.
         """
         for datum in data:
-            query_points = [
-                SeismicData(
-                    Point(
-                        datum.original_point.x_value,
-                        datum.original_point.y_value,
-                        z,
-                        UCVM_DEPTH,
-                        datum.original_point.metadata,
-                        datum.original_point.projection
-                    )
-                ) for z in range(0, 30)
-            ]
+            if datum.model_string is not None:
+                query_points = [
+                    SeismicData(
+                        Point(
+                            datum.original_point.x_value,
+                            datum.original_point.y_value,
+                            z,
+                            UCVM_DEPTH,
+                            datum.original_point.metadata,
+                            datum.original_point.projection
+                        )
+                    ) for z in range(0, 30)
+                ]
 
-            for point in query_points:
-                point.set_elevation_data(datum.elevation_properties)
+                for point in query_points:
+                    point.set_elevation_data(datum.elevation_properties)
 
-            UCVM.query(query_points, datum.model_string, ["velocity"])
+                UCVM.query(query_points, datum.model_string, ["velocity"])
 
-            avg_slowness = 0
+                if query_points[0].velocity_properties.vs is None or \
+                   query_points[0].velocity_properties.vs == 0:
+                    datum.vs30_properties = Vs30Properties(None, None)
+                    continue
 
-            for point in query_points:
-                avg_slowness += 1.0 / float(point.velocity_properties.vs)
+                avg_slowness = 0
 
-            datum.vs30_properties = Vs30Properties(1.0 / (avg_slowness / len(query_points)),
-                                                   self._public_metadata["id"])
+                for point in query_points:
+                    avg_slowness += 1.0 / float(point.velocity_properties.vs)
+
+                datum.vs30_properties = Vs30Properties(1.0 / (avg_slowness / len(query_points)),
+                                                       self._public_metadata["id"])
+            else:
+                datum.vs30_properties = Vs30Properties(None, None)
 
         return True

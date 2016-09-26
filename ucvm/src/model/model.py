@@ -18,7 +18,7 @@ from abc import abstractmethod
 from typing import List
 
 from ucvm.src.shared import UCVM_DEFAULT_PROJECTION, UCVM_DEPTH, UCVM_ELEVATION
-from ucvm.src.shared.properties import SeismicData, VelocityProperties
+from ucvm.src.shared.properties import SeismicData
 
 
 class Model:
@@ -33,7 +33,18 @@ class Model:
             "description": None,
             "website": None,
             "references": [],
-            "license": None
+            "license": None,
+            "coverage": {
+                "description": None,
+                "bottom_left": {
+                    "e": None,
+                    "n": None
+                },
+                "top_right": {
+                    "e": None,
+                    "n": None
+                }
+            }
         }
 
         self._private_metadata = {
@@ -67,8 +78,22 @@ class Model:
             pass
 
         try:
-            for item in doc["root"]["information"]["references"]["reference"]:
-                self._public_metadata["references"].append(item)
+            for _, value in doc["root"]["information"]["references"].items():
+                self._public_metadata["references"].append(value)
+        except KeyError:
+            pass
+
+        try:
+            self._public_metadata["coverage"]["description"] = \
+                doc["root"]["information"]["coverage"]["description"]
+            self._public_metadata["coverage"]["bottom_left"]["e"] = \
+                doc["root"]["information"]["coverage"]["bottom-left"]["e"]
+            self._public_metadata["coverage"]["bottom_left"]["n"] = \
+                doc["root"]["information"]["coverage"]["bottom-left"]["n"]
+            self._public_metadata["coverage"]["top_right"]["e"] = \
+                doc["root"]["information"]["coverage"]["top-right"]["e"]
+            self._public_metadata["coverage"]["top_right"]["n"] = \
+                doc["root"]["information"]["coverage"]["top-right"]["n"]
         except KeyError:
             pass
 
@@ -158,14 +183,15 @@ class Model:
             ret_str += "Model Name: %s\n" % self._public_metadata["name"]
 
         if self._public_metadata["description"] is not None:
-            ret_str += "Description: %s\n" % self._public_metadata["description"]
+            ret_str += "Description: %s\n" % " ".join(self._public_metadata["description"].split())
 
         if self._public_metadata["website"] is not None:
             ret_str += "Website: %s\n" % self._public_metadata["website"]
 
-        if self._public_metadata["references"] is not None:
+        if self._public_metadata["references"] is not None and \
+           len(self._public_metadata["references"]) > 0:
             ret_str += "References: \n"
             for reference in self._public_metadata["references"]:
-                ret_str += "\t- " + reference + "\n"
+                ret_str += "\t- " + " ".join(reference.split()) + "\n"
 
         return ret_str

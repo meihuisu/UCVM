@@ -11,6 +11,7 @@ import sys
 import unittest
 
 from ucvm.src.framework.ucvm import UCVM
+from ucvm.tests.model import UCVMModelAcceptanceTest, add_acceptance_test_methods
 from ucvm.tests.all import suite
 
 
@@ -23,7 +24,10 @@ def usage() -> None:
         "\n"
         "ucvm_run_tests - UCVM Version [version]\n"
         "\n"
-        "Executes all the tests.\n"
+        "By default, this command executes all the tests. To run the verification tests on a\n"
+        "specific model, call this command with the argument -m and the model string.\n"
+        "\n"
+        "-m, --model:   Runs the verification tests on a specific model or combination of models."
     )
 
 
@@ -32,7 +36,22 @@ def main() -> int:
     The main UCVM run test function.
     :return: 0 if successful. Raises an error code otherwise, if not.
     """
-    unittest.TextTestRunner(verbosity=2).run(suite())
+    try:
+        options = UCVM.parse_options([
+            {"short": "m", "long": "model", "value": True, "required": False}
+        ], usage)
+    except ValueError as v_err:
+        print("[ERROR]: " + str(v_err) + "\n")
+        sys.exit(-1)
+
+    if options["model"] is None:
+        unittest.TextTestRunner(verbosity=2).run(suite())
+    else:
+        suite_internal = unittest.TestSuite()
+        add_acceptance_test_methods(UCVMModelAcceptanceTest, options["model"])
+        suite_internal.addTest(unittest.makeSuite(UCVMModelAcceptanceTest, "test_"))
+        unittest.TextTestRunner(verbosity=2).run(suite_internal)
+
     return 0
 
 if __name__ == "__main__":
