@@ -66,7 +66,7 @@ class Plot:
         plt.show()
 
     def show_plot(self, x_points: np.array, y_points: np.array, data: np.ndarray,
-                  map_plot: bool) -> bool:
+                  map_plot: bool, **kwargs) -> bool:
         """
         Displays the plot to the user.
         :param x_points: X co-ordinates for the data points.
@@ -121,12 +121,25 @@ class Plot:
 
             m.drawparallels(lat_ticks, linewidth=1.0, labels=[1, 0, 0, 0])
             m.drawmeridians(lon_ticks, linewidth=1.0, labels=[0, 0, 0, 1])
+
+            data_cpy = np.ma.masked_invalid(data)
+
+            if "topography" in kwargs and kwargs["topography"] is not None:
+                # create light source object.
+                ls = LightSource(azdeg=315, altdeg=45)
+                # convert data to rgb array including shading from light source.
+                # (must specify color map)
+                low_indices = kwargs["topography"] < 0
+                kwargs["topography"][low_indices] = 0
+                rgb = ls.shade_rgb(colormap(norm(data_cpy)), kwargs["topography"],
+                                   blend_mode="overlay", vert_exag=2)
+                t = m.imshow(rgb)
+            else:
+                t = m.pcolormesh()
+
             m.drawstates()
             m.drawcountries()
             m.drawcoastlines()
-
-            data_cpy = np.ma.masked_invalid(data)
-            t = m.pcolormesh(x_points, y_points, data_cpy, cmap=colormap, norm=norm)
 
             # If we want the fault lines we need to plot them.
             if faults:

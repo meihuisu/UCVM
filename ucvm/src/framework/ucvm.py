@@ -132,12 +132,12 @@ class UCVM:
                         )
 
                 properties_to_retrieve.remove(UCVM.get_model_type(model_to_query[0]))
-
                 counter += 1
 
             # Remove all points that have velocity data in them. We don't want to re-query those
             # points at all.
-            points_to_query = [x for x in points_to_query if not x.is_property_type_set("velocity")]
+            points_to_query = [x for x in points_to_query if
+                               not x.is_property_type_set("velocity")]
 
         return True
 

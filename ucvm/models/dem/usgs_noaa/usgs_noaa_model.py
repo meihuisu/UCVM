@@ -120,8 +120,6 @@ class USGSNOAAElevationModel(ElevationModel):
             0
         )
 
-        print(bilinear_point)
-
         datum.set_elevation_data(ElevationProperties(
             calculate_bilinear_value(bilinear_point, self._bucket_groups[bucket]["rect"],
                                      self._bucket_groups[bucket]["data"]),

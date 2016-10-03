@@ -55,11 +55,11 @@ class HorizontalSlice(Plot):
 
         if self.extras["plot"]["property"] == "elevation" or \
                         self.extras["plot"]["property"] == "vs30":
-            self.extracted_data = np.arange(self.slice_properties.num_x *
-                                            self.slice_properties.num_y, dtype="<f8")
+            self.extracted_data = np.zeros(self.slice_properties.num_x *
+                                           self.slice_properties.num_y, dtype="<f8")
         else:
-            self.extracted_data = np.arange(self.slice_properties.num_x *
-                                            self.slice_properties.num_y * 5, dtype="<f8")
+            self.extracted_data = np.zeros((self.slice_properties.num_x *
+                                           self.slice_properties.num_y) * 6, dtype="<f8")
         self.bounds = []
         self.ticks = []
 
@@ -156,14 +156,15 @@ class HorizontalSlice(Plot):
                     self.extracted_data[counter] = sd_prop.vs30_properties.vs30
                     counter += 1
             else:
-                UCVM.query(init_array, self.cvms, ["velocity"])
+                UCVM.query(init_array, self.cvms, ["elevation", "velocity"])
                 for sd_prop in init_array[0:num_queried]:
                     self.extracted_data[counter] = sd_prop.velocity_properties.vp
                     self.extracted_data[counter + 1] = sd_prop.velocity_properties.vs
                     self.extracted_data[counter + 2] = sd_prop.velocity_properties.density
                     self.extracted_data[counter + 3] = sd_prop.velocity_properties.qp
                     self.extracted_data[counter + 4] = sd_prop.velocity_properties.qs
-                    counter += 5
+                    self.extracted_data[counter + 5] = sd_prop.elevation_properties.elevation
+                    counter += 6
 
             try:
                 num_queried = next(im_iterator)
@@ -184,15 +185,23 @@ class HorizontalSlice(Plot):
 
         init_array = UCVM.create_max_seismicdata_array(self.QUERY_AT_ONCE, 1)
 
-        lons = np.arange(self.slice_properties.num_x * self.slice_properties.num_y,
-                         dtype=float).reshape(self.slice_properties.num_y,
-                                              self.slice_properties.num_x)
-        lats = np.arange(self.slice_properties.num_x * self.slice_properties.num_y,
-                         dtype=float).reshape(self.slice_properties.num_y,
-                                              self.slice_properties.num_x)
-        data = np.arange(self.slice_properties.num_x * self.slice_properties.num_y,
-                         dtype=float).reshape(self.slice_properties.num_y,
-                                              self.slice_properties.num_x)
+        lons = np.zeros(self.slice_properties.num_x * self.slice_properties.num_y,
+                        dtype=float).reshape(self.slice_properties.num_y,
+                                             self.slice_properties.num_x)
+        lats = np.zeros(self.slice_properties.num_x * self.slice_properties.num_y,
+                        dtype=float).reshape(self.slice_properties.num_y,
+                                             self.slice_properties.num_x)
+        data = np.zeros(self.slice_properties.num_x * self.slice_properties.num_y,
+                        dtype=float).reshape(self.slice_properties.num_y,
+                                             self.slice_properties.num_x)
+        topography = None
+
+        if "features" in self.extras["plot"] and \
+           "topography" in self.extras["plot"]["features"] and \
+           str(self.extras["plot"]["features"]["topography"]).lower().strip() == "yes":
+            topography = np.zeros(self.slice_properties.num_x * self.slice_properties.num_y,
+                                  dtype="<f8").reshape(self.slice_properties.num_y,
+                                                       self.slice_properties.num_x)
 
         if str(self.extras["plot"]["property"]).lower().strip() == "vp":
             position = 0
@@ -251,7 +260,11 @@ class HorizontalSlice(Plot):
                     data[j][i] = self.extracted_data[j * self.slice_properties.num_x + i] / 1000
                 else:
                     data[j][i] = self.extracted_data[((j * self.slice_properties.num_x) + i) *
-                                                     5 + position] / 1000
+                                                     6 + position] / 1000
+                    if topography is not None:
+                        topography[j][i] = self.extracted_data[
+                                               ((j * self.slice_properties.num_x) + i) * 6 + 5
+                                           ] / 1000
 
                 i += 1
                 if i == self.slice_properties.num_x:
@@ -265,4 +278,4 @@ class HorizontalSlice(Plot):
 
         # Ok, now that we have the 2D array of lons, lats, and data, let's call on our inherited
         # classes show_plot function to actually show the plot.
-        super(HorizontalSlice, self).show_plot(lons, lats, data, True)
+        super(HorizontalSlice, self).show_plot(lons, lats, data, True, topography=topography)
