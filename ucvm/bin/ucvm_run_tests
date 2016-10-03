@@ -11,10 +11,7 @@ import sys
 import unittest
 
 from ucvm.src.framework.ucvm import UCVM
-<<<<<<< HEAD
 from ucvm.tests.model import UCVMModelAcceptanceTest, add_acceptance_test_methods
-=======
->>>>>>> 2d645c6a413e8092e48429d07100a95eef30d6e5
 from ucvm.tests.all import suite
 
 
