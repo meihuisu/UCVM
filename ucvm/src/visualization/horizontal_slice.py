@@ -4,9 +4,11 @@ Handles generating a horizontal slice for UCVM.
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
 :created:   August 12, 2016
+<<<<<<< HEAD
 :modified:  September 8, 2016
 """
 import os
+
 import xmltodict
 import numpy as np
 
