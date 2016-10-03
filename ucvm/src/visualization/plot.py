@@ -133,9 +133,9 @@ class Plot:
                 kwargs["topography"][low_indices] = 0
                 rgb = ls.shade_rgb(colormap(norm(data_cpy)), kwargs["topography"],
                                    blend_mode="overlay", vert_exag=2)
-                t = m.imshow(rgb)
+                t = m.imshow(rgb, cmap=colormap, norm=norm)
             else:
-                t = m.pcolormesh()
+                t = m.pcolormesh(x_points, y_points, data_cpy, cmap=colormap, norm=norm)
 
             m.drawstates()
             m.drawcountries()
