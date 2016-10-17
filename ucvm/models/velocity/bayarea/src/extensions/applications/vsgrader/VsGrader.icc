@@ -1,0 +1,70 @@
+// -*- C++ -*-
+//
+// ======================================================================
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ======================================================================
+//
+
+#if !defined(cencalvm_vsgrader_vsgrader_h)
+#error "VsGrader.icc must only be included from VsGrader.h"
+#endif
+
+// Set filename of input database.
+inline
+void
+cencalvm::vsgrader::VsGrader::filenameIn(const char* filename) {
+  _filenameIn = filename;
+}
+
+// Set filename of output database.
+inline
+void
+cencalvm::vsgrader::VsGrader::filenameOut(const char* filename) {
+  _filenameOut = filename;
+}
+
+// Set filename of temporary database.
+inline
+void
+cencalvm::vsgrader::VsGrader::filenameTmp(const char* filename) {
+  _filenameTmp = filename;
+}
+
+// Set filename for parameter file.
+inline
+void
+cencalvm::vsgrader::VsGrader::filenameParams(const char* filename) {
+  _filenameParams = filename;
+}
+
+// Set cache size.
+inline
+void
+cencalvm::vsgrader::VsGrader::cacheSize(const int size) {
+  if (size > 0)
+    _cacheSize = size;
+}
+
+// Set flag indicating operations should be quiet (no progress reports).
+inline
+void
+cencalvm::vsgrader::VsGrader::quiet(const bool flag) {
+  _quiet = flag;
+}
+
+// Compute elevation given height index.
+inline
+double
+cencalvm::vsgrader::VsGrader::_indexToElev(const int index) const {
+  return _swcornerElev - index*_resVert;
+}
+
+// version
+// $Id: VsGrader.icc 3064 2007-02-22 17:10:52Z brad $
+
+// End of file 

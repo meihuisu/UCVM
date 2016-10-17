@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- Model root tag -->
+<root>
+
+    <!-- Publicly available information. -->
+    <information>
+
+        <!-- A human-friendly name identifier -->
+        <identifier>USGS Bay Area</identifier>
+
+        <!-- A machine-friendly identifier (lowercase alpha-numeric only) -->
+        <id>bayarea</id>
+
+        <!-- Describes the type of model (velocity, elevation, or vs30) -->
+        <type>velocity</type>
+
+        <!-- Public model description -->
+        <description>
+            The detailed and regional (extended) 3-D geologic models of Central California,
+            centered on the San Francisco Bay region, were made using the Dynamic Graphics
+            EarthVision(TM) software. This program builds 3-D models starting with a hierarchy
+            of fault surfaces that divide the volume of interest into Fault Blocks. These fault
+            blocks are further subdivided by Zone Surfaces that most commonly represent contacts
+            between rock units within a fault block.
+        </description>
+
+        <!-- Website on which more information about the model can be found -->
+        <website>http://earthquake.usgs.gov/data/3dgeologic/documentation.php</website>
+
+        <!-- The license for this velocity model (all SCEC software is Apache version 2.0) -->
+        <license>
+            Copyright 2016 Southern California Earthquake Center
+
+            Licensed under the Apache License, Version 2.0 (the "License");
+            you may not use this file or software package except in compliance with
+            the License. You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+            Unless required by applicable law or agreed to in writing, software
+            distributed under the License is distributed on an "AS IS" BASIS,
+            WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+            See the License for the specific language governing permissions and
+            limitations under the License.
+        </license>
+
+        <!-- A broad description and range of the coverage region -->
+        <coverage>
+            <description>Northern California</description>
+            <bottom-left>
+                <e>-126.5</e>
+                <n>35</n>
+            </bottom-left>
+            <top-right>
+                <e>-119</e>
+                <n>41.50</n>
+            </top-right>
+            <depth>45000</depth>
+        </coverage>
+
+    </information>
+
+    <!-- Private information used by UCVM to understand how to query the model -->
+    <internal>
+
+        <!-- The model class that inherits from Model -->
+        <class>BayAreaVelocityModel</class>
+
+        <!-- The main model file which contains the class, if none then it's Cython -->
+        <file>BayArea</file>
+
+        <!-- Projection that this model uses (DEFAULT means the default UCVM WGS84 projection -->
+        <projection>DEFAULT</projection>
+
+        <!-- Specifies if this model is publicly available (most models should be) -->
+        <public>Yes</public>
+
+        <!-- Defines the default elevation and Vs30 models that go with this model -->
+        <defaults>
+            <elevation>usgs_noaa</elevation>
+            <vs30>vs30_calc</vs30>
+        </defaults>
+
+        <!-- Defines if the default query mode is by DEPTH or ELEVATION -->
+        <query_by>DEPTH</query_by>
+
+    </internal>
+
+    <!-- This is used by UCVM to understand how to make and build the model -->
+    <build>
+
+        <!-- Build configure -->
+        <configure>src/configure</configure>
+
+        <!-- Build makefile -->
+        <makefile>src/Makefile</makefile>
+
+        <!-- Should do make install as well? If so, specifies prefix. -->
+        <!-- [MODEL_DIR] is new UCVM model dir. -->
+        <install>[MODEL_DIR]</install>
+
+        <!-- Data directories -->
+        <data>
+            <directory>model</directory>
+        </data>
+
+        <!-- Is setup.py needed? -->
+        <setuppy>Yes</setuppy>
+
+        <!-- Requirements (either libraries or models). -->
+        <requires>
+            <library>euclid3</library>
+            <library>proj4</library>
+        </requires>
+
+    </build>
+
+</root>

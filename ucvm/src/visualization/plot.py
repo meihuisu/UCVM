@@ -102,9 +102,9 @@ class Plot:
                         if str(self.extras["plot"]["features"]["faults"]).lower().strip() == "yes":
                             faults = True
 
-        colormap.set_bad("gray", 1)
-
         if map_plot:
+            colormap.set_bad("gray", 1)
+
             # Check to see if we have pickled this particular basemap instance.
             m = basemap.Basemap(projection='cyl',
                                 llcrnrlat=ranges["min_lat"],
@@ -151,7 +151,16 @@ class Plot:
                         fault_lats.append(y)
                     m.plot(fault_lons, fault_lats, "k-", linewidth=1)
         else:
-            t = plt.imshow(data, cmap=colormap, norm=norm)
+            colormap.set_bad("w", 1)
+            data_cpy = np.ma.masked_invalid(data)
+            data_cpy = np.ma.masked_less_equal(data_cpy, 0)
+            fig = self.figure.add_subplot(1, 1, 1)
+            t = fig.imshow(data_cpy, cmap=colormap, norm=norm)
+            fig.autoscale(False)
+
+            if "topography" in kwargs and kwargs["topography"] is not None:
+                x = [y for y in range(len(kwargs["topography"]))]
+                fig.plot(x, kwargs["topography"], "k-", linewidth=1)
 
         cax = plt.axes([0.125, 0.05, 0.775, 0.02])
         cbar = plt.colorbar(t, cax=cax, orientation='horizontal', ticks=self.ticks)

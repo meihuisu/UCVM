@@ -2,6 +2,7 @@ import xmltodict
 import os
 import inspect
 import shutil
+import copy
 import ucvm.models
 import urllib.request
 
@@ -13,8 +14,9 @@ from .elevation import ElevationModel
 from .velocity import VelocityModel
 from .vs30 import Vs30Model
 
-from ucvm.src.shared import UCVM_MODEL_LIST_FILE, UCVM_MODELS_DIRECTORY, HYPOCENTER_MODEL_LIST, \
-                            HYPOCENTER_PREFIX, parse_xmltodict_one_or_many
+from ucvm.src.shared import UCVM_MODEL_LIST_FILE, UCVM_LIBRARY_LIST_FILE, UCVM_MODELS_DIRECTORY, \
+                            UCVM_LIBRARIES_DIRECTORY, HYPOCENTER_MODEL_LIST, HYPOCENTER_PREFIX, \
+                            parse_xmltodict_one_or_many
 
 
 def get_list_of_installed_models() -> list:
@@ -104,6 +106,67 @@ def install_internet_ucvm_model(model_ucvm_name: str, long_name: str) -> bool:
     return ret_code
 
 
+def download_and_install_library(library_name: str) -> bool:
+    """
+    Given a library name, download and install it to ucvm.libraries.
+    :param library_name: The library name to install.
+    :return: True if success, false if not.
+    """
+    try:
+        with open(UCVM_LIBRARY_LIST_FILE, "r") as fd:
+            library_xml = xmltodict.parse(fd.read())
+    except FileNotFoundError:
+        return False
+
+    # Don't install if it is already installed.
+    for item in parse_xmltodict_one_or_many(library_xml, "root/library"):
+        if item["@id"] == library_name:
+            return True
+
+    try:
+        os.mkdir(os.path.join(UCVM_LIBRARIES_DIRECTORY, "temp"))
+    except FileExistsError:
+        pass
+
+    print("\t\tDownloading library " + library_name + "...")
+
+    library_file = urllib.request.URLopener()
+    library_file.retrieve(HYPOCENTER_PREFIX + "/libraries/" + library_name + ".ucv",
+                          os.path.join(UCVM_LIBRARIES_DIRECTORY, "temp", library_name + ".ucv"))
+
+    try:
+        os.mkdir(os.path.join(UCVM_LIBRARIES_DIRECTORY, "temp", library_name))
+    except FileExistsError:
+        shutil.rmtree(os.path.join(UCVM_LIBRARIES_DIRECTORY, "temp", library_name))
+
+    try:
+        os.mkdir(os.path.join(UCVM_LIBRARIES_DIRECTORY, library_name))
+    except FileExistsError:
+        pass
+
+    print("\t\tExtracting " + library_name + "...")
+
+    p = Popen(["tar", "-zxvf",
+               os.path.join(UCVM_LIBRARIES_DIRECTORY, "temp", library_name + ".ucv"),
+               "-C", os.path.join(UCVM_LIBRARIES_DIRECTORY, library_name)], stdout=PIPE,
+              stderr=PIPE)
+    p.wait()
+
+    print("\t\tInstalling " + library_name + "...")
+
+    cwd = os.getcwd()
+    os.chdir(os.path.join(UCVM_LIBRARIES_DIRECTORY, library_name))
+
+    p = Popen(["python3", "build.py"], stdout=PIPE, stderr=PIPE)
+    p.communicate()
+
+    os.chdir(cwd)
+
+    os.remove(os.path.join(UCVM_LIBRARIES_DIRECTORY, "temp", library_name + ".ucv"))
+
+    return True
+
+
 def install_ucvm_model_xml(xml_file: str) -> bool:
     """
     Given a ucvm_model.xml file, install the model, including any necessary build actions
@@ -138,10 +201,54 @@ def install_ucvm_model_xml(xml_file: str) -> bool:
     # Now, let's handle the build, if we're requested to do so.
     build = {
         "dirs": parse_xmltodict_one_or_many(doc, "root/build/data/directory"),
+        "configure": parse_xmltodict_one_or_many(doc, "root/build/configure"),
         "makefile": parse_xmltodict_one_or_many(doc, "root/build/makefile"),
+        "install": parse_xmltodict_one_or_many(doc, "root/build/install"),
         "library": parse_xmltodict_one_or_many(doc, "root/build/library"),
-        "setuppy": parse_xmltodict_one_or_many(doc, "root/build/setuppy")
+        "setuppy": parse_xmltodict_one_or_many(doc, "root/build/setuppy"),
+        "requires_lib": parse_xmltodict_one_or_many(doc, "root/build/requires/library"),
+        "requires_model": parse_xmltodict_one_or_many(doc, "root/build/requires/model")
     }
+
+    # Get the libraries.
+    if len(build["requires_lib"]) != 0:
+        print("\tInstalling pre-requisite libraries...")
+        for library in build["requires_lib"]:
+            download_and_install_library(library["#text"])
+
+    if len(build["configure"]) != 0 or len(build["makefile"]) != 0:
+        print("\tStarting build process...")
+
+    # We need to execute the config file(s).
+    if len(build["configure"]) != 0:
+        for config in build["configure"]:
+            configure_path = os.path.join(os.path.dirname(xml_file),
+                                          os.path.dirname(config["#text"]))
+            revert_dir = os.getcwd()
+            os.chdir(configure_path)
+
+            new_env = copy.copy(os.environ)
+            new_env["ETREE_INCDIR"] = os.path.join(UCVM_LIBRARIES_DIRECTORY, "euclid3", "include")
+            new_env["ETREE_LIBDIR"] = os.path.join(UCVM_LIBRARIES_DIRECTORY, "euclid3", "lib")
+            new_env["PROJ4_INCDIR"] = os.path.join(UCVM_LIBRARIES_DIRECTORY, "proj4", "include")
+            new_env["PROJ4_LIBDIR"] = os.path.join(UCVM_LIBRARIES_DIRECTORY, "proj4", "lib")
+            new_env["CPPFLAGS"] = "-I" + os.path.join(UCVM_LIBRARIES_DIRECTORY, "euclid3",
+                                                      "include") + \
+                                  " -I" + os.path.join(UCVM_LIBRARIES_DIRECTORY, "proj4", "include")
+            new_env["LDFLAGS"] = "-L" + os.path.join(UCVM_LIBRARIES_DIRECTORY, "euclid3", "lib") + \
+                                 " -L" + os.path.join(UCVM_LIBRARIES_DIRECTORY, "proj4", "lib")
+
+            prefix = []
+
+            if len(build["install"]) != 0:
+                prefix = ["--prefix=" + str(build["install"][0]["#text"]).replace("[MODEL_DIR]",
+                                                                                  new_path)]
+
+            p = Popen([os.path.join(".", "configure")] + prefix, stdout=PIPE, stderr=PIPE,
+                      env=new_env)
+            p.wait()
+
+            os.chdir(revert_dir)
 
     # First, we execute the makefile(s).
     if len(build["makefile"]) != 0:
@@ -152,6 +259,11 @@ def install_ucvm_model_xml(xml_file: str) -> bool:
             os.chdir(makefile_path)
             p = Popen(["make"], stdout=PIPE, stderr=PIPE)
             p.wait()
+
+            # If install is set, run make install.
+            p = Popen(["make", "install"], stdout=PIPE, stderr=PIPE)
+            p.wait()
+
             os.chdir(revert_dir)
 
     # Then we copy the library if it exists.
@@ -162,6 +274,7 @@ def install_ucvm_model_xml(xml_file: str) -> bool:
 
     # Finally, we copy the data.
     if len(build["dirs"]) != 0:
+        print("\tCopying model data to directory...")
         for directory in build["dirs"]:
             copy_to = os.path.join(new_path, "data")
             if "#copyto" in directory:
@@ -173,10 +286,11 @@ def install_ucvm_model_xml(xml_file: str) -> bool:
             copy_tree(os.path.join(os.path.dirname(xml_file), directory["#text"]), copy_to)
 
     if len(build["setuppy"]) != 0:
+        print("\tExecuting build script for legacy model code...")
         revert_dir = os.getcwd()
         os.chdir(os.path.dirname(xml_file))
         p = Popen(["python3", "setup.py", "install", "--user"], stdout=PIPE, stderr=PIPE)
-        p.wait()
+        p.communicate()
         os.chdir(revert_dir)
 
     # Append the model to the model list.

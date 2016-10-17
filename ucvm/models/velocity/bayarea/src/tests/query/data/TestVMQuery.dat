@@ -1,0 +1,83 @@
+// -*- C++ -*-
+//
+// ----------------------------------------------------------------------
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ----------------------------------------------------------------------
+//
+
+// ----------------------------------------------------------------------
+// NORMAL DATABASE
+
+const int cencalvm::query::TestVMQuery::_NUMOCTANTS = 21;
+const int cencalvm::query::TestVMQuery::_NUMOCTANTSLEAF = 12;
+const int cencalvm::query::TestVMQuery::_COORDS[] = {
+  40, 16, 122, 7, // 0, leaf
+  41, 16, 122, 7, // 1, leaf
+  42, 16, 122, 7, // 2, leaf
+  40, 17, 122, 7, // 3, leaf
+  41, 17, 122, 7, // 4, leaf
+  42, 17, 122, 7, // 5, leaf
+  40, 16, 123, 7, // 6, leaf
+  41, 16, 123, 7, // 7, leaf
+  40, 17, 123, 7, // 8, leaf
+  41, 17, 123, 7, // 9, leaf
+  40, 18, 122, 7, // 10, leaf
+  21, 9, 61, 6, // 11, leaf
+  20, 8, 61, 6, // 12, avg
+  21, 8, 61, 6, // 13, avg
+  20, 9, 61, 6, // 14, avg
+  10, 4, 30, 5, // 15, avg
+  5, 2, 15, 4, // 16, avg
+  2, 1, 7, 3, // 17, avg
+  1, 0, 3, 2, // 18, avg
+  0, 0, 1, 1, // 19, avg
+  0, 0, 0, 0 // 20, avg
+};
+
+const double cencalvm::query::TestVMQuery::_OCTVALS[] = {
+  3.9, 4.3, 5.8, 6.3, 3.4, 3.8, 1.5, 1.1, 1.9, 0.4, 3.3, // level 7
+  4.6, // level 6 leaf
+  2.85, 4.8, 3.3, // level 6
+  3.8875, // level 5
+  3.8875, // level 4
+  3.8875, // level 3
+  3.8875, // level 2
+  3.8875, // level 1
+  3.8875 // level 0
+};
+
+const double cencalvm::query::TestVMQuery::_RELPAY[] = {
+  10.0, 1.0, 0.1, 0.01, 0.001, 1000.0, 1.0, 1.0
+};
+
+const char* cencalvm::query::TestVMQuery::_DBFILENAME = "data/full.etree";
+
+// ----------------------------------------------------------------------
+// EXTENDED DATABASE
+
+const int cencalvm::query::TestVMQuery::_NUMOCTANTSEXT = 4;
+const int cencalvm::query::TestVMQuery::_NUMOCTANTSLEAFEXT = 4;
+const int cencalvm::query::TestVMQuery::_COORDSEXT[] = {
+  43, 16, 88, 7, // 0, leaf
+  43, 16, 89, 7, // 1, leaf
+  43, 17, 89, 7, // 2, leaf
+  44, 16, 88, 7, // 3, leaf
+};
+
+const double cencalvm::query::TestVMQuery::_OCTVALSEXT[] = {
+  -5.4, -1.2, -0.3, -4.3 // level 7
+};
+
+const double cencalvm::query::TestVMQuery::_RELPAYEXT[] = {
+  1.0, 100.0, 0.001, 0.1, -0.01, 10.0, 1.0, 1.0
+};
+
+const char* cencalvm::query::TestVMQuery::_DBFILENAMEEXT = "data/fullext.etree";
+
+
+// End of file

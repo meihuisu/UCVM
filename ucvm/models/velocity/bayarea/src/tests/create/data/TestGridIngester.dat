@@ -1,0 +1,28 @@
+// -*- C++ -*-
+//
+// ----------------------------------------------------------------------
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ----------------------------------------------------------------------
+//
+
+const cencalvm::storage::PayloadStruct
+cencalvm::create::TestGridIngester::_PAYLOAD = {1.0, 2.0, 3.0, 4.0, 5.0,
+					     6.0, 1, 2};
+
+const double cencalvm::create::TestGridIngester::_LONLATELEV[] = {
+ -123.858493, 38.424179, 0.0
+};
+const etree_tick_t cencalvm::create::TestGridIngester::_ADDRX = 0;
+const etree_tick_t cencalvm::create::TestGridIngester::_ADDRY = 0;
+const etree_tick_t cencalvm::create::TestGridIngester::_ADDRZ = 0;
+const etree_tick_t cencalvm::create::TestGridIngester::_ADDRLEVEL = 3;
+
+// version
+// $Id: TestGridIngester.dat 2064 2006-01-02 19:34:49Z brad $
+
+// End of file

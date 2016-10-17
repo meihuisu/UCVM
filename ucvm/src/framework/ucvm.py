@@ -109,7 +109,7 @@ class UCVM:
                 properties_to_retrieve = list(desired_properties)
 
             counter = 0
-            while len(properties_to_retrieve) > 0 and counter < len(model_query):
+            while len(properties_to_retrieve) > 0 and counter < len(model_query) - 1:
                 model_to_query = model_query[counter].split(";")
                 UCVM.get_model_instance(model_to_query[0])
 

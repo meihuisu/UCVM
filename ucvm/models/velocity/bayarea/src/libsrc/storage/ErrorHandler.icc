@@ -1,0 +1,53 @@
+// -*- C++ -*-
+//
+// ======================================================================
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ======================================================================
+//
+
+#if !defined(cencalvm_storage_errorhandler_h)
+#error "ErrorHandler.icc must only be included from ErrorHandler.h"
+#endif
+
+// Reset error status and message.
+inline
+void
+cencalvm::storage::ErrorHandler::resetStatus(void)
+{ _status = OK;
+  _message = ""; }
+
+// Get status.
+inline
+cencalvm::storage::ErrorHandler::StatusEnum
+cencalvm::storage::ErrorHandler::status(void) const
+{ return _status; }
+
+// Get warning/error message.
+inline
+const char*
+cencalvm::storage::ErrorHandler::message(void) const
+{ return _message.c_str(); }
+
+// Set status to error and store error message.
+inline
+void
+cencalvm::storage::ErrorHandler::error(const char* msg)
+{ _status = ERROR;
+  _message = msg; }
+  
+// Set status to warning and store warning message.
+inline
+void
+cencalvm::storage::ErrorHandler::warning(const char* msg)
+{ _status = WARNING;
+  _message = msg; }
+  
+// version
+// $Id: ErrorHandler.icc 1901 2005-07-19 22:19:56Z brad $
+
+// End of file 

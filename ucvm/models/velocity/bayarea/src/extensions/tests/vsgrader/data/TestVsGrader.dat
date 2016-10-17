@@ -1,0 +1,35 @@
+// -*- C++ -*-
+//
+// ----------------------------------------------------------------------
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ----------------------------------------------------------------------
+//
+
+const double cencalvm::vsgrader::TestVsGrader::_SWCORNERLON = -122.5;
+const double cencalvm::vsgrader::TestVsGrader::_SWCORNERLAT = 35.3;
+const double cencalvm::vsgrader::TestVsGrader::_SWCORNERELEV = 150.0;
+const double cencalvm::vsgrader::TestVsGrader::_DOMAINLEN = 235100.0;
+const double cencalvm::vsgrader::TestVsGrader::_DOMAINWIDTH = 92102.0;
+const double cencalvm::vsgrader::TestVsGrader::_DOMAINHT = 44952.0;
+const double cencalvm::vsgrader::TestVsGrader::_RESVERT = 100.0;
+const double cencalvm::vsgrader::TestVsGrader::_VSGRADIENTMAX = 1.1;
+
+const double cencalvm::vsgrader::TestVsGrader::_SWCORNERX = 45458.8707;
+const double cencalvm::vsgrader::TestVsGrader::_SWCORNERY = 33384.3050;
+
+const double cencalvm::vsgrader::TestVsGrader::_DBVS = 5.8;
+
+const char* cencalvm::vsgrader::TestVsGrader::_FILENAMEPARAMS =
+  "data/paramfile.txt";
+const char* cencalvm::vsgrader::TestVsGrader::_FILENAMEDB =
+  "data/test.etree";
+
+// version
+// $Id: TestVsGrader.dat 2052 2005-12-20 01:19:06Z brad $
+
+// End of file

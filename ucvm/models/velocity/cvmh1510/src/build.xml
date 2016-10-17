@@ -1,0 +1,91 @@
+<project basedir="." name="buildCVMH" default="ccbuild" >
+   
+   <!-- Read environment variables in -->
+   <property environment="env"/>
+   <property name="pythonpath" value="${env.PYTHONPATH}"/>
+
+   <!-- Value for CENTERCODE environment variable -->
+   <!-- property name="centercode" value="${cruise.home}/${project.name}/checkout" / --> 
+   <!-- property name="srccode" value="${centercode}/src" / --> 
+
+   <!-- Update source code from SVN repository -->
+   <target name="update" 
+	   description="Update source code from SVN repository.">
+      <exec executable="svn" failonerror="true">
+         <arg line="update ."/>
+      </exec>
+   </target>
+
+   <!-- Clean binaries -->
+   <target name="clean"
+	   depends="update"
+	   description="Clean derived objects from SVN repository.">
+      <exec executable="make" failonerror="true">
+	<arg line="clean"/>
+      </exec>
+   </target>
+
+   <!-- Build binaries -->
+   <target name="build" 
+	   depends="clean" 
+	   description="Build binaries for CVMH."> 
+      <exec executable="make" failonerror="true">
+	<arg line="all"/>
+      </exec>
+   </target>
+
+   <!-- Install binaries -->
+   <target name="install" depends="build" description="Install CVMH binaries.">
+   </target>
+
+   <!-- Run unit tests -->
+   <target name="check" 
+	   depends="build" 
+	   description="Run unit tests.">
+      <exec executable="make" 
+	    failonerror="true" 
+	    errorproperty="checkerrorlog">
+	<arg line="run_unit"/>
+      </exec>
+   </target>
+
+   <!-- Run acceptance tests -->
+   <target name="accept" 
+	   depends="build" 
+	   description="Run acceptance tests.">
+      <exec executable="make" 
+	    failonerror="true" 
+	    errorproperty="checkerrorlog">
+	<arg line="run_accept"/>
+      </exec>
+   </target>
+
+   <target name="ccbuild" 
+	   depends="check" 
+	   description="Check the build/unit test status.">
+
+      <echo>${checkerrorlog}</echo>
+      <fail message="One or more of the CVMH unit tests failed">
+         <condition>
+            <contains string="${checkerrorlog}" 
+		      substring="FAIL" 
+		      casesensitive="yes"/>
+         </condition>
+      </fail>
+   </target>
+
+   <target name="ccaccept" 
+	   depends="accept" 
+	   description="Check the build/unit/acceptance test status.">
+
+      <echo>${checkerrorlog}</echo>
+      <fail message="One or more of the CVMH acceptance tests failed">
+         <condition>
+            <contains string="${checkerrorlog}" 
+		      substring="FAIL" 
+		      casesensitive="yes"/>
+         </condition>
+      </fail>
+   </target>
+
+</project>

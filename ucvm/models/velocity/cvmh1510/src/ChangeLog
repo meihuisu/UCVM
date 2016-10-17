@@ -1,0 +1,93 @@
+2015-02-11  Andreas Plesch <andreas_plesch@harvard.edu> and
+	David Gill <davidgil@usc.edu>
+
+	* Addition of revisions to the basement surface that include the
+	  localization and displacements of faults in the Santa Maria Basin.
+	  This affects the boundary between the sediment and basement 
+	  velocity parameterizations.
+
+2012-11-29  Andreas Plesch <andreas_plesch@harvard.edu> and 
+	David Gill <davidgil@usc.edu>
+
+	* tag: replaced about ten, seemingly random cells which were shallow in
+	       the basin and had a water tag with sediment and GTL tags (GTL tags are
+	       obsolete and can be considered equivalent to sediment tag).
+	* vp63: replaced water velocity in retagged cells with average from
+		surrounding cells
+	* vs65: replaced all sediment tagged cells with values based on Vp using
+		Brocher (2005). This resulted mostly in no change but fixed some cells
+		(about 8) which were close to the southern edge and had no-data or
+		negative values.
+		
+2011-09-01  Patrick Small <patrices@usc.edu>
+
+	* Moved code distribution to use GNU build system
+	* Minor bug fixes and enhancements to query code
+	
+2011-06-01  Andreas Plesch <andreas_plesch@harvard.edu>
+
+	* Revised Moho, open Santa Maria basin to W, smooth transition at S 
+	border of HR to LR model, San Bernardino basin, various former GTL 
+	related cleanups.
+
+2010-09-01  Andreas Plesch <andreas_plesch@harvard.edu> and
+	Patrick Small <patrices@usc.edu>
+
+	* GTL removed.
+	* Addition of C API for querying CVM-H
+	* Addition of updated query command line tool vx_lite and horizontal 
+	slice extractor vx_slice
+	
+2009-10-01  Andreas Plesch <andreas_plesch@harvard.edu>
+
+	* Minor update of Moho surface in CM, corresponding update to changed 
+	cells, truncated border by one cell in LR, fixed vp/vs in 
+	interpolation area
+
+2009-09-01  Andreas Plesch <andreas_plesch@harvard.edu>
+
+	* Replaced LR and HR data files with Carl Tapes m16 model as 
+	background, replaced Moho data with update, changed tagging.
+
+2009-06-01  Andreas Plesch <andreas_plesch@harvard.edu>
+
+	* Returned GTL cells in Salton Trough to original CVM-H values, higher 
+	coord. output precision.
+
+2009-03-01  Andreas Plesch <andreas_plesch@harvard.edu>
+
+	* Changed density scaling to Nafe-Drake (Brocher, 2005)
+
+2008-09-01  Andreas Plesch <andreas_plesch@harvard.edu>
+	
+	* Fixed vs in buffer zone, used model vp/vs, not interpolated vs,  in 
+	core zone to be consistent with vp there.
+
+2008-08-01  Andreas Plesch <andreas_plesch@harvard.edu>
+	
+	* Enlarged area to fit terashake box, added model vs in all voxets, no 
+	tt file creation.
+
+2008-01-01  Andreas Plesch <andreas_plesch@harvard.edu>
+
+	* Replaced striped artefacts offshore San Diego with depth-basin 
+	depth-seafloor calibrated model data.
+
+2007-11-01  Andreas Plesch <andreas_plesch@harvard.edu>
+
+	* Clarified geodetic datum with P. Suess.
+
+2007-10-01  Andreas Plesch <andreas_plesch@harvard.edu>
+
+	* Added vs voxet for lower crust/mantle, switched to Brocher (2005) vs 
+	in LR/HR, truncated min. vp at 121m/s, made HR consistent with LR for 
+	nodata points.
+
+2007-09-01  Andreas Plesch <andreas_plesch@harvard.edu>
+	* Updated lower crustal/mantle voxet to include Socal background vp.
+	* Added lower crustal/mantle voxet, elevation voxets; updated 
+	background tomographic model; updated README.
+
+2007-06-01  Andreas Plesch <andreas_plesch@harvard.edu>
+	* Modified to be consistent with direct query of voxet in gocad, 
+	provide cell center, updated README.

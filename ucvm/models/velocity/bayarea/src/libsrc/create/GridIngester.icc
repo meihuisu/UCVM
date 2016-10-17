@@ -1,0 +1,59 @@
+// -*- C++ -*-
+//
+// ======================================================================
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ======================================================================
+//
+
+#if !defined(cencalvm_create_gridingester_h)
+#error "GridIngester.icc must only be included from GridIngester.h"
+#endif
+
+// Set filename for parameter file.
+inline
+void
+cencalvm::create::GridIngester::filenameParams(const char* filename)
+{ _filenameParams = filename; }
+
+// Set filename for output file.
+inline
+void
+cencalvm::create::GridIngester::filenameOut(const char* filename)
+{ _filenameOut = filename; }
+
+// Set filename for temporary (scratch) file.
+inline
+void
+cencalvm::create::GridIngester::filenameTmp(const char* filename)
+{ _filenameTmp = filename; }
+
+// Set flag indicating creation should be quiet (no progress reports).
+inline
+void
+cencalvm::create::GridIngester::quiet(const bool flag)
+{ _quiet = flag; }
+
+// Set database cache size.
+inline
+void
+cencalvm::create::GridIngester::cacheSize(const int size) {
+  if (size > 0)
+    _cacheSize = size;
+}
+
+// Set description of database.
+inline
+void
+cencalvm::create::GridIngester::description(const char* text) {
+  _description = text;
+}
+
+// version
+// $Id: GridIngester.icc 2063 2005-12-23 02:44:50Z brad $
+
+// End of file 

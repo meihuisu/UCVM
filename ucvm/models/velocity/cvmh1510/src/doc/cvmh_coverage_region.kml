@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>CVMH_Coverage_Region.kml</name>
+	<open>1</open>
+	<Style id="sn_ylw-pushpin">
+		<LineStyle>
+			<color>ff0000ff</color>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin1">
+		<LineStyle>
+			<color>ff0000ff</color>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="box_style2">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#box_normal3</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#box_highlight</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="box_style3">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#box_normal10</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#box_highlight20</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="box_normal">
+		<LineStyle>
+			<color>ffffff00</color>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<Style id="box_normal2">
+		<LineStyle>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin2">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin1</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin2</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="box_highlight30">
+		<LineStyle>
+			<color>ff00ffaa</color>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="box_style">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#box_normal</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#box_highlight1</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="box_style1">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#box_normal00</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#box_highlight00</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sh_ylw-pushpin2">
+		<LineStyle>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<Style id="box_normal3">
+		<LineStyle>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<Style id="box_highlight3">
+		<LineStyle>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin0</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="box_style10">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#box_normal0</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#box_highlight0</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="box_highlight">
+		<LineStyle>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<Style id="box_normal1">
+		<LineStyle>
+			<color>ffffaa55</color>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<Style id="box_normal20">
+		<LineStyle>
+			<color>ff00ffaa</color>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin0">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin2</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="box_highlight00">
+		<LineStyle>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<Style id="box_highlight0">
+		<LineStyle>
+			<color>ff7fffff</color>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<Style id="box_highlight2">
+		<LineStyle>
+			<color>ffffaa55</color>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="box_style30">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#box_normal1</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#box_highlight2</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sh_ylw-pushpin0">
+		<LineStyle>
+			<color>ff0000ff</color>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin1">
+		<LineStyle>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<Style id="box_highlight1">
+		<LineStyle>
+			<color>ffffff00</color>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<Style id="box_normal00">
+		<LineStyle>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin1">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin0</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin1</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sn_ylw-pushpin0">
+		<LineStyle>
+			<color>ff0000ff</color>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="box_style00">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#box_normal20</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#box_highlight30</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="box_normal10">
+		<LineStyle>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin">
+		<LineStyle>
+			<color>ff0000ff</color>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<Style id="box_normal0">
+		<LineStyle>
+			<color>ff7fffff</color>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin2">
+		<LineStyle>
+			<color>ff0000ff</color>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<Style id="box_highlight20">
+		<LineStyle>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="box_style0">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#box_normal2</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#box_highlight3</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Folder>
+		<name>CVM-H Region Definitions</name>
+		<Style id="box_highlight3">
+			<LineStyle>
+				<color>ffffffff</color>
+				<width>4</width>
+			</LineStyle>
+		</Style>
+		<Placemark>
+			<name>Low Resolution Model</name>
+			<description>Bounding box for low resolution and mantle CVM-H Model.</description>
+			<styleUrl>#box_style30</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+					-120.862028,30.95649600000001,0 -120.862028,36.612951,0 -113.33294,36.612951,0 -113.33294,30.95649600000001,0 -120.862028,30.95649600000001,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>High Resolution Model</name>
+			<description>Bounding box for high resolution CVM-H basin model.</description>
+			<styleUrl>#msn_ylw-pushpin1</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+				  -117.8946875,33.663900833,0 -117.899288611,34.1035275,0 -118.397896389,34.098865,0 -118.390746111,33.659314722,0 -117.8946875,33.663900833,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Geotechnical Layer</name>
+			<description>Bounding box for geotechnical layer.</description>
+			<styleUrl>#box_style00</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+				  -122.54,30.70,0 -113.00,30.70,0 -113.00,38.55,0 -122.54,38.55,0 -122.54,30.70,0
+				</coordinates>
+			</LineString>
+		</Placemark>
+	</Folder>
+</Document>
+</kml>
+

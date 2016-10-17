@@ -1,0 +1,16 @@
+CVM-H 15.1.0 README
+
+To install this package on your computer, please run the following commands:
+
+aclocal
+automake --add-missing
+autoconf
+./configure --prefix=folder/to/install/to
+make
+make install
+
+For documentation, please see http://scec.usc.edu/scecpedia/CVM-H.
+
+If you have questions, please contact software@scec.org and we will be happy to assist
+you in installing this software.
+

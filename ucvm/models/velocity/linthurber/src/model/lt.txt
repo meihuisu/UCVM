@@ -1,0 +1,5 @@
+FILE  FORMAT DESCRIPTION
+
+ -117.7230    37.8242     1.00     250.00       0.00     5.0390     109.13
+       lon        lat      dep          x          y         vp        DWS (derivative weight sum)
+

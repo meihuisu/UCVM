@@ -1,0 +1,24 @@
+// -*- C++ -*-
+//
+// ----------------------------------------------------------------------
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ----------------------------------------------------------------------
+//
+
+const int cencalvm::storage::TestProjector::_NUMLOCS = 1;
+const double cencalvm::storage::TestProjector::_LONLAT[] = {
+ -123.858493, 38.424179,
+};
+const double cencalvm::storage::TestProjector::_XY[] = {
+  -74937.817, 380186.124,
+};
+
+// version
+// $Id: TestProjector.dat 1822 2005-07-03 22:10:13Z brad $
+
+// End of file

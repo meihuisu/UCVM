@@ -125,13 +125,13 @@ def generate_output_line(seismicdata: SeismicData) -> str:
     vy_source = seismicdata.velocity_properties.vp_source.ljust(20)[0:19] + " " \
                 if seismicdata.velocity_properties is not None else "N/A".ljust(20)[0:20]
     el_out = "%-12.4f" % seismicdata.elevation_properties.elevation \
-             if seismicdata.elevation_properties.elevation is not None else "N/A".ljust(12)
+             if seismicdata.elevation_properties is not None else "N/A".ljust(12)
     el_source = seismicdata.elevation_properties.elevation_source.ljust(12) \
-                if seismicdata.elevation_properties.elevation is not None else "N/A".ljust(12)
+                if seismicdata.elevation_properties is not None else "N/A".ljust(12)
     vs30_out = "%-12.4f" % seismicdata.vs30_properties.vs30 \
-               if seismicdata.vs30_properties.vs30 is not None else "N/A".ljust(12)
+               if seismicdata.vs30_properties is not None else "N/A".ljust(12)
     vs30_source = seismicdata.vs30_properties.vs30_source.ljust(12) \
-                  if seismicdata.vs30_properties.vs30 is not None else "N/A".ljust(12)
+                  if seismicdata.vs30_properties is not None else "N/A".ljust(12)
 
     return "%-12.4f%-12.4f%-12.4f" % \
            (seismicdata.original_point.x_value, seismicdata.original_point.y_value,

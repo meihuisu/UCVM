@@ -18,7 +18,7 @@ from ucvm.src.shared.properties import SeismicData
 
 class ElevationModel(Model):
 
-    def _query(self, points: List[SeismicData], **kwargs) -> List[ElevationProperties]:
+    def _query(self, points: List[SeismicData], **kwargs) -> bool:
         """
         Internal (override) query method for the model.
         :param list points: A list of Point classes.

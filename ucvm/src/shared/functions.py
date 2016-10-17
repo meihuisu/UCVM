@@ -31,10 +31,13 @@ def parse_xmltodict_one_or_many(item: xmltodict.OrderedDict, keypath: str) -> Li
     else:
         if isinstance(new_item, list):
             for obj in new_item:
-                new_dict = {}
-                for key, val in obj.items():
-                    new_dict[key] = val
-                ret_list.append(new_dict)
+                if isinstance(obj, str):
+                    ret_list.append({"#text": obj})
+                else:
+                    new_dict = {}
+                    for key, val in dict(obj).items():
+                        new_dict[key] = val
+                    ret_list.append(new_dict)
         else:
             ret_dict = {}
             if isinstance(new_item, str):

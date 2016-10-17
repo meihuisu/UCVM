@@ -1,0 +1,64 @@
+// -*- C++ -*-
+//
+// ======================================================================
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ======================================================================
+//
+
+#if !defined(cencalvm_cencalvmdb_cencalvmdb_h)
+#error "CenCalVMDB.icc must only be included from CenCalVMDB.h"
+#endif
+
+// Set query resolution.
+inline
+void
+cencalvm::extensions::cencalvmdb::CenCalVMDB::queryRes(const double res)
+{ _pQuery->queryRes(res); }
+
+// Set minimum shear-wave speed (clip values lower than this).
+inline
+void
+cencalvm::extensions::cencalvmdb::CenCalVMDB::minVs(const double vs) {
+  _minVs = vs;
+}
+  
+// Set the database filename.
+inline
+void
+cencalvm::extensions::cencalvmdb::CenCalVMDB::filename(const char* filename)
+{ _pQuery->filename(filename); }
+
+// Set size of cache during queries.
+inline
+void
+cencalvm::extensions::cencalvmdb::CenCalVMDB::cacheSize(const int size)
+{ _pQuery->cacheSize(size); }
+
+// Set the extended database filename.
+inline
+void
+cencalvm::extensions::cencalvmdb::CenCalVMDB::filenameExt(const char* filename)
+{ _pQuery->filenameExt(filename); }
+
+// Set size of cache during queries of extended database.
+inline
+void
+cencalvm::extensions::cencalvmdb::CenCalVMDB::cacheSizeExt(const int size)
+{ _pQuery->cacheSizeExt(size); }
+
+// Set squashed topography/bathymetry flag and minimum elevation of
+// squashing.
+inline
+void
+cencalvm::extensions::cencalvmdb::CenCalVMDB::squash(const bool flag,
+						     const double limit) {
+  _pQuery->squash(flag, limit);
+} // squash
+
+
+// End of file 

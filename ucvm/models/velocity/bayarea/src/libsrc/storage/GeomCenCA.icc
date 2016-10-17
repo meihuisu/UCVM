@@ -1,0 +1,55 @@
+// -*- C++ -*-
+//
+// ======================================================================
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ======================================================================
+//
+
+#if !defined(cencalvm_storage_geomcenca_h)
+#error "GeomCenCA.icc must only be included from GeomCenCA.h"
+#endif
+
+// Get length of octant edge.
+inline
+double
+cencalvm::storage::GeomCenCA::edgeLen(const etree_tick_t level) {
+  return _ROOTLEN / ((etree_tick_t) 1 << level);
+}
+
+// Get level in etree corresponding to resolution.
+inline
+int
+cencalvm::storage::GeomCenCA::level(const double res) {
+  return int(0.5 + log(_ROOTLEN / res) / log(2.0));
+}
+
+// Get vertical exaggeration.
+inline
+double
+cencalvm::storage::GeomCenCA::vertExag(void) {
+  return _VERTEXAG;
+}
+
+// Get metadata.
+inline
+const char*
+cencalvm::storage::GeomCenCA::metadata(void) {
+  return _METADATA;
+}
+
+// Get projector associated with geometry.
+inline
+cencalvm::storage::Projector*
+cencalvm::storage::GeomCenCA::projector(void) {
+  return _pProj;
+}
+
+// version
+// $Id: GeomCenCA.icc 2064 2006-01-02 19:34:49Z brad $
+
+// End of file 

@@ -4,7 +4,7 @@ Handles generating a cross-section for UCVM.
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
 :created:   August 18, 2016
-:modified:  August 18, 2016
+:modified:  October 4, 2016
 """
 import math
 import pyproj
@@ -19,7 +19,7 @@ from collections import namedtuple
 from ucvm.src.shared.errors import display_and_raise_error
 
 CrossSectionProperties = namedtuple("CrossSectionProperties",
-                                    "width_spacing height_spacing end property")
+                                    "width_spacing height_spacing property")
 
 
 class CrossSection(Plot):
@@ -85,7 +85,6 @@ class CrossSection(Plot):
             float(dictionary["cross_section_properties"]["height_spacing"]) if
             int(dictionary["start_point"]["depth_elev"]) == UCVM_DEPTH else
             -1 * float(dictionary["cross_section_properties"]["height_spacing"]),
-            float(dictionary["cross_section_properties"]["end"]),
             dictionary["cross_section_properties"]["property"]
         )
         cvm_list = dictionary["cvm_list"]
@@ -103,7 +102,9 @@ class CrossSection(Plot):
             self.cross_section_properties.width_spacing
         )
 
-        for j in range(int(self.start_point.z_value), int(self.cross_section_properties.end) + 1,
+        for j in range(int(self.start_point.z_value),
+                       int(self.end_point.z_value) +
+                               (1 if self.end_point.depth_elev == UCVM_DEPTH else -1),
                        int(self.cross_section_properties.height_spacing)):
             for i in range(0, num_prof + 1):
                 x = x1 + i * (x2 - x1) / float(num_prof)
@@ -116,14 +117,14 @@ class CrossSection(Plot):
         UCVM.query(self.sd_array, self.cvms, ["elevation", "velocity"])
 
         num_x = num_prof + 1
-        num_y = int(math.ceil(self.cross_section_properties.end - self.start_point.z_value) /
+        num_y = int(math.ceil(self.end_point.z_value - self.start_point.z_value) /
                     self.cross_section_properties.height_spacing)
 
-        self.extracted_data = np.arange(num_x * num_y * 5, dtype=float).reshape(num_y, num_x * 5)
+        self.extracted_data = np.arange(num_x * num_y * 6, dtype=float).reshape(num_y, num_x * 6)
 
         for y in range(int(num_y)):
             for x in range(int(num_x)):
-                x_val = x * 5
+                x_val = x * 6
                 if self.sd_array[y * num_x + x].velocity_properties is not None:
                     vp_val = self.sd_array[y * num_x + x].velocity_properties.vp
                     vs_val = self.sd_array[y * num_x + x].velocity_properties.vs
@@ -141,15 +142,21 @@ class CrossSection(Plot):
                 self.extracted_data[y][x_val + 2] = density_val if density_val is not None else -1
                 self.extracted_data[y][x_val + 3] = qp_val if qp_val is not None else -1
                 self.extracted_data[y][x_val + 4] = qs_val if qs_val is not None else -1
+                if self.sd_array[y * num_x + x].elevation_properties is not None:
+                    self.extracted_data[y][x_val + 5] = \
+                        self.sd_array[y * num_x + x].elevation_properties.elevation
+                else:
+                    self.extracted_data[y][x_val + 5] = -1
 
     def plot(self):
         if self.extracted_data is None:
             self.extract()
 
         num_y = int(len(self.extracted_data))
-        num_x = int(len(self.extracted_data[0]) / 5)
+        num_x = int(len(self.extracted_data[0]) / 6)
 
         datapoints = np.arange(num_y * num_x, dtype=float).reshape(num_y, num_x)
+        topography = np.arange(num_x, dtype=float)
 
         if str(self.cross_section_properties.property).lower().strip() == "vp":
             position = 0
@@ -175,12 +182,13 @@ class CrossSection(Plot):
 
         for y in range(num_y):
             for x in range(num_x):
-                x_val = x * 5
-                if int(self.start_point.depth_elev) == UCVM_DEPTH:
-                    datapoints[y][x] = self.extracted_data[y][x_val + position] / 1000
-                else:
-                    datapoints[num_y - y - 1][x] = self.extracted_data[y][x_val + position] / 1000
+                x_val = x * 6
+                datapoints[y][x] = self.extracted_data[y][x_val + position] / 1000
+                topography[x] = self.extracted_data[y][x_val + 5] / \
+                                self.cross_section_properties.height_spacing + 50
+                print(topography[x])
 
         # Ok, now that we have the 2D array of lons, lats, and data, let's call on our inherited
         # classes show_plot function to actually show the plot.
-        super(CrossSection, self).show_plot(None, None, datapoints, False)
+        super(CrossSection, self).show_plot(None, None, datapoints, False, topography=topography,
+                                            spacing=self.cross_section_properties.width_spacing)

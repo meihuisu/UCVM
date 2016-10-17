@@ -1,0 +1,23 @@
+5/2009: tested on a larger number of points, seemed effective
+
+These interpolation scripts are meant to be used in a pipe like this:
+
+$ arch/x86_64/vx < 50mcloud.txt | awk -f ../../interpolate/mk8n.awk | arch/x86_64/vx | awk -f ../../interpolate/8lto1.awk | paste 50mcloud.txt - | awk -f ../../interpolate/1lidw8.awk > out.txt
+
+The idea is to first use mk8n.awk to create a list of input points
+which includes the 8 closet neighbours and then pipe this again into
+vx to get all necessary data for the interpolation.
+
+The 8lto1.awk script just exists to make it possible to use "paste" to
+add the rock type information to each set of 8 neighbours. The script
+just puts 8 consecutive lines (the 8 neighbours) onto 1 line. The
+lines get pretty long but on linux this seemed not be a problem.
+
+After adding the rock type it is then possible to use 1lidw8.awk to
+use inverse distance weighting on each line all of which have the 8
+neighbour velocities. The script has provisions to also interpolate vs
+and rho if required.
+
+Please direct questions back to Andreas Plesch, andreas_pelsch@harvard.edu
+
+Andreas Plesch

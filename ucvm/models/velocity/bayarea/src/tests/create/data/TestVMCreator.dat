@@ -1,0 +1,31 @@
+// -*- C++ -*-
+//
+// ----------------------------------------------------------------------
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ----------------------------------------------------------------------
+//
+
+const char* cencalvm::create::TestVMCreator::_FILENAMETMP = "data/tmp.etree";
+const char* cencalvm::create::TestVMCreator::_FILENAMEIN = "data/two.etree";
+
+const cencalvm::storage::PayloadStruct
+cencalvm::create::TestVMCreator::_PAYLOAD = {1.0, 2.0, 3.0, 4.0, 5.0,
+					     6.0, 1, 2};
+
+const double cencalvm::create::TestVMCreator::_LONLATELEV[] = {
+ -123.858493, 38.424179, 0.0
+};
+const etree_tick_t cencalvm::create::TestVMCreator::_ADDRX = 0;
+const etree_tick_t cencalvm::create::TestVMCreator::_ADDRY = 0;
+const etree_tick_t cencalvm::create::TestVMCreator::_ADDRZ = 0;
+const etree_tick_t cencalvm::create::TestVMCreator::_ADDRLEVEL = 3;
+
+// version
+// $Id: TestVMCreator.dat 2064 2006-01-02 19:34:49Z brad $
+
+// End of file

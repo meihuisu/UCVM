@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#PBS -l walltime=00:15:00,nodes=1:ppn=1
+#PBS -e plot_hslice.e
+#PBS -o plot_hslice.o
+#PBS -V
+
+
+cd /home/rcf-104/${USER}/cvmh/trunk/scripts/viz
+
+# Remove old plots
+rm scec_*
+rm noscec_*
+
+# Produce GMT plots
+./plot_hslice.sh -z dep "noscec_0km" 0.0
+./plot_hslice.sh -s -z dep "scec_0km" 0.0
+./plot_hslice.sh -s -z dep "scec_1km" 1000.0
+./plot_hslice.sh -s -z dep "scec_2km" 2000.0
+./plot_hslice.sh -s -z dep "scec_3km" 3000.0
+
+./plot_hslice.sh -s -z elev "scec_0000elev" 0.0
+./plot_hslice.sh -s -z elev "scec_-1000elev" -1000.0
+
+

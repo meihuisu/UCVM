@@ -123,9 +123,10 @@ class GriddedVelocityModel(VelocityModel):
             }
 
             # Check to see if we are outside of the model boundaries.
-            if coords["x"] < 0 or coords["y"] < 0 or \
+            if coords["x"] < 0 or coords["y"] < 0 or coords["z"] < 0 or \
                coords["x"] > int(self.config_dict["dimensions"]["x"]) - 2 or \
-               coords["y"] > int(self.config_dict["dimensions"]["y"]) - 2:
+               coords["y"] > int(self.config_dict["dimensions"]["y"]) - 2 or \
+               coords["z"] > int(self.config_dict["dimensions"]["z"]) - 1:
                 self._set_velocity_properties_none(sd_object)
                 continue
 

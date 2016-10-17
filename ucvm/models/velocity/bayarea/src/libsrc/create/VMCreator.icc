@@ -1,0 +1,26 @@
+// -*- C++ -*-
+//
+// ======================================================================
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ======================================================================
+//
+
+#if !defined(cencalvm_create_vmcreator_h)
+#error "VMCreator.icc must only be included from VMCreator.h"
+#endif
+
+// Set flag indicating creation should be quiet (no progress reports).
+inline
+void
+cencalvm::create::VMCreator::quiet(const bool flag)
+{ _quiet = flag; }
+
+// version
+// $Id: VMCreator.icc 2062 2005-12-23 02:43:23Z brad $
+
+// End of file 

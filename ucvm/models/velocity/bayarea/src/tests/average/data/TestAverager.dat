@@ -1,0 +1,59 @@
+// -*- C++ -*-
+//
+// ----------------------------------------------------------------------
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ----------------------------------------------------------------------
+//
+
+const int cencalvm::average::TestAverager::_NUMOCTANTS = 17;
+const int cencalvm::average::TestAverager::_NUMOCTANTSIN = 12;
+const int cencalvm::average::TestAverager::_LEVELS[] = {
+  3, 3, 3, 3, 3, 3, 3, 3,
+  3, 3,
+  3,
+  2, 2, 2, 2,
+  1,
+  0 };
+const int cencalvm::average::TestAverager::_COORDS[] = {
+  0, 0, 0,
+  0, 0, 1,
+  1, 0, 0,
+  1, 0, 1,
+  0, 1, 0,
+  0, 1, 1,
+  1, 1, 0,
+  1, 1, 1,
+  2, 0, 0,
+  2, 1, 0,
+  1, 2, 1,
+  0, 0, 1,
+  0, 0, 0,
+  1, 0, 0,
+  0, 1, 0,
+  0, 0, 0,
+  0, 0, 0
+};
+
+const double cencalvm::average::TestAverager::_OCTVALS[] = {
+  7.9, 4.3, 7.8, 6.3, 8.8, 3.8, 4.8, 9.9, 8.9, 7.4, 4.9,
+  3.7, 6.7, 8.15, 4.9,
+  5.8625,
+  5.8625
+};
+
+const double cencalvm::average::TestAverager::_RELPAY[] = {
+  10.0, 1.0, 0.1, 0.01, 0.001, 100.0, 1.0, 1.0
+};
+
+const char* cencalvm::average::TestAverager::_DBFILENAMEIN = "data/in.etree";
+const char* cencalvm::average::TestAverager::_DBFILENAMEOUT = "data/out.etree";
+
+// version
+// $Id: TestAverager.dat 1922 2005-07-24 20:18:18Z brad $
+
+// End of file

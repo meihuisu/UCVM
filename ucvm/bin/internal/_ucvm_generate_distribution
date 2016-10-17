@@ -38,7 +38,7 @@ def usage() -> None:
     )
 
 
-def package_and_zip_models(directory: str, output_dir: str) -> bool:
+def package_and_zip_models(directory: str, output_dir: str, **kwargs) -> bool:
     """
     Package and "UCV" models for distribution.
     :param directory: The base directory in which to find the models.
@@ -49,6 +49,10 @@ def package_and_zip_models(directory: str, output_dir: str) -> bool:
 
     for folder in BASE_FOLDERS:
         for model in os.listdir(os.path.join(directory, folder)):
+            if "zipone" in kwargs:
+                if model != kwargs["zipone"]:
+                    continue
+
             if os.path.exists(os.path.join(directory, folder, model, "ucvm_model.xml")):
                 print("Packaging model " + model + "...")
                 call(["tar", "--exclude=.DS_Store", "-cvzf",
@@ -78,6 +82,41 @@ def package_and_zip_models(directory: str, output_dir: str) -> bool:
     return True
 
 
+def package_and_zip_libraries(directory: str, output_dir: str) -> bool:
+    """
+    Package and "UCV" libraries for distribution.
+    :param directory: The base directory in which to find the libraries.
+    :param output_dir: The output directory to which these files should be written.
+    :return: True if the function was successful, false otherwise.
+    """
+    libraries = []
+
+    for library in os.listdir(directory):
+        if os.path.exists(os.path.join(directory, library, "build.py")):
+            print("Packaging library " + library + "...")
+            call(["tar", "--exclude=.DS_Store", "-cvzf",
+                os.path.join(output_dir, "libraries", library + ".ucv"),
+                             "-C", os.path.join(directory, library), "."])
+
+            with open(os.path.join(directory, library, "ucvm_library.xml"), "r") as fd:
+                xml_doc = xmltodict.parse(fd.read())
+
+            libraries.append({
+                "name": parse_xmltodict_one_or_many(xml_doc, "root/information/name"),
+                "libso": parse_xmltodict_one_or_many(xml_doc, "root/information/libso")
+            })
+        else:
+            print("No build.py found for library " + library + ". Skipping library!")
+
+    print("Writing out XML document...")
+
+    with open(os.path.join(output_dir, "library_list.xml"), "w") as fd:
+        libs = {"root": {"library": libraries}}
+        fd.write(xmltodict.unparse(libs, pretty=True))
+
+    return True
+
+
 def main() -> int:
     """
     The main generate distribution function.
@@ -87,19 +126,49 @@ def main() -> int:
         options = UCVM.parse_options([
             {"short": "b", "long": "base-dir", "value": True, "required": True},
             {"short": "o", "long": "output-dir", "value": True, "required": True},
-            {"short": "u", "long": "upload", "value": False, "required": False}
+            {"short": "u", "long": "upload", "value": False, "required": False},
+            {"short": "z", "long": "zip-one", "value": True, "required": False}
         ], usage)
     except ValueError as v_err:
         print("[ERROR]: " + str(v_err) + "\n")
         sys.exit(-1)
+
+    if options["zip-one"] is not None:
+        package_and_zip_models(
+            os.path.join(options["base-dir"], "ucvm/models"),
+            options["output-dir"],
+            zipone=options["zip-one"]
+        )
+
+        if options["upload"] is not None:
+            # We want to upload the directory to hypocenter.
+            print("Uploading model to hypocenter...")
+            command = " ".join(
+                ["scp", os.path.join(options["output-dir"], "models", options["zip-one"] + ".ucv"),
+                 "davidgil@hypocenter.usc.edu:/var/www/html/research/ucvm/" +
+                 UCVM.get_replacement_string("[version]") + "/models/"]
+            )
+            check_call(command, shell=True)
+
+        return 0
 
     try:
         os.mkdir(os.path.join(options["output-dir"], "models"))
     except FileExistsError:
         pass
 
+    try:
+        os.mkdir(os.path.join(options["output-dir"], "libraries"))
+    except FileExistsError:
+        pass
+
     package_and_zip_models(
         os.path.join(options["base-dir"], "ucvm/models"),
+        options["output-dir"]
+    )
+
+    package_and_zip_libraries(
+        os.path.join(options["base-dir"], "ucvm/libraries"),
         options["output-dir"]
     )
 

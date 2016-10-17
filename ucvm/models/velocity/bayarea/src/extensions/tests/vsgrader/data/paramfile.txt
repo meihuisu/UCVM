@@ -1,0 +1,13 @@
+VsGrader {
+  vs-min = 0.1
+  vs-gradient-max = 1.1
+  domain-length = 235100.0
+  domain-width = 92102.0
+  domain-height = 44952.0
+  swcorner-lon = -122.5
+  swcorner-lat = 35.3
+  swcorner-elev = 150.0
+  resolution-vert = 100.0
+  query-type = fixedres
+  query-resolution = 200.0
+}

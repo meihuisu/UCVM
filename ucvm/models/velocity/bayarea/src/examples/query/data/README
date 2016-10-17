@@ -1,0 +1,60 @@
+// -*- C++ -*-
+//
+// ----------------------------------------------------------------------
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// <LicenseText>
+//
+// ----------------------------------------------------------------------
+//
+
+/**
+ * @file examples/query/data/README
+ *
+ * @brief These are sample input and output data files for the
+ * examples distributed with the cencalvm software.
+ *
+ * @section detailed Files for queries of the detailed model
+ *
+\verbatim
+sample-05.0.0.out               Output for MAXRES query of 05.0.0
+sample-05.0.1_fixedres.out      Output for FIXEDRES query of 05.0.1
+sample-05.0.1.out               Output for MAXRES query of 05.0.1
+sample-05.0.1_waveres.out       Output for WAVERES query of 05.0.1
+sample-05.0.x.in                Input for version 05.0.x
+sample-05.1.0_fixedres.out      Output for FIXEDRES query of 05.1.0
+sample-05.1.0_maxres.out        Output for MAXRES query of 05.1.0
+sample-05.1.0_waveres.out       Output for WAVERES query of 05.1.0
+sample-05.1.x.in                Input for version 05.1.x
+sample-08.2.0_fixedres.out      Output for FIXEDRES query of 08.2.0
+sample-08.2.0_maxres.out        Output for MEXRES query of 08.2.0
+sample-08.2.0_waveres.out       Output for WAVERES query of 08.2.0
+sample-08.3.0_fixedres.out      Output for FIXEDRES query of 08.3.0
+sample-08.3.0_maxres.out        Output for MAXRES query of 08.3.0
+sample-08.3.0_waveres.out       Output for WAVERES query of 08.3.0
+
+\endverbatim
+ *
+ * @section extended Files for queries of detailed+extended models
+ *
+\verbatim
+sample_ext-05.1.0_fixedres.out  Output for FIXEDRES query of 05.1.0
+sample_ext-05.1.0_maxres.out    Output for MAXRES query of 05.1.0
+sample_ext-05.1.0_waveres.out   Output for WAVERES query of 05.1.0
+sample_ext-05.1.x.in            Input for version 05.1.x
+sample_ext-08.2.0_fixedres.out  Output for FIXEDRES query of 08.2.0
+sample_ext-08.2.0_maxres.out    Output for MAXRES query of 08.2.0
+sample_ext-08.2.0_waveres.out   Output for WAVERES query of 08.2.0
+sample_ext-08.3.0_fixedres.out  Output for FIXEDRES query of 08.3.0
+sample_ext-08.3.0_maxres.out    Output for MAXRES query of 08.3.0
+sample_ext-08.3.0_waveres.out   Output for WAVERES query of 08.3.0
+
+\endverbatim
+ *
+ */
+
+
+// End of file 
+

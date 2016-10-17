@@ -1,0 +1,42 @@
+cvmdst
+------
+
+A. Plesch, 2007
+
+
+cvmdst calculates the distance to and the location of the closest points on the topographic/bathymetric, top of the basement, and Moho surfaces which are provided with CVM-H. The input file has the same format as the input file to vx, the query code to CVM-H. Here is a sample output:
+
+$ ./cvmdst < test.dat
+   -118.5600       32.5500  -2450.00  353525.41  3602285.00 353501.444124 3602290.819653 -1116.157055 1334.070858 353522.744708 3602299.403702 -1326.814699 1123.280807 352596.998016 3603033.676347 -27929.826113 25507.724259
+ 360061.0000  3750229.0000  -1400.00  360061.00  3750229.00 360060.018999 3750227.761171 -56.881981 1343.118949 360060.022683 3750221.673860 -1427.508502 28.484121 362820.797091 3746966.809027 -26430.280638 25392.387024
+   -118.5200       34.1200  -1400.00  359819.97  3776309.75 359781.440450 3776315.301560 489.726873 1890.127748 359824.605485 3776213.338476 27.670647 1430.929822 365402.583372 3772066.583683 -29593.991492 29052.903515
+   -116.4000       32.3400  -1000.00  556464.56  3578092.50 556354.736311 3578368.039236 740.683179 1765.775068 556416.548819 3578055.162491 616.006259 1617.150467 561109.419249 3578550.557954 -33889.816628 33219.339987
+ 376592.0000  3773379.0000  -1770.00  376592.00  3773379.00 376620.853913 3773286.912484 94.375578 1866.871435 376551.261088 3773502.809017 -1681.719262 157.422427 379501.711419 3771333.674285 -27237.159123 25714.314527
+ 376592.0000  3773379.0000 -17700.00  376592.00  3773379.00 376493.557555 3773189.220265 91.183035 17792.467536 375000.000000 3766000.000000 -4622.466309 15099.867299 377938.581901 3772398.160921 -27501.243454 9941.815798
+ 408669.0000  3766189.0000  -3000.00  408669.00  3766189.00 408677.192107 3766193.370337 93.657831 3093.671765 408692.476462 3766227.924578 -2860.533461 146.687363 404926.980909 3764946.623636 -27878.222343 25188.730672
+
+The output format is:
+
+X Y Z utmX utmY t_x t_y t_z t_dst b_x b_y b_z b_dst m_x m_y m_z m_dst
+
+X, Y, Z: repeat of the input coordinates
+utmX, utmY: UTM coordinates
+t_x, t_y, t_z: location of the closest point on the topographic/bathymetric surface
+t_dst: distance to the closest point on the topographic/bathymetric surface
+b_x, b_y, b_z: location of the closest point on the top of the basement surface
+b_dst: distance to the closest point on the top of the basement surface
+m_x, m_y, m_z: location of the closest point on the Moho surface
+m_dst: distance to the closest point on the Moho surface
+
+Thanks to underlying GNU triangulated surface library (GTS), the code correctly deals with thrust overhangs, eg. it always provides the closest distance.
+
+For the code to compile it is necessary to first install GTS. It is available from http://gts.sourceforge.net.
+
+Then simply run
+
+$ make cvmdst
+
+to compile.
+
+
+

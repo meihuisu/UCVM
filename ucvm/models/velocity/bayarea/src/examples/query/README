@@ -1,0 +1,119 @@
+// -*- C++ -*-
+//
+// ----------------------------------------------------------------------
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// <LicenseText>
+//
+// ----------------------------------------------------------------------
+//
+
+/**
+ * @file examples/query/README
+ *
+ * @brief Instructions for running the examples.
+ *
+ * @section dirs Directories
+ *
+ * @li \b data Sample input and output data files.
+ * @li \b cpp Examples of how to use the query routines from C++.
+ * @li \b c Example of how to use the query routines from C.
+ * @li \b f77 Example of how to use the query routines from Fortran 77.
+ *
+ * @section data Sample data files
+ *
+ * This directory contains sample input and output data files used in
+ * the examples. The input files are "*.in" and the output files are
+ * "*.out". The examples use the input files in this directory as
+ * input. The output files are provided so that you can compare the
+ * output from the examples against these data files that are
+ * considered "correct." See \link examples/query/data/README
+ * examples/query/data/README \endlink for a description of each
+ * file.
+ *
+ * @section general Instructions that apply to ALL examples
+ *
+ * Create a symbolic link from the database file to the example
+ * directory. For example, if the database is
+ * /home/data/USGSBayAreaVM-05.1.0.etree and you want to run the C++
+ * example, in the cpp directory type
+\verbatim
+ln -s /home/data/USGSBayAreaVM-05.1.0.etree .
+\endverbatim
+ *
+ *
+ * @note The examples are setup to dump warnings to the
+ * screen, so when it encounters the point in air where there is no
+ * data it will dump a warning to the screen that can be ignored; the
+ * material property values will be -999 for this point in the output
+ * file. If a filename is given for the log file, then this point will
+ * appear in the log file as well.
+ *
+ * @section cpp C and C++ examples
+ *
+ * The instructions are identical for the C and C++ examples.
+ *
+ * <ol>
+ *
+ * <li>Run 'make'
+ *
+ * <li>Run 'make testmaxres' for the sample MAXRES query. The output
+ * (test_maxres.out) should be identical to the corresponding
+ * sample-VERSION.out file in the data directory.
+ *
+ * <li>Run 'make testfixedres' for the sample FIXEDRES query. The output
+ * (test_fixedres.out) should be identical to the corresponding
+ * sample-VERSION_fixedres.out file in the data directory.
+ *
+ * <li>Run 'make testwaveres' for the sample WAVERES query. The output
+ * (test_waveres.out) should be identical to the corresponding
+ * sample-VERSION_waveres.out file in the data directory.
+ *
+ * <li>Analogous tests using both the detailed and extended (regional)
+ * models can be run via 'make testextmaxres', 'make testextfixedres',
+ * and 'make testextwaveres'. The output should be identical to the
+ * sample_ext* files in the data directory.
+ *
+ * </ol>
+ *
+ * @section f77 Fortran 77 example.
+ *
+ * <ol>
+ *
+ * <li> Edit the source file 'cencalvmf77query.f' to select the type
+ * of query that you want. You may need to adjust the name of the
+ * output filename (see line 54), the parameters (see line 68), and
+ * whether to use the extended (regional) model (see line 132).
+ *
+ * <li> Run 'make' and then './cencalvmf77query'.
+ *
+ * <ul>
+ *
+ * <li> For the sample MAXRES query. The output (test_maxres.out) should be
+ * identical to the corresponding sample-VERSION.out file in the data
+ * directory.
+ *
+ * <li> For the sample FIXEDRES query. The output (test_fixedres.out)
+ * should be identical to the corresponding
+ * sample-VERSION_fixedres.out file in the data directory.
+ *
+ * <li> For the sample WAVERES query. The output (test_waveres.out)
+ * should be identical to the corresponding sample-VERSION_waveres.out
+ * file in the data directory.
+ *
+ * <li> Similarly, for queries using the extended (regional) model
+ * compare the output to the files beginning with 'sample_ext' in the
+ * data directory.
+ *
+ * </ul>
+ *
+ * </ol>
+ *
+ */
+
+// version
+// $Id: README 3059 2007-02-22 05:33:12Z brad $
+
+// End of file 

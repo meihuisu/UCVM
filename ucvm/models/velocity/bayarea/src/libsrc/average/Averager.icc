@@ -1,0 +1,38 @@
+// -*- C++ -*-
+//
+// ======================================================================
+//
+//                           Brad T. Aagaard
+//                        U.S. Geological Survey
+//
+// {LicenseText}
+//
+// ======================================================================
+//
+
+#if !defined(cencalvm_average_averager_h)
+#error "Averager.icc must only be included from Averager.h"
+#endif
+
+// Set filename of input database.
+inline
+void
+cencalvm::average::Averager::filenameIn(const char* filename)
+{ _filenameIn = filename; }
+
+// Set filename of output database.
+inline
+void
+cencalvm::average::Averager::filenameOut(const char* filename)
+{ _filenameOut = filename; }
+
+// Set flag indicating creation should be quiet (no progress reports).
+inline
+void
+cencalvm::average::Averager::quiet(const bool flag)
+{ _quiet = flag; }
+
+// version
+// $Id: Averager.icc 2064 2006-01-02 19:34:49Z brad $
+
+// End of file 
