@@ -173,7 +173,10 @@ class BayAreaVelocityModel(VelocityModel):
                                                     points[i].converted_point.y_value)
 
             if free_surface is not None:
-                point_elevation = points[i].converted_point.z_value + free_surface
+                if points[0].original_point.depth_elev == 0:
+                    point_elevation = points[i].converted_point.z_value + free_surface
+                else:
+                    point_elevation = points[i].converted_point.z_value
             else:
                 self._set_velocity_properties_none(points[i])
                 continue

@@ -46,6 +46,11 @@
             limitations under the License.
         </license>
 
+        <!-- A broad description and range of the coverage region -->
+        <coverage>
+            <description>Global</description>
+        </coverage>
+
     </information>
 
     <!-- Private information used by UCVM to understand how to query the model -->

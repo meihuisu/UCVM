@@ -10,7 +10,7 @@ models and the "other" UCVM functions and classes.
 
 from .constants import UCVM_DEFAULT_PROJECTION, UCVM_DEPTH, UCVM_ELEVATION, UCVM_MODEL_LIST_FILE, \
                        UCVM_MODELS_DIRECTORY, HYPOCENTER_MODEL_LIST, HYPOCENTER_PREFIX, \
-                       UCVM_LIBRARIES_DIRECTORY, UCVM_LIBRARY_LIST_FILE
+                       UCVM_LIBRARIES_DIRECTORY, UCVM_LIBRARY_LIST_FILE, UCVM_ELEV_ANY
 from .functions import is_number, bilinear_interpolation, calculate_bilinear_value, \
                        parse_xmltodict_one_or_many
 from .properties import VelocityProperties, ElevationProperties, Vs30Properties, SimplePoint, \

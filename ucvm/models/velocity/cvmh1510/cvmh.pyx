@@ -68,9 +68,12 @@ class CVMH1510VelocityModel(VelocityModel):
             vx_setgtl(0)
             vx_register_bkg(NULL)
 
-        vx_setzmode(1)
-
         for i in range(0, len(points)):
+            if points[i].original_point.depth_elev == 0:
+                vx_setzmode(1)
+            else:
+                vx_setzmode(0)
+
             entry.coor_type = 0
             entry.coor[0] = points[i].converted_point.x_value
             entry.coor[1] = points[i].converted_point.y_value
@@ -79,7 +82,7 @@ class CVMH1510VelocityModel(VelocityModel):
 
             vx_getcoord(&entry)
 
-            if entry.data_src != 0:
+            if entry.data_src != 0 and entry.vp != -99999:
                 points[i].set_velocity_data(
                     VelocityProperties(
                         entry.vp, entry.vs, entry.rho, None, None,

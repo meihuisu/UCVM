@@ -115,23 +115,35 @@ def generate_output_line(seismicdata: SeismicData) -> str:
                  if seismicdata.velocity_properties.qp is not None else "N/A".ljust(12)
         qs_out = "%-12.4f" % seismicdata.velocity_properties.qs \
                  if seismicdata.velocity_properties.qs is not None else "N/A".ljust(12)
+        vy_source = seismicdata.velocity_properties.vp_source.ljust(20)[0:19] + " " \
+                    if seismicdata.velocity_properties.vp_source is not None else \
+                    "N/A".ljust(20)[0:20]
     else:
         vp_out = "N/A".ljust(12)
         vs_out = "N/A".ljust(12)
         dn_out = "N/A".ljust(12)
         qp_out = "N/A".ljust(12)
         qs_out = "N/A".ljust(12)
+        vy_source = "N/A".ljust(20)
 
-    vy_source = seismicdata.velocity_properties.vp_source.ljust(20)[0:19] + " " \
-                if seismicdata.velocity_properties is not None else "N/A".ljust(20)[0:20]
-    el_out = "%-12.4f" % seismicdata.elevation_properties.elevation \
-             if seismicdata.elevation_properties is not None else "N/A".ljust(12)
-    el_source = seismicdata.elevation_properties.elevation_source.ljust(12) \
-                if seismicdata.elevation_properties is not None else "N/A".ljust(12)
-    vs30_out = "%-12.4f" % seismicdata.vs30_properties.vs30 \
-               if seismicdata.vs30_properties is not None else "N/A".ljust(12)
-    vs30_source = seismicdata.vs30_properties.vs30_source.ljust(12) \
-                  if seismicdata.vs30_properties is not None else "N/A".ljust(12)
+    if seismicdata.elevation_properties is not None:
+        el_out = "%-12.4f" % seismicdata.elevation_properties.elevation \
+                 if seismicdata.elevation_properties.elevation is not None else "N/A".ljust(12)
+        el_source = seismicdata.elevation_properties.elevation_source.ljust(12) \
+                    if seismicdata.elevation_properties.elevation_source is not None else \
+                    "N/A".ljust(12)
+    else:
+        el_out = "N/A".ljust(12)
+        el_source = "N/A".ljust(12)
+
+    if seismicdata.vs30_properties is not None:
+        vs30_out = "%-12.4f" % seismicdata.vs30_properties.vs30 \
+                   if seismicdata.vs30_properties.vs30 is not None else "N/A".ljust(12)
+        vs30_source = seismicdata.vs30_properties.vs30_source.ljust(12) \
+                      if seismicdata.vs30_properties.vs30_source is not None else "N/A".ljust(12)
+    else:
+        vs30_out = "N/A".ljust(12)
+        vs30_source = "N/A".ljust(12)
 
     return "%-12.4f%-12.4f%-12.4f" % \
            (seismicdata.original_point.x_value, seismicdata.original_point.y_value,

@@ -9,7 +9,7 @@ at the top of your files!
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
 :created:   July 6, 2016
-:modified:  August 9, 2016
+:modified:  October 17, 2016
 """
 import sys
 import os
@@ -20,11 +20,14 @@ import getopt
 import re
 import math
 import psutil
+import copy
 
 from typing import List
 
 from ucvm.src.shared.constants import UCVM_MODEL_LIST_FILE, UCVM_MODELS_DIRECTORY, \
-                                      UCVM_DEFAULT_DEM, UCVM_DEFAULT_VS30, INTERNAL_DATA_DIRECTORY
+                                      UCVM_DEFAULT_DEM, UCVM_DEFAULT_VS30, UCVM_DEFAULT_VELOCITY, \
+                                      INTERNAL_DATA_DIRECTORY, UCVM_DEPTH, UCVM_ELEVATION, \
+                                      UCVM_ELEV_ANY
 from ucvm.src.shared.properties import SeismicData
 from ucvm.src.shared import display_and_raise_error, parse_xmltodict_one_or_many, is_number
 from ucvm.src.model.model import Model
@@ -95,56 +98,46 @@ class UCVM:
         :param desired_properties:
         :return:
         """
-        points_to_query = points
-
         if custom_model_query is None:
-            models_to_query = UCVM.parse_model_string(model_string)
+            models_to_query = UCVM.get_models_for_query(
+                model_string,
+                ["velocity", "elevation", "vs30"] if desired_properties is None
+                else desired_properties
+            )
         else:
             models_to_query = custom_model_query
 
-        for _, model_query in models_to_query.items():
-            if desired_properties is None:
-                properties_to_retrieve = ["velocity", "elevation", "vs30"]
-            else:
-                properties_to_retrieve = list(desired_properties)
-
+        for _, queryable_models in models_to_query.items():
             counter = 0
-            while len(properties_to_retrieve) > 0 and counter < len(model_query) - 1:
-                model_to_query = model_query[counter].split(";")
+            while counter < len(queryable_models):
+                model_to_query = queryable_models[counter].split(";-;")
                 UCVM.get_model_instance(model_to_query[0])
 
-                if len(points_to_query) == 0:
-                    # If no points to query, then just move along!
-                    counter += 1
-                    continue
-
                 if len(model_to_query) == 1:
-                    UCVM.instantiated_models[model_to_query[0]].query(points_to_query)
+                    UCVM.instantiated_models[model_to_query[0]].query(points)
                 else:
-                    UCVM.instantiated_models[model_to_query[0]].query(points_to_query,
-                                                                      params=model_to_query[1])
+                    UCVM.instantiated_models[model_to_query[0]].query(
+                        points, params=model_to_query[1]
+                    )
 
-                for point in points_to_query:
+                for point in points:
                     if point.is_property_type_set("velocity"):
                         point.set_model_string(
-                            ".".join([re.sub(r'(.*);(.*)', r'\1(\2)', model_query[k]) for k in
-                                      model_query if is_number(k)])
+                            ".".join([re.sub(r'(.*);-;(.*)', r'\1[\2]', queryable_models[k]) for k in
+                                      queryable_models if is_number(k)])
                         )
 
-                properties_to_retrieve.remove(UCVM.get_model_type(model_to_query[0]))
                 counter += 1
 
-            # Remove all points that have velocity data in them. We don't want to re-query those
-            # points at all.
-            points_to_query = [x for x in points_to_query if
-                               not x.is_property_type_set("velocity")]
+            points = [x for x in points if not x.is_property_type_set("velocity")]
 
         return True
 
     @classmethod
     def get_model_type(cls, model: str) -> str:
         """
-        Given one model string, return the type of model (velocity, elevation, vs30) as a string.
+        Given one model string, return the type of model (velocity, elevation, vs30, or modifier)
+        as a string.
         :param str model: The model string to check.
         :return: Velocity, vs30, or elevation depending on the model type.
         """
@@ -162,6 +155,10 @@ class UCVM:
             if item["id"] == model:
                 return "vs30"
 
+        for item in all_models["modifier"]:
+            if item["id"] == model:
+                return "modifier"
+
         display_and_raise_error(19)
 
     @classmethod
@@ -176,7 +173,8 @@ class UCVM:
             return UCVM.instantiated_models[model]
 
         model_list = UCVM.get_list_of_installed_models()
-        model_list = model_list["velocity"] + model_list["elevation"] + model_list["vs30"]
+        model_list = model_list["velocity"] + model_list["elevation"] + model_list["vs30"] + \
+                     model_list["modifier"]
 
         # Do a quick check just to make sure the model does, indeed, exist.
         found = False
@@ -215,146 +213,156 @@ class UCVM:
         if string.strip() is "":
             return {}
 
-        model_strings = re.split(r',\s*(?![^()]*\))', string)
+        model_strings = re.split(r';\s*(?![^()]*\))',
+                                 string.replace(".depth", "").replace(".elevation", ""))
+        model_strings_expanded = []
+
+        for model_string in model_strings:
+            grouped_models = re.match(r"\(([A-Za-z0-9_\.\[\];]+)\)", model_string)
+            if grouped_models:
+                if len(model_string.split(")")) > 1:
+                    for model_id in grouped_models.group(0).split(";"):
+                        model_strings_expanded.append(
+                            (model_id + model_string.split(")")[1]).
+                                replace("(", "").replace(")", "")
+                        )
+                else:
+                    for model_id in grouped_models.group(0).split(";"):
+                        model_strings_expanded.append(
+                            model_id.replace("(", "").replace(")", "")
+                        )
+            else:
+                model_strings_expanded.append(model_string)
+
         ret_dict = {}
 
-        for i in range(0, len(model_strings)):
-            ret_dict[i] = UCVM._parse_one_model_string(model_strings[i])
+        for i in range(0, len(model_strings_expanded)):
+            if model_strings_expanded[i].strip() is "":
+                continue
+
+            individual_models = model_strings_expanded[i].split(".")
+            models_to_add = {}
+            current_index = 0
+
+            for individual_model in individual_models:
+                parsed = UCVM._strip_and_return_parameters(individual_model)
+                models_to_add[current_index] = parsed["string"] + (
+                    ";-;" + parsed["parameters"] if parsed["parameters"] != "" else ""
+                )
+                current_index += 1
+
+            ret_dict[i] = models_to_add
 
         return ret_dict
 
     @classmethod
-    def _parse_one_model_string(cls, one_model_string: str) -> dict:
+    def get_models_for_query(cls, model_string: str, desired_properties: list) -> dict:
         """
-        Parses one model string. This loads the model's ucvm_model.xml and checks certain
-        properties. It then suggests a model query order with the first query key being position
-        0 and going up from there. If no ucvm_model.xml is found, then an error is raised since
-        it must not be installed. There must be at least one velocity model.
-        :param one_model_string: One model string to parse.
-        :return: The dictionary of models to query and the order. The keys start at 0 and go up.
+        Given a list of models and desired properties, ascertain how we can do this.
+        :param model_string: The model string in its entirety.
+        :param desired_properties: The desired properties (velocity, elevation, vs30) as a list.
+        :return: A dictionary containing the models.
         """
-        if one_model_string.strip() is "":
-            return {}
+        initial_models = UCVM.parse_model_string(model_string)
 
-        individual_models = one_model_string.split(".")
-        search_model_list = {}
-        models_with_parens = {}
-        installed_models = UCVM.get_list_of_installed_models()
+        new_model_array = {}
+        desired_properties_copy = copy.copy(desired_properties)
 
-        velocity_model = None
+        # We assume we are querying by depth unless otherwise told.
+        query_by = UCVM_ELEVATION if ".elevation" in model_string else UCVM_DEPTH
+        prepend_elevation = False
 
-        for individual_model in individual_models:
-            parsed = UCVM._strip_and_return_parentheses(individual_model)
-            search_model_list[parsed["string"]] = {"user": parsed["string"],
-                                                   "params": parsed["parenthesis"]}
-
-        for velocity_model_installed in installed_models["velocity"]:
-            if velocity_model_installed["id"] in search_model_list:
-                if velocity_model is not None:
-                    display_and_raise_error(4, (one_model_string,))
+        for full_index, full_list in initial_models.items():
+            will_return = {}
+            temp_models = {}
+            new_model_array[full_index] = {}
+            desired_properties = copy.copy(desired_properties_copy)
+            for index, model_id in dict(full_list).items():
+                model_desc = {
+                    "id": str(model_id).split(";-;")[0],
+                    "params": str(model_id).split(";-;")[1] if len(str(model_id).split(";-;")) > 1 \
+                              else ""
+                }
+                model = UCVM.get_model_instance(model_desc["id"])
+                if model.get_metadata()["type"] in will_return and \
+                    model.get_metadata()["type"] != "modifier":
+                    display_and_raise_error(20)
+                elif model.get_metadata()["type"] not in will_return:
+                    will_return[model.get_metadata()["type"]] = {
+                        0: model_desc
+                    }
                 else:
-                    velocity_model = velocity_model_installed["id"]
-                    models_with_parens[velocity_model_installed["id"]] = \
-                        search_model_list[velocity_model_installed["id"]]["params"]
-                search_model_list.pop(velocity_model_installed["id"], None)
-            if velocity_model_installed["name"] in search_model_list:
-                if velocity_model is not None:
-                    display_and_raise_error(4, (one_model_string,))
-                else:
-                    velocity_model = velocity_model_installed["id"]
-                    models_with_parens[velocity_model_installed["id"]] = \
-                        search_model_list[velocity_model_installed["name"]]["params"]
-                search_model_list.pop(velocity_model_installed["name"], None)
+                    will_return[model.get_metadata()["type"]][
+                        len(will_return[model.get_metadata()["type"]])
+                    ] = model_desc
+                if int(model.get_private_metadata("query_by")) != query_by and \
+                   int(model.get_private_metadata("query_by")) != UCVM_ELEV_ANY:
+                    prepend_elevation = True
+                    if "elevation" not in desired_properties:
+                        desired_properties.append("elevation")
 
-        if velocity_model is None:
-            return {0: one_model_string}
+            for prop in desired_properties:
+                if prop in will_return:
+                    temp_models[prop] = will_return[prop]
+                    desired_properties.remove(prop)
 
-        # Get the defaults for this velocity model.
-        with open(os.path.join(UCVM_MODELS_DIRECTORY, velocity_model, "ucvm_model.xml")) as fd:
-            info = xmltodict.parse(fd.read())
+            # Check to see if any desired properties remain.
+            if len(desired_properties) > 0:
+                for prop in desired_properties:
+                    temp_models[prop] = {0: {"id": \
+                        UCVM.get_model_instance(temp_models["velocity"][0]["id"]).\
+                        get_private_metadata("defaults")[prop] if \
+                        "velocity" in temp_models else (UCVM_DEFAULT_DEM if prop == "elevation" \
+                        else (UCVM_DEFAULT_VS30 if prop == "vs30" else (UCVM_DEFAULT_VELOCITY if \
+                        prop == "velocity" else None))), "params": ""}}
 
-        elevation_model = parse_xmltodict_one_or_many(info, "root/internal/defaults/elevation")
-        vs30_model = parse_xmltodict_one_or_many(info, "root/internal/defaults/vs30")
-        query_by = parse_xmltodict_one_or_many(info, "root/internal/query_by")
+            # Assemble the new array.
+            if prepend_elevation:
+                new_model_array[full_index][len(new_model_array[full_index])] = \
+                    temp_models["elevation"][0]["id"] + \
+                    (";-;" + temp_models["elevation"][0]["params"] if
+                     temp_models["elevation"][0]["params"] != "" else "")
+                temp_models.pop("elevation", None)
 
-        if len(elevation_model) == 0:
-            elevation_model = [{"#text": UCVM_DEFAULT_DEM}]
-        if len(vs30_model) == 0:
-            vs30_model = [{"#text": UCVM_DEFAULT_VS30}]
+            if "velocity" in temp_models:
+                new_model_array[full_index][len(new_model_array[full_index])] = \
+                    temp_models["velocity"][0]["id"] + \
+                    (";-;" + temp_models["velocity"][0]["params"] if
+                     temp_models["velocity"][0]["params"] != "" else "")
+            if "elevation" in temp_models:
+                new_model_array[full_index][len(new_model_array[full_index])] = \
+                    temp_models["elevation"][0]["id"] + \
+                    (";-;" + temp_models["elevation"][0]["params"] if
+                     temp_models["elevation"][0]["params"] != "" else "")
+            if "vs30" in temp_models:
+                new_model_array[full_index][len(new_model_array[full_index])] = \
+                    temp_models["vs30"][0]["id"] + \
+                    (";-;" + temp_models["vs30"][0]["params"] if
+                     temp_models["vs30"][0]["params"] != "" else "")
+            if "modifier" in will_return:
+                for key, val in will_return["modifier"].items():
+                    new_model_array[full_index][len(new_model_array[full_index])] = \
+                        val["id"] + (";-;" + val["params"] if val["params"] != "" else "")
 
-        if len(query_by) == 0:
-            query_by = [{"#text": "DEPTH"}]
-
-        elevation_model = elevation_model[0]["#text"]
-        vs30_model = vs30_model[0]["#text"]
-
-        if models_with_parens[velocity_model] != "":
-            velocity_model = velocity_model + ";" + models_with_parens[velocity_model]
-
-        # Now, if our model list is still not empty, we override the elevation and Vs30 models
-        # as need be.
-        if len(search_model_list) > 0:
-            for elevation_model_installed in installed_models["elevation"]:
-                if elevation_model_installed["id"] in search_model_list or \
-                   elevation_model_installed["name"] in search_model_list:
-                    elevation_model = elevation_model_installed["id"]
-                try:
-                    search_model_list.pop(elevation_model_installed["id"], None)
-                except ValueError:
-                    pass
-                try:
-                    search_model_list.pop(elevation_model_installed["name"], None)
-                except ValueError:
-                    pass
-
-            for vs30_model_installed in installed_models["vs30"]:
-                if vs30_model_installed["id"] in search_model_list or \
-                   vs30_model_installed["name"] in search_model_list:
-                    vs30_model = vs30_model_installed["id"]
-                try:
-                    search_model_list.pop(vs30_model_installed["id"], None)
-                except ValueError:
-                    pass
-                try:
-                    search_model_list.pop(vs30_model_installed["name"], None)
-                except ValueError:
-                    pass
-
-        # We should have a velocity model, an elevation model array (with one element), and
-        # a Vs30 model with one element. Figure out the order and if a conversion is necessary.
-        if (str(query_by[0]["#text"]).lower() == "depth" and "elevation" in individual_models) or \
-           (str(query_by[0]["#text"]).lower() == "elevation" and "depth" in individual_models):
-            return {
-                0: elevation_model,
-                1: velocity_model,
-                2: vs30_model,
-                "query_by": str(query_by[0]["#text"]).lower()
-            }
-        else:
-            return {
-                0: velocity_model,
-                1: elevation_model,
-                2: vs30_model,
-                "query_by": None
-            }
+        return new_model_array
 
     @classmethod
-    def _strip_and_return_parentheses(cls, string: str) -> dict:
+    def _strip_and_return_parameters(cls, string: str) -> dict:
         """
-        Given a string like cvms4(TEST), return a dictionary with format {"string": cvms4,
-        "parenthesis": TEST}. If no parenthesis, parenthesis is the empty string.
+        Given a string like cvms4[TEST], return a dictionary with format {"string": cvms4,
+        "parameters": TEST}. If no parameters, parameters is the empty string.
         :param string: The string to parse.
         :return: The dictionary in the format described in main comment.
         """
-        first_re = re.compile(".*?\((.*?)\)")
+        first_re = re.compile(".*?\[(.*?)\]")
         result = re.findall(first_re, string)
 
         if len(result) > 0:
-            second_re = re.compile("\([^)]*\)")
+            second_re = re.compile("\[[^)]*\]")
             string = re.sub(second_re, "", string)
-            return {"string": string, "parenthesis": result[0]}
+            return {"string": string, "parameters": result[0]}
         else:
-            return {"string": string, "parenthesis": ""}
+            return {"string": string, "parameters": ""}
 
     @classmethod
     def get_list_of_installed_models(cls) -> dict:
@@ -365,7 +373,7 @@ class UCVM:
         with open(UCVM_MODEL_LIST_FILE, "r") as fd:
             model_xml = xmltodict.parse(fd.read())
 
-        models = {"velocity": [], "elevation": [], "vs30": []}
+        models = {"velocity": [], "elevation": [], "vs30": [], "modifier": []}
 
         if model_xml["root"] is None:
             return models

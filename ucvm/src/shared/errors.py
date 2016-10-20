@@ -4,7 +4,7 @@ Defines all the possible errors that can be called with UCVM. This makes for eas
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
 :created:   August 9, 2016
-:modified:  August 9, 2016
+:modified:  October 17, 2016
 """
 
 _ERROR_LIST = {
@@ -36,7 +36,9 @@ _ERROR_LIST = {
     17: "Cross-section properties not specified correctly. Please try again. If that doesn't work,",
     18: "Could not load config.xml for gridded velocity model. Please try launching UCVM again. If "
         "that doesn't work,",
-    19: "Model type not found. Please try again. If that doesn't work,"
+    19: "Model type not found. Please try again. If that doesn't work,",
+    20: "Two or more of the same model type were provided in the same model string (e.g. "
+        "cvms4.cvms426 which combines two velocity models). Please fix and try again."
 }
 
 

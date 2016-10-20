@@ -23,7 +23,8 @@ def get_list_of_installed_models() -> list:
     return_list = {
         "velocity": [],
         "elevation": [],
-        "vs30": []
+        "vs30": [],
+        "modifier": []
     }
 
     try:
@@ -41,6 +42,9 @@ def get_list_of_installed_models() -> list:
     for item in parse_xmltodict_one_or_many(model_xml, "root/vs30"):
         return_list["vs30"].append({item["@id"]: item})
 
+    for item in parse_xmltodict_one_or_many(model_xml, "root/modifier"):
+        return_list["modifier"].append({item["@id"]: item})
+
     return return_list
 
 
@@ -51,7 +55,8 @@ def get_list_of_installable_internet_models() -> dict:
     installable_models = {
         "velocity": [],
         "elevation": [],
-        "vs30": []
+        "vs30": [],
+        "modifier": []
     }
 
     for item in parse_xmltodict_one_or_many(model_list_xml, "root/model"):

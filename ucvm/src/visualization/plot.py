@@ -48,9 +48,6 @@ class Plot:
                 setattr(self, key, value)
 
         self.figure = plt.figure(figsize=(self.plot_width / 100, self.plot_height / 100), dpi=100)
-        plt.xlabel(self.plot_xlabel if isinstance(self.plot_xlabel, str) else "", fontsize=14)
-        plt.ylabel(self.plot_ylabel if isinstance(self.plot_ylabel, str) else "", fontsize=14)
-        plt.title(self.plot_title if isinstance(self.plot_title, str) else "")
 
     def show_profile(self, properties: dict) -> bool:
         """
@@ -63,6 +60,9 @@ class Plot:
             fig.plot(item["x_values"], item["y_values"], "-")
 
         plt.gca().invert_yaxis()
+        plt.xlabel(self.plot_xlabel if isinstance(self.plot_xlabel, str) else "", fontsize=14)
+        plt.ylabel(self.plot_ylabel if isinstance(self.plot_ylabel, str) else "", fontsize=14)
+        plt.title(self.plot_title if isinstance(self.plot_title, str) else "")
         plt.show()
 
     def show_plot(self, x_points: np.array, y_points: np.array, data: np.ndarray,
@@ -150,17 +150,58 @@ class Plot:
                         fault_lons.append(x)
                         fault_lats.append(y)
                     m.plot(fault_lons, fault_lats, "k-", linewidth=1)
+
+            plt.xlabel(self.plot_xlabel if isinstance(self.plot_xlabel, str) else "", fontsize=14)
+            plt.ylabel(self.plot_ylabel if isinstance(self.plot_ylabel, str) else "", fontsize=14)
+            plt.title(self.plot_title if isinstance(self.plot_title, str) else "")
         else:
             colormap.set_bad("w", 1)
             data_cpy = np.ma.masked_invalid(data)
             data_cpy = np.ma.masked_less_equal(data_cpy, 0)
-            fig = self.figure.add_subplot(1, 1, 1)
-            t = fig.imshow(data_cpy, cmap=colormap, norm=norm)
-            fig.autoscale(False)
+
+            plt.axes([0.1, 0.7, 0.8, 0.25])
+
+            ll_lat = kwargs["boundaries"]["sp"][1] if kwargs["boundaries"]["sp"][1] < \
+                     kwargs["boundaries"]["ep"][1] else kwargs["boundaries"]["ep"][1]
+            ll_lon = kwargs["boundaries"]["sp"][0] if kwargs["boundaries"]["sp"][0] < \
+                     kwargs["boundaries"]["ep"][0] else kwargs["boundaries"]["ep"][0]
+            ur_lat = kwargs["boundaries"]["sp"][1] if kwargs["boundaries"]["sp"][1] > \
+                     kwargs["boundaries"]["ep"][1] else kwargs["boundaries"]["ep"][1]
+            ur_lon = kwargs["boundaries"]["sp"][0] if kwargs["boundaries"]["sp"][0] > \
+                     kwargs["boundaries"]["ep"][0] else kwargs["boundaries"]["ep"][0]
+
+            m = basemap.Basemap(projection='cyl',
+                                llcrnrlat=ll_lat - 0.1 * ll_lat,
+                                urcrnrlat=ur_lat + 0.1 * ur_lat,
+                                llcrnrlon=ll_lon + 0.05 * ll_lon,
+                                urcrnrlon=ur_lon - 0.05 * ur_lon,
+                                resolution='f', anchor='C')
+
+            m.etopo()
+
+            m.plot([kwargs["boundaries"]["sp"][0], kwargs["boundaries"]["ep"][0]],
+                   [kwargs["boundaries"]["sp"][1], kwargs["boundaries"]["ep"][1]],
+                   color="k", linewidth=2)
+
+            plt.axes([0.10, 0.18, 0.8, 0.4])
+            plt.xlabel(self.plot_xlabel if isinstance(self.plot_xlabel, str) else "", fontsize=14)
+            plt.ylabel(self.plot_ylabel if isinstance(self.plot_ylabel, str) else "", fontsize=14)
+            plt.title(self.plot_title if isinstance(self.plot_title, str) else "")
+            t = plt.imshow(data_cpy, cmap=colormap, norm=norm)
+
+            if "yticks" in kwargs:
+                plt.yticks(kwargs["yticks"][0], kwargs["yticks"][1])
+            else:
+                plt.yticks([], [])
+
+            if "xticks" in kwargs:
+                plt.xticks(kwargs["xticks"][0], kwargs["xticks"][1])
+            else:
+                plt.xticks([], [])
 
             if "topography" in kwargs and kwargs["topography"] is not None:
                 x = [y for y in range(len(kwargs["topography"]))]
-                fig.plot(x, kwargs["topography"], "k-", linewidth=1)
+                plt.plot(x, kwargs["topography"], "k-", linewidth=1)
 
         cax = plt.axes([0.125, 0.05, 0.775, 0.02])
         cbar = plt.colorbar(t, cax=cax, orientation='horizontal', ticks=self.ticks)

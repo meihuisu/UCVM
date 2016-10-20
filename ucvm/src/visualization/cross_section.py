@@ -12,7 +12,7 @@ import numpy as np
 
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.visualization.plot import Plot
-from ucvm.src.shared.properties import Point, SeismicData, UCVM_DEPTH
+from ucvm.src.shared.properties import Point, SeismicData, UCVM_DEPTH, UCVM_DEFAULT_PROJECTION
 
 from collections import namedtuple
 
@@ -57,6 +57,12 @@ class CrossSection(Plot):
             self.plot_title = "Cross-Section from (%.2f, %.2f) to (%.2f, %.2f)" % \
                               (self.start_point.x_value, self.start_point.y_value,
                                self.end_point.x_value, self.end_point.y_value)
+
+        self.plot_ylabel = "Depth (km)"
+        if self.start_point.depth_elev != UCVM_DEPTH:
+            self.plot_ylabel = "Elevation (km)"
+
+        self.plot_xlabel = "Distance (km)"
 
         super().__init__(**kwargs)
 
@@ -114,7 +120,7 @@ class CrossSection(Plot):
                     SeismicData(Point(lon, lat, j, int(self.start_point.depth_elev)))
                 )
 
-        UCVM.query(self.sd_array, self.cvms, ["elevation", "velocity"])
+        UCVM.query(self.sd_array, self.cvms)
 
         num_x = num_prof + 1
         num_y = int(math.ceil(self.end_point.z_value - self.start_point.z_value) /
@@ -163,16 +169,19 @@ class CrossSection(Plot):
             self.bounds = [0, 0.35, 0.70, 1.00, 1.35, 1.70, 2.55, 3.40, 4.25, 5.10, 5.95, 6.80,
                            7.65, 8.50]
             self.ticks = [0, 0.85, 1.70, 2.55, 3.40, 4.25, 5.10, 5.95, 6.80, 7.65, 8.50]
+            self.plot_cbar_label = "Vp (km/s)"
         elif str(self.cross_section_properties.property).lower().strip() == "vs":
             position = 1
             self.bounds = [0, 0.20, 0.40, 0.60, 0.80, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00,
                            4.50, 5.00]
             self.ticks = [0, 0.50, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00, 4.50, 5.00]
+            self.plot_cbar_label = "Vs (km/s)"
         elif str(self.cross_section_properties.property).lower().strip() == "density":
             position = 2
             self.bounds = [0, 0.20, 0.40, 0.60, 0.80, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00,
                            4.50, 5.00]
             self.ticks = [0, 0.50, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00, 4.50, 5.00]
+            self.plot_cbar_label = "Density (kg/m^3)"
         elif str(self.cross_section_properties.property).lower().strip() == "qp":
             position = 3
         elif str(self.cross_section_properties.property).lower().strip() == "qs":
@@ -185,10 +194,39 @@ class CrossSection(Plot):
                 x_val = x * 6
                 datapoints[y][x] = self.extracted_data[y][x_val + position] / 1000
                 topography[x] = self.extracted_data[y][x_val + 5] / \
-                                self.cross_section_properties.height_spacing + 50
-                print(topography[x])
+                                self.cross_section_properties.height_spacing + (
+                    self.start_point.z_value / self.cross_section_properties.height_spacing * -1
+                )
+
+        if self.start_point.depth_elev == UCVM_DEPTH:
+            topography = None
+
+        yticks = [
+            [0, num_y / 2, num_y - 1],
+            [
+                self.start_point.z_value / 1000,
+                (self.end_point.z_value + self.start_point.z_value) / 2000,
+                self.end_point.z_value / 1000
+            ]
+        ]
+        xticks = [
+            [0, num_x / 2, num_x - 1],
+            [0, num_x / 2 * self.cross_section_properties.width_spacing / 1000,
+             num_x * self.cross_section_properties.width_spacing / 1000]
+        ]
+        boundaries = {
+            "sp": [
+                self.start_point.convert_to_projection(UCVM_DEFAULT_PROJECTION).x_value,
+                self.start_point.convert_to_projection(UCVM_DEFAULT_PROJECTION).y_value,
+            ],
+            "ep": [
+                self.end_point.convert_to_projection(UCVM_DEFAULT_PROJECTION).x_value,
+                self.end_point.convert_to_projection(UCVM_DEFAULT_PROJECTION).y_value
+            ]
+        }
 
         # Ok, now that we have the 2D array of lons, lats, and data, let's call on our inherited
         # classes show_plot function to actually show the plot.
         super(CrossSection, self).show_plot(None, None, datapoints, False, topography=topography,
-                                            spacing=self.cross_section_properties.width_spacing)
+                                            spacing=self.cross_section_properties.width_spacing,
+                                            yticks=yticks, xticks=xticks, boundaries=boundaries)

@@ -174,10 +174,13 @@ class OneDimensionalVelocityModel(VelocityModel):
             self._parse_scec_model(model_1d["root"]["data"], parsed_model["layers"])
 
         for i in range(0, len(data)):
-            data[i].set_velocity_data(
-                self._get_velocity_data(data[i].converted_point.z_value, parsed_model["layers"],
-                                        parsed_model["interpolation"] == "linear",
-                                        parsed_model["name"])
-            )
+            if data[i].converted_point.z_value < 0:
+                self._set_velocity_properties_none(data[i])
+            else:
+                data[i].set_velocity_data(
+                    self._get_velocity_data(data[i].converted_point.z_value, parsed_model["layers"],
+                                            parsed_model["interpolation"] == "linear",
+                                            parsed_model["name"])
+                )
 
         return True

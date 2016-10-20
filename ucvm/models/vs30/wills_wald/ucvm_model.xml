@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- Model root tag -->
 <root>
@@ -7,26 +7,19 @@
     <information>
 
         <!-- A human-friendly name identifier -->
-        <identifier>Bilinear Interpolation</identifier>
+        <identifier>Wills-Wald Vs30</identifier>
 
         <!-- A machine-friendly identifier (lowercase alpha-numeric only) -->
-        <id>bilinear</id>
+        <id>wills_wald</id>
 
         <!-- Describes the type of model (velocity, elevation, or vs30) -->
-        <type>modifier</type>
+        <type>vs30</type>
 
         <!-- Public model description -->
         <description>
-            Implements bilinear interpolation for velocity.
+            This Vs30 model uses the Wills map within California, and the Wald map outside of
+            the state.
         </description>
-
-        <!-- Website on which more information about the model can be found -->
-        <website>None</website>
-
-        <!-- A list of references that describe the model -->
-        <references>
-            <reference>None</reference>
-        </references>
 
         <!-- The license for this velocity model (all SCEC software is Apache version 2.0) -->
         <license>
@@ -45,16 +38,21 @@
             limitations under the License.
         </license>
 
+        <!-- A brief textual description of the coverage region -->
+        <coverage>
+            <description>California</description>
+        </coverage>
+
     </information>
 
     <!-- Private information used by UCVM to understand how to query the model -->
     <internal>
 
         <!-- The model class that inherits from Model -->
-        <class>BilinearInterpolationModifier</class>
+        <class>WillsWaldModel</class>
 
         <!-- The main model file which contains the class -->
-        <file>bilinear.py</file>
+        <file>wills_wald.py</file>
 
         <!-- Projection that this model uses (DEFAULT means the default UCVM WGS84 projection -->
         <projection>DEFAULT</projection>
@@ -62,13 +60,19 @@
         <!-- Specifies if this model is publicly available (most models should be) -->
         <public>Yes</public>
 
-        <!-- Specifies dependencies for the model -->
-        <depends>
-            <velocity>Yes</velocity>
-            <elevation>No</elevation>
-            <vs30>No</vs30>
-        </depends>
+        <!-- Defines if the default query mode is by DEPTH or ELEVATION -->
+        <query_by>DEPTH</query_by>
 
     </internal>
+
+    <!-- This is used by UCVM to understand how to make and build the model -->
+    <build>
+
+        <!-- Data directories -->
+        <data>
+            <directory>data</directory>
+        </data>
+
+    </build>
 
 </root>

@@ -54,6 +54,10 @@ class LinThurberVelocityModel(VelocityModel):
             mpnt.coord[1] = points[i].converted_point.y_value
             mpnt.coord[2] = points[i].converted_point.z_value
 
+            if mpnt.coord[2] < 0:
+                self._set_velocity_properties_none(points[i])
+                continue
+
             if cvmlt_query(&mpnt, &mdata) == 0 and mdata.vp > 0 and mdata.vs > 0 and mdata.rho > 0:
                 points[i].set_velocity_data(
                     VelocityProperties(

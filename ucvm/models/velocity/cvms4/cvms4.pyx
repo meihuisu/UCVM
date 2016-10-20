@@ -78,14 +78,18 @@ class CVMS4VelocityModel(VelocityModel):
         id_s4 = self._public_metadata["id"]
 
         for i in range(0, len(points)):
-            points[i].set_velocity_data(
-                VelocityProperties(
-                    vp[i], vs[i], density[i],  # From CVM-S4
-                    None, None,  # No Qp or Qs defined
-                    id_s4, id_s4, id_s4,  # All data comes direct from CVM-S4
-                    None, None  # No Qp or Qs defined
+            if points[i].converted_point.z_value >= 0:
+                points[i].set_velocity_data(
+                    VelocityProperties(
+                        vp[i], vs[i], density[i],  # From CVM-S4
+                        None, None,  # No Qp or Qs defined
+                        id_s4, id_s4, id_s4,  # All data comes direct from CVM-S4
+                        None, None  # No Qp or Qs defined
+                    )
                 )
-            )
+            else:
+                # CVM-S4 has no information on negative depth points.
+                self._set_velocity_properties_none(points[i])
 
         free(lon)
         free(lat)

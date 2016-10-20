@@ -98,7 +98,8 @@ def get_list_of_installable_internet_models() -> dict:
     installable_models = {
         "velocity": [],
         "elevation": [],
-        "vs30": []
+        "vs30": [],
+        "modifier": []
     }
 
     all_models = model_list_xml.getElementsByTagName("model")
@@ -204,9 +205,9 @@ setup(name=UCVM_INFORMATION["short_name"],
       url=UCVM_INFORMATION["url"],
       packages=["ucvm", "ucvm.src", "ucvm.src.framework", "ucvm.src.model",
                 "ucvm.src.model.velocity", "ucvm.src.model.elevation", "ucvm.src.model.vs30",
-                "ucvm.src.model.fault", "ucvm.src.shared", "ucvm.src.visualization", "ucvm.models",
-                "ucvm.src.visualization.internal_basemap", "ucvm.tests", "ucvm.tests.data",
-                "ucvm.libraries"],
+                "ucvm.src.model.fault", "ucvm.src.model.modifier", "ucvm.src.shared",
+                "ucvm.src.visualization", "ucvm.models", "ucvm.src.visualization.internal_basemap",
+                "ucvm.tests", "ucvm.tests.data", "ucvm.libraries"],
       package_dir={'ucvm': 'ucvm',
                    'ucvm.src': 'ucvm/src',
                    'ucvm.src.framework': 'ucvm/src/framework',
@@ -215,6 +216,7 @@ setup(name=UCVM_INFORMATION["short_name"],
                    'ucvm.src.model.elevation': 'ucvm/src/model/elevation',
                    'ucvm.src.model.vs30': 'ucvm/src/model/vs30',
                    'ucvm.src.model.fault': 'ucvm/src/model/fault',
+                   'ucvm.src.model.modifier': 'ucvm/src/model/modifier',
                    'ucvm.src.shared': 'ucvm/src/shared',
                    'ucvm.src.visualization': 'ucvm/src/visualization',
                    'ucvm.models': 'ucvm/models',

@@ -8,11 +8,13 @@ import ucvm.src.framework
 
 UCVM_DEFAULT_PROJECTION = "+proj=latlong +datum=WGS84"  #: str: The default Proj.4 projection.
 UCVM_DEFAULT_DEM = "usgs_noaa"                          #: str: The default UCVM elevation model.
-UCVM_DEFAULT_VS30 = "vs30_calc"                         #: str: The default Vs30 model.
-UCVM_DEFAULT_INTERPOLATION = "trilinear"                #: str: The default interpolation method.
+UCVM_DEFAULT_VS30 = "wills_wald"                        #: str: The default Vs30 model.
+UCVM_DEFAULT_VELOCITY = "1d"                            #: str: The default velocity model.
+UCVM_DEFAULT_INTERPOLATION = "bilinear"                 #: str: The default interpolation method.
 
 UCVM_DEPTH = 0                                          #: int: UCVM constant for query by depth.
 UCVM_ELEVATION = 1                                      #: int: UCVM constant for query by elev.
+UCVM_ELEV_ANY = 2                                       #: int: UCVM constant for query by any.
 
 UCVM_GRID_TYPE_CENTER = 0                               #: int: Meshing grid type center.
 UCVM_GRID_TYPE_VERTEX = 1                               #: int: Meshing grid type vertex.

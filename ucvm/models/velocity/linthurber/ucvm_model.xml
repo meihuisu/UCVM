@@ -66,7 +66,7 @@
         <!-- Defines the default elevation and Vs30 models that go with this model -->
         <defaults>
             <elevation>usgs_noaa</elevation>
-            <vs30>vs30_calc</vs30>
+            <vs30>wills_wald</vs30>
         </defaults>
 
         <!-- Defines if the default query mode is by DEPTH or ELEVATION -->

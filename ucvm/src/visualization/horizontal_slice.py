@@ -230,6 +230,12 @@ class HorizontalSlice(Plot):
             self.bounds = [-4, -3, -2, -1, 0, 1, 2, 3, 4]
             self.ticks = [-4, -3, -2, -1, 0, 1, 2, 3, 4]
             self.plot_cbar_label = "Elevation (km)"
+        elif str(self.extras["plot"]["property"]).lower().strip() == "vs30":
+            position = 0
+            self.bounds = [0, 0.20, 0.40, 0.60, 0.80, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00,
+                           4.50, 5.00]
+            self.ticks = [0, 0.50, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00, 4.50, 5.00]
+            self.plot_cbar_label = "Vs (km/s)"
         else:
             position = 0
 
@@ -256,7 +262,8 @@ class HorizontalSlice(Plot):
                 lons[j][i] = new_pt.x_value
                 lats[j][i] = new_pt.y_value
 
-                if str(self.extras["plot"]["property"]).lower().strip() == "elevation":
+                if str(self.extras["plot"]["property"]).lower().strip() == "elevation" or \
+                   str(self.extras["plot"]["property"]).lower().strip() == "vs30":
                     data[j][i] = self.extracted_data[j * self.slice_properties.num_x + i] / 1000
                 else:
                     data[j][i] = self.extracted_data[((j * self.slice_properties.num_x) + i) *

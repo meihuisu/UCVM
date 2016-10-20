@@ -5,12 +5,13 @@ Hercules) within UCVM.
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
 :created:   July 29, 2016
-:modified:  August 10, 2016
+:modified:  Ocotber 17, 2016
 """
 import math
 import humanize
 import psutil
 import xmltodict
+import copy
 
 from typing import List
 
@@ -36,7 +37,9 @@ class InternalMesh(object):
                        mesh_info["initial_point"]["y"],
                        mesh_info["initial_point"]["z"],
                        UCVM_ELEVATION if str(mesh_info["initial_point"]["depth_elev"]).\
-                       strip().lower() == "elevation" else UCVM_DEPTH,
+                       strip().lower() == "elevation" or \
+                       int(mesh_info["initial_point"]["depth_elev"]) == UCVM_ELEVATION else \
+                       UCVM_DEPTH,
                        {},
                        mesh_info["initial_point"]["projection"])
 
@@ -136,11 +139,13 @@ class InternalMeshIterator:
             ) * self.internal_mesh.spacing
             z_point = z_val * self.internal_mesh.spacing
 
+            self.init_array[internal_counter].original_point.depth_elev = \
+                self.internal_mesh.origin.depth_elev
             self.init_array[internal_counter].original_point.z_value = z_point
             self.init_array[internal_counter].original_point.y_value = y_point
             self.init_array[internal_counter].original_point.x_value = x_point
             self.init_array[internal_counter].converted_point = \
-                self.init_array[internal_counter].original_point
+                copy.copy(self.init_array[internal_counter].original_point)
 
             internal_counter += 1
             self.current_point += 1

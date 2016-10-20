@@ -224,6 +224,22 @@ def calculate_scaled_density(vp: float) -> float:
     return 1865.0 + 0.1579 * vp
 
 
+def calculate_nafe_drake_density(vp: float) -> float:
+    """
+    Calculates scaled density based on Vp.
+    :param vp: The P-wave velocity in m/s.
+    :return: The scaled density parameter.
+    """
+    vp_new = vp * 0.001
+    density_new = vp_new * (
+        1.6612 - vp_new * (0.4721 - vp_new * (0.0671 - vp_new * (0.0043 - vp_new * 0.000106)))
+    )
+    if density_new < 1.0:
+        density_new = 1.0
+    density_new = density_new * 1000.0
+
+    return density_new
+
 def calculate_scaled_vs(vp: float, density: float) -> float:
     """
     Calculates the scaled Vs parameter based on Vp and density.
@@ -239,3 +255,15 @@ def calculate_scaled_vs(vp: float, density: float) -> float:
         nu = 0.25
 
     return vp * math.sqrt((0.5 - nu) / (1.0 - nu))
+
+
+def calculate_scaled_vp(vs: float) -> float:
+    """
+    Calculates the scaled Vp parameter based on Vs (Brocher).
+    :param vs: The S-wave velocity in m/s.
+    :return: The scaled Vp parameter.
+    """
+    vs_new = vs * 0.001
+    vp_new = 0.9409 + vs_new * (2.0947 - vs_new * (0.8206 - vs_new * (0.2683 - vs_new * 0.0251)))
+    vp_new = vp_new * 1000.0
+    return vp_new

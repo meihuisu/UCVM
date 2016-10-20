@@ -17,7 +17,7 @@ import os
 from abc import abstractmethod
 from typing import List
 
-from ucvm.src.shared import UCVM_DEFAULT_PROJECTION, UCVM_DEPTH, UCVM_ELEVATION
+from ucvm.src.shared import UCVM_DEFAULT_PROJECTION, UCVM_DEPTH, UCVM_ELEVATION, UCVM_ELEV_ANY
 from ucvm.src.shared.properties import SeismicData
 
 
@@ -32,6 +32,7 @@ class Model:
             "name": None,
             "description": None,
             "website": None,
+            "type": None,
             "references": [],
             "license": None,
             "coverage": {
@@ -66,6 +67,7 @@ class Model:
         self._public_metadata["id"] = doc["root"]["information"]["id"]
         self._public_metadata["name"] = doc["root"]["information"]["identifier"]
         self._public_metadata["description"] = doc["root"]["information"]["description"]
+        self._public_metadata["type"] = doc["root"]["information"]["type"]
 
         try:
             self._public_metadata["website"] = doc["root"]["information"]["website"]
@@ -112,8 +114,12 @@ class Model:
             pass
 
         try:
-            if str(doc["root"]["internal"]["query_by"]).lower().strip() != "depth":
+            if str(doc["root"]["internal"]["query_by"]).lower().strip() == "depth":
+                self._private_metadata["query_by"] = UCVM_DEPTH
+            elif str(doc["root"]["internal"]["query_by"]).lower().strip() == "elevation":
                 self._private_metadata["query_by"] = UCVM_ELEVATION
+            elif str(doc["root"]["internal"]["query_by"]).lower().strip() == "any":
+                self._private_metadata["query_by"] = UCVM_ELEV_ANY
         except KeyError:
             pass
 

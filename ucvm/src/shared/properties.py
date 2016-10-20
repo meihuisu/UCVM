@@ -5,7 +5,7 @@ material properties.
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
 :created:   July 6, 2016
-:modified:  July 12, 2016
+:modified:  October 17, 2016
 """
 import copy
 
@@ -22,7 +22,7 @@ except ImportError as the_err:
 from .constants import UCVM_DEFAULT_PROJECTION
 from .functions import is_number
 
-from ucvm.src.shared import UCVM_DEPTH, UCVM_ELEVATION
+from ucvm.src.shared import UCVM_DEPTH, UCVM_ELEVATION, UCVM_ELEV_ANY
 
 VelocityProperties = namedtuple("VelocityProperties", "vp vs density qp qs " +
                                 "vp_source vs_source density_source qp_source qs_source")
@@ -105,7 +105,7 @@ class Point:
         :return: A Point in the new projection.
         """
         if projection == self.projection:
-            return self
+            return copy.copy(self)
 
         if self.projection in Point.loaded_projections:
             in_proj = Point.loaded_projections[self.projection]
@@ -283,11 +283,12 @@ class SeismicData:
         :param depth_or_elev: Either UCVM_DEPTH or UCVM_ELEVATION.
         :return: True if conversion was not needed or conversion was successful. False if not.
         """
-        if self.converted_point.get_depth_or_elevation() == depth_or_elev:
+        if self.converted_point.get_depth_or_elevation() == depth_or_elev or \
+           depth_or_elev == UCVM_ELEV_ANY:
             return True
 
         # A conversion is necessary.
-        if self.elevation_properties is None:
+        if self.elevation_properties is None or self.elevation_properties.elevation is None:
             return False
 
         # We have the elevation properties. Let's convert.

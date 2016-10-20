@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+
+import sys
+import os
+from subprocess import Popen, PIPE, STDOUT
+
+import numpy as np
+
+SPACING = 0.01
+CORNERS = {
+    "bl": {
+        "e": -130,
+        "n": 27
+    },
+    "ur": {
+        "e": -110,
+        "n": 47
+    }
+}
+
+
+def frange(x, y, jump):
+    while float(x) <= float(y):
+        yield float(x)
+        x += jump
+
+
+def main() -> int:
+    ucvm_out = ""
+    for j in frange(CORNERS["bl"]["n"], CORNERS["ur"]["n"], SPACING):
+        for i in frange(CORNERS["bl"]["e"], CORNERS["ur"]["e"] + SPACING, SPACING):
+            ucvm_out += "%.2f %.2f 0\n" % (i, j)
+    os.chdir("/Users/davidgil/ucvm-15.10.0/bin")
+    proc = Popen(
+        ["./ucvm_query", "-f", "../conf/ucvm.conf"], stdout=PIPE, stdin=PIPE, stderr=STDOUT
+    )
+    out_arr = np.zeros(
+        shape=(
+            int((CORNERS["ur"]["n"] - CORNERS["bl"]["n"]) / SPACING) + 2,
+            int((CORNERS["ur"]["e"] - CORNERS["bl"]["e"]) / SPACING) + 2
+        )
+    )
+    output = proc.communicate(input=ucvm_out.encode("ASCII"))[0]
+    i = 0
+    j = 0
+    for line in output.decode("ASCII").split("\n")[2:-1]:
+        line_split = line.split()
+        try:
+            out_arr[j][i] = float(line_split[4])
+        except IndexError:
+            print(line_split)
+        if i == int((CORNERS["ur"]["e"] - CORNERS["bl"]["e"]) / SPACING):
+            i = 0
+            j += 1
+        else:
+            i += 1
+    np.save("vs30.dat", out_arr)
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
