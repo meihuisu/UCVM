@@ -7,8 +7,8 @@ from Cython.Distutils import build_ext
 from ucvm.src.shared.constants import UCVM_MODELS_DIRECTORY
 
 ext_modules = [
-    Extension("CVMH1510VelocityModel", ["cvmh.pyx"], libraries=["vxapi", "geo"],
-              library_dirs=[os.path.join(UCVM_MODELS_DIRECTORY, "cvmh", "lib")])
+    Extension("CVMH1510VelocityModel", ["cvmh1510.pyx"], libraries=["vxapi", "geo"],
+              library_dirs=[os.path.join(UCVM_MODELS_DIRECTORY, "cvmh1510", "lib")])
 ]
 
 setup(

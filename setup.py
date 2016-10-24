@@ -20,10 +20,12 @@ from subprocess import Popen, PIPE, CalledProcessError
 import shutil
 import sys
 
+from collections import OrderedDict
+
 
 UCVM_INFORMATION = {
     "short_name": "ucvm",
-    "version": "16.9.0",
+    "version": "16.12.0",
     "long_name": "Unified Community Velocity Model Framework",
     "author": "Southern California Earthquake Center",
     "email": "software@scec.org",
@@ -111,7 +113,8 @@ def get_list_of_installable_internet_models() -> dict:
                 model_item.getElementsByTagName("description")[0].firstChild.data
             ).split("\n")]),
             "name": str(model_item.getElementsByTagName("name")[0].firstChild.data),
-            "coverage": str(model_item.getElementsByTagName("coverage")[0].firstChild.data),
+            "coverage": str(model_item.getElementsByTagName("coverage")[0].
+                            getElementsByTagName("description")[0].firstChild.data),
             "type": str(model_item.getElementsByTagName("type")[0].firstChild.data)
         }
 
@@ -126,8 +129,9 @@ if "--everything" in sys.argv:
 
 models_to_download = [
     ("onedimensional", "1D"),
-    ("usgs_noaa", "USGS/NOAA Digital Elevation Model"),
-    ("vs30_calc", "Calculated Vs30 from the model (top 30 meters slowness)")
+    ("usgs-noaa", "USGS/NOAA Digital Elevation Model"),
+    ("wills-wald-2006", "Wills-Wald Vs30"),
+    ("vs30-calc", "Calculated Vs30 from the model (top 30 meters slowness)")
 ]
 
 print(
@@ -135,12 +139,12 @@ print(
     "Thank you for downloading and installing UCVM " + UCVM_INFORMATION["version"] + "!\n"
     "\n"
     "UCVM software framework is a collection of software tools designed to provide a standard\n"
-    "interface to multiple, alternative, California 3D velocity models.\n"
+    "interface to multiple, alternative 3D velocity models.\n"
     "\n"
-    "UCVM requires at least the USGS/NOAA digital elevation model and the calculated Vs30 model\n"
-    "to operate. Additional velocity, elevation, and Vs30 models are available for download.\n"
-    "These models cover various regions within the world, "
-    "\n"
+    "UCVM requires the 1D velocity model, USGS/NOAA digital elevation model, and the Wills-Wald\n"
+    "Vs30 model to operate. Additional velocity, elevation, and Vs30 models are available for\n"
+    "download. These models cover various regions within the world, although most are located\n"
+    "within California.\n"
 )
 
 if shutil.which("mpicc") is not None:
@@ -150,7 +154,12 @@ if shutil.which("mpicc") is not None:
 
 print("Specify which of the following models you wish to download and install with UCVM:\n")
 
-model_list = get_list_of_installable_internet_models()
+model_list_u = get_list_of_installable_internet_models()
+model_list = OrderedDict()
+model_list["velocity"] = model_list_u["velocity"]
+model_list["elevation"] = model_list_u["elevation"]
+model_list["vs30"] = model_list_u["vs30"]
+model_list["modifier"] = model_list_u["modifier"]
 
 for key, models in model_list.items():
     # If all the models are already set to be downloaded by default, remove them.
@@ -173,8 +182,10 @@ for key, models in model_list.items():
             models_to_download.append((item["id"], item["name"]))
         else:
             if str(input("Would you like to install " +
-                     item["name"] + "? Type yes or y to install: ")).strip().lower()[:1] == "y":
+                         item["name"] + "?\nType yes or y to install, no or n to pass: ")).\
+                       strip().lower()[:1] == "y":
                 models_to_download.append((item["id"], item["name"]))
+        print("")
     print("")
 
 total_model_size = 0
@@ -190,7 +201,7 @@ for item in models_to_download:
 print("\nYour total download size will be: " + sizeof_fmt(total_model_size))
 
 if not download_everything:
-    if str(input("Would you like to install UCVM? "
+    if str(input("Would you like to install UCVM with these models? "
                  "Type yes or y to start the installation: ")).strip().lower()[:1] != "y":
         print("Aborting installation...")
         exit(1)

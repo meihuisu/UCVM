@@ -12,7 +12,7 @@ import copy
 from collections import namedtuple
 
 try:
-    import mpl_toolkits.basemap.pyproj as pyproj
+    import pyproj
 except ImportError as the_err:
     print("UCVM requires PyProj to be installed. Please install PyProj and then re-run \
            this script.")

@@ -7,8 +7,8 @@ import ucvm.libraries
 import ucvm.src.framework
 
 UCVM_DEFAULT_PROJECTION = "+proj=latlong +datum=WGS84"  #: str: The default Proj.4 projection.
-UCVM_DEFAULT_DEM = "usgs_noaa"                          #: str: The default UCVM elevation model.
-UCVM_DEFAULT_VS30 = "wills_wald"                        #: str: The default Vs30 model.
+UCVM_DEFAULT_DEM = "usgs-noaa"                          #: str: The default UCVM elevation model.
+UCVM_DEFAULT_VS30 = "wills-wald-2006"                        #: str: The default Vs30 model.
 UCVM_DEFAULT_VELOCITY = "1d"                            #: str: The default velocity model.
 UCVM_DEFAULT_INTERPOLATION = "bilinear"                 #: str: The default interpolation method.
 

@@ -6,7 +6,7 @@ import copy
 import ucvm.models
 import urllib.request
 
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, STDOUT
 from distutils.dir_util import copy_tree
 
 from .model import Model
@@ -172,12 +172,12 @@ def download_and_install_library(library_name: str) -> bool:
     return True
 
 
-def install_ucvm_model_xml(xml_file: str) -> bool:
+def install_ucvm_model_xml(xml_file: str) -> dict:
     """
     Given a ucvm_model.xml file, install the model, including any necessary build actions
     within the UCVM models directory.
     :param xml_file: The ucvm_model.xml descriptor.
-    :return: True if the operation was successful, false or error if not.
+    :return: Dictionary containing the model info if successful, false or error if not.
     """
     with open(xml_file) as fd:
         doc = xmltodict.parse(fd.read())
@@ -335,6 +335,12 @@ def install_ucvm_model_xml(xml_file: str) -> bool:
             os.path.join(os.path.dirname(xml_file), "test_" + xml_info["id"] + ".py"),
             new_path
         )
+    if os.path.exists(os.path.join(os.path.dirname(xml_file), "test_" + xml_info["id"] + ".npy")):
+        shutil.copy(
+            os.path.join(os.path.dirname(xml_file), "test_" + xml_info["id"] + ".npy"),
+            new_path
+        )
+
     shutil.copy(xml_file, new_path)
 
-    return True
+    return xml_info

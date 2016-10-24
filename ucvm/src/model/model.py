@@ -52,7 +52,9 @@ class Model:
             "projection": UCVM_DEFAULT_PROJECTION,
             "public": True,
             "defaults": {},
-            "query_by": UCVM_DEPTH
+            "query_by": UCVM_DEPTH,
+            "class": None,
+            "file": None
         }
 
         if "model_location" in kwargs:
@@ -127,6 +129,9 @@ class Model:
             self._private_metadata["defaults"] = doc["root"]["internal"]["defaults"]
         except KeyError:
             pass
+
+        self._private_metadata["class"] = doc["root"]["internal"]["class"]
+        self._private_metadata["file"] = doc["root"]["internal"]["file"]
 
     def query(self, data: List[SeismicData], **kwargs) -> bool:
         """

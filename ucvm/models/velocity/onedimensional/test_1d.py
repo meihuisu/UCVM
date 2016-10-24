@@ -27,11 +27,6 @@ class OneDimensionalVelocityModelTest(unittest.TestCase):
                 SeismicData(Point(-118, 34, 16)),
                 SeismicData(Point(-118, 34, 20)),
                 SeismicData(Point(-118, 34, 100000))
-            ],
-            "elevation": [
-                SeismicData(Point(-118, 34, 276.95, UCVM_ELEVATION)),
-                SeismicData(Point(-118, 34, 256.95, UCVM_ELEVATION)),
-                SeismicData(Point(-118, 34, -1000000, UCVM_ELEVATION))
             ]
         }
 
@@ -40,7 +35,7 @@ class OneDimensionalVelocityModelTest(unittest.TestCase):
         Tests the 1D model for basic depth query.
         :return: Nothing
         """
-        UCVM.query(self.data["depth"], "1d(Whittier Narrows)")
+        UCVM.query(self.data["depth"], "1d[Whittier Narrows]", ["velocity"])
 
         assert_velocity_properties(
             self,
@@ -80,7 +75,7 @@ class OneDimensionalVelocityModelTest(unittest.TestCase):
         Tests the 1D model for basic depth, linear query.
         :return: Nothing
         """
-        UCVM.query(self.data["depth"], "1d(Whittier Narrows,linear)")
+        UCVM.query(self.data["depth"], "1d[Whittier Narrows,linear]", ["velocity"])
 
         assert_velocity_properties(
             self,
@@ -121,36 +116,4 @@ class OneDimensionalVelocityModelTest(unittest.TestCase):
                                "whittier narrows 1d bbp (interpolated)",
                                "whittier narrows 1d bbp (interpolated)",
                                "whittier narrows 1d bbp (interpolated)")
-        )
-
-    def test_onedimensional_bbp_elevation(self) -> None:
-        """
-        Tests the 1D model for basic elevation query.
-        :return: Nothing
-        """
-        UCVM.query(self.data["elevation"], "1d(Whittier Narrows).elevation")
-
-        assert_velocity_properties(
-            self,
-            self.data["elevation"][0],
-            VelocityProperties(1700, 450, 2000, 45.0, 22.5,
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp")
-        )
-        assert_velocity_properties(
-            self,
-            self.data["elevation"][1],
-            VelocityProperties(2000, 1150, 2200, 115.0, 57.5,
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp")
-        )
-        assert_velocity_properties(
-            self,
-            self.data["elevation"][2],
-            VelocityProperties(7800, 4500, 3200, 450.0, 225.0,
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp")
         )

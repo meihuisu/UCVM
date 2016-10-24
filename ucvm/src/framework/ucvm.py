@@ -66,7 +66,8 @@ class UCVM:
             os.environ[environment_variable] = ""
 
         model_list = UCVM.get_list_of_installed_models()
-        model_list = model_list["velocity"] + model_list["elevation"] + model_list["vs30"]
+        model_list = model_list["velocity"] + model_list["elevation"] + model_list["vs30"] + \
+            model_list["modifier"]
 
         paths = []
         if environment_variable in os.environ:

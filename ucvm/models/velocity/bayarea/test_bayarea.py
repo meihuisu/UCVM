@@ -10,6 +10,7 @@ import unittest
 
 from ucvm.src.shared.properties import SeismicData, Point
 from ucvm.src.shared.constants import UCVM_ELEVATION
+from ucvm.src.shared.test import run_acceptance_test
 
 
 class BayAreaVelocityModelTest(unittest.TestCase):

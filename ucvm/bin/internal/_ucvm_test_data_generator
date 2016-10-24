@@ -1,0 +1,135 @@
+#!/usr/bin/env python3
+"""
+This command creates the tests for each of the velocity models automatically. These test files
+are generated using the model region and depth and are sampled at every 0.05 lat, lon, and every
+5000m depth.
+
+:copyright: Southern California Earthquake Center
+:author:    David Gill <davidgil@usc.edu>
+:created:   October 21, 2016
+:modified:  October 21, 2016
+"""
+import sys
+import os
+import math
+import xmltodict
+import numpy as np
+
+from subprocess import Popen, PIPE, STDOUT
+
+SPACING = 0.05
+DEPTH = 5000
+
+def main() -> int:
+    # Go through each model and get the coverage region.
+    path = os.path.abspath(os.path.join("..", "..", "models", "velocity"))
+    models_and_regions = {}
+
+    for item in os.listdir(path):
+        if item == ".DS_Store":
+            continue
+
+        if item == "bayarea":
+            test_by = "elevation"
+        else:
+            test_by = "depth"
+
+        with open(os.path.join(path, item, "ucvm_model.xml"), "r") as fd:
+            xml_data = xmltodict.parse(fd.read())
+
+            if "bottom-left" not in xml_data["root"]["information"]["coverage"]:
+                continue
+
+            metadata = {
+                "bottom-left": {
+                    "e": float(xml_data["root"]["information"]["coverage"]["bottom-left"]["e"]),
+                    "n": float(xml_data["root"]["information"]["coverage"]["bottom-left"]["n"])
+                },
+                "num_x": math.floor(
+                    (float(xml_data["root"]["information"]["coverage"]["top-right"]["e"]) -
+                     float(xml_data["root"]["information"]["coverage"]["bottom-left"]["e"])) /
+                    SPACING
+                ),
+                "num_y": math.floor(
+                    (float(xml_data["root"]["information"]["coverage"]["top-right"]["n"]) -
+                     float(xml_data["root"]["information"]["coverage"]["bottom-left"]["n"])) /
+                    SPACING
+                ),
+                "num_z": math.floor(
+                    float(xml_data["root"]["information"]["coverage"]["depth"]) / DEPTH
+                )
+            }
+
+        if test_by == "elevation":
+            metadata["num_z"] += 1
+
+        # Now that we know the region info we can extract the data.
+        metadata["data"] = np.zeros((metadata["num_x"] + 1, metadata["num_y"] + 1,
+                                     metadata["num_z"] + 1, 3))
+
+        query_list = []
+        for i in range(metadata["num_z"] + 1):
+            for j in range(metadata["num_y"] + 1):
+                for k in range(metadata["num_x"] + 1):
+                    query_list.append((
+                        metadata["bottom-left"]["e"] + (SPACING * k),
+                        metadata["bottom-left"]["n"] + (SPACING * j),
+                        i * DEPTH if test_by == "depth" else DEPTH + (-1 * i * DEPTH)
+                    ))
+
+        if item == "cvms4":
+            txt_cvms4 = str(len(query_list)) + "\n"
+            txt_cvms4 += "\n".join(["%.2f %.2f %.2f" % (x[1], x[0], x[2]) for x in query_list])
+            temp_wd = os.getcwd()
+            os.chdir("/Users/davidgil/Downloads/cvms/src")
+            proc = Popen(["/Users/davidgil/Downloads/cvms/src/cvms_txt"],
+                         stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+            output = proc.communicate(input=txt_cvms4.encode("ASCII"))[0].decode("ASCII")
+            output = output.split("\n")
+            os.chdir(temp_wd)
+            counter = 0
+            for i in range(metadata["num_z"] + 1):
+                for j in range(metadata["num_y"] + 1):
+                    for k in range(metadata["num_x"] + 1):
+                        metadata["data"][k][j][i][0] = output[counter + 1].split()[3]
+                        metadata["data"][k][j][i][1] = output[counter + 1].split()[4]
+                        metadata["data"][k][j][i][2] = output[counter + 1].split()[5]
+                        counter += 1
+            np.save("test_cvms4", metadata["data"])
+        if item == "cvmh1510":
+            txt_cvmh = "\n".join(["%.2f %.2f %.2f" % (x[0], x[1], x[2]) for x in query_list])
+            temp_wd = os.getcwd()
+            os.chdir("/Users/davidgil/Downloads/cvmh-15.1.0/model")
+            proc = Popen(["../src/vx_lite", "-z", "dep", "-g"],
+                         stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+            output = proc.communicate(input=txt_cvmh.encode("ASCII"))[0].decode("ASCII")
+            output = output.split("\n")
+            os.chdir(temp_wd)
+            counter = 0
+            for i in range(metadata["num_z"] + 1):
+                for j in range(metadata["num_y"] + 1):
+                    for k in range(metadata["num_x"] + 1):
+                        metadata["data"][k][j][i][0] = output[counter].split()[16]
+                        metadata["data"][k][j][i][1] = output[counter].split()[17]
+                        metadata["data"][k][j][i][2] = output[counter].split()[18]
+                        counter += 1
+            np.save("test_cvmh", metadata["data"])
+        """if item == "bayarea":
+            txt_bayarea = "\n".join(["%.2f %.2f %.2f" % (x[0], x[1], x[2]) for x in query_list])
+            with open("./test_bayarea.in", "w") as fd:
+                fd.write(txt_bayarea)
+            temp_wd = os.getcwd()
+            proc = Popen(["cencalvmcppquery", "-i", "./test_bayarea.in", "-o",
+                          "./test_bayarea.out", "-d",
+                          "/Users/davidgil/PycharmProjects/UCVM/ucvm/models/velocity/bayarea/" +
+                          "model/USGSBayAreaVM-08.3.0.etree", "-e",
+                          "/Users/davidgil/PycharmProjects/UCVM/ucvm/models/velocity/bayarea/" +
+                          "model/USGSBayAreaVMExt-08.3.0.etree"],
+                         stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+            output = proc.communicate()[0].decode("ASCII")
+            print(output)
+            os.chdir(temp_wd)"""
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -133,7 +133,7 @@ def ask_questions(advanced: bool) -> dict:
                                " the bottom-left corner)?", is_number, "Answer must a number."))
 
     print("\nYou must select the velocity model(s) from which you would like to retrieve this\n"
-          "data. You can either enter in your model(s) as text (e.g. CVM-S4.usgs_noaa) or you\n"
+          "data. You can either enter in your model(s) as text (e.g. CVM-S4.usgs-noaa) or you\n"
           "can select from one of the predefined ones in the list below.")
 
     for index, name in installed_models.items():

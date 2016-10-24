@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Defines the basic ucvm_query utility. This command line program is used to extract material
 properties from the models and return them in text-based format. The usage of this utility is
@@ -187,7 +187,12 @@ def main() -> int:
             lines.append(the_file.readline())
     else:
         for line in sys.stdin:
-            lines.append(line)
+            if line.strip() != "":
+                lines.append(line)
+            else:
+                break
+
+    print("Retrieving material properties...")
 
     for line in lines:
         try:

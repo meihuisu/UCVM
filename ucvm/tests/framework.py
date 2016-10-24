@@ -119,33 +119,33 @@ class UCVMFrameworkTest(unittest.TestCase):
         self.assertEqual(
             UCVM.get_models_for_query("cvms4.elevation", ["velocity"]),
             {
-                0: {0: "usgs_noaa", 1: "cvms4"}
+                0: {0: "usgs-noaa", 1: "cvms4"}
             }
         )
         self.assertEqual(
-            UCVM.get_models_for_query("usgs_noaa.cvms4.vs30_calc.elevation",
+            UCVM.get_models_for_query("usgs-noaa.cvms4.vs30-calc.elevation",
                                       ["velocity", "elevation", "vs30"]),
             {
-                0: {0: "usgs_noaa", 1: "cvms4", 2: "vs30_calc"}
+                0: {0: "usgs-noaa", 1: "cvms4", 2: "vs30-calc"}
             }
         )
         self.assertEqual(
             UCVM.get_models_for_query("(cvms4;cca).elevation", ["velocity"]),
             {
-                0: {0: "usgs_noaa", 1: "cvms4"},
-                1: {0: "usgs_noaa", 1: "cca"}
+                0: {0: "usgs-noaa", 1: "cvms4"},
+                1: {0: "usgs-noaa", 1: "cca"}
             }
         )
         self.assertEqual(
             UCVM.get_models_for_query("cvmh[gtl]", ["velocity", "vs30"]),
             {
-                0: {0: "cvmh;-;gtl", 1: "vs30_calc"}
+                0: {0: "cvmh;-;gtl", 1: "vs30-calc"}
             }
         )
         self.assertEqual(
             UCVM.get_models_for_query("cvmh[gtl].elevation", ["velocity", "vs30"]),
             {
-                0: {0: "cvmh;-;gtl", 1: "vs30_calc"}
+                0: {0: "cvmh;-;gtl", 1: "vs30-calc"}
             }
         )
 

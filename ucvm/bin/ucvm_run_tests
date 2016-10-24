@@ -5,13 +5,15 @@ Executes all the tests.
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
 :created:   August 18, 2016
-:modified:  August 19, 2016
+:modified:  Ocotber 24, 2016
 """
+import os
 import sys
 import unittest
 
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.tests.model import UCVMModelAcceptanceTest, add_acceptance_test_methods
+from ucvm.src.shared.constants import UCVM_MODELS_DIRECTORY
 from ucvm.tests.all import suite
 
 
@@ -27,7 +29,9 @@ def usage() -> None:
         "By default, this command executes all the tests. To run the verification tests on a\n"
         "specific model, call this command with the argument -m and the model string.\n"
         "\n"
-        "-m, --model:   Runs the verification tests on a specific model or combination of models."
+        "-v, --verify v:  Runs the verification tests on a model or combination of models.\n"
+        "-m, --model m:   Runs the model tests on a specific velocity model within UCVM.\n"
+        "-t, --test:      Runs the UCVM tests to ensure that UCVM is working properly.\n"
     )
 
 
@@ -38,19 +42,52 @@ def main() -> int:
     """
     try:
         options = UCVM.parse_options([
-            {"short": "m", "long": "model", "value": True, "required": False}
+            {"short": "v", "long": "verify", "value": True, "required": False},
+            {"short": "m", "long": "model", "value": True, "required": False},
+            {"short": "t", "long": "test", "value": True, "required": False}
         ], usage)
     except ValueError as v_err:
         print("[ERROR]: " + str(v_err) + "\n")
         sys.exit(-1)
 
-    if options["model"] is None:
+    if options["test"] is not None:
+        print("Running UCVM tests...")
         unittest.TextTestRunner(verbosity=2).run(suite())
-    else:
+    elif options["model"] is not None:
+        # Run the tests if they exist.
+        model = UCVM.get_model_instance(options["model"])
+        if not model:
+            print("Model %s could not be found." % model)
+        else:
+            model_id = model.get_metadata()["id"]
+            the_path = os.path.join(UCVM_MODELS_DIRECTORY, model_id, "test_" +
+                                    model_id + ".py")
+            if not os.path.exists(the_path):
+                model_id = model.get_model_dir().split(os.path.sep)[-1]
+                the_path = os.path.join(UCVM_MODELS_DIRECTORY, model_id, "test_" +
+                                        model_id + ".py")
+                if not os.path.exists(the_path):
+                    print("No tests found for %s. Skipping..." % model.get_metadata()["name"])
+                    return 0
+
+            print("Running tests for %s..." % model.get_metadata()["name"])
+            sys.stdout.flush()
+            new_class = __import__("ucvm.models." + model_id + ".test_" + model_id,
+                                   fromlist=str(model.get_private_metadata("class")) + "Test")
+            suite_internal = unittest.TestSuite()
+            suite_internal.addTest(
+                unittest.makeSuite(getattr(new_class, str(model.get_private_metadata("class")) +
+                                           "Test"), "test_")
+            )
+            unittest.TextTestRunner(verbosity=2).run(suite_internal)
+    elif options["verify"] is not None:
+        print("Running model checks for " + options["verify"] + "...")
         suite_internal = unittest.TestSuite()
         add_acceptance_test_methods(UCVMModelAcceptanceTest, options["model"])
         suite_internal.addTest(unittest.makeSuite(UCVMModelAcceptanceTest, "test_"))
         unittest.TextTestRunner(verbosity=2).run(suite_internal)
+    else:
+        usage()
 
     return 0
 
