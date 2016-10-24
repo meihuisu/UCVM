@@ -5,9 +5,10 @@ Defines the utility that walks the user through plotting a depth profile.
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
 :created:   August 18, 2016
-:modified:  August 18, 2016
+:modified:  October 24, 2016
 """
 import sys
+import xmltodict
 
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.shared.functions import ask_and_validate, is_number, is_acceptable_value, \
@@ -25,7 +26,9 @@ def usage() -> None:
         "\n"
         "ucvm_plot_depth_profile - UCVM Version [version]\n"
         "\n"
-        "Plots a depth profile given a series of questions."
+        "Plots a depth profile given a series of questions.\n"
+        "\n"
+        "-f, --file f:          The configuration file to read from.\n"
     )
 
 
@@ -47,6 +50,9 @@ def ask_questions() -> dict:
             "spacing": 0,
             "properties": ""
         },
+        "plot": {
+            "title": ""
+        },
         "cvm_list": ""
     }
 
@@ -54,7 +60,7 @@ def ask_questions() -> dict:
     installed_models = {}
     counter = 1
     for model in UCVM.get_list_of_installed_models()["velocity"]:
-        installed_models[counter] = model["name"]
+        installed_models[counter] = {"name": model["name"], "id": model["id"]}
 
     print("\nGenerating a depth profile requires various parameters to be defined (such \n"
           "as the profile point, the spacing, and so on). The following questions will guide\n"
@@ -96,7 +102,7 @@ def ask_questions() -> dict:
     answers["profile_properties"]["depth"] = float(
         ask_and_validate("What should the last depth or elevation be?", is_number)
     )
-    answers["profile_properties"]["property"] = \
+    answers["profile_properties"]["properties"] = \
         ask_and_validate("\nWhich property or properties (comma-separated) should be plotted?\n"
                          "Acceptable answers include Vp, Vs, density, Qp, or Qs:")
 
@@ -105,14 +111,19 @@ def ask_questions() -> dict:
           "can select from one of the predefined ones in the list below.")
 
     for index, name in installed_models.items():
-        print(str(index) + ") " + name)
+        print(str(index) + ") " + name["name"])
 
     answers["cvm_list"] = ask_and_validate("\nWhich velocity model would you like?")
     try:
         int(answers["cvm_list"])
-        answers["cvm_list"] = installed_models[int(answers["cvm_list"])]
+        answers["cvm_list"] = installed_models[int(answers["cvm_list"])]["id"]
     except TypeError:
         pass
+
+    answers["plot"]["title"] = "Depth Profile at (%.2f, %.2f)" % (
+        answers["profile_point"]["x"],
+        answers["profile_point"]["y"]
+    )
 
     return answers
 
@@ -122,7 +133,22 @@ def main() -> int:
     The main UCVM depth profile function.
     :return: 0 if successful. Raises an error code otherwise, if not.
     """
-    DepthProfile.from_dictionary(ask_questions()).plot()
+    try:
+        options = UCVM.parse_options([
+            {"short": "f", "long": "file", "value": True, "required": False}
+        ], usage)
+    except ValueError as v_err:
+        print("[ERROR]: " + str(v_err) + "\n")
+        sys.exit(-1)
+
+    if options["file"] is not None:
+        with open(options["file"], "r") as fd:
+            prof_info = xmltodict.parse(fd.read())["root"]
+    else:
+        prof_info = ask_questions()
+        with open("plot_depth_profile.xml", "w") as fd:
+            fd.write(xmltodict.unparse({"root": prof_info}, pretty=True))
+    DepthProfile.from_dictionary(prof_info).plot()
     return 0
 
 if __name__ == "__main__":

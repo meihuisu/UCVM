@@ -12,7 +12,7 @@ from collections import namedtuple
 
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.visualization.plot import Plot
-from ucvm.src.shared.properties import Point, UCVM_DEPTH
+from ucvm.src.shared.properties import Point, UCVM_DEPTH, UCVM_ELEVATION
 from ucvm.src.shared.errors import display_and_raise_error
 
 DepthProfileProperties = namedtuple("DepthProfileProperties", "depth spacing properties")
@@ -52,25 +52,30 @@ class DepthProfile(Plot):
             dictionary["profile_point"]["x"],
             dictionary["profile_point"]["y"],
             dictionary["profile_point"]["z"],
-            dictionary["profile_point"]["depth_elev"],
+            UCVM_DEPTH if dictionary["profile_point"]["depth_elev"] == "0" else UCVM_ELEVATION,
             {},
             dictionary["profile_point"]["projection"]
         )
 
         depth_profile_properties = DepthProfileProperties(
-            dictionary["profile_properties"]["depth"],
-            dictionary["profile_properties"]["spacing"],
-            str(dictionary["profile_properties"]["properties"]).split(",")
+            float(dictionary["profile_properties"]["depth"]),
+            float(dictionary["profile_properties"]["spacing"]),
+            [x.strip() for x in str(dictionary["profile_properties"]["properties"]).split(",")]
         )
 
         cvm_list = dictionary["cvm_list"]
+
+        if "plot" in dictionary:
+            if "title" in dictionary["plot"]:
+                return DepthProfile(profile_point, depth_profile_properties, cvm_list,
+                                    title=dictionary["plot"]["title"])
 
         return DepthProfile(profile_point, depth_profile_properties, cvm_list)
 
     def extract(self):
         num_points = int(math.ceil((self.profile_properties.depth - self.profile_point.z_value) /
-                                   self.profile_properties.spacing))
-        self.sd_array = UCVM.create_max_seismicdata_array(num_points, 1)
+                                   self.profile_properties.spacing)) + 1
+        self.sd_array = UCVM.create_max_seismicdata_array(num_points)
 
         for i in range(0, num_points):
             self.sd_array[i].original_point.x_value = self.profile_point.x_value
@@ -104,6 +109,10 @@ class DepthProfile(Plot):
                 properties.append("qs")
         else:
             properties = self.profile_properties.properties
+
+        self.plot_ylabel = "Depth (m)" if self.profile_point.depth_elev == UCVM_DEPTH else \
+            "Elevation (m)"
+        self.plot_xlabel = "Units (m/s for velocity, m^kg^3 for density)"
 
         data = {}
 
