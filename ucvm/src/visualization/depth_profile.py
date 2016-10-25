@@ -112,14 +112,38 @@ class DepthProfile(Plot):
 
         self.plot_ylabel = "Depth (m)" if self.profile_point.depth_elev == UCVM_DEPTH else \
             "Elevation (m)"
-        self.plot_xlabel = "Units (m/s for velocity, m^kg^3 for density)"
+        self.plot_xlabel = "Units (m/s for velocity, kg/m^3 for density)"
+
+        property_info = {
+            "vp": {
+                "color": "r",
+                "label": "Vp (m/s)"
+            },
+            "vs": {
+                "color": "b",
+                "label": "Vs (m/s)"
+            },
+            "density": {
+                "color": "g",
+                "label": "Density (kg/m^3)"
+            },
+            "qp": {
+                "color": "c",
+                "label": "Qp"
+            },
+            "qs": {
+                "color": "m",
+                "label": "Qs"
+            }
+        }
 
         data = {}
 
         for property_type in properties:
             data[property_type] = {
                 "y_values": [x.original_point.z_value for x in self.sd_array],
-                "x_values": [getattr(x.velocity_properties, property_type) for x in self.sd_array]
+                "x_values": [getattr(x.velocity_properties, property_type) for x in self.sd_array],
+                "info": property_info[property_type]
             }
 
         super(DepthProfile, self).show_profile(data)

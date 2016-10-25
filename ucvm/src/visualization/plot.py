@@ -49,7 +49,7 @@ class Plot:
 
         self.figure = plt.figure(figsize=(self.plot_width / 100, self.plot_height / 100), dpi=100)
 
-    def show_profile(self, properties: dict) -> bool:
+    def show_profile(self, properties: dict, **kwargs) -> bool:
         """
         Displays the profile to the user.
         :param properties: The properties as a dictionary.
@@ -57,12 +57,14 @@ class Plot:
         """
         fig = self.figure.add_subplot(1, 1, 1)
         for key, item in properties.items():
-            fig.plot(item["x_values"], item["y_values"], "-")
+            fig.plot(item["x_values"], item["y_values"], "-",
+                     color=item["info"]["color"], label=item["info"]["label"])
 
         plt.gca().invert_yaxis()
         plt.xlabel(self.plot_xlabel if isinstance(self.plot_xlabel, str) else "", fontsize=14)
         plt.ylabel(self.plot_ylabel if isinstance(self.plot_ylabel, str) else "", fontsize=14)
         plt.title(self.plot_title if isinstance(self.plot_title, str) else "")
+        plt.legend(loc="upper right")
         plt.show()
 
     def show_plot(self, x_points: np.array, y_points: np.array, data: np.ndarray,
