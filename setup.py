@@ -251,7 +251,7 @@ setup(name=UCVM_INFORMATION["short_name"],
       scripts=['ucvm/bin/ucvm_query', 'ucvm/bin/ucvm_model_manager', 'ucvm/bin/ucvm_mesh_create',
                'ucvm/bin/ucvm_model_manager', 'ucvm/bin/ucvm_plot_cross_section',
                'ucvm/bin/ucvm_plot_depth_profile', 'ucvm/bin/ucvm_plot_horizontal_slice',
-               'ucvm/bin/ucvm_run_tests'],
+               'ucvm/bin/ucvm_run_tests', 'ucvm/bin/ucvm_help'],
       zip_safe=False
       )
 
@@ -268,4 +268,5 @@ for model in models_to_download:
 for line in execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_run_tests"), "-t"]):
     print(line, end="")
 
-print("Thank you for installing UCVM. The installation is now complete.")
+print("Thank you for installing UCVM. The installation is now complete. To learn more about")
+print("UCVM, please run the command ucvm_help.")

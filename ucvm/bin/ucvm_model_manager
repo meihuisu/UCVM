@@ -104,7 +104,7 @@ def main() -> int:
             "modifier": [list(dict(x).keys())[0] for x in dict(installed_list)["modifier"]]
         }
 
-        print("The following are models that you have not installed but are available for\n"
+        print("\nThe following are models that you have not installed but are available for\n"
               "download from SCEC:\n")
 
         for key, models in model_list.items():

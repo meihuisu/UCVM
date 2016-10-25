@@ -59,9 +59,11 @@ def ask_questions(advanced: bool) -> dict:
         "cvm_list": "",
         "plot": {
             "generate": "",
-            "color": {
-                "type": "",
-                "scale": ""
+            "features": {
+                "scale": "",
+                "colormap": "",
+                "faults": "Yes",
+                "topography": "No"
             },
             "title": "",
             "property": ""
@@ -144,7 +146,7 @@ def ask_questions(advanced: bool) -> dict:
     try:
         int(answers["cvm_list"])
         answers["cvm_list"] = installed_models[int(answers["cvm_list"])]
-    except TypeError:
+    except ValueError:
         pass
 
     if advanced:
@@ -161,16 +163,37 @@ def ask_questions(advanced: bool) -> dict:
                                                                     "qp", "qs"], lower=True)
             answers["plot"]["title"] = ask_and_validate("What should the title of the plot be?\n"
                                                         "Hit enter to accept the default title:")
-            answers["plot"]["color"]["scale"] = \
+            answers["plot"]["features"]["scale"] = \
                 ask_and_validate("Would you like a discrete or smooth color scale?\n"
                                  "Type 'd' for discrete, 's' for smooth:", is_acceptable_value,
                                  allowed=["d", "s"])
-            answers["plot"]["color"]["type"] = \
+            if answers["plot"]["features"]["scale"] == "d":
+                answers["plot"]["features"]["scale"] = "discrete"
+            else:
+                answers["plot"]["features"]["scale"] = "smooth"
+            answers["plot"]["features"]["colormap"] = \
                 ask_and_validate("What should the type of scale be (in Matplotlib colors)?\n"
                                  "The default is RdBu, which means red-blue:")
+            if answers["plot"]["features"]["colormap"].strip() == "":
+                answers["plot"]["features"]["colormap"] = "RdBu"
 
-            answers["data"]["save"] = ask_and_validate("Would you like to save the extracted data "
-                                                       "for future use?\nType 'y' for yes:")
+            answers["plot"]["features"]["faults"] = ask_and_validate(
+                "\nWould you like to include faults on the map?\nType 'y' or 'yes' to plot, "
+                "'n' or 'no' to leave off:", is_acceptable_value, allowed=["y", "yes", "n", "no"]
+            )
+            if answers["plot"]["features"]["faults"] == "y":
+                answers["plot"]["features"]["faults"] = "yes"
+
+            answers["plot"]["features"]["topography"] = ask_and_validate(
+                "\nWould you like to include topography on the map?\nType 'y' or 'yes' to plot, "
+                "'n' or 'no' to leave off:", is_acceptable_value, allowed=["y", "yes", "n", "no"]
+            )
+            if answers["plot"]["features"]["topography"] == "y":
+                answers["plot"]["features"]["topography"] = "yes"
+
+            answers["data"]["save"] = ask_and_validate(
+                "\nWould you like to save the extracted data for future use?\nType 'y' for yes:"
+            )
 
         if str(answers["data"]["save"]).strip().lower() == "y" or \
            str(answers["data"]["save"]).strip().lower() == "yes":
@@ -190,8 +213,10 @@ def ask_questions(advanced: bool) -> dict:
             answers["bottom_left_point"]["x"],
             answers["bottom_left_point"]["y"]
         )
-        answers["plot"]["color"]["scale"] = "d"
-        answers["plot"]["color"]["type"] = "RdBu"
+        answers["plot"]["features"]["scale"] = "discrete"
+        answers["plot"]["features"]["colormap"] = "RdBu"
+        answers["plot"]["features"]["faults"] = "Yes"
+        answers["plot"]["features"]["topography"] = "No"
 
         file_str = hashlib.sha224(str(answers["plot"]["title"]).encode("UTF-8")).hexdigest()[0:5]
         answers["data"]["save"] = "extraction_" + file_str + ".data"
