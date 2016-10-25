@@ -110,7 +110,7 @@ def get_list_of_installable_internet_models() -> dict:
         inner_item = {
             "id": str(model_item.getElementsByTagName("file")[0].firstChild.data).split(".")[0],
             "description": "\n".join([x.strip() for x in str(
-                model_item.getElementsByTagName("description")[0].firstChild.data
+                model_item.getElementsByTagName("description")[1].firstChild.data
             ).split("\n")]),
             "name": str(model_item.getElementsByTagName("name")[0].firstChild.data),
             "coverage": str(model_item.getElementsByTagName("coverage")[0].
@@ -167,7 +167,7 @@ for key, models in model_list.items():
         continue
 
     # Print the header.
-    print(str(key).capitalize() + " Models:")
+    print(str(key).capitalize() + " Models:\n")
     for item in models:
 
         # If this model is already set to be downloaded, skip it.
