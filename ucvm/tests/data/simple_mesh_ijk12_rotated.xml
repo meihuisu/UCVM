@@ -53,5 +53,5 @@
 	<mesh_type>IJK-12</mesh_type>
 
     <!-- The output directory for the mesh -->
-	<out_dir>./scratch</out_dir>
+	<out_dir></out_dir>
 </root>

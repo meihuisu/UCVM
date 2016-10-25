@@ -60,11 +60,9 @@ def get_list_of_installable_internet_models() -> dict:
     }
 
     for item in parse_xmltodict_one_or_many(model_list_xml, "root/model"):
-        ucvm_name = item["file"].split(".")[0]
-        if ucvm_name not in installed_models[item["type"]]:
+        if item["id"] not in installed_models[item["type"]]:
             item["description"] = "\n".join([x.strip() for x in
                                              str(item["description"]).split("\n")])
-            item.update({"id": ucvm_name})
             installable_models[item["type"]].append(item)
 
     return installable_models

@@ -64,6 +64,7 @@ def package_and_zip_models(directory: str, output_dir: str, **kwargs) -> bool:
 
                 models.append({
                     "name": parse_xmltodict_one_or_many(xml_doc, "root/information/identifier"),
+                    "id": parse_xmltodict_one_or_many(xml_doc, "root/information/id"),
                     "type": parse_xmltodict_one_or_many(xml_doc, "root/information/type"),
                     "file": model + ".ucv",
                     "description": parse_xmltodict_one_or_many(xml_doc,

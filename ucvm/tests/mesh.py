@@ -30,24 +30,28 @@ except ImportError:
 
 class UCVMMeshTest(unittest.TestCase):
 
+    dir = os.path.dirname(inspect.getfile(ucvm.tests))
+
     def setUp(self):
-        self.dir = os.path.dirname(inspect.getfile(ucvm.tests))
         self.im_1 = InternalMesh.from_xml_file(
             os.path.join(self.dir, "data", "simple_mesh_ijk12_unrotated.xml")
         )
         self.sd = [SeismicData(Point(-118, 34, 0)) for _ in range(0, 101505)]
+        self.im_1.out_dir = os.path.join(self.dir, "scratch")
         self.im_1_iterator_1 = InternalMeshIterator(self.im_1, 0, 101505, 1005, self.sd)
         self.im_1_iterator_2 = InternalMeshIterator(self.im_1, 0, 101505, 101505, self.sd)
         self.im_2 = InternalMesh.from_xml_file(
             os.path.join(self.dir, "data", "simple_mesh_ijk12_rotated.xml")
         )
         self.sd2 = [SeismicData(Point(-118, 34, 0)) for _ in range(0, 51005)]
+        self.im_2.out_dir = os.path.join(self.dir, "scratch")
         self.im_2_iterator_1 = InternalMeshIterator(self.im_2, 0, 51005, 505, self.sd2)
         self.im_2_iterator_2 = InternalMeshIterator(self.im_2, 0, 51005, 51005, self.sd2)
         self.im_3 = InternalMesh.from_xml_file(
             os.path.join(self.dir, "data", "simple_utm_mesh_ijk12_rotated.xml")
         )
         self.sd3 = [SeismicData(Point(-118, 34, 0)) for _ in range(0, 101505)]
+        self.im_3.out_dir = os.path.join(self.dir, "scratch")
         self.im_3_iterator_1 = InternalMeshIterator(self.im_3, 0, 101505, 202, self.sd3)
         self.im_3_iterator_2 = InternalMeshIterator(self.im_3, 0, 101505, 101505, self.sd3)
 
@@ -71,8 +75,8 @@ class UCVMMeshTest(unittest.TestCase):
         self.assertEqual(self.im_3.total_size, 101505)
         self.assertEqual(self.im_3.get_grid_file_size()["real"], 1218060)
 
-        self.assertEqual(self.im_3.origin.x_value, 407650.39665729157)
-        self.assertEqual(self.im_3.origin.y_value, 3762606.6598763773)
+        self.assertAlmostEqual(self.im_3.origin.x_value, 407650.39665729157, 4)
+        self.assertAlmostEqual(self.im_3.origin.y_value, 3762606.6598763773, 4)
 
     def test_internal_mesh_iterator(self):
         next(self.im_1_iterator_1)
@@ -125,9 +129,10 @@ class UCVMMeshTest(unittest.TestCase):
         with open(os.path.join(self.dir, "data", "simple_mesh_ijk12_unrotated.xml")) as fd:
             simple_mesh_ijk12_xml = xmltodict.parse(fd.read())
         simple_mesh_ijk12_xml = simple_mesh_ijk12_xml["root"]
+        simple_mesh_ijk12_xml["out_dir"] = os.path.join(self.dir, "scratch")
         with redirect_stdout(open(os.devnull, "w")):
             self.assertTrue(mesh_extract_single(simple_mesh_ijk12_xml, custom_model_order={
-                0: {0: "testvelocitymodel", "query_by": "depth"}
+                0: {0: "testvelocitymodel"}
             }))
 
         start_point = (-118, 34)
@@ -154,9 +159,10 @@ class UCVMMeshTest(unittest.TestCase):
         with open(os.path.join(self.dir, "data", "simple_mesh_ijk12_rotated.xml")) as fd:
             simple_mesh_ijk12_xml = xmltodict.parse(fd.read())
         simple_mesh_ijk12_xml = simple_mesh_ijk12_xml["root"]
+        simple_mesh_ijk12_xml["out_dir"] = os.path.join(self.dir, "scratch")
         with redirect_stdout(open(os.devnull, "w")):
             self.assertTrue(mesh_extract_single(simple_mesh_ijk12_xml, custom_model_order={
-                0: {0: "testvelocitymodel", "query_by": "depth"}
+                0: {0: "testvelocitymodel"}
             }))
 
         i_test = InternalMesh.from_xml_file(
@@ -183,9 +189,10 @@ class UCVMMeshTest(unittest.TestCase):
         with open(os.path.join(self.dir, "data", "simple_utm_mesh_ijk12_rotated.xml")) as fd:
             simple_mesh_ijk12_xml = xmltodict.parse(fd.read())
         simple_mesh_ijk12_xml = simple_mesh_ijk12_xml["root"]
+        simple_mesh_ijk12_xml["out_dir"] = os.path.join(self.dir, "scratch")
         with redirect_stdout(open(os.devnull, "w")):
             self.assertTrue(mesh_extract_single(simple_mesh_ijk12_xml, custom_model_order={
-                0: {0: "testvelocitymodel", "query_by": "depth"}
+                0: {0: "testvelocitymodel"}
             }))
 
         i_test = InternalMesh.from_xml_file(
@@ -210,9 +217,11 @@ class UCVMMeshTest(unittest.TestCase):
                                                (y_prop + x_prop) / 2, places=0)
 
 
-def make_suite() -> unittest.TestSuite:
+def make_suite(path: str=None) -> unittest.TestSuite:
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(UCVMMeshTest, "test_internal"))
+    if path is not None:
+        UCVMMeshTest.dir = path
+    suite.addTest(unittest.makeSuite(UCVMMeshTest, "test_"))
     return suite
 
 if __name__ == "__main__":

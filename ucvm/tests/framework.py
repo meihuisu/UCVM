@@ -59,7 +59,7 @@ class UCVMFrameworkTest(unittest.TestCase):
             SeismicData(Point(-118, 34, 0))
         ]
         UCVM.query(data_1, "testvelocitymodel", ["velocity"], {
-            0: {0: "testvelocitymodel", "query_by": "depth"}
+            0: {0: "testvelocitymodel"}
         })
         self.assertEqual(data_1[0].velocity_properties.vp, 34 + (-118))
         self.assertEqual(data_1[0].velocity_properties.vs, 34 - (-118))
@@ -111,48 +111,29 @@ class UCVMFrameworkTest(unittest.TestCase):
 
     def test_ucvm_select_right_models_for_query(self):
         self.assertEqual(
-            UCVM.get_models_for_query("cvms4.depth", ["velocity"]),
+            UCVM.get_models_for_query("1d.depth", ["velocity"]),
             {
-                0: {0: "cvms4"}
+                0: {0: "1d"}
             }
         )
         self.assertEqual(
-            UCVM.get_models_for_query("cvms4.elevation", ["velocity"]),
+            UCVM.get_models_for_query("1d.elevation", ["velocity"]),
             {
-                0: {0: "usgs-noaa", 1: "cvms4"}
+                0: {0: "usgs-noaa", 1: "1d"}
             }
         )
         self.assertEqual(
-            UCVM.get_models_for_query("usgs-noaa.cvms4.vs30-calc.elevation",
+            UCVM.get_models_for_query("usgs-noaa.1d.vs30-calc.elevation",
                                       ["velocity", "elevation", "vs30"]),
             {
-                0: {0: "usgs-noaa", 1: "cvms4", 2: "vs30-calc"}
-            }
-        )
-        self.assertEqual(
-            UCVM.get_models_for_query("(cvms4;cca).elevation", ["velocity"]),
-            {
-                0: {0: "usgs-noaa", 1: "cvms4"},
-                1: {0: "usgs-noaa", 1: "cca"}
-            }
-        )
-        self.assertEqual(
-            UCVM.get_models_for_query("cvmh[gtl]", ["velocity", "vs30"]),
-            {
-                0: {0: "cvmh;-;gtl", 1: "vs30-calc"}
-            }
-        )
-        self.assertEqual(
-            UCVM.get_models_for_query("cvmh[gtl].elevation", ["velocity", "vs30"]),
-            {
-                0: {0: "cvmh;-;gtl", 1: "vs30-calc"}
+                0: {0: "usgs-noaa", 1: "1d", 2: "vs30-calc"}
             }
         )
 
 
 def make_suite() -> unittest.TestSuite:
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(UCVMFrameworkTest, "test_ucvm_select"))
+    suite.addTest(unittest.makeSuite(UCVMFrameworkTest, "test_"))
     return suite
 
 if __name__ == "__main__":

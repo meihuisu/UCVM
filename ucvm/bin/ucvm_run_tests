@@ -44,15 +44,15 @@ def main() -> int:
         options = UCVM.parse_options([
             {"short": "v", "long": "verify", "value": True, "required": False},
             {"short": "m", "long": "model", "value": True, "required": False},
-            {"short": "t", "long": "test", "value": True, "required": False}
+            {"short": "t", "long": "test", "value": False, "required": False}
         ], usage)
     except ValueError as v_err:
         print("[ERROR]: " + str(v_err) + "\n")
         sys.exit(-1)
 
     if options["test"] is not None:
-        print("Running UCVM tests...")
-        unittest.TextTestRunner(verbosity=2).run(suite())
+        print("Running UCVM tests...", flush=True)
+        unittest.TextTestRunner(stream=sys.stdout, verbosity=2).run(suite())
     elif options["model"] is not None:
         # Run the tests if they exist.
         model = UCVM.get_model_instance(options["model"])
@@ -79,13 +79,13 @@ def main() -> int:
                 unittest.makeSuite(getattr(new_class, str(model.get_private_metadata("class")) +
                                            "Test"), "test_")
             )
-            unittest.TextTestRunner(verbosity=2).run(suite_internal)
+            unittest.TextTestRunner(stream=sys.stdout, verbosity=2).run(suite_internal)
     elif options["verify"] is not None:
         print("Running model checks for " + options["verify"] + "...")
         suite_internal = unittest.TestSuite()
         add_acceptance_test_methods(UCVMModelAcceptanceTest, options["model"])
         suite_internal.addTest(unittest.makeSuite(UCVMModelAcceptanceTest, "test_"))
-        unittest.TextTestRunner(verbosity=2).run(suite_internal)
+        unittest.TextTestRunner(stream=sys.stdout, verbosity=2).run(suite_internal)
     else:
         usage()
 

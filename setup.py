@@ -218,7 +218,7 @@ setup(name=UCVM_INFORMATION["short_name"],
                 "ucvm.src.model.velocity", "ucvm.src.model.elevation", "ucvm.src.model.vs30",
                 "ucvm.src.model.fault", "ucvm.src.model.modifier", "ucvm.src.shared",
                 "ucvm.src.visualization", "ucvm.models", "ucvm.src.visualization.internal_basemap",
-                "ucvm.tests", "ucvm.tests.data", "ucvm.libraries"],
+                "ucvm.tests", "ucvm.tests.data", "ucvm.tests.scratch", "ucvm.libraries"],
       package_dir={'ucvm': 'ucvm',
                    'ucvm.src': 'ucvm/src',
                    'ucvm.src.framework': 'ucvm/src/framework',
@@ -235,6 +235,7 @@ setup(name=UCVM_INFORMATION["short_name"],
                        'ucvm/src/visualization/internal_basemap',
                    'ucvm.tests': 'ucvm/tests',
                    'ucvm.tests.data': 'ucvm/tests/data',
+                   'ucvm.tests.scratch': 'ucvm/tests/scratch',
                    'ucvm.libraries': 'ucvm/libraries'},
       package_data={'ucvm.models': ['ucvm/models/installed.xml'],
                     'ucvm.libraries': ['ucvm/libraries/installed.xml'],
@@ -262,5 +263,9 @@ for model in models_to_download:
     for line in execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_model_manager"), "-a", model[0]]):
         print(line, end="")
     print("")
+
+# Run the tests.
+for line in execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_run_tests"), "-t"]):
+    print(line, end="")
 
 print("Thank you for installing UCVM. The installation is now complete.")

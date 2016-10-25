@@ -13,7 +13,8 @@ import os
 import sys
 
 from ucvm.src.framework.ucvm import UCVM
-from ucvm.src.model import get_list_of_installable_internet_models, install_internet_ucvm_model
+from ucvm.src.model import get_list_of_installable_internet_models, get_list_of_installed_models, \
+                           install_internet_ucvm_model
 from subprocess import call, PIPE, STDOUT
 
 
@@ -69,21 +70,6 @@ def main() -> int:
         print("[ERROR]: " + str(v_err) + "\n")
         sys.exit(-1)
 
-    if options["list"] is not None:
-        model_list = get_list_of_installable_internet_models()
-
-        print("The following are models that you have not installed but are available for\n"
-              "download from SCEC:\n")
-
-        for key, models in model_list.items():
-            print(str(key).capitalize() + ":")
-            for item in models:
-                print("Name: " + item["name"])
-                print(item["description"])
-                print("To install this model: ucvm_model_manager -a " + item["id"] + "\n")
-
-        return 0
-
     if options["add"] is not None:
         model_list = get_list_of_installable_internet_models()
 
@@ -93,6 +79,9 @@ def main() -> int:
             for item in models:
                 if item["id"] == options["add"]:
                     found = item
+                elif item["file"].split(".")[0] == options["add"]:
+                    found = item
+                    found["id"] = options["add"].strip()
 
         if not found:
             print("Model " + options["add"] + " was not found in the list of installable models.")
@@ -104,7 +93,31 @@ def main() -> int:
         # Now run the tests, through the command line so that the library paths are correct!
         call([os.path.join(os.path.dirname(os.path.abspath(__file__)), "ucvm_run_tests"),
               "-m", info["id"]])
+    else:
+        model_list = get_list_of_installable_internet_models()
+        installed_list = get_list_of_installed_models()
 
+        installed_list_c = {
+            "velocity": [list(dict(x).keys())[0] for x in dict(installed_list)["velocity"]],
+            "elevation": [list(dict(x).keys())[0] for x in dict(installed_list)["elevation"]],
+            "vs30": [list(dict(x).keys())[0] for x in dict(installed_list)["vs30"]],
+            "modifier": [list(dict(x).keys())[0] for x in dict(installed_list)["modifier"]]
+        }
+
+        print("The following are models that you have not installed but are available for\n"
+              "download from SCEC:\n")
+
+        for key, models in model_list.items():
+            temp_str = ""
+            for item in models:
+                if item["id"] in installed_list_c[key]:
+                    continue
+                temp_str += "Name: " + item["name"] + "\n"
+                temp_str += item["description"] + "\n"
+                temp_str += "To install this model: ucvm_model_manager -a " + item["id"] + "\n\n"
+            if temp_str != "":
+                print(str(key).capitalize() + ":")
+                print(temp_str, end="")
     return 0
 
 if __name__ == "__main__":

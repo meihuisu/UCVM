@@ -33,13 +33,16 @@ class InternalMesh(object):
         if mesh_info is None:
             return
 
+        try:
+            depth_elev = int(mesh_info["initial_point"]["depth_elev"])
+        except ValueError:
+            depth_elev = UCVM_ELEVATION if str(mesh_info["initial_point"]["depth_elev"]).\
+                         strip().lower() == "elevation" else UCVM_DEPTH
+
         origin = Point(mesh_info["initial_point"]["x"],
                        mesh_info["initial_point"]["y"],
                        mesh_info["initial_point"]["z"],
-                       UCVM_ELEVATION if str(mesh_info["initial_point"]["depth_elev"]).\
-                       strip().lower() == "elevation" or \
-                       int(mesh_info["initial_point"]["depth_elev"]) == UCVM_ELEVATION else \
-                       UCVM_DEPTH,
+                       depth_elev,
                        {},
                        mesh_info["initial_point"]["projection"])
 
