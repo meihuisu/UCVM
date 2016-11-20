@@ -8,6 +8,43 @@ from ucvm.src.shared.constants import UCVM_MODELS_DIRECTORY
 from ucvm.src.framework.ucvm import UCVM
 
 
+class UCVMTestCase(unittest.TestCase):
+    current_test = 1
+    description = ""
+
+    @classmethod
+    def setUpClass(cls):
+        super(UCVMTestCase, cls).setUpClass()
+        print("Testing %s..." % cls.description)
+        if cls.get_number_of_tests(cls) == 1:
+            print("\t[%d test]" % cls.get_number_of_tests(cls))
+        else:
+            print("\t[%d tests]" % cls.get_number_of_tests(cls))
+        UCVMTestCase.current_test = 1
+
+    @classmethod
+    def tearDownClass(cls):
+        super(UCVMTestCase, cls).tearDownClass()
+        UCVMTestCase.current_test = 1
+
+    @staticmethod
+    def _test_start(description: str) -> None:
+        print(("    [%03d] Running %s..." % (UCVMTestCase.current_test, description)).ljust(60))
+
+    @staticmethod
+    def _test_end():
+        print("          PASSED", flush=True)
+        UCVMTestCase.current_test += 1
+
+    @staticmethod
+    def get_number_of_tests(cls: object):
+        counter = 0
+        for function in dir(cls):
+            if "test_" in function[0:5]:
+                counter += 1
+        return counter
+
+
 def assert_velocity_properties(test_case: unittest.TestCase, data: SeismicData,
                                velocity_prop: VelocityProperties) -> None:
     test_case.assertIsNotNone(data)
@@ -69,9 +106,9 @@ def run_acceptance_test(test_case: unittest.TestCase, model_id: str) -> bool:
     sd_array = [SeismicData() for _ in range(nums["x"] * nums["y"] * nums["z"])]
     counter = 0
 
-    for x in range(nums["x"]):
+    for z in range(nums["z"]):
         for y in range(nums["y"]):
-            for z in range(nums["z"]):
+            for x in range(nums["x"]):
                 sd_array[counter].original_point = Point(bottom_corner["e"] + spacing * x,
                                                          bottom_corner["n"] + spacing * y,
                                                          0 + depth * z)
@@ -80,9 +117,9 @@ def run_acceptance_test(test_case: unittest.TestCase, model_id: str) -> bool:
     UCVM.query(sd_array, model_id, [model_type])
 
     counter = 0
-    for x in range(nums["x"]):
+    for z in range(nums["z"]):
         for y in range(nums["y"]):
-            for z in range(nums["z"]):
+            for x in range(nums["x"]):
                 if arr[x][y][z][0] <= 0 and sd_array[counter].velocity_properties.vp is None or \
                    arr[x][y][z][1] <= 0 and sd_array[counter].velocity_properties.vs is None or \
                    arr[x][y][z][2] <= 0 and sd_array[counter].velocity_properties.density is None:

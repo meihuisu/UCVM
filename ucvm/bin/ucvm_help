@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 """
-Launches a web browser which points at the latest documentation for UCVM.
+Launches a web browser with the latest documentation for UCVM.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   October 25, 2016
-:modified:  October 25, 2016
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
 """
+# Python Imports
 import webbrowser
 
-webbrowser.open_new("http://hypocenter.usc.edu/research/ucvm/16.12.0/docs/index.html")
+# UCVM Imports
+from ucvm.src.framework.ucvm import UCVM
+
+webbrowser.open_new(
+    UCVM.get_replacement_string("http://hypocenter.usc.edu/research/ucvm/[version]/docs/index.html")
+)

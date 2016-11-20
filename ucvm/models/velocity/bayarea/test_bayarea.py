@@ -1,27 +1,70 @@
 """
-Defines the tests for the USGS Bay Area model within UCVM.
+Defines the tests for the Bay Area model within UCVM.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   October 4, 2016
-:modified:  October 4, 2016
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
 """
-import unittest
-
-from ucvm.src.shared.properties import SeismicData, Point
+# UCVM Imports
+from ucvm.src.framework.ucvm import UCVM
+from ucvm.src.shared.properties import SeismicData, Point, VelocityProperties
 from ucvm.src.shared.constants import UCVM_ELEVATION
-from ucvm.src.shared.test import run_acceptance_test
+from ucvm.src.shared.test import assert_velocity_properties, run_acceptance_test, UCVMTestCase
 
 
-class BayAreaVelocityModelTest(unittest.TestCase):
+class BayAreaVelocityModelTest(UCVMTestCase):
+    """
+    Defines the test cases for the Bay Area velocity model. Two tests are done: an acceptance
+    test and a test query by elevation.
+    """
+    description = "Bay Area"
 
-    def setUp(self):
-        self.data = {
-            "none": [],
-            "one": [
-                SeismicData(Point(-118, 34, 0))
-            ],
-            "elevation": [
-                SeismicData(Point(-118, 34, 276.99, UCVM_ELEVATION))
-            ]
-        }
+    def test_bayarea_basic_elevation(self):
+        """
+        Tests the Bay Area query capabilities using elevation. This uses the model's DEM, not the
+        UCVM DEM.
+
+        Returns:
+            None
+        """
+        self._test_start("test for Bay Area query by elevation")
+
+        sd_test = [SeismicData(Point(-122.0322, 37.3230, 0, UCVM_ELEVATION))]
+
+        self.assertTrue(UCVM.query(sd_test, "bayarea.elevation"))
+
+        assert_velocity_properties(
+            self,
+            sd_test[0],
+            VelocityProperties(1700.0, 390.0, 1990.0, 44.0, 22.0,
+                               "bayarea", "bayarea", "bayarea", "bayarea", "bayarea")
+        )
+
+        sd_test = [SeismicData(Point(-130, 40, 0, UCVM_ELEVATION))]
+
+        self.assertTrue(UCVM.query(sd_test, "bayarea.elevation", ["velocity", "elevation"]))
+
+        # This is above sea level so it should be None for everything.
+        assert_velocity_properties(
+            self,
+            sd_test[0],
+            VelocityProperties(None, None, None, None, None,
+                               None, None, None, None, None)
+        )
+
+        self._test_end()
+
+    def test_bayarea_acceptance(self):
+        """
+        Runs the built-in acceptance test for the Bay Area velocity model. This compares a known
+        grid of lat, lon material properties - queried at depth - to what this installation of the
+        Bay Area velocity model returns on the user's computer.
+
+        Returns:
+            None
+        """
+        self._test_start("Bay Area acceptance test")
+        self.assertTrue(run_acceptance_test(self, "bayarea"))
+        self._test_end()

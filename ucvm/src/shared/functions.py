@@ -267,3 +267,16 @@ def calculate_scaled_vp(vs: float) -> float:
     vp_new = 0.9409 + vs_new * (2.0947 - vs_new * (0.8206 - vs_new * (0.2683 - vs_new * 0.0251)))
     vp_new = vp_new * 1000.0
     return vp_new
+
+
+def get_utm_zone_for_lon(longitude: float) -> int:
+    """
+    Given a longitude, this function returns the corresponding zone.
+
+    Args:
+        longitude (float): The longitude in decimal degrees.
+
+    Returns:
+        An integer specifying the UTM zone. This does not return "N" or "S".
+    """
+    return math.floor(((longitude + 180) / 6) % 60 + 1)

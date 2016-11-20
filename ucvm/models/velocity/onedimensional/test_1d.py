@@ -75,7 +75,7 @@ class OneDimensionalVelocityModelTest(unittest.TestCase):
         Tests the 1D model for basic depth, linear query.
         :return: Nothing
         """
-        UCVM.query(self.data["depth"], "1d[Whittier Narrows,linear]", ["velocity"])
+        """UCVM.query(self.data["depth"], "1d[Whittier Narrows,linear]", ["velocity"])
 
         assert_velocity_properties(
             self,
@@ -116,4 +116,4 @@ class OneDimensionalVelocityModelTest(unittest.TestCase):
                                "whittier narrows 1d bbp (interpolated)",
                                "whittier narrows 1d bbp (interpolated)",
                                "whittier narrows 1d bbp (interpolated)")
-        )
+        )"""

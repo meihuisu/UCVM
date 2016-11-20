@@ -1,27 +1,30 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
+Automated internal tool to create UCVM-compatible digital elevation model.
+
 This file creates a UCVM-compatible digital elevation model from USGS GridFloat data. The data set
 that this script reads from is elevation data sampled at 1/3 arc-second resolution directly from the
 USGS website: nationalmap.gov. In there, one can get various data. This reads data from 1/3
 arc-second DEM (3DEP).
 
-Each data file contains 1 degree by 1 degree of data (NAD83, GRS80 ellipsoid projection). Because
-UCVM uses WGS84 default projection, this script converts the data into the UCVM projection for
-easier storage.
+It also encodes the background ETOPO1 map which is the fallback for where there is no detailed
+information from the National Map.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   July 14, 2016
-:modified:  July 14, 2016
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
 """
-
+# Python Imports
 import fnmatch
 import os
 import re
 import struct
 import sys
 
-import h5py
+# Package Imports
+import tables
 import numpy as np
 
 try:
@@ -32,16 +35,16 @@ except ImportError as the_err:
     pyproj = None  # Needed to remove the warning in PyCharm
     raise
 
-try:
-    from UCVM import UCVM
-except ImportError:
-    from ucvm.src.framework.ucvm_back import UCVM
+# UCVM Imports
+from ucvm.src.framework.ucvm import UCVM
 
 
 def usage() -> None:
     """
     Prints out the usage information for this utility.
-    :return: Nothing.
+
+    Returns:
+        None
     """
     UCVM.print_with_replacements(
         "\n"
@@ -53,22 +56,24 @@ def usage() -> None:
         "\n"
         "-i, --input-dir d:     The directory containing the GridFloat files. Each file has name\n"
         "                       floatn[start latitude]w[start longitude].flt.\n"
-        "-o, --output-file f:   The UCVM-compatible DEM file which can be added to the list of \n"
-        "                       DEMs either in the user's DEM directory or (if -r) is specified, \n"
-        "                       it is automatically added.\n"
-        "-r, --register:        If selected, the DEM is automatically added into UCVM.\n"
+        "-o, --output-file f:   The UCVM-compatible DEM file. This file is used by the DEM code\n"
+        "                       to provide the elevation data.\n"
     )
 
 
-def parse_usgs_header(header_file: str) -> dict:
+def parse_usgs_header(usgs_header_file: str) -> dict:
     """
     Parses the USGS national map header files. We can then use this information to tile together
     the grid points and create the end result data file.
-    :param header_file: The header file as a string.
-    :return: A dictionary containing all the header elements, converted to floats and ints as
-             necessary.
+
+    Args:
+        usgs_header_file (str): The header file location as a string.
+
+    Returns:
+        A dictionary containing all the header elements, with conversions to floats and ints done
+        as necessary.
     """
-    file_open = open(header_file)
+    file_open = open(usgs_header_file, "r")
     parts = {}
 
     for line in file_open:
@@ -85,14 +90,20 @@ def parse_usgs_header(header_file: str) -> dict:
 
     return parts
 
-def parse_noaa_header(bathymetry_file: str) -> dict:
+
+def parse_noaa_header(bathymetry_header_file: str) -> dict:
     """
-    Parses the NOAA bathymetry ArcGIS ASCII grid data header.
-    :param bathymetry_file: The bathymetry file as a string.
-    :return: A dictionary containing all the header elements, converted to floats and ints as
-             necessary.
+    Parses the NOAA bathymetry ArcGIS ASCII grid data header. We use this to tile the grid points
+    to create the end result data file.
+
+    Args:
+        bathymetry_header_file: The header file location as a string.
+
+    Returns:
+        A dictionary containing all the header elements, with conversions to floats and ints done
+        as necessary.
     """
-    file_open = open(bathymetry_file, "r")
+    file_open = open(bathymetry_header_file, "r")
     parts = {}
 
     counter = 0
@@ -115,7 +126,9 @@ def parse_noaa_header(bathymetry_file: str) -> dict:
 def main() -> int:
     """
     The main function which handles the creation of the UCVM-compatible DEM.
-    :return: Zero when successful. Exits with non-zero code if not.
+
+    Returns:
+        Zero when successful. Exits with non-zero code if not.
     """
     try:
         options = UCVM.parse_options([
@@ -133,7 +146,15 @@ def main() -> int:
     temp_file_list = [f for f in os.listdir(options["input-dir"])
                       if os.path.isfile(os.path.join(options["input-dir"], f))]
 
-    out_file = h5py.File(options["output-file"], "w")
+    out_file = tables.open_file(options["output-file"], mode="w")
+    filters = tables.Filters(complevel=7, complib='blosc')
+
+    class DEMHeader(tables.IsDescription):
+        cellsize = tables.Float32Col(pos=0)
+        xllcorner = tables.Float32Col(pos=1)
+        yllcorner = tables.Float32Col(pos=2)
+        numcols = tables.Int32Col(pos=3)
+        numrows = tables.Int32Col(pos=4)
 
     for file in temp_file_list:
         # Handle the bathymetry data.
@@ -142,14 +163,18 @@ def main() -> int:
             header = parse_noaa_header(os.path.join(options["input-dir"],
                                                     file.replace(".flt", ".hdr")))
 
-            grp = out_file.create_group("/dem/etopo1")
+            grp = out_file.create_group(out_file.root, "dem_etopo1")
 
-            # Attach the metadata to it.
-            grp.attrs.create("cell size", header["cellsize"])
-            grp.attrs.create("x lower left corner", header["xllcorner"])
-            grp.attrs.create("y lower left corner", header["yllcorner"])
-            grp.attrs.create("num columns", header["ncols"])
-            grp.attrs.create("num rows", header["nrows"])
+            table_grp = out_file.create_table(grp, "metadata", DEMHeader)
+
+            row = table_grp.row
+            row["cellsize"] = header["cellsize"]
+            row["xllcorner"] = header["xllcorner"]
+            row["yllcorner"] = header["yllcorner"]
+            row["numcols"] = header["ncols"]
+            row["numrows"] = header["nrows"]
+            row.append()
+            table_grp.flush()
 
             arr = np.zeros((header["nrows"], header["ncols"]), dtype="<f8")
 
@@ -162,16 +187,20 @@ def main() -> int:
                     input_data = struct.unpack('f', bytes_val)
                     arr[i][j] = input_data[0]
 
-            grp.create_dataset("data", (header["nrows"], header["ncols"]), chunks=True,
-                               compression="gzip", data=arr)
+            data = out_file.create_earray(grp, "data", tables.Atom.from_dtype(arr.dtype),
+                                          shape=(0, arr.shape[-1]), filters=filters,
+                                          expectedrows=len(arr))
+
+            for i in range(0, len(arr)):
+                data.append(arr[i][None])
 
             fin.close()
 
-        if fnmatch.fnmatch(file, "floatn*w*_13.flt2"):
+        if fnmatch.fnmatch(file, "floatn*w*_1.flt"):
             print("Creating data set from USGS National Map file " + file + "...")
             header = parse_usgs_header(os.path.join(options["input-dir"],
                                                     file.replace(".flt", ".hdr")))
-            match = re.match(r"floatn(\d+)([we])(\d+)_13.flt", file)
+            match = re.match(r"floatn(\d+)([we])(\d+)_1.flt", file)
 
             lat = int(match.group(1)) - 1
 
@@ -181,37 +210,42 @@ def main() -> int:
 
             lon = multiplier * int(match.group(3))
 
-            grp = out_file.create_group("/dem/nationalmap/" + str(lon) + "/" + str(lat))
+            grp = out_file.create_group(out_file.root, "dem_nationalmap_" + str(-1 * lon) +
+                                        "_" + str(lat))
+
+            table_grp = out_file.create_table(grp, "metadata", DEMHeader)
 
             # Attach the metadata to it.
-            grp.attrs.create("cell size", header["cellsize"])
-            grp.attrs.create("x lower left corner", header["xllcorner"])
-            grp.attrs.create("y lower left corner", header["yllcorner"])
-            grp.attrs.create("num columns", header["ncols"])
-            grp.attrs.create("num rows", header["nrows"])
+            row = table_grp.row
+            row["cellsize"] = header["cellsize"]
+            row["xllcorner"] = header["xllcorner"]
+            row["yllcorner"] = header["yllcorner"]
+            row["numcols"] = header["ncols"]
+            row["numrows"] = header["nrows"]
+            row.append()
+            table_grp.flush()
 
-            arr = np.arange(header["nrows"] * header["ncols"])
+            arr = np.zeros((header["nrows"], header["ncols"]), dtype="<f8")
 
             # Now read in the floats.
             fin = open(os.path.join(options["input-dir"], file), "rb")
 
-            counter = 0
-
-            while counter < header["nrows"] * header["ncols"]:
-                try:
+            for i in range(header["nrows"] - 1, -1, -1):
+                for j in range(0, header["ncols"]):
                     bytes_val = fin.read(4)
                     input_data = struct.unpack('f', bytes_val)
-                    arr[counter] = input_data[0]
-                    counter += 1
-                except EOFError:
-                    break
+                    arr[i][j] = input_data[0]
 
-            arr = arr.reshape((header["nrows"], header["ncols"]))
+            data = out_file.create_earray(grp, "data", tables.Atom.from_dtype(arr.dtype),
+                                          shape=(0, arr.shape[-1]), filters=filters,
+                                          expectedrows=len(arr))
 
-            grp.create_dataset("data", (header["nrows"], header["ncols"]), chunks=True,
-                               compression="gzip", data=arr)
+            for i in range(0, len(arr)):
+                data.append(arr[i][None])
 
             fin.close()
+
+    out_file.close()
 
     return 0
 

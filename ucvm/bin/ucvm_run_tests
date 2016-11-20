@@ -79,7 +79,7 @@ def main() -> int:
                 unittest.makeSuite(getattr(new_class, str(model.get_private_metadata("class")) +
                                            "Test"), "test_")
             )
-            unittest.TextTestRunner(stream=sys.stdout, verbosity=2).run(suite_internal)
+            unittest.TextTestRunner(stream=sys.stdout, verbosity=0).run(suite_internal)
     elif options["verify"] is not None:
         print("Running model checks for " + options["verify"] + "...")
         suite_internal = unittest.TestSuite()

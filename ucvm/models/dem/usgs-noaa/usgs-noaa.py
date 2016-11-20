@@ -1,20 +1,32 @@
 """
-Defines the USGS/NOAA DEM. This elevation data is from the data sampled at 1/3 arc-second
-resolution directly from the USGS website: nationalmap.gov.
+USGS/NOAA Digital Elevation Model
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   July 19, 2016
-:modified:  July 19, 2016
+This internal map represents a "splicing" together of two datasets:
+
+1) ETOPO1 - Source: https://www.ngdc.noaa.gov/docucomp/page?xml=NOAA/NESDIS/NGDC/MGG/DEM/iso/xml/
+                    316.xml&view=getDataView&header=none
+   This data represents the global digital elevation model. ETOPO1 is vertically referenced to
+   sea level, and horizontally referenced to the World Geodetic System of 1984 (WGS 84). Cell size
+   for ETOPO1 is 1 arc-minute.
+
+2) USGS National Map Data - Source: http://www.nationalmap.gov
+   This data represents the California digital elevation model.
+
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
 """
-
+# Python Imports
+import os
 import math
 from typing import List
 
-import h5py
-import numpy as np
-import os
+# Package Imports
+import tables
 
+# UCVM Imports
 from ucvm.src.model.elevation.elevation_model import ElevationModel
 from ucvm.src.shared import ElevationProperties, SimplePoint, SimpleRotatedRectangle, \
                             calculate_bilinear_value
@@ -22,96 +34,74 @@ from ucvm.src.shared.properties import SeismicData, UCVM_DEFAULT_PROJECTION
 
 
 class USGSNOAAElevationModel(ElevationModel):
-
-    _public_metadata = {
-        "id": "usgs-noaa",
-        "name": "USGS/NOAA Digital Elevation Model",
-        "description": "This elevation data is from the data sampled at 1/3 arc-second "
-                       "resolution directly from the USGS website: nationalmap.gov.",
-        "website": "http://www.nationalmap.gov",
-        "references": ["The National Map (http://www.nationalmap.gov)"]
-    }   #: dict: Describes the public metadata associated with this elevation model.
-
-    _private_metadata = {
-        "projection": "+proj=latlong +datum=NAD83 +ellps=GRS80",
-        "public": True
-    }   #: dict: Describes the private metadata (such as projection) associated with this model.
-
-    DATA_FILE = "usgs_noaa_dem.dat"                 #: str: The location of the DEM data file.
-    _opened_file = None                             #: h5py.File: The opened HDF5 file.
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self._opened_file = h5py.File(os.path.join(self.get_model_dir(), "data", self.DATA_FILE),
-                                      "r")
-
-        self._bucket_groups = {}
+    """
+    Defines the USGS/NOAA digital elevation model within UCVM. The ETOPO data is stored in WGS84
+    format, but the USGS data is stored in NAD83. Therefore, some additional conversions need to be
+    done from within the class to make this work.
+    """
+    DATA_FILE = "dem.dat"     #: str: The location of the DEM data file.
+    _opened_file = None
 
     def _get_nationalmap_data(self, datum: SeismicData) -> bool:
         """
-        Attempts to get elevation properties from National Map data.
-        :param datum: The data point from which to get elevation properties.
-        :return: True, if successful, false if not found.
+        Attempts to get elevation properties from National Map data. If no properties can be found
+        this function returns false. It does not set the properties to "None".
+
+        Args:
+            datum (SeismicData): The data point from which to get elevation properties.
+
+        Returns:
+            True, if successful, false if point not found within map.
         """
-        bucket = "/dem/nationalmap/" + str(math.floor(datum.converted_point.x_value)) + \
-                 "/" + str(math.floor(datum.converted_point.y_value) - 1)
-
-        if bucket not in self._bucket_groups:
-            group = self._opened_file.get(bucket)
-
-            if group is None:
-                return False
-
-            self._bucket_groups[bucket] = {
-                "data": np.array(group.get("data")),
-                "rect": SimpleRotatedRectangle(
-                    group.attrs.get("x lower left corner"),
-                    group.attrs.get("y lower left corner"),
-                    0,
-                    group.attrs.get("cell size"),
-                    group.attrs.get("cell size")
-                )
-            }
-
         bilinear_point = SimplePoint(
             datum.converted_point.x_value,
             datum.converted_point.y_value,
             0
         )
 
-        datum.set_elevation_data(ElevationProperties(
-            calculate_bilinear_value(bilinear_point, self._bucket_groups[bucket]["rect"],
-                                     self._bucket_groups[bucket]["data"]),
-            self._public_metadata["id"]
-        ))
+        if bilinear_point.x < -180 or bilinear_point.x > 180 or \
+           bilinear_point.y < -90 or bilinear_point.y > 90:
+            return False
+
+        # Make sure we can get the National Map data.
+        if hasattr(self._opened_file.root, "dem_nationalmap_" +
+                   str(math.ceil(-1 * datum.converted_point.x_value)) +
+                   "_" + str(math.floor(datum.converted_point.y_value))):
+            use_data = getattr(self._opened_file.root, "dem_nationalmap_" +
+                               str(-1 * math.floor(datum.converted_point.x_value)) +
+                               "_" + str(math.floor(datum.converted_point.y_value)))
+        else:
+            return False
+
+        rect = SimpleRotatedRectangle(
+            use_data.metadata[0][1],
+            use_data.metadata[0][2],
+            0,
+            use_data.metadata[0][0],
+            use_data.metadata[0][0]
+        )
+
+        value = calculate_bilinear_value(bilinear_point, rect, use_data.data)
+
+        # Check if not defined by DEM (i.e. in water).
+        if value == 0 or value == -9999:
+            return False
+
+        datum.set_elevation_data(ElevationProperties(value, self._public_metadata["id"]))
 
         return True
 
     def _get_etopo1_data(self, datum: SeismicData) -> bool:
         """
-        Attempts to get elevation properties from etopo1 data.
-        :param datum: The data point from which to get elevation properties.
-        :return: True, if successful, false if not found.
+        Attempts to get elevation properties from ETOPO1 data. If no properties can be found
+        this function returns false. It does not set the properties to "None".
+
+        Args:
+            datum (SeismicData): The data point from which to get elevation properties.
+
+        Returns:
+            True, if successful, false if point not found within map.
         """
-        bucket = "/dem/etopo1"
-
-        if bucket not in self._bucket_groups:
-            group = self._opened_file.get(bucket)
-
-            if group is None:
-                return False
-
-            self._bucket_groups[bucket] = {
-                "data": np.array(group.get("data")),
-                "rect": SimpleRotatedRectangle(
-                    group.attrs.get("x lower left corner"),
-                    group.attrs.get("y lower left corner"),
-                    0,
-                    group.attrs.get("cell size"),
-                    group.attrs.get("cell size")
-                )
-            }
-
         datum.converted_point = datum.original_point.convert_to_projection(UCVM_DEFAULT_PROJECTION)
 
         bilinear_point = SimplePoint(
@@ -120,29 +110,46 @@ class USGSNOAAElevationModel(ElevationModel):
             0
         )
 
+        if bilinear_point.x < -180 or bilinear_point.x > 180 or \
+           bilinear_point.y < -90 or bilinear_point.y > 90:
+            return False
+
+        rect = SimpleRotatedRectangle(
+            self._opened_file.root.dem_etopo1.metadata[0][1],
+            self._opened_file.root.dem_etopo1.metadata[0][2],
+            0,
+            self._opened_file.root.dem_etopo1.metadata[0][0],
+            self._opened_file.root.dem_etopo1.metadata[0][0]
+        )
+
         datum.set_elevation_data(ElevationProperties(
-            calculate_bilinear_value(bilinear_point, self._bucket_groups[bucket]["rect"],
-                                     self._bucket_groups[bucket]["data"]),
+            calculate_bilinear_value(bilinear_point, rect, self._opened_file.root.dem_etopo1.data),
             self._public_metadata["id"]
         ))
 
         return True
 
-    def _query(self, data: List[SeismicData], **kwargs) -> bool:
+    def _query(self, points: List[SeismicData], **kwargs) -> bool:
         """
-        Internal (override) query method for the model.
-        :param list data: A list of SeismicData classes to fill in with elevation properties.
-        :return: True if function was successful, false if not.
+        This is the method that all models override. It handles querying the elevation model
+        and filling in the SeismicData structures.
+
+        Args:
+            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the
+                points to query. These are to be populated with :obj:`ElevationProperties`:
+
+        Returns:
+            True on success, false if there is an error.
         """
-        for datum in data:
-            if not self._get_nationalmap_data(datum):
-                if not self._get_etopo1_data(datum):
-                    datum.set_elevation_data(ElevationProperties(None, "no data"))
+        self._opened_file = tables.open_file(
+            os.path.join(self.get_model_dir(), "data", self.DATA_FILE), "r"
+        )
+
+        for point in points:
+            if not self._get_nationalmap_data(point):
+                if not self._get_etopo1_data(point):
+                    point.set_elevation_data(ElevationProperties(None, None))
+
+        self._opened_file.close()
 
         return True
-
-    def __del__(self):
-        try:
-            self._opened_file.close()
-        except SystemError:
-            pass

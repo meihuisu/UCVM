@@ -95,15 +95,15 @@
     <build>
 
         <!-- Build makefile -->
-        <makefile>fortran_src/Makefile</makefile>
+        <makefile>src/Makefile</makefile>
 
         <!-- Data directories -->
         <data>
-            <directory>fortran_src</directory>
+            <directory>src</directory>
         </data>
 
         <!-- The shared object library -->
-        <library>fortran_src/libcvms</library>
+        <library>src/libcvms</library>
 
         <!-- Is setup.py needed? -->
         <setuppy>Yes</setuppy>

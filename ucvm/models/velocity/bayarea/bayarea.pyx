@@ -1,15 +1,33 @@
-import time
-import os
-cimport cython
+"""
+Bay Area Velocity Model
 
+The USGS 3-D Geologic and Seismic Velocity Models of the San Francisco Bay region provide a
+three-dimensional view of the geologic structure and physical properties of the region down to a
+depth of 45 km (28 miles).
+
+This code is the Cython interface to the legacy Bay Area model C code. It returns equivalent
+material properties to UCVM.
+
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
+"""
+# Python Imports
+import os
 from typing import List
 
+# Cython Imports
+cimport cython
 from libc.stdlib cimport malloc, free
 
+# UCVM Imports
 from ucvm.src.model.velocity.legacy import VelocityModel
 from ucvm.src.shared import VelocityProperties, ElevationProperties
 from ucvm.src.shared.properties import SeismicData
 
+# Cython defs
 cdef extern from "src/libsrc/query/cvmquery.h":
     void *cencalvm_createQuery()
     void *cencalvm_errorHandler(void *)
@@ -33,6 +51,10 @@ cdef void *cencal_error_handler
 cdef double *cencal_pvals
 
 class BayAreaVelocityModel(VelocityModel):
+    """
+    Defines the Bay Area interface to UCVM. This class queries the legacy C code to retrieve
+    the material properties and records the data to the new UCVM data structures.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -86,9 +108,13 @@ class BayAreaVelocityModel(VelocityModel):
         """
         Given a longitude and latitude in WGS84 projection, get the Bay Area surface value from
         the embedded CenCal DEM.
-        :param longitude: The longitude in WGS84 projection.
-        :param latitude: The latitude in WGS84 projection.
-        :return: The elevation of the surface in meters.
+
+        Args:
+            longitude (float): The longitude in WGS84 projection.
+            latitude (float): The latitude in WGS84 projection.
+
+        Returns:
+            The elevation of the surface in meters.
         """
         cdef double cencal_slimit
         cdef int cencal_smode
@@ -153,6 +179,17 @@ class BayAreaVelocityModel(VelocityModel):
         return elev
 
     def _query(self, points: List[SeismicData], **kwargs) -> bool:
+        """
+        This is the method that all models override. It handles querying the velocity model
+        and filling in the SeismicData structures.
+
+        Args:
+            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the
+                points in depth. These are to be populated with :obj:`VelocityProperties`:
+
+        Returns:
+            True on success, false if there is an error.
+        """
         cdef double cencal_slimit
         cdef int cencal_smode
 
@@ -174,7 +211,7 @@ class BayAreaVelocityModel(VelocityModel):
 
             if free_surface is not None:
                 if points[0].original_point.depth_elev == 0:
-                    point_elevation = points[i].converted_point.z_value + free_surface
+                    point_elevation = free_surface - points[i].converted_point.z_value
                 else:
                     point_elevation = points[i].converted_point.z_value
             else:
@@ -204,10 +241,17 @@ class BayAreaVelocityModel(VelocityModel):
                     )
                 )
             else:
+                self._set_velocity_properties_none(points[i])
                 cencalvm_error_resetStatus(cencal_error_handler)
 
         return True
 
-    def __del__(self):
+    def __del__(self) -> None:
+        """
+        Closes the file handles and deletes the pointers when the Python object is deleted.
+
+        Returns:
+            Nothing
+        """
         cencalvm_close(cencal_query)
         cencalvm_destroyQuery(cencal_query)

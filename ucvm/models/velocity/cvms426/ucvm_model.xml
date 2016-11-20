@@ -63,7 +63,7 @@
         <file>cvms426.py</file>
 
         <!-- Projection that this model uses (DEFAULT means the default UCVM WGS84 projection -->
-        <projection>+proj=utm +zone=11 +ellps=clrk66 +datum=NAD27 +units=m +no_defs</projection>
+        <projection>DEFAULT</projection>
 
         <!-- Specifies if this model is publicly available (most models should be) -->
         <public>Yes</public>
@@ -84,7 +84,7 @@
 
         <!-- Data directories -->
         <data>
-            <directory>iterations</directory>
+            <directory>model</directory>
         </data>
 
     </build>

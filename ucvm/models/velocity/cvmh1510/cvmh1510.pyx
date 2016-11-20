@@ -1,15 +1,33 @@
-import time
-import os
-cimport cython
+"""
+CVM-H 15.1.0 Velocity Model
 
+The SCEC CVM-H velocity model describes seismic P- and S-wave velocities and densities, and is
+comprised of basin structures embedded in tomographic and teleseismic crust and upper mantle
+models. This latest release of the CVM-H (15.1.0) represents the integration of various model
+components, including fully 3D waveform tomographic results.
+
+This code is the Cython interface to the legacy CVM-H model C code. It returns equivalent
+material properties to UCVM.
+
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
+"""
+# Python Imports
+import os
 from typing import List
 
-from libc.stdlib cimport malloc, free
+# Cython Imports
+cimport cython
 
+# UCVM Imports
 from ucvm.src.model.velocity.legacy import VelocityModel
 from ucvm.src.shared import VelocityProperties
 from ucvm.src.shared.properties import SeismicData
 
+# Cython defs
 cdef extern from "src/src/vx_sub.h":
     int vx_setup(const char *)
     int vx_cleanup()
@@ -21,22 +39,26 @@ cdef extern from "src/src/vx_sub.h":
     void vx_getsurface(double *, int, float *)
 
 cdef struct vx_entry_t:
-  double coor[3]
-  int coor_type
-  double coor_utm[3]
-  float elev_cell[2]
-  float topo
-  float mtop
-  float base
-  float moho
-  int data_src
-  float vel_cell[3]
-  float provenance
-  float vp
-  float vs
-  double rho
+    double coor[3]
+    int coor_type
+    double coor_utm[3]
+    float elev_cell[2]
+    float topo
+    float mtop
+    float base
+    float moho
+    int data_src
+    float vel_cell[3]
+    float provenance
+    float vp
+    float vs
+    double rho
 
 class CVMH1510VelocityModel(VelocityModel):
+    """
+    Defines the CVM-H interface to UCVM. This class queries the legacy C code to retrieve
+    the material properties and records the data to the new UCVM data structures.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -49,6 +71,17 @@ class CVMH1510VelocityModel(VelocityModel):
             raise RuntimeError("CVM-H 15.1.0 could not be initialized correctly.")
 
     def _query(self, points: List[SeismicData], **kwargs) -> bool:
+        """
+        This is the method that all models override. It handles querying the velocity model
+        and filling in the SeismicData structures.
+
+        Args:
+            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the
+                points in depth. These are to be populated with :obj:`VelocityProperties`:
+
+        Returns:
+            True on success, false if there is an error.
+        """
         cdef vx_entry_t entry
         cdef float vx_surf
 

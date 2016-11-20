@@ -7,7 +7,6 @@ import ucvm.models
 import urllib.request
 
 from subprocess import Popen, PIPE, STDOUT
-from distutils.dir_util import copy_tree
 
 from .model import Model
 from .elevation import ElevationModel
@@ -24,7 +23,7 @@ def get_list_of_installed_models() -> list:
         "velocity": [],
         "elevation": [],
         "vs30": [],
-        "modifier": []
+        "operator": []
     }
 
     try:
@@ -42,8 +41,8 @@ def get_list_of_installed_models() -> list:
     for item in parse_xmltodict_one_or_many(model_xml, "root/vs30"):
         return_list["vs30"].append({item["@id"]: item})
 
-    for item in parse_xmltodict_one_or_many(model_xml, "root/modifier"):
-        return_list["modifier"].append({item["@id"]: item})
+    for item in parse_xmltodict_one_or_many(model_xml, "root/operator"):
+        return_list["operator"].append({item["@id"]: item})
 
     return return_list
 
@@ -56,7 +55,7 @@ def get_list_of_installable_internet_models() -> dict:
         "velocity": [],
         "elevation": [],
         "vs30": [],
-        "modifier": []
+        "operator": []
     }
 
     for item in parse_xmltodict_one_or_many(model_list_xml, "root/model"):
@@ -277,7 +276,7 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
 
     # Finally, we copy the data.
     if len(build["dirs"]) != 0:
-        print("\tCopying model data to directory...")
+        print("\tMoving model data to directory...")
         for directory in build["dirs"]:
             copy_to = os.path.join(new_path, "data")
             if "#copyto" in directory:
@@ -286,7 +285,9 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
                     copy_to = os.path.join(new_path, "data", directory["#copyto"])
                 except FileExistsError:
                     pass
-            copy_tree(os.path.join(os.path.dirname(xml_file), directory["#text"]), copy_to)
+            p = Popen("mv " + os.path.join(os.path.dirname(xml_file), directory["#text"], "*") +
+                      " " + copy_to, stdout=PIPE, stderr=STDOUT, shell=True)
+            p.communicate()
 
     if len(build["setuppy"]) != 0:
         print("\tExecuting build script for legacy model code...")

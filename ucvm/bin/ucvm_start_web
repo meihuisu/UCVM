@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+"""
+Launches a web browser to show the basic web interface to UCVM.
+
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
+"""
+# Python Imports
+import webbrowser
+
+webbrowser.open_new("http://localhost:8080")

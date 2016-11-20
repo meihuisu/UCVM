@@ -84,10 +84,10 @@ class HorizontalSlice(Plot):
         :return: An instance of HorizontalSlice
         """
         origin_point = Point(
-            parsed_dictionary["bottom_left_point"]["x"],
-            parsed_dictionary["bottom_left_point"]["y"],
-            parsed_dictionary["bottom_left_point"]["z"],
-            parsed_dictionary["bottom_left_point"]["depth_elev"],
+            float(parsed_dictionary["bottom_left_point"]["x"]),
+            float(parsed_dictionary["bottom_left_point"]["y"]),
+            float(parsed_dictionary["bottom_left_point"]["z"]),
+            int(parsed_dictionary["bottom_left_point"]["depth_elev"]),
             {},
             parsed_dictionary["bottom_left_point"]["projection"]
         )

@@ -1,30 +1,36 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
+Automated internal tool to generate the UCVM distribution.
+
 This command creates a source distribution suitable for upload to a server. It packages all the
 models, relevant source distribution, setup.py, etc. and creates the tar.gz and ucv files, as
 well as generating the model_list.xml file.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   July 26, 2016
-:modified:  July 26, 2016
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
 """
+# Python Imports
 import sys
 import os
 import xmltodict
-
 from subprocess import call, check_call
 
+# UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.shared import parse_xmltodict_one_or_many
 
-BASE_FOLDERS = ["dem", "velocity", "vs30", "modifier"]
+BASE_FOLDERS = ["dem", "velocity", "vs30", "operator"]
 
 
 def usage() -> None:
     """
-    Displays the help text associated with this utility.
-    :return: Nothing.
+    Prints out the usage information for this utility.
+
+    Returns:
+        None
     """
     UCVM.print_with_replacements(
         "\n"
@@ -35,15 +41,20 @@ def usage() -> None:
         "-b, --base-dir b:      The base directory (usually the GitHub base dir).\n"
         "-o, --output-dir o:    The output directory to contain all the files for upload.\n"
         "-u, --upload:          If this flag is set, the models are uploaded to the server.\n"
+        "-z, --zip-one z:       Zip and upload one model.\n"
     )
 
 
 def package_and_zip_models(directory: str, output_dir: str, **kwargs) -> bool:
     """
-    Package and "UCV" models for distribution.
-    :param directory: The base directory in which to find the models.
-    :param output_dir: The output directory to which these files should be written.
-    :return: True if the function was successful, false otherwise.
+    Package and generate the .ucv versions of the models for distribution.
+
+    Args:
+        directory (str): The base directory in which to find the models.
+        output_dir (str): The output directory to which these files should be written.
+
+    Returns:
+        True if the function was successful, false otherwise.
     """
     models = []
 
@@ -86,10 +97,14 @@ def package_and_zip_models(directory: str, output_dir: str, **kwargs) -> bool:
 
 def package_and_zip_libraries(directory: str, output_dir: str) -> bool:
     """
-    Package and "UCV" libraries for distribution.
-    :param directory: The base directory in which to find the libraries.
-    :param output_dir: The output directory to which these files should be written.
-    :return: True if the function was successful, false otherwise.
+    Package and generate .ucv files for the libraries for distribution.
+
+    Args:
+        directory (str): The base directory in which to find the libraries.
+        output_dir (str): The output directory to which these files should be written.
+
+    Returns:
+        True if the function was successful, false otherwise.
     """
     libraries = []
 
@@ -121,8 +136,10 @@ def package_and_zip_libraries(directory: str, output_dir: str) -> bool:
 
 def main() -> int:
     """
-    The main generate distribution function.
-    :return: 0 if successful. Raises an error code otherwise, if not.
+    The main function which generates the distribution.
+
+    Returns:
+        0 if successful. Raises an error code otherwise, if not.
     """
     try:
         options = UCVM.parse_options([

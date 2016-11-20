@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Model root tag -->
+<root>
+
+    <!-- Publicly available information. -->
+    <information>
+
+        <!-- A human-friendly name identifier -->
+        <identifier>Ely GTL</identifier>
+
+        <!-- A machine-friendly identifier (lowercase alpha-numeric only) -->
+        <id>elygtl</id>
+
+        <!-- Describes the type of model (velocity, elevation, or vs30) -->
+        <type>operator</type>
+
+        <!-- Public model description -->
+        <description>
+            Implements the Ely GTL which scales the Vs30 values smoothly down to a predetermined
+            depth (default 350m) or a user-defined depth.
+        </description>
+
+        <!-- Website on which more information about the model can be found -->
+        <website>https://www.researchgate.net/publication/252933491_A_Vs30-derived_Near-surface_Seismic_Velocity_Model</website>
+
+        <!-- A list of references that describe the model -->
+        <references>
+            <reference>A Vs30-derived Near-surface Seismic Velocity Model</reference>
+        </references>
+
+        <!-- The license for this velocity model (all SCEC software is Apache version 2.0) -->
+        <license>
+            Copyright 2016 Southern California Earthquake Center
+
+            Licensed under the Apache License, Version 2.0 (the "License");
+            you may not use this file or software package except in compliance with
+            the License. You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+            Unless required by applicable law or agreed to in writing, software
+            distributed under the License is distributed on an "AS IS" BASIS,
+            WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+            See the License for the specific language governing permissions and
+            limitations under the License.
+        </license>
+
+        <!-- A broad description and range of the coverage region -->
+        <coverage>
+            <description>Global</description>
+        </coverage>
+
+    </information>
+
+    <!-- Private information used by UCVM to understand how to query the model -->
+    <internal>
+
+        <!-- The model class that inherits from Model -->
+        <class>ElyGTLOperator</class>
+
+        <!-- The main model file which contains the class -->
+        <file>elygtl.py</file>
+
+        <!-- Projection that this model uses (DEFAULT means the default UCVM WGS84 projection -->
+        <projection>DEFAULT</projection>
+
+        <!-- Specifies if this model is publicly available (most models should be) -->
+        <public>Yes</public>
+
+        <!-- Specifies dependencies for the model -->
+        <depends>
+            <velocity>Yes</velocity>
+            <elevation>Yes</elevation>
+            <vs30>Yes</vs30>
+        </depends>
+
+    </internal>
+
+</root>

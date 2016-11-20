@@ -35,7 +35,7 @@ UCVM_INFORMATION = {
 _HYPOCENTER_BASE = "http://hypocenter.usc.edu/research/ucvm/" + UCVM_INFORMATION["version"]
 _HYPOCENTER_MODEL_LIST = _HYPOCENTER_BASE + "/model_list.xml"
 
-INSTALL_REQUIRES = ["h5py", "xmltodict", "humanize", "pyproj", "Cython", "psutil", "matplotlib"]
+INSTALL_REQUIRES = ["tables", "xmltodict", "humanize", "pyproj", "Cython", "psutil", "matplotlib"]
 
 
 class OnlyGetScriptPath(install):
@@ -101,7 +101,7 @@ def get_list_of_installable_internet_models() -> dict:
         "velocity": [],
         "elevation": [],
         "vs30": [],
-        "modifier": []
+        "operator": []
     }
 
     all_models = model_list_xml.getElementsByTagName("model")
@@ -159,7 +159,7 @@ model_list = OrderedDict()
 model_list["velocity"] = model_list_u["velocity"]
 model_list["elevation"] = model_list_u["elevation"]
 model_list["vs30"] = model_list_u["vs30"]
-model_list["modifier"] = model_list_u["modifier"]
+model_list["operator"] = model_list_u["operator"]
 
 for key, models in model_list.items():
     # If all the models are already set to be downloaded by default, remove them.
@@ -216,7 +216,7 @@ setup(name=UCVM_INFORMATION["short_name"],
       url=UCVM_INFORMATION["url"],
       packages=["ucvm", "ucvm.src", "ucvm.src.framework", "ucvm.src.model",
                 "ucvm.src.model.velocity", "ucvm.src.model.elevation", "ucvm.src.model.vs30",
-                "ucvm.src.model.fault", "ucvm.src.model.modifier", "ucvm.src.shared",
+                "ucvm.src.model.fault", "ucvm.src.model.operator", "ucvm.src.shared",
                 "ucvm.src.visualization", "ucvm.models", "ucvm.src.visualization.internal_basemap",
                 "ucvm.tests", "ucvm.tests.data", "ucvm.tests.scratch", "ucvm.libraries"],
       package_dir={'ucvm': 'ucvm',
@@ -227,7 +227,7 @@ setup(name=UCVM_INFORMATION["short_name"],
                    'ucvm.src.model.elevation': 'ucvm/src/model/elevation',
                    'ucvm.src.model.vs30': 'ucvm/src/model/vs30',
                    'ucvm.src.model.fault': 'ucvm/src/model/fault',
-                   'ucvm.src.model.modifier': 'ucvm/src/model/modifier',
+                   'ucvm.src.model.operator': 'ucvm/src/model/operator',
                    'ucvm.src.shared': 'ucvm/src/shared',
                    'ucvm.src.visualization': 'ucvm/src/visualization',
                    'ucvm.models': 'ucvm/models',
@@ -267,6 +267,25 @@ for model in models_to_download:
 # Run the tests.
 for line in execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_run_tests"), "-t"]):
     print(line, end="")
+
+# Install C framework.
+from distutils.core import setup
+from distutils.extension import Extension
+from Cython.Distutils import build_ext
+
+print("Installing C components of UCVM...")
+
+os.chdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ucvm", "src", "cython"))
+
+ext_modules = [
+    Extension("ucvm_c_common", ["common.pyx"])
+]
+
+setup(
+    name="ucvm_c_common",
+    cmdclass={"build_ext": build_ext},
+    ext_modules=ext_modules
+)
 
 print("Thank you for installing UCVM. The installation is now complete. To learn more about")
 print("UCVM, please run the command ucvm_help.")

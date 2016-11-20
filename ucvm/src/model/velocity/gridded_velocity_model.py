@@ -4,37 +4,41 @@ inherits from VelocityModel. This reads configuration information from data/conf
 that the model projection was originally in UTM. It also automatically calculates rotation and
 trilinearly interpolates if need be.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   August 31, 2016
-:modified:  August 31, 2016
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
 """
-
+# Python Imports
+import time
 import os
-import xmltodict
 import math
-
 from typing import List
 
-import numpy as np
+# Package Imports
+import xmltodict
+import tables
 
+# UCVM Imports
 from ucvm.src.model.velocity.velocity_model import VelocityModel
 from ucvm.src.shared.properties import SeismicData, VelocityProperties
 from ucvm.src.shared.errors import display_and_raise_error
+from ucvm.src.shared.functions import calculate_nafe_drake_density
+from ucvm.src.shared.constants import UCVM_DEFAULT_PROJECTION
+
+from ucvm_c_common import UCVMCCommon
 
 
 class GriddedVelocityModel(VelocityModel):
+    """
+    Defines the gridded velocity model class which is currently being used to serve up Po and
+    En-Jui's models but it could be used to serve up any kind of discretized velocity model in
+    the future.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-        self.material_properties = {
-            "vp": None,
-            "vs": None,
-            "density": None,
-            "qp": None,
-            "qs": None
-        }
 
         # Let's read in the configuration file.
         if not os.path.exists(os.path.join(self.model_location, "data", "config.xml")):
@@ -44,21 +48,19 @@ class GriddedVelocityModel(VelocityModel):
             self.config_dict = xmltodict.parse(xml_file.read())
             self.config_dict = self.config_dict["root"]
 
-        # See what data we can serve.
-        for key in self.material_properties:
-            if os.path.exists(os.path.join(self.model_location, "data",
-                                           self.config_dict["model"], key + ".dat")):
-                # Let's load this into memory.
-                with open(os.path.join(self.model_location, "data", self.config_dict["model"],
-                                       key + ".dat"), "rb") as data_file:
-                    self.material_properties[key] = np.load(data_file)
-
         angle = math.atan(
             (float(self.config_dict["corners"]["top_left"]["e"]) -
              float(self.config_dict["corners"]["bottom_left"]["e"])) /
             (float(self.config_dict["corners"]["top_left"]["n"]) -
              float(self.config_dict["corners"]["bottom_left"]["n"]))
         )
+
+        self.config_dict["zone"] = int(self.config_dict["zone"])
+        self.config_dict["dimensions"]["depth"] = float(self.config_dict["dimensions"]["depth"])
+        self.config_dict["dimensions"]["x"] = int(self.config_dict["dimensions"]["x"])
+        self.config_dict["dimensions"]["y"] = int(self.config_dict["dimensions"]["y"])
+        self.config_dict["dimensions"]["z"] = int(self.config_dict["dimensions"]["z"])
+        self.config_dict["dimensions"]["z_interval"] = int(self.config_dict["dimensions"]["z_interval"])
 
         self.model_properties = {
             "angles": {
@@ -94,135 +96,108 @@ class GriddedVelocityModel(VelocityModel):
                 float(self.config_dict["dimensions"]["y"]) - 1)
         }
 
-    def _query(self, data: List[SeismicData], **kwargs) -> bool:
+    def _query(self, points: List[SeismicData], **kwargs) -> bool:
         """
-        Internal (override) query method for the model.
-        :param list data: A list of SeismicData classes.
-        :return: True on success, false on failure.
+        This is the method that all models override. It handles querying the velocity model
+        and filling in the SeismicData structures.
+
+        Args:
+            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the
+                points in depth. These are to be populated with :obj:`VelocityProperties`:
+
+        Returns:
+            True on success, false if there is an error.
         """
-        for sd_object in data:
-            temp_utm_e = sd_object.converted_point.x_value - self.model_properties["origin"]["e"]
-            temp_utm_n = sd_object.converted_point.y_value - self.model_properties["origin"]["n"]
+        stime = time.time()
+
+        self._opened_file = tables.open_file(
+            os.path.join(self.get_model_dir(), "data", self._public_metadata["id"] + ".dat"), "r"
+        )
+
+        model_has = []
+        if hasattr(self._opened_file.root, "vp"):
+            model_has.append("vp")
+        if hasattr(self._opened_file.root, "vs"):
+            model_has.append("vs")
+        if hasattr(self._opened_file.root, "density"):
+            model_has.append("density")
+
+        mesh = {}
+        for m in model_has:
+            mesh[m] = {}
+
+        for sd_object in points:
+
+            x_value = sd_object.converted_point.x_value
+            y_value = sd_object.converted_point.y_value
+            if sd_object.converted_point.projection == UCVM_DEFAULT_PROJECTION:
+                # If we are given this in not UTM, that's the sign to use the Fortran code.
+                x_value, y_value = UCVMCCommon.fortran_convert_ll_utm(sd_object.converted_point.x_value,
+                                                                      sd_object.converted_point.y_value,
+                                                                      self.config_dict["zone"])
+
+            temp_utm_e = x_value - self.model_properties["origin"]["e"]
+            temp_utm_n = y_value - self.model_properties["origin"]["n"]
+
             new_point_utm_n = self.model_properties["angles"]["sin"] * temp_utm_e + \
                 self.model_properties["angles"]["cos"] * temp_utm_n
             new_point_utm_e = self.model_properties["angles"]["cos"] * temp_utm_e - \
                 self.model_properties["angles"]["sin"] * temp_utm_n
-            coords = {
-                "x": int(math.floor(
-                     new_point_utm_e / self.model_properties["dimensions"]["width"] *
-                     (int(self.config_dict["dimensions"]["x"]) - 1))
-                ),
-                "y": int(math.floor(
-                     new_point_utm_n / self.model_properties["dimensions"]["height"] *
-                     (int(self.config_dict["dimensions"]["y"]) - 1))
-                ),
-                "z": int((float(self.config_dict["dimensions"]["depth"]) / float(
-                    self.config_dict["dimensions"]["z_interval"]) - 1) - math.floor(
-                    sd_object.converted_point.z_value /
-                    float(self.config_dict["dimensions"]["z_interval"])))
-            }
+
+            coords, percentages = UCVMCCommon.calculate_grid_point(
+                self.model_properties["dimensions"]["width"],
+                self.model_properties["dimensions"]["height"],
+                self.config_dict["dimensions"]["depth"],
+                new_point_utm_e,
+                new_point_utm_n,
+                sd_object.converted_point.z_value,
+                self.config_dict["dimensions"]["x"],
+                self.config_dict["dimensions"]["y"],
+                self.config_dict["dimensions"]["z_interval"]
+            )
 
             # Check to see if we are outside of the model boundaries.
             if coords["x"] < 0 or coords["y"] < 0 or coords["z"] < 0 or \
-               coords["x"] > int(self.config_dict["dimensions"]["x"]) - 2 or \
-               coords["y"] > int(self.config_dict["dimensions"]["y"]) - 2 or \
-               coords["z"] > int(self.config_dict["dimensions"]["z"]) - 1:
+               coords["x"] > self.config_dict["dimensions"]["x"] - 2 or \
+               coords["y"] > self.config_dict["dimensions"]["y"] - 2 or \
+               coords["z"] > self.config_dict["dimensions"]["z"] - 1:
                 self._set_velocity_properties_none(sd_object)
                 continue
 
-            # Get percentages for trilinear interpolation.
-            percentages = {
-                "x":
-                    math.fmod(new_point_utm_e, self.model_properties["spacing"]["x"]) /
-                    self.model_properties["spacing"]["x"],
-                "y":
-                    math.fmod(new_point_utm_n, self.model_properties["spacing"]["y"]) /
-                    self.model_properties["spacing"]["y"],
-                "z":
-                    math.fmod(sd_object.converted_point.z_value,
-                              float(self.config_dict["dimensions"]["z_interval"])) /
-                    float(self.config_dict["dimensions"]["z_interval"])
-            }
+            v = VelocityProperties(vp=None, vp_source=None, vs=None, vs_source=None,
+                                   density=None, density_source=None, qp=None,
+                                   qp_source=None, qs=None, qs_source=None)
 
-            props_to_return = {
-                "vp": None,
-                "vp_source": None,
-                "vs": None,
-                "vs_source": None,
-                "density": None,
-                "density_source": None,
-                "qp": None,
-                "qp_source": None,
-                "qs": None,
-                "qs_source": None
-            }
+            for prop_given in model_has:
+                if coords["z"] not in mesh[prop_given]:
+                    l = getattr(self._opened_file.root, prop_given)
+                    mesh[prop_given][coords["z"]] = l[coords["z"], :, :]
+                if coords["z"] - 1 not in mesh[prop_given]:
+                    l = getattr(self._opened_file.root, prop_given)
+                    mesh[prop_given][coords["z"] - 1] = l[coords["z"] - 1, :, :]
 
-            for key, value in self.material_properties.items():
-                if value is not None:
-                    props_to_return[key] = self._interp_trilinear(percentages, [
-                        value[coords["x"], coords["y"], coords["z"]],
-                        value[coords["x"] + 1, coords["y"], coords["z"]],
-                        value[coords["x"], coords["y"] + 1, coords["z"]],
-                        value[coords["x"] + 1, coords["y"] + 1, coords["z"]],
-                        value[coords["x"], coords["y"], coords["z"] - 1],
-                        value[coords["x"] + 1, coords["y"], coords["z"] - 1],
-                        value[coords["x"], coords["y"] + 1, coords["z"] - 1],
-                        value[coords["x"] + 1, coords["y"] + 1, coords["z"] - 1]
-                    ])
-                    props_to_return[key + "_source"] = self.get_metadata()["id"]
+                if coords["z"] + 1 in mesh[prop_given]:
+                    del mesh[prop_given][coords["z"] + 1]
 
-            sd_object.set_velocity_data(
-                VelocityProperties(
-                    props_to_return["vp"], props_to_return["vs"], props_to_return["density"],
-                    props_to_return["qp"], props_to_return["qs"],
-                    props_to_return["vp_source"], props_to_return["vs_source"],
-                    props_to_return["density_source"], props_to_return["qp_source"],
-                    props_to_return["qs_source"]
+                # Interpolate
+                p = getattr(v, prop_given)
+                p = UCVMCCommon.trilinear_interpolate(
+                    mesh[prop_given][coords["z"]][coords["x"]][coords["y"]],
+                    mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"]],
+                    mesh[prop_given][coords["z"]][coords["x"]][coords["y"] + 1],
+                    mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"] + 1],
+                    mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"]],
+                    mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"]],
+                    mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"] + 1],
+                    mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"] + 1],
+                    percentages["x"], percentages["y"], percentages["z"]
                 )
-            )
+                p = getattr(v, prop_given + "_source")
+                p = self.get_metadata()["id"]
 
-    def _interp_trilinear(self, percentages: dict, corner_vals: list) -> float:
-        """
-        Does trilinear interpolation specifically for these types of gridded velocity models.
-        :param percentages: The X, Y, and Z percentages for the interpolation.
-        :param corner_vals: The corner values. Top layer first, then bottom layer.
-        :return: A float representing the trilinearly interpolated material property.
-        """
-        # Interpolate planes.
-        temp = {
-            "tp": self._bilinear_interpolation_helper((percentages["x"], percentages["y"]),
-                                                      (corner_vals[0], corner_vals[2],
-                                                       corner_vals[3], corner_vals[1])),
-            "bp": self._bilinear_interpolation_helper((percentages["x"], percentages["y"]),
-                                                      (corner_vals[4], corner_vals[6],
-                                                       corner_vals[7], corner_vals[5]))
-        }
-        return self._linear_interpolation_helper(percentages["z"], temp["tp"], temp["bp"])
+            if v.density is None and v.vp is not None:
+                v.density = calculate_nafe_drake_density(v.vp)
 
-    def _bilinear_interpolation_helper(self, percents: tuple, plane: tuple) -> float:
-        """
-        Bilinearly interpolates given X, Y percentages and a plane defined as a tuple starting
-        from the bottom-left point and rotating clockwise.
-        :param tuple percents: The percentages (X, Y) to interpolate.
-        :param tuple plane: The plane, defined as a tuple of floats, starting bottom-left clockwise.
-        :return: A float representing the bilinearly interpolated value.
-        """
-        temp = {
-            "bx": self._linear_interpolation_helper(percents[0], plane[0], plane[3]),
-            "tx": self._linear_interpolation_helper(percents[0], plane[1], plane[2])
-        }
-        return self._linear_interpolation_helper(percents[1], temp["bx"], temp["tx"])
+            sd_object.set_velocity_data(v)
 
-    @classmethod
-    def _linear_interpolation_helper(cls, percent: float, val1: float, val2: float) -> float:
-        """
-        Linearly interpolates between val1 and val2. This is then used to form the bilinear
-        interpolation, which then forms the trilinear interpolation. Helper function that is hidden.
-        :param float percent: The percentage (from 0 to 1) to interpolate.
-        :param float val1: The first value.
-        :param float val2: The second value.
-        :return: The linearly interpolated value.
-        """
-        if percent > 1:
-            percent /= 100
-        return (1 - percent) * val1 + percent * val2
+        self._opened_file.close()

@@ -67,7 +67,7 @@ class UCVM:
 
         model_list = UCVM.get_list_of_installed_models()
         model_list = model_list["velocity"] + model_list["elevation"] + model_list["vs30"] + \
-            model_list["modifier"]
+            model_list["operator"]
 
         paths = []
         if environment_variable in os.environ:
@@ -137,7 +137,7 @@ class UCVM:
     @classmethod
     def get_model_type(cls, model: str) -> str:
         """
-        Given one model string, return the type of model (velocity, elevation, vs30, or modifier)
+        Given one model string, return the type of model (velocity, elevation, vs30, or operator)
         as a string.
         :param str model: The model string to check.
         :return: Velocity, vs30, or elevation depending on the model type.
@@ -156,9 +156,9 @@ class UCVM:
             if item["id"] == model:
                 return "vs30"
 
-        for item in all_models["modifier"]:
+        for item in all_models["operator"]:
             if item["id"] == model:
-                return "modifier"
+                return "operator"
 
         display_and_raise_error(19)
 
@@ -175,7 +175,7 @@ class UCVM:
 
         model_list = UCVM.get_list_of_installed_models()
         model_list = model_list["velocity"] + model_list["elevation"] + model_list["vs30"] + \
-                     model_list["modifier"]
+                     model_list["operator"]
 
         # Do a quick check just to make sure the model does, indeed, exist.
         found = False
@@ -286,7 +286,7 @@ class UCVM:
                 }
                 model = UCVM.get_model_instance(model_desc["id"])
                 if model.get_metadata()["type"] in will_return and \
-                    model.get_metadata()["type"] != "modifier":
+                    model.get_metadata()["type"] != "operator":
                     display_and_raise_error(20)
                 elif model.get_metadata()["type"] not in will_return:
                     will_return[model.get_metadata()["type"]] = {
@@ -302,10 +302,14 @@ class UCVM:
                     if "elevation" not in desired_properties:
                         desired_properties.append("elevation")
 
+            properties_found = []
+
             for prop in desired_properties:
                 if prop in will_return:
                     temp_models[prop] = will_return[prop]
-                    desired_properties.remove(prop)
+                    properties_found.append(prop)
+
+            desired_properties = [x for x in desired_properties if x not in properties_found]
 
             # Check to see if any desired properties remain.
             if len(desired_properties) > 0:
@@ -340,8 +344,8 @@ class UCVM:
                     temp_models["vs30"][0]["id"] + \
                     (";-;" + temp_models["vs30"][0]["params"] if
                      temp_models["vs30"][0]["params"] != "" else "")
-            if "modifier" in will_return:
-                for key, val in will_return["modifier"].items():
+            if "operator" in will_return:
+                for key, val in will_return["operator"].items():
                     new_model_array[full_index][len(new_model_array[full_index])] = \
                         val["id"] + (";-;" + val["params"] if val["params"] != "" else "")
 
@@ -374,7 +378,7 @@ class UCVM:
         with open(UCVM_MODEL_LIST_FILE, "r") as fd:
             model_xml = xmltodict.parse(fd.read())
 
-        models = {"velocity": [], "elevation": [], "vs30": [], "modifier": []}
+        models = {"velocity": [], "elevation": [], "vs30": [], "operator": []}
 
         if model_xml["root"] is None:
             return models

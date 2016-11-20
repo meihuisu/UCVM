@@ -1,22 +1,44 @@
-import time
-import os
-cimport cython
+"""
+CVM-S4 Velocity Model
 
+CVM-SCEC version 4 (CVM-S4), also known as SCEC CVM-4, is a 3D seismic velocity model.
+The current version is CVM-S4 was released in 2006 and was originally posted for download from the
+SCEC Data Center SCEC 3D Velocity Models Site.
+
+This code is the Cython interface to the legacy CVM-S4 Fortran code. It returns equivalent material
+properties to UCVM.
+
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
+"""
+# Python Imports
+import os
 from typing import List
 
+# Cython Imports
+cimport cython
 from libc.stdlib cimport malloc, free
 
+# UCVM Imports
 from ucvm.src.model.velocity.legacy import VelocityModel
 from ucvm.src.shared import VelocityProperties
 from ucvm.src.shared.properties import SeismicData
 
-cdef extern from "fortran_src/cvms.h":
+# Cython defs
+cdef extern from "src/cvms.h":
     void cvms_init_(char *, int *)
     void cvms_version_(char *, int *)
     void cvms_query_(int *, float *, float *, float *, float *, float *, float *, int *)
 
 
 class CVMS4VelocityModel(VelocityModel):
+    """
+    Defines the CVM-S4 interface to UCVM. This class queries the legacy Fortran code to retrieve
+    the material properties and records the data to the new UCVM data structures.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -34,6 +56,17 @@ class CVMS4VelocityModel(VelocityModel):
             raise RuntimeError("CVM-S4 not initialized properly.")
 
     def _query(self, points: List[SeismicData], **kwargs) -> bool:
+        """
+        This is the method that all models override. It handles querying the velocity model
+        and filling in the SeismicData structures.
+
+        Args:
+            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the
+                points in depth. These are to be populated with :obj:`VelocityProperties`:
+
+        Returns:
+            True on success, false if there is an error.
+        """
         cdef int nn
 
         cdef float *lon

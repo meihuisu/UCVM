@@ -82,8 +82,8 @@ class UCVMFrameworkTest(unittest.TestCase):
             {0: {0: "velocity1"}, 1: {0: "velocity2"}}
         )
         self.assertEqual(
-            UCVM.parse_model_string("velocity1.modifier[500];velocity2"),
-            {0: {0: "velocity1", 1: "modifier;-;500"}, 1: {0: "velocity2"}}
+            UCVM.parse_model_string("velocity1.operator[500];velocity2"),
+            {0: {0: "velocity1", 1: "operator;-;500"}, 1: {0: "velocity2"}}
         )
         self.assertEqual(
             UCVM.parse_model_string("(velocity1;velocity2).modifier1[50].modifier2;velocity3"),

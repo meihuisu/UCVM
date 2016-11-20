@@ -101,7 +101,7 @@ def main() -> int:
             "velocity": [list(dict(x).keys())[0] for x in dict(installed_list)["velocity"]],
             "elevation": [list(dict(x).keys())[0] for x in dict(installed_list)["elevation"]],
             "vs30": [list(dict(x).keys())[0] for x in dict(installed_list)["vs30"]],
-            "modifier": [list(dict(x).keys())[0] for x in dict(installed_list)["modifier"]]
+            "operator": [list(dict(x).keys())[0] for x in dict(installed_list)["operator"]]
         }
 
         print("\nThe following are models that you have not installed but are available for\n"
