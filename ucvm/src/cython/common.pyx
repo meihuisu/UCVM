@@ -30,6 +30,14 @@ class UCVMCCommon:
         return (1 - z_percent) * ty + z_percent * by
 
     @staticmethod
+    def bilinear_interpolate(float v1, float v2, float v3, float v4, float x_percent,
+                             float y_percent) -> float:
+        cdef float vx1 = (1 - x_percent) * v1 + x_percent * v2
+        cdef float vx2 = (1 - x_percent) * v3 + x_percent * v4
+
+        return (1 - y_percent) * vx1 + y_percent * vx2
+
+    @staticmethod
     def fortran_convert_ll_utm(float longitude, float latitude, int zone) -> (float, float):
         """
         Converts longitude and latitude to UTM in the same manor as the Fortran code that Po

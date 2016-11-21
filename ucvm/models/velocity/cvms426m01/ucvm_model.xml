@@ -83,6 +83,9 @@
     <!-- This is used by UCVM to understand how to make and build the model -->
     <build>
 
+        <!-- Build configure -->
+        <configure>src/configure</configure>
+
         <!-- Build makefile -->
         <makefile>src/Makefile</makefile>
 
@@ -92,7 +95,7 @@
         </data>
 
         <!-- The shared object library -->
-        <library>src/libcvmsi</library>
+        <library>src/src/libcvmsi</library>
 
         <!-- Is setup.py needed? -->
         <setuppy>Yes</setuppy>

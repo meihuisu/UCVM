@@ -1,15 +1,19 @@
 """
+Vs30 Calculated From Model
+
 Defines a Vs30 model which consists of the Vs30 information calculated direct from the model itself.
 This calculates the slowness at the top 30 meters and returns that information.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   July 21, 2016
-:modified:  September 6, 2016
-"""
+Copyright:
+    Southern California Earthquake Center
 
+Developer:
+    David Gill <davidgil@usc.edu>
+"""
+# Python Imports
 from typing import List
 
+# UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.model.vs30.vs30_model import Vs30Model
 from ucvm.src.shared import Vs30Properties, UCVM_DEPTH
@@ -17,15 +21,24 @@ from ucvm.src.shared.properties import SeismicData, Point
 
 
 class Vs30CalcModel(Vs30Model):
+    """
+    Defines the operator that calculates the Vs30 data directly from the model.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
     def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """
-        Internal (override) query method for the model.
-        :param list data: A list of SeismicData classes to fill in with elevation properties.
-        :return: True if function was successful, false if not.
+        This is the method that all models override. It handles querying the velocity model
+        and filling in the SeismicData structures.
+
+        Args:
+            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the
+                points. These are to be populated with :obj:`Vs30Properties`:
+
+        Returns:
+            True on success, false if there is an error.
         """
         for datum in data:
             if datum.model_string is not None:

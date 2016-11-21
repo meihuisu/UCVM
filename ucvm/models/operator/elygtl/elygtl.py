@@ -21,6 +21,9 @@ from ucvm.src.shared.functions import calculate_nafe_drake_density, calculate_sc
 
 
 class ElyGTLOperator(OperatorModel):
+    """
+    Defines the Ely GTL operator for UCVM.
+    """
 
     def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """

@@ -1,25 +1,31 @@
 """
 Defines the tests for the 1D model within UCVM.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   September 1, 2016
-:modified:  September 1, 2016
-"""
-import unittest
+Copyright:
+    Southern California Earthquake Center
 
+Developer:
+    David Gill <davidgil@usc.edu>
+"""
+# UCVM Imports
+from ucvm.src.shared.test import UCVMTestCase
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.shared.properties import SeismicData, Point, VelocityProperties
-from ucvm.src.shared.constants import UCVM_ELEVATION
 from ucvm.src.shared.test import assert_velocity_properties
 
 
-class OneDimensionalVelocityModelTest(unittest.TestCase):
+class OneDimensionalVelocityModelTest(UCVMTestCase):
+    """
+    Defines the 1D test cases.
+    """
+    description = "CVM-S4.26.M01"
 
     def setUp(self) -> None:
         """
         Set up all the initial SeismicData points.
-        :return: Nothing
+
+        Returns:
+            Nothing
         """
         self.data = {
             "depth": [
@@ -33,8 +39,12 @@ class OneDimensionalVelocityModelTest(unittest.TestCase):
     def test_onedimensional_bbp_depth(self) -> None:
         """
         Tests the 1D model for basic depth query.
-        :return: Nothing
+
+        Returns:
+            Nothing
         """
+        self._test_start("1D BBP format")
+
         UCVM.query(self.data["depth"], "1d[Whittier Narrows]", ["velocity"])
 
         assert_velocity_properties(
@@ -70,12 +80,18 @@ class OneDimensionalVelocityModelTest(unittest.TestCase):
                                "whittier narrows 1d bbp")
         )
 
+        self._test_end()
+
     def test_onedimensional_bbp_linear(self) -> None:
         """
         Tests the 1D model for basic depth, linear query.
-        :return: Nothing
+
+        Returns:
+            Nothing
         """
-        """UCVM.query(self.data["depth"], "1d[Whittier Narrows,linear]", ["velocity"])
+        self._test_start("1D SCEC format")
+
+        UCVM.query(self.data["depth"], "1d[Whittier Narrows,linear]", ["velocity"])
 
         assert_velocity_properties(
             self,
@@ -116,4 +132,6 @@ class OneDimensionalVelocityModelTest(unittest.TestCase):
                                "whittier narrows 1d bbp (interpolated)",
                                "whittier narrows 1d bbp (interpolated)",
                                "whittier narrows 1d bbp (interpolated)")
-        )"""
+        )
+
+        self._test_end()

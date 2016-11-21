@@ -1,17 +1,23 @@
 """
+1D Velocity Model
+
 Defines a 1D model which can either be in BBP 1D format or a list. The model file location (or if it
 is an included model, just the name) is provided as a parameter.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   August 18, 2016
-:modified:  August 18, 2016
-"""
-import os
-import xmltodict
+Copyright:
+    Southern California Earthquake Center
 
+Developer:
+    David Gill <davidgil@usc.edu>
+"""
+# Python Imports
+import os
 from typing import List
 
+# Package Imports
+import xmltodict
+
+# UCVM Imports
 from ucvm.src.model.velocity.velocity_model import VelocityModel
 from ucvm.src.shared import VelocityProperties
 from ucvm.src.shared.properties import SeismicData
@@ -26,6 +32,17 @@ class OneDimensionalVelocityModel(VelocityModel):
 
     @classmethod
     def _parse_bbp_model(cls, text_info: str, layers: list) -> None:
+        """
+        Parses the BBP model format for material properties to return to UCVM.
+
+        Args:
+            text_info (str): The text representation of the BBP model.
+            layers (list): The layers list that after running this function will contain the
+                           material properties.
+
+        Returns:
+            Nothing
+        """
         current_depth = 0
         for line in text_info.splitlines(keepends=False):
             split_str = line.split()
@@ -46,6 +63,17 @@ class OneDimensionalVelocityModel(VelocityModel):
 
     @classmethod
     def _parse_scec_model(cls, data_info: dict, layers: list) -> None:
+        """
+        Parses the SCEC model format for material properties to return to UCVM.
+
+        Args:
+            data_info (dict): The dictionary representation of the BBP model.
+            layers (list): The layers list that after running this function will contain the
+                           material properties.
+
+        Returns:
+            Nothing
+        """
         layer_dict = {}
         for layer in data_info["layers"]["layer"]:
             layer_dict[int(layer["@number"])] = {
@@ -72,6 +100,19 @@ class OneDimensionalVelocityModel(VelocityModel):
     @classmethod
     def _get_velocity_data(cls, depth: float, layers: list, interpolate: bool, name: str) \
             -> VelocityProperties:
+        """
+        Given a list of layers and depth, this function returns the velocity data for the
+        1D model.
+
+        Args:
+            depth (float): The depth for which we want the properties.
+            layers (list): The layers of the velocity model.
+            interpolate (bool): True if we should use linear interpolation, false if not.
+            name (str): The name of the model.
+
+        Returns:
+            The :obj:`VelocityProperties` for this model at the specified depth.
+        """
         previous_layer = None
         current_layer = None
         layers.append(layers[-1])
@@ -113,10 +154,15 @@ class OneDimensionalVelocityModel(VelocityModel):
 
     def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """
-        Internal (override) query method for the model.
-        :param list data: A list of SeismicData classes to fill in with velocity properties.
-        :param str params: The parameters passed as a string.
-        :return: True if function was successful, false if not.
+        This is the method that all models override. It handles querying the velocity model
+        and filling in the SeismicData structures.
+
+        Args:
+            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the
+                points in depth. These are to be populated with :obj:`VelocityProperties`:
+
+        Returns:
+            True on success, false if there is an error.
         """
         xml_file = None
         interpolation = None

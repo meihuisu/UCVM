@@ -10,8 +10,6 @@ Developer:
 # UCVM Imports
 from ucvm.src.shared.test import run_acceptance_test, UCVMTestCase
 
-import time
-
 
 class CVMS426VelocityModelTest(UCVMTestCase):
     """

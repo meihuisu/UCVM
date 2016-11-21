@@ -1,19 +1,27 @@
 """
-Defines the Python implementation of the Lin-Thurber velocity model.
+Lin-Thurber Velocity Model
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   October 12, 2016
-:modified:  October 12, 2016
+This code is the Cython interface to the legacy Lin-Thurber model C code. It returns equivalent
+material properties to UCVM.
+
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
 """
+# Python Imports
 import os
-cimport cython
-
 from typing import List
 
+# Cython Imports
+cimport cython
+
+# UCVM Imports
 from ucvm.src.model.velocity.velocity_model import VelocityModel
 from ucvm.src.shared.properties import SeismicData, VelocityProperties
 
+# Cython defs
 cdef extern from "src/src/cvmlt.h":
     int cvmlt_init(const char *)
     int cvmlt_finalize()
@@ -28,6 +36,10 @@ cdef struct cvmlt_data_t:
     float rho
 
 class LinThurberVelocityModel(VelocityModel):
+    """
+    Defines the Lin-Thurber interface to UCVM. This class queries the legacy C code to retrieve
+    the material properties and records the data to the new UCVM data structures.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -40,9 +52,15 @@ class LinThurberVelocityModel(VelocityModel):
 
     def _query(self, points: List[SeismicData], **kwargs) -> bool:
         """
-        Internal (override) query method for the model.
-        :param list data: A list of SeismicData classes.
-        :return: True on success, false on failure.
+        This is the method that all models override. It handles querying the velocity model
+        and filling in the SeismicData structures.
+
+        Args:
+            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the
+                points in depth. These are to be populated with :obj:`VelocityProperties`:
+
+        Returns:
+            True on success, false if there is an error.
         """
         cdef cvmlt_point_t mpnt
         cdef cvmlt_data_t mdata

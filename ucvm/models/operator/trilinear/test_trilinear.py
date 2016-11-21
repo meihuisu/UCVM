@@ -17,11 +17,11 @@ class TrilinearOperatorModelTest(UCVMTestCase):
     """
     Defines the test cases for the trilinear interpolation operator.
     """
-    description = "Ely GTL"
+    description = "Trilinear Interpolation"
 
     def test_trilinear_query(self):
         """
-        Tests that the Ely GTL delivers the correct scaling.
+        Tests that the Trilinear interpolation works.
 
         Returns:
             None

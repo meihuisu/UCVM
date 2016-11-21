@@ -1,24 +1,31 @@
 """
 Defines the Wills-Wald Vs30 model. This is the default Vs30 model within UCVM.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   October 18, 2016
-:modified:  October 18, 2016
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
 """
+# Python Imports
 import os
 import math
 from typing import List
 
+# Package Imports
+import numpy as np
+
+# UCVM Imports
 from ucvm.src.model.vs30.vs30_model import Vs30Model
 from ucvm.src.shared import Vs30Properties
 from ucvm.src.shared.functions import bilinear_interpolation
 from ucvm.src.shared.properties import SeismicData
 
-import numpy as np
-
 
 class WillsWaldModel(Vs30Model):
+    """
+    Defines the Wills-Wald 2006 map.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -26,9 +33,15 @@ class WillsWaldModel(Vs30Model):
 
     def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """
-        Internal (override) query method for the model.
-        :param list data: A list of SeismicData classes to fill in with elevation properties.
-        :return: True if function was successful, false if not.
+        This is the method that all models override. It handles querying the velocity model
+        and filling in the SeismicData structures.
+
+        Args:
+            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the
+                points. These are to be populated with :obj:`Vs30Properties`:
+
+        Returns:
+            True on success, false if there is an error.
         """
         for datum in data:
             if datum.converted_point.x_value < -130 or datum.converted_point.x_value > -110 or \
