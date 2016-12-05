@@ -49,10 +49,10 @@ CYBERSHAKE_BOX = {
 }  #: dict: Defines the CyberShake box in long, lat format.
 
 MODEL_CORNERS = {
-    "tl": {"e": 504472.106530, "n": 4050290.088321},
+    "tl": {"e": 503240.52312058659, "n": 4051863.8294700049},
     "bl": {"e": 779032.901477, "n": 3699450.983449},
-    "tr": {"e": 905367.666914, "n": 4366503.431060},
-    "br": {"e": 1181157.928029, "n": 4014713.414724}
+    "tr": {"e": 906054.31248308613, "n": 4367099.1401498578},
+    "br": {"e": 1181846.6908393607, "n": 4014686.2941289032}
 }  #: dict: Defines the model corners in UTM format.
 
 PLOT_CORNERS = {
@@ -403,11 +403,11 @@ def main() -> int:
         "width": calc_width(MODEL_CORNERS["tr"]["n"],
                             MODEL_CORNERS["tl"]["n"],
                             MODEL_CORNERS["tr"]["e"],
-                            MODEL_CORNERS["tl"]["e"]) / MAX_DIMENSIONS["X"],
+                            MODEL_CORNERS["tl"]["e"]) / (MAX_DIMENSIONS["X"] - 1),
         "height": calc_height(MODEL_CORNERS["tl"]["n"],
                               MODEL_CORNERS["bl"]["n"],
                               MODEL_CORNERS["tl"]["e"],
-                              MODEL_CORNERS["bl"]["e"]) / MAX_DIMENSIONS["Y"],
+                              MODEL_CORNERS["bl"]["e"]) / (MAX_DIMENSIONS["Y"] - 1),
         "sin_rotation": math.sin(math.radians(math.fabs(calc_rotation_angle(
             MODEL_CORNERS["tl"]["n"], MODEL_CORNERS["bl"]["n"], MODEL_CORNERS["tl"]["e"],
             MODEL_CORNERS["bl"]["e"])))),
@@ -415,6 +415,8 @@ def main() -> int:
             MODEL_CORNERS["tl"]["n"], MODEL_CORNERS["bl"]["n"], MODEL_CORNERS["tl"]["e"],
             MODEL_CORNERS["bl"]["e"]))))
     }
+
+    print(model_metadata)
 
     # Get the list of all the land-based points.
     land_points = query_ucvm_for_land_points(
