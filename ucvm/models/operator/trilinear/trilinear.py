@@ -140,7 +140,7 @@ class TrilinearOperator(OperatorModel):
                                   datum.original_point.depth_elev)),
                 SeismicData(Point(lat_lon_corners[0][3], lat_lon_corners[1][3],
                                   datum.original_point.z_value,
-                                  datum.original_point.depth_elev))
+                                  datum.original_point.depth_elev)),
                 SeismicData(Point(lat_lon_corners[0][0], lat_lon_corners[1][0],
                                   datum.original_point.z_value - spacing / 2,
                                   datum.original_point.depth_elev)),

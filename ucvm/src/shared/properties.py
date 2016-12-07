@@ -20,8 +20,6 @@ except ImportError as the_err:
     raise
 
 from .constants import UCVM_DEFAULT_PROJECTION
-from .functions import is_number
-
 from ucvm.src.shared import UCVM_DEPTH, UCVM_ELEVATION, UCVM_ELEV_ANY
 
 VelocityProperties = namedtuple("VelocityProperties", "vp vs density qp qs " +
@@ -66,19 +64,19 @@ class Point:
 
     def __init__(self, x: float, y: float, z: float, depth_elev: int=UCVM_DEPTH,
                  metadata: dict=None, projection: str=None):
-        if is_number(x):
+        try:
             self.x_value = float(x)  #: float: X co-ordinate (set in constructor).
-        else:
+        except ValueError:
             raise TypeError("X co-ordinate must be a number.")
 
-        if is_number(y):
+        try:
             self.y_value = float(y)  #: float: Y co-ordinate (set in constructor).
-        else:
+        except ValueError:
             raise TypeError("Y co-ordinate must be a number.")
 
-        if is_number(z):
+        try:
             self.z_value = float(z)  #: float: Z co-ordinate (set in constructor). Depth/elevation.
-        else:
+        except ValueError:
             raise TypeError("Z co-ordinate must be a number.")
 
         if self.z_value < 0 and int(depth_elev) == UCVM_DEPTH:
@@ -105,7 +103,7 @@ class Point:
         :return: A Point in the new projection.
         """
         if projection == self.projection:
-            return copy.copy(self)
+            return self
 
         if self.projection in Point.loaded_projections:
             in_proj = Point.loaded_projections[self.projection]
@@ -152,12 +150,12 @@ class SeismicData:
     def __init__(self, point: Point=None, extras: dict=None):
         if point is not None:
             self.original_point = point              #: Point: The original point given.
-            self.converted_point = copy.copy(point)  #: Point: Converted point for queries.
+            self.converted_point = None
         elif point is not None:
             raise TypeError("The point must be an instance of the Point class")
         else:
             self.original_point = Point(-118, 34, 0)
-            self.converted_point = Point(-118, 34, 0)
+            self.converted_point = None
 
         self.elevation_properties = None          #: ElevationProperties: Elevation property data.
         self.velocity_properties = None           #: VelocityProperties: Material property data.
@@ -273,7 +271,13 @@ class SeismicData:
         :param projection: The projection as a string.
         :return: Nothing.
         """
-        self.converted_point = self.original_point.convert_to_projection(projection)
+        if self.original_point.projection == projection:
+            self.converted_point = Point(self.original_point.x_value, self.original_point.y_value,
+                                         self.original_point.z_value, self.original_point.depth_elev,
+                                         self.original_point.metadata,
+                                         self.original_point.projection)
+        else:
+            self.converted_point = self.original_point.convert_to_projection(projection)
 
     def set_point_to_depth_or_elev(self, depth_or_elev: int=UCVM_DEPTH) -> bool:
         """

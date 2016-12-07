@@ -11,7 +11,6 @@ Developer:
     David Gill <davidgil@usc.edu>
 """
 # Python Imports
-import time
 import os
 import math
 from typing import List
@@ -96,6 +95,22 @@ class GriddedVelocityModel(VelocityModel):
                 float(self.config_dict["dimensions"]["y"]) - 1)
         }
 
+        self._opened_file = tables.open_file(
+            os.path.join(self.get_model_dir(), "data", self._public_metadata["id"] + ".dat"), "r"
+        )
+
+        self.model_has = []
+        if hasattr(self._opened_file.root, "vp"):
+            self.model_has.append("vp")
+        if hasattr(self._opened_file.root, "vs"):
+            self.model_has.append("vs")
+        if hasattr(self._opened_file.root, "density"):
+            self.model_has.append("density")
+
+        self.mesh = {}
+        for m in self.model_has:
+            self.mesh[m] = {}
+
     def _query(self, points: List[SeismicData], **kwargs) -> bool:
         """
         This is the method that all models override. It handles querying the velocity model
@@ -108,24 +123,6 @@ class GriddedVelocityModel(VelocityModel):
         Returns:
             True on success, false if there is an error.
         """
-        stime = time.time()
-
-        self._opened_file = tables.open_file(
-            os.path.join(self.get_model_dir(), "data", self._public_metadata["id"] + ".dat"), "r"
-        )
-
-        model_has = []
-        if hasattr(self._opened_file.root, "vp"):
-            model_has.append("vp")
-        if hasattr(self._opened_file.root, "vs"):
-            model_has.append("vs")
-        if hasattr(self._opened_file.root, "density"):
-            model_has.append("density")
-
-        mesh = {}
-        for m in model_has:
-            mesh[m] = {}
-
         for sd_object in points:
 
             x_value = sd_object.converted_point.x_value
@@ -164,40 +161,43 @@ class GriddedVelocityModel(VelocityModel):
                 self._set_velocity_properties_none(sd_object)
                 continue
 
-            v = VelocityProperties(vp=None, vp_source=None, vs=None, vs_source=None,
-                                   density=None, density_source=None, qp=None,
-                                   qp_source=None, qs=None, qs_source=None)
+            v = {"vp": None, "vp_source": None, "vs": None, "vs_source": None,
+                 "density": None, "density_source": None, "qp": None, "qp_source": None,
+                 "qs": None, "qs_source": None}
 
-            for prop_given in model_has:
-                if coords["z"] not in mesh[prop_given]:
+            for prop_given in self.model_has:
+                if coords["z"] not in self.mesh[prop_given]:
                     l = getattr(self._opened_file.root, prop_given)
-                    mesh[prop_given][coords["z"]] = l[coords["z"], :, :]
-                if coords["z"] - 1 not in mesh[prop_given]:
+                    self.mesh[prop_given][coords["z"]] = l[coords["z"], :, :]
+                if coords["z"] - 1 not in self.mesh[prop_given]:
                     l = getattr(self._opened_file.root, prop_given)
-                    mesh[prop_given][coords["z"] - 1] = l[coords["z"] - 1, :, :]
+                    self.mesh[prop_given][coords["z"] - 1] = l[coords["z"] - 1, :, :]
 
-                if coords["z"] + 1 in mesh[prop_given]:
-                    del mesh[prop_given][coords["z"] + 1]
+                if coords["z"] + 1 in self.mesh[prop_given]:
+                    del self.mesh[prop_given][coords["z"] + 1]
 
                 # Interpolate
-                p = getattr(v, prop_given)
-                p = UCVMCCommon.trilinear_interpolate(
-                    mesh[prop_given][coords["z"]][coords["x"]][coords["y"]],
-                    mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"]],
-                    mesh[prop_given][coords["z"]][coords["x"]][coords["y"] + 1],
-                    mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"] + 1],
-                    mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"]],
-                    mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"]],
-                    mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"] + 1],
-                    mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"] + 1],
+                v[prop_given] = UCVMCCommon.trilinear_interpolate(
+                    self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"]],
+                    self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"]],
+                    self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"] + 1],
+                    self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"] + 1],
+                    self.mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"]],
+                    self.mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"]],
+                    self.mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"] + 1],
+                    self.mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"] + 1],
                     percentages["x"], percentages["y"], percentages["z"]
                 )
-                p = getattr(v, prop_given + "_source")
-                p = self.get_metadata()["id"]
+                v[str(prop_given) + "_source"] = self.get_metadata()["id"]
 
-            if v.density is None and v.vp is not None:
-                v.density = calculate_nafe_drake_density(v.vp)
+            if v["density"] is None and v["vp"] is not None:
+                v["density"] = calculate_nafe_drake_density(float(v["vp"]))
 
-            sd_object.set_velocity_data(v)
+            sd_object.set_velocity_data(VelocityProperties(
+                vp=v["vp"], vp_source=v["vp_source"], vs=v["vs"], vs_source=v["vs_source"],
+                density=v["density"], density_source=v["density_source"], qp=v["qp"],
+                qp_source=v["qp_source"], qs=v["qs"], qs_source=v["qs_source"]
+            ))
 
+    def __del__(self):
         self._opened_file.close()

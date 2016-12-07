@@ -1,19 +1,26 @@
 #!/usr/bin/env python
 """
+Single-core AWP and UCVM mesh generation.
+
 Generates a binary float mesh from a given model string. This utility can read in legacy UCVM
 15.10.0 and below configuration files as well as use the new XML configuration format. If no
 file-format is specified, then this utility will ask a series of prompts before generating the
 mesh.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   July 29, 2016
-:modified:  August 10, 2016
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
 """
+# Python Imports
 import sys
 import time
+
+# Package Imports
 import xmltodict
 
+# UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.framework.awp_mesh import ask_questions, mesh_extract_single
 
@@ -21,7 +28,9 @@ from ucvm.src.framework.awp_mesh import ask_questions, mesh_extract_single
 def usage() -> None:
     """
     Displays the help text associated with this utility.
-    :return: Nothing.
+
+    Returns:
+        None
     """
     UCVM.print_with_replacements(
         "\n"
@@ -49,7 +58,7 @@ def main() -> int:
 
     try:
         options = UCVM.parse_options([
-            {"short": "c", "long": "config-only", "value": True, "required": False},
+            {"short": "c", "long": "config-only", "value": False, "required": False},
             {"short": "f", "long": "file", "value": True, "required": False}
         ], usage)
     except ValueError as v_err:
@@ -57,16 +66,7 @@ def main() -> int:
         sys.exit(-1)
 
     if options["config-only"] is not None:
-        with open(options["config-only"], "w") as fd:
-            fd.write(xmltodict.unparse({"root": ask_questions()}, pretty=True))
-        print(
-            "\n"
-            "Your mesh configuration file has been saved to " + options["config-only"] + ".\n"
-            "\n"
-            "To extract a mesh with your new configuration, run\n"
-            "ucvm_mesh_create -f " + options["config-only"] + ""
-            "\n"
-        )
+        ask_questions()
         return 0
 
     if options["file"] is not None:

@@ -15,6 +15,7 @@ from distutils.command.install import install
 import urllib.request
 import xml.dom.minidom
 import os
+from io import StringIO
 from math import log
 from subprocess import Popen, PIPE, CalledProcessError
 import shutil
@@ -41,15 +42,18 @@ INSTALL_REQUIRES = ["tables", "xmltodict", "humanize", "pyproj", "Cython", "psut
 class OnlyGetScriptPath(install):
     def run(self):
         self.distribution.install_scripts = self.install_scripts
+        self.distribution.package_dir = self.install_purelib
 
 
 def get_setuptools_script_dir():
-    dist = setup(cmdclass={'install': OnlyGetScriptPath})
+    dist = setup(name=UCVM_INFORMATION["short_name"],
+                 version=UCVM_INFORMATION["version"],
+                 cmdclass={'install': OnlyGetScriptPath})
     dist.dry_run = True  # not sure if necessary
     command = dist.get_command_obj('install')
     command.ensure_finalized()
     command.run()
-    return dist.install_scripts
+    return dist.package_dir, dist.install_scripts
 
 
 def execute(cmd):
@@ -110,7 +114,7 @@ def get_list_of_installable_internet_models() -> dict:
         inner_item = {
             "id": str(model_item.getElementsByTagName("file")[0].firstChild.data).split(".")[0],
             "description": "\n".join([x.strip() for x in str(
-                model_item.getElementsByTagName("description")[1].firstChild.data
+                model_item.getElementsByTagName("description")[0].firstChild.data
             ).split("\n")]),
             "name": str(model_item.getElementsByTagName("name")[0].firstChild.data),
             "coverage": str(model_item.getElementsByTagName("coverage")[0].
@@ -131,7 +135,8 @@ models_to_download = [
     ("onedimensional", "1D"),
     ("usgs-noaa", "USGS/NOAA Digital Elevation Model"),
     ("wills-wald-2006", "Wills-Wald Vs30"),
-    ("vs30-calc", "Calculated Vs30 from the model (top 30 meters slowness)")
+    ("vs30-calc", "Calculated Vs30 from the model (top 30 meters slowness)"),
+    ("dataproductreader", "Data Product Reader")
 ]
 
 print(
@@ -255,18 +260,46 @@ setup(name=UCVM_INFORMATION["short_name"],
       zip_safe=False
       )
 
-_LOCAL_SCRIPT_PATH = get_setuptools_script_dir()
+_LOCAL_LIBRARY_PATH, _LOCAL_SCRIPT_PATH = get_setuptools_script_dir()
+_LOCAL_LIBRARY_PATH = os.path.join(
+    _LOCAL_LIBRARY_PATH, "-".join([UCVM_INFORMATION["short_name"], UCVM_INFORMATION["version"],
+                                   "py" + str(sys.version_info.major) + "." +
+                                   str(sys.version_info.minor)]) + ".egg",
+    "ucvm", "libraries"
+)
 print("")
 
-# Now that UCVM is installed, we can go through the requested models and install them.
-for model in models_to_download:
-    for line in execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_model_manager"), "-a", model[0]]):
-        print(line, end="")
-    print("")
+from ucvm.src.shared.constants import HYPOCENTER_PREFIX
 
-# Run the tests.
-for line in execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_run_tests"), "-t"]):
-    print(line, end="")
+os.mkdir(os.path.join(_LOCAL_LIBRARY_PATH, "temp"))
+library_file = urllib.request.URLopener()
+library_file.retrieve(HYPOCENTER_PREFIX + "/libraries/euclid3.ucv",
+                      os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3.ucv"))
+try:
+    os.mkdir(os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3"))
+except FileExistsError:
+    shutil.rmtree(os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3"))
+
+try:
+    os.mkdir(os.path.join(_LOCAL_LIBRARY_PATH, "euclid3"))
+except FileExistsError:
+    pass
+
+p = Popen(["tar", "-zxvf", os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3.ucv"),
+           "-C", os.path.join(_LOCAL_LIBRARY_PATH, "euclid3")], stdout=PIPE, stderr=PIPE)
+p.wait()
+
+print("Installing E-tree Library...")
+
+cwd = os.getcwd()
+os.chdir(os.path.join(_LOCAL_LIBRARY_PATH, "euclid3"))
+
+p = Popen(["python3", "build.py"], stdout=PIPE, stderr=PIPE)
+p.communicate()
+
+os.chdir(cwd)
+
+os.remove(os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3.ucv"))
 
 # Install C framework.
 from distutils.core import setup
@@ -278,14 +311,36 @@ print("Installing C components of UCVM...")
 os.chdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ucvm", "src", "cython"))
 
 ext_modules = [
-    Extension("ucvm_c_common", ["common.pyx"])
+    Extension("ucvm_c_common", ["common.pyx"], libraries=["etree"],
+              library_dirs=[os.path.join(_LOCAL_LIBRARY_PATH, "euclid3", "lib")],
+              include_dirs=[os.path.join(_LOCAL_LIBRARY_PATH, "euclid3", "include")])
 ]
 
+old_stdout = sys.stdout
+old_stderr = sys.stderr
+#s_out = StringIO()
+#s_err = StringIO()
+#sys.stdout = s_out
+#sys.stderr = s_err
 setup(
     name="ucvm_c_common",
     cmdclass={"build_ext": build_ext},
     ext_modules=ext_modules
 )
+sys.stdout = old_stdout
+sys.stderr = old_stderr
+print("\tDone!")
+print("")
+
+# Now that UCVM is installed, we can go through the requested models and install them.
+for model in models_to_download:
+    for line in execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_model_manager"), "-a", model[0]]):
+        print(line, end="")
+    print("")
+
+# Run the tests.
+for line in execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_run_tests"), "-t"]):
+    print(line, end="")
 
 print("Thank you for installing UCVM. The installation is now complete. To learn more about")
 print("UCVM, please run the command ucvm_help.")

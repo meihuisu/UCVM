@@ -38,7 +38,9 @@ _ERROR_LIST = {
         "that doesn't work,",
     19: "Model type not found. Please try again. If that doesn't work,",
     20: "Two or more of the same model type were provided in the same model string (e.g. "
-        "cvms4.cvms426 which combines two velocity models). Please fix and try again."
+        "cvms4.cvms426 which combines two velocity models). Please fix and try again.",
+    21: "No file was specified as a parameter to the data product reader model. Please call the "
+        "model like this: dataproductreader[xml file name]. If that doesn't work,"
 }
 
 

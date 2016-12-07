@@ -16,7 +16,7 @@ import inspect
 from contextlib import redirect_stdout
 
 from ucvm.src.framework.ucvm import UCVM
-from ucvm.src.framework.mesh_common import InternalMesh, InternalMeshIterator
+from ucvm.src.framework.mesh_common import InternalMesh, AWPInternalMeshIterator
 from ucvm.src.shared.properties import SeismicData, Point
 from ucvm.src.framework.awp_mesh import mesh_extract_single
 
@@ -38,22 +38,22 @@ class UCVMMeshTest(unittest.TestCase):
         )
         self.sd = [SeismicData(Point(-118, 34, 0)) for _ in range(0, 101505)]
         self.im_1.out_dir = os.path.join(self.dir, "scratch")
-        self.im_1_iterator_1 = InternalMeshIterator(self.im_1, 0, 101505, 1005, self.sd)
-        self.im_1_iterator_2 = InternalMeshIterator(self.im_1, 0, 101505, 101505, self.sd)
+        self.im_1_iterator_1 = AWPInternalMeshIterator(self.im_1, 0, 101505, 1005, self.sd)
+        self.im_1_iterator_2 = AWPInternalMeshIterator(self.im_1, 0, 101505, 101505, self.sd)
         self.im_2 = InternalMesh.from_xml_file(
             os.path.join(self.dir, "data", "simple_mesh_ijk12_rotated.xml")
         )
         self.sd2 = [SeismicData(Point(-118, 34, 0)) for _ in range(0, 51005)]
         self.im_2.out_dir = os.path.join(self.dir, "scratch")
-        self.im_2_iterator_1 = InternalMeshIterator(self.im_2, 0, 51005, 505, self.sd2)
-        self.im_2_iterator_2 = InternalMeshIterator(self.im_2, 0, 51005, 51005, self.sd2)
+        self.im_2_iterator_1 = AWPInternalMeshIterator(self.im_2, 0, 51005, 505, self.sd2)
+        self.im_2_iterator_2 = AWPInternalMeshIterator(self.im_2, 0, 51005, 51005, self.sd2)
         self.im_3 = InternalMesh.from_xml_file(
             os.path.join(self.dir, "data", "simple_utm_mesh_ijk12_rotated.xml")
         )
         self.sd3 = [SeismicData(Point(-118, 34, 0)) for _ in range(0, 101505)]
         self.im_3.out_dir = os.path.join(self.dir, "scratch")
-        self.im_3_iterator_1 = InternalMeshIterator(self.im_3, 0, 101505, 202, self.sd3)
-        self.im_3_iterator_2 = InternalMeshIterator(self.im_3, 0, 101505, 101505, self.sd3)
+        self.im_3_iterator_1 = AWPInternalMeshIterator(self.im_3, 0, 101505, 202, self.sd3)
+        self.im_3_iterator_2 = AWPInternalMeshIterator(self.im_3, 0, 101505, 101505, self.sd3)
 
     def test_internal_mesh_basics(self):
         self.assertEqual(self.im_1.rotation, 0)

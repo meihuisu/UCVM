@@ -17,7 +17,7 @@ from ucvm.src.visualization.plot import Plot
 from ucvm.src.shared.constants import UCVM_DEFAULT_PROJECTION
 from ucvm.src.shared.properties import Point
 from ucvm.src.shared.errors import display_and_raise_error
-from ucvm.src.framework.mesh_common import InternalMesh, InternalMeshIterator
+from ucvm.src.framework.mesh_common import InternalMesh, AWPInternalMeshIterator
 
 SliceProperties = namedtuple("SliceProperties", "num_x num_y spacing rotation")
 
@@ -135,12 +135,13 @@ class HorizontalSlice(Plot):
                 "num_y": self.slice_properties.num_y,
                 "num_z": 1,
                 "rotation": self.slice_properties.rotation,
-                "spacing": self.slice_properties.spacing
+                "spacing": self.slice_properties.spacing,
+                "projection": self.origin.projection
             },
             self.cvms,
             ""
         )
-        im_iterator = InternalMeshIterator(im, 0, im.total_size, len(init_array), init_array)
+        im_iterator = AWPInternalMeshIterator(im, 0, im.total_size, len(init_array), init_array)
 
         counter = 0
         num_queried = next(im_iterator)
@@ -246,12 +247,13 @@ class HorizontalSlice(Plot):
                 "num_y": self.slice_properties.num_y,
                 "num_z": 1,
                 "rotation": self.slice_properties.rotation,
-                "spacing": self.slice_properties.spacing
+                "spacing": self.slice_properties.spacing,
+                "projection": self.origin.projection
             },
             self.cvms,
             ""
         )
-        im_iterator = InternalMeshIterator(im, 0, im.total_size, len(init_array), init_array)
+        im_iterator = AWPInternalMeshIterator(im, 0, im.total_size, len(init_array), init_array)
 
         num_queried = next(im_iterator)
         i = 0

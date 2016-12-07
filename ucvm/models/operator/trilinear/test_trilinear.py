@@ -13,7 +13,7 @@ from ucvm.src.shared.properties import SeismicData, Point
 from ucvm.src.shared.test import UCVMTestCase
 
 
-class TrilinearOperatorModelTest(UCVMTestCase):
+class TrilinearOperatorTest(UCVMTestCase):
     """
     Defines the test cases for the trilinear interpolation operator.
     """

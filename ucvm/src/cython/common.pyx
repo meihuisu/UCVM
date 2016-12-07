@@ -1,14 +1,217 @@
 from libc.math cimport atan, pow, sin, sqrt, tan, cos, floor, fmod
+from libc.stdint cimport uintptr_t, int32_t, uint32_t
+
+cdef struct ucvm_epayload_t:
+    float Vp
+    float Vs
+    float density
+
+cdef extern from "etree.h":
+    struct etree_t:
+        int error
+        pass
+    struct etree_addr_t:
+        uint32_t x
+        uint32_t y
+        uint32_t z
+        uint32_t t
+        int level
+        int tree_type
+
+    etree_t *etree_open(const char *, int32_t, int32_t, int32_t, int32_t)
+    int etree_search(etree_t *, etree_addr_t, etree_addr_t *, const char *, void *)
+    int etree_registerschema(etree_t *, const char *)
+    char* etree_getappmeta(etree_t*)
+    int etree_setappmeta(etree_t *, const char *)
+    int etree_insert(etree_t *, etree_addr_t, const void *);
+    int etree_close(etree_t *)
 
 class UCVMCCommon:
+
+    @staticmethod
+    def c_etree_open(char *path, int mode):
+        cdef int32_t imode = mode
+        cdef int32_t bufsize = 64
+        cdef int32_t payloadsize = 0
+        cdef int32_t dimensions = 3
+        return <uintptr_t>etree_open(path, imode, bufsize, payloadsize, dimensions)
+
+    @staticmethod
+    def c_etree_setappmeta(uintptr_t opened_etree, char *metadata) -> int:
+        return etree_setappmeta(<etree_t *>opened_etree, metadata)
+
+    @staticmethod
+    def c_etree_getappmeta(uintptr_t opened_etree) -> dict:
+        cdef char *appmeta = etree_getappmeta(<etree_t *>opened_etree)
+        appmeta_dict = bytes(appmeta).decode("utf-8").split()
+
+        return {
+            "title": appmeta_dict[0].split(":"),
+            "author": appmeta_dict[1].split(":"),
+            "date": appmeta_dict[2].split(":"),
+            "numfields": appmeta_dict[3],
+            "payload": appmeta_dict[4].split(";"),
+            "origin": [float(appmeta_dict[6]), float(appmeta_dict[5]), float(appmeta_dict[9])],
+            "dims": [float(appmeta_dict[7]), float(appmeta_dict[8]), float(appmeta_dict[10])],
+            "ticks": [int(appmeta_dict[11]), int(appmeta_dict[12]), int(appmeta_dict[13])]
+        }
+
+    @staticmethod
+    def c_etree_registerschema(uintptr_t opened_etree, char *defstring) -> int:
+        return etree_registerschema(<etree_t *>opened_etree, defstring)
+
+    @staticmethod
+    def c_etree_close(uintptr_t opened_etree):
+        etree_close(<etree_t *>opened_etree)
+
+    @staticmethod
+    def c_etree_insert(uintptr_t opened_etree, long addr_x, long addr_y, long addr_z, int level,
+                       float vp, float vs, float density):
+        cdef etree_addr_t addr
+        cdef ucvm_epayload_t payload
+
+        addr.x = addr_x
+        addr.y = addr_y
+        addr.z = addr_z
+        addr.level = level
+
+        payload.Vp = vp
+        payload.Vs = vs
+        payload.density = density
+
+        return etree_insert(<etree_t *>opened_etree, addr, &payload)
+
+    @staticmethod
+    def c_etree_query(uintptr_t opened_etree, float lon, float lat, float depth, corners: tuple,
+                      dims: tuple, ticks: tuple) -> (float, float, float):
+        cdef etree_addr_t addr
+        cdef ucvm_epayload_t payload
+        cdef uint32_t i = 0
+        x_coord, y_coord = UCVMCCommon.c_etree_bilinear_geo2xy(lon, lat, corners, dims)
+        z_coord = depth
+
+        x_coord = x_coord / dims[0] * ticks[0]
+        y_coord = y_coord / dims[1] * ticks[1]
+        z_coord = z_coord / dims[2] * ticks[2]
+
+        addr.x = <long>x_coord
+        addr.y = <long>y_coord
+        addr.z = <long>z_coord
+        addr.level = 31
+
+        if etree_search(<etree_t *>opened_etree, addr, NULL, "*", &payload) == 0:
+            return (payload.Vp, payload.Vs, payload.density)
+        else:
+            return None
+
+    @staticmethod
+    def c_etree_bilinear_geo2xy(float lon, float lat, corners: tuple, dims: tuple) -> (float, float):
+        cdef int i = 0, k = 0
+        cdef double x = 0, y = 0, x0 = 0, y0 = 0, dx = 0, dy = 0
+        cdef double j[4]
+        cdef double j1[4]
+        cdef double j2[4]
+        cdef double jinv[4]
+        cdef double xce = 0, yce = 0
+        cdef double res = 1, d = 0, p = 0, q = 0
+
+        cdef double csii[4]
+        cdef double ethai[4]
+
+        csii[0] = -1.0
+        csii[1] = -1.0
+        csii[2] = 1.0
+        csii[3] = 1.0
+
+        ethai[0] = -1.0
+        ethai[1] = 1.0
+        ethai[2] = 1.0
+        ethai[3] = -1.0
+
+        j1[0] = 0
+        j1[1] = 0
+        j1[2] = 0
+        j1[3] = 0
+
+        for i in range(4):
+            j1[0] += corners[i][0] * csii[i]
+            j1[1] += corners[i][0] * ethai[i]
+            j1[2] += corners[i][1] * csii[i]
+            j1[3] += corners[i][1] * ethai[i]
+            xce += corners[i][0] * csii[i] * ethai[i]
+            yce += corners[i][1] * csii[i] * ethai[i]
+
+        while res > 0.000000000001 and k <= 10:
+            k += 1
+            j2[0] = y * xce
+            j2[1] = x * xce
+            j2[2] = y * yce
+            j2[3] = x * yce
+
+            j[0] = 0.25 * (j1[0] + j2[0])
+            j[1] = 0.25 * (j1[1] + j2[1])
+            j[2] = 0.25 * (j1[2] + j2[2])
+            j[3] = 0.25 * (j1[3] + j2[3])
+
+            d = (j[0] * j[3]) - (j[2] * j[1])
+            jinv[0] = j[3] / d
+            jinv[1] = -j[1] / d
+            jinv[2] = -j[2] / d
+            jinv[3] = j[0] / d
+
+            x0 = 0
+            y0 = 0
+
+            for i in range(4):
+                x0 += corners[i][0] * (.25 * (1 + (csii[i]  * x)) * (1 + (ethai[i] * y)))
+                y0 += corners[i][1] * (.25 * (1 + (csii[i]  * x)) * (1 + (ethai[i] * y)))
+
+            p = lon - x0
+            q = lat - y0
+
+            dx = (jinv[0] * p) + (jinv[1] * q)
+            dy = (jinv[2] * p) + (jinv[3] * q)
+
+            x += dx
+            y += dy
+
+            res = dx * dx + dy * dy
+
+        if k > 10:
+            raise Exception("Could not convert lon, lat to XY.")
+
+        x = (x + 1) * dims[0] / 2.0
+        y = (y + 1) * dims[1] / 2.0
+
+        return (x, y)
+
+    @staticmethod
+    def c_etree_bilinear_xy2geo(float x, float y, corners: tuple, dims: tuple) -> (float, float):
+        x_val = UCVMCCommon.c_etree_bilinear_interpolate(
+            x, y, 0, 0, dims[0], dims[1], corners[0][1], corners[3][1], corners[1][1], corners[2][1]
+        )
+        y_val = UCVMCCommon.c_etree_bilinear_interpolate(
+            x, y, 0, 0, dims[0], dims[1], corners[0][0], corners[3][0], corners[1][0], corners[2][0]
+        )
+        return x_val, y_val
+
+    @staticmethod
+    def c_etree_bilinear_interpolate(float x, float y, float x1, float y1, float x2, float y2,
+                                     float q11, float q21, float q12, float q22) -> float:
+        cdef float p = (x2 - x1) * (y2 - y1)
+        cdef float f1 = (q11 / p) * (x2 - x) * (y2 - y)
+        cdef float f2 = (q21 / p) * (x - x1) * (y2 - y)
+        cdef float f3 = (q12 / p) * (x2 - x) * (y - y1)
+        cdef float f4 = (q22 / p) * (x - x1) * (y - y1)
+        return f1 + f2 + f3 + f4
 
     @staticmethod
     def calculate_grid_point(float width, float height, float depth, float x_value, float y_value,
                              float z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
 
-        cdef int x_c = (int)(floor(x_value / width * (x_value - 1)))
-        cdef int y_c = (int)(floor(y_value / height * (y_value - 1)))
-        cdef int z_c = (int)(floor(depth / (z_interval - 1)) - floor(z_value / z_interval))
+        cdef int x_c = (int)(floor(x_value / width * (dim_x - 1)))
+        cdef int y_c = (int)(floor(y_value / height * (dim_y - 1)))
+        cdef int z_c = (int)(floor(depth / z_interval - 1) - floor(z_value / z_interval))
 
         cdef float x_p = fmod(x_value, (width / (dim_x - 1))) / (dim_x - 1)
         cdef float y_p = fmod(y_value, (height / (dim_y - 1))) / (dim_y - 1)

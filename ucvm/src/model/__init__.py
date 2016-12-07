@@ -159,7 +159,7 @@ def download_and_install_library(library_name: str) -> bool:
     cwd = os.getcwd()
     os.chdir(os.path.join(UCVM_LIBRARIES_DIRECTORY, library_name))
 
-    p = Popen(["python3", "build.py"], stdout=PIPE, stderr=PIPE)
+    p = Popen(["python3", "build.py"])
     p.communicate()
 
     os.chdir(cwd)

@@ -18,7 +18,7 @@ class OneDimensionalVelocityModelTest(UCVMTestCase):
     """
     Defines the 1D test cases.
     """
-    description = "CVM-S4.26.M01"
+    description = "1D"
 
     def setUp(self) -> None:
         """
