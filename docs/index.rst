@@ -16,5 +16,6 @@ If you have any questions regarding UCVM, please email
 .. toctree::
    :maxdepth: 2
 
+   installation
    tutorial
    api

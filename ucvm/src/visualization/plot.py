@@ -47,7 +47,7 @@ class Plot:
             if not hasattr(self, key):
                 setattr(self, key, value)
 
-        self.figure = plt.figure(figsize=(self.plot_width / 100, self.plot_height / 100), dpi=100)
+        #self.figure = plt.figure(figsize=(self.plot_width / 100, self.plot_height / 100), dpi=100)
 
     def show_profile(self, properties: dict, **kwargs) -> bool:
         """
@@ -88,6 +88,11 @@ class Plot:
         norm = mcolors.Normalize(vmin=self.bounds[0], vmax=self.bounds[len(self.bounds) - 1])
         faults = False
 
+        if "basic" in kwargs:
+            basic = kwargs["basic"]
+        else:
+            basic = False
+
         if hasattr(self, "extras"):
             if "plot" in self.extras:
                 if "features" in self.extras["plot"]:
@@ -116,13 +121,14 @@ class Plot:
                                 resolution='f',
                                 anchor='C')
 
-            lat_ticks = np.arange(ranges["min_lat"], ranges["max_lat"] + 0.01,
-                                  (ranges["max_lat"] - ranges["min_lat"]) / 2)
-            lon_ticks = np.arange(ranges["min_lon"], ranges["max_lon"] + 0.01,
-                                  (ranges["max_lon"] - ranges["min_lon"]) / 2)
+            if not basic:
+                lat_ticks = np.arange(ranges["min_lat"], ranges["max_lat"] + 0.01,
+                                      (ranges["max_lat"] - ranges["min_lat"]) / 2)
+                lon_ticks = np.arange(ranges["min_lon"], ranges["max_lon"] + 0.01,
+                                      (ranges["max_lon"] - ranges["min_lon"]) / 2)
 
-            m.drawparallels(lat_ticks, linewidth=1.0, labels=[1, 0, 0, 0])
-            m.drawmeridians(lon_ticks, linewidth=1.0, labels=[0, 0, 0, 1])
+                m.drawparallels(lat_ticks, linewidth=1.0, labels=[1, 0, 0, 0])
+                m.drawmeridians(lon_ticks, linewidth=1.0, labels=[0, 0, 0, 1])
 
             data_cpy = np.ma.masked_invalid(data)
 
@@ -153,9 +159,10 @@ class Plot:
                         fault_lats.append(y)
                     m.plot(fault_lons, fault_lats, "k-", linewidth=1)
 
-            plt.xlabel(self.plot_xlabel if isinstance(self.plot_xlabel, str) else "", fontsize=14)
-            plt.ylabel(self.plot_ylabel if isinstance(self.plot_ylabel, str) else "", fontsize=14)
-            plt.title(self.plot_title if isinstance(self.plot_title, str) else "")
+            if not basic:
+                plt.xlabel(self.plot_xlabel if isinstance(self.plot_xlabel, str) else "", fontsize=14)
+                plt.ylabel(self.plot_ylabel if isinstance(self.plot_ylabel, str) else "", fontsize=14)
+                plt.title(self.plot_title if isinstance(self.plot_title, str) else "")
         else:
             colormap.set_bad("w", 1)
             data_cpy = np.ma.masked_invalid(data)
@@ -205,12 +212,15 @@ class Plot:
                 x = [y for y in range(len(kwargs["topography"]))]
                 plt.plot(x, kwargs["topography"], "k-", linewidth=1)
 
-        cax = plt.axes([0.125, 0.05, 0.775, 0.02])
-        cbar = plt.colorbar(t, cax=cax, orientation='horizontal', ticks=self.ticks)
+        if not basic:
+            cax = plt.axes([0.125, 0.05, 0.775, 0.02])
+            cbar = plt.colorbar(t, cax=cax, orientation='horizontal', ticks=self.ticks)
 
-        cbar.set_label(self.plot_cbar_label if isinstance(self.plot_cbar_label, str) else "")
+            cbar.set_label(self.plot_cbar_label if isinstance(self.plot_cbar_label, str) else "")
 
-        plt.show()
+            plt.show()
+        else:
+            return t
 
     @classmethod
     def _cmapDiscretize(cls, cmap: cm, n: int) -> mcolors.LinearSegmentedColormap:

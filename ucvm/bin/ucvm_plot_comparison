@@ -1,0 +1,331 @@
+#!/usr/bin/env python
+"""
+Compares objects to see if they are the same or not.
+
+Compares two or more meshes, models, and/or etrees to check if they are equivalent. If they are
+not equivalent, then we alert the user and ask them if they want to see a suite of difference
+plots/text data.
+
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
+"""
+# Python Imports
+import sys
+import os
+
+# Package Imports
+import xmltodict
+
+# UCVM Imports
+from ucvm.src.framework.ucvm import UCVM
+from ucvm.src.shared.functions import ask_and_validate, is_number, is_acceptable_value, \
+    is_valid_proj4_string
+from ucvm.src.shared.constants import UCVM_DEFAULT_PROJECTION
+from ucvm.src.visualization.horizontal_slice import HorizontalSlice
+from ucvm.src.visualization.difference import Difference
+from ucvm.src.shared.errors import display_and_raise_error
+
+try:
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    from matplotlib import ticker
+except ImportError:
+    display_and_raise_error(8)
+    plt = None                      # Make PyCharm happy.
+
+
+def usage() -> None:
+    """
+    Displays the help text associated with this utility.
+
+    Returns:
+        None
+    """
+    UCVM.print_with_replacements(
+        "\n"
+        "ucvm_plot_comparison - UCVM Version [version]\n"
+        "\n"
+        "Compares two or more meshes, models, and/or e-trees to check if they are equivalent or\n"
+        "not. This utility generates horizontal slices and calculates various statistics to\n"
+        "determine equivalency.\n"
+        "\n"
+        "-f,  --file path:           Specifies a previously generated configuration file."
+    )
+
+
+def ask_questions() -> dict:
+    answers = {
+        "type": "horizontal",
+        "start_point": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "depth_elev": 0,
+            "projection": ""
+        },
+        "end_point": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "depth_elev": 0,
+            "projection": ""
+        },
+        "cvms": {
+            "cvm1": "",
+            "cvm2": ""
+        },
+        "properties": {
+            "spacing": {
+                "width": 0,
+                "height": 0
+            },
+            "property": ""
+        },
+        "save": "n"
+    }
+    print(
+        "\nGenerating a comparison between models requires various parameters to be defined (such as the start point,\n"
+        "ending point, and so on). The following questions will guide you through the definition of those parameters."
+    )
+
+    #cross_or_slice = ask_and_validate(
+    #    "\nWould you like to generate a horizontal slice comparison or a cross-section?\n"
+    #    "Type 'h' for horizontal slice, 'c' for cross-section:", is_acceptable_value, "Answer must be either h or c.",
+    #    allowed=["h", "c"]
+    #)
+
+    cross_or_slice = "h"
+
+    if cross_or_slice == "h":
+        answers["start_point"]["x"] = \
+            float(ask_and_validate(
+                "\nWhat is the X or longitudinal coordinate of the bottom-left corner?", is_number,
+                "Answer must be a number."
+            ))
+        answers["start_point"]["y"] = \
+            float(ask_and_validate(
+                "What is the Y or latitudinal coordinate of the bottom-left corner?", is_number,
+                "Answer must be a number."
+            ))
+
+        answers["end_point"]["x"] = \
+            float(ask_and_validate(
+                "\nWhat is the X or longitudinal coordinate of the top-right corner?", is_number,
+                "Answer must be a number."
+            ))
+        answers["end_point"]["y"] = \
+            float(ask_and_validate(
+                "What is the Y or latitudinal coordinate of the top-right corner?", is_number,
+                "Answer must be a number."
+            ))
+
+        answers["start_point"]["projection"] = ask_and_validate(
+            "\nIn which projection are your points specified? Hit enter to accept the default WGS84 latitude, "
+            "longitude projection:", is_valid_proj4_string, "Projection must be valid Proj.4 string."
+        )
+        if answers["start_point"]["projection"].strip() == "":
+            answers["start_point"]["projection"] = UCVM_DEFAULT_PROJECTION
+        answers["end_point"]["projection"] = answers["start_point"]["projection"]
+
+        depth_or_elev = ask_and_validate(
+            "\nShould this slice be generated at depth or elevation? Type 'd' for depth, 'e' for elevation:",
+            is_acceptable_value, "Answer must be either d or e.", allowed=["d", "e"]
+        )
+
+        if depth_or_elev == "d":
+            answers["start_point"]["z"] = \
+                float(ask_and_validate(
+                    "At which depth should this horizontal slice be generated?", is_number, "Answer must be a number."
+                ))
+        else:
+            answers["start_point"]["z"] = \
+                float(ask_and_validate(
+                    "At which elevation should this horizontal slice be generated?", is_number,
+                    "Answer must be a number."
+                ))
+
+        answers["end_point"]["z"] = answers["start_point"]["z"]
+
+        answers["properties"]["spacing"]["width"] = ask_and_validate(
+            "\nWhat should the horizontal slice sampling spacing be (in the projection specified earlier)?",
+            is_number, "Answer must be a number."
+        )
+        answers["properties"]["spacing"]["height"] = answers["properties"]["spacing"]["width"]
+
+        answers["properties"]["property"] = ask_and_validate(
+            "\nWhich material property would you like this comparison to be for?\n"
+            "Possibilities include vp, vs, and density:", is_acceptable_value, "Enter vp, vs, or density.",
+            allowed=["vp", "vs", "density"]
+        )
+
+    answers["cvms"]["cvm1"] = ask_and_validate(
+        "\nEnter the name of the first velocity model for the comparison. Extracted data products can be used with\n"
+        "the dataproductreader[xml location] syntax:"
+    )
+    answers["cvms"]["cvm2"] = ask_and_validate(
+        "Enter the name of the second velocity model for the comparison. Extracted data products can be used with\n"
+        "the dataproductreader[xml location] syntax:"
+    )
+
+    answers["save"] = ask_and_validate(
+        "\nWould you like the comparison saved to disk? Type 'y' for yes, 'n' for no:",
+        is_acceptable_value, "Enter y for yes, n for no.", allowed=["y", "n"]
+    )
+
+    save_config = ask_and_validate(
+        "\nWould you like to save this configuration file for future use? Type 'y' for yes, 'n' for no:",
+        is_acceptable_value, "Enter y for yes, n for no.", allowed=["y", "n"]
+    )
+
+    if save_config == "y":
+        name = ask_and_validate(
+            "Enter the file name to which this configuration should be saved (leave off the '.xml' ending):",
+        )
+
+        if name.strip() == "":
+            name = "compare.xml"
+
+        with open(name.replace(".xml", "") + ".xml", "w") as fd:
+            fd.write(xmltodict.unparse({"root": answers}, pretty=True))
+
+    print(
+        "\nThe configuration is now complete. The comparison will start now."
+    )
+
+    return answers
+
+
+def main() -> int:
+    """
+    The main UCVM model compare function.
+
+    Returns:
+        0 if successful. Raises an error code otherwise, if not.
+    """
+    try:
+        options = UCVM.parse_options([
+            {"short": "f", "long": "file", "value": True, "required": False}
+        ], usage)
+    except ValueError as v_err:
+        print("[ERROR]: " + str(v_err) + "\n")
+        sys.exit(-1)
+
+    if options["file"] is not None:
+        with open(options["file"], "r") as fd:
+            answers = xmltodict.parse(fd.read())["root"]
+    else:
+            answers = ask_questions()
+
+    fig = plt.figure(figsize=(16, 5), dpi=100)
+
+    print("Plotting data from first model.")
+    ax = fig.add_subplot(1, 4, 1)
+    model_name = str(answers["cvms"]["cvm1"])
+    if "dataproductreader" in model_name.lower():
+        model_name = model_name.lower().replace("dataproductreader[", "").replace("]", "").split(os.path.sep)[-1]
+    ax.set_title("1st Model: " + model_name)
+    h1 = HorizontalSlice.from_dictionary(
+        {
+            "bottom_left_point": {
+                "x": answers["start_point"]["x"],
+                "y": answers["start_point"]["y"],
+                "z": answers["start_point"]["z"],
+                "depth_elev": answers["start_point"]["depth_elev"],
+                "projection": answers["start_point"]["projection"]
+            },
+            "properties": {
+                "rotation": 0,
+                "spacing": answers["properties"]["spacing"]["width"],
+                "num_x": int((float(answers["end_point"]["x"]) - float(answers["start_point"]["x"])) /
+                             float(answers["properties"]["spacing"]["width"])),
+                "num_y": int((float(answers["end_point"]["y"]) - float(answers["start_point"]["y"])) /
+                             float(answers["properties"]["spacing"]["width"]))
+            },
+            "cvm_list": answers["cvms"]["cvm1"],
+            "plot": {
+                "property": answers["properties"]["property"]
+            }
+        }
+    )
+    # Extract the data but don't actually show the plot.
+    t = h1.plot(basic=True)
+    cax = plt.axes([0.01, 0.15, 0.20, 0.03])
+    cbar = fig.colorbar(t, cax=cax, orientation="horizontal")
+    tick_locator = ticker.LinearLocator(3)
+    cbar.locator = tick_locator
+    cbar.update_ticks()
+    cbar.set_label(str(answers["properties"]["property"]).capitalize())
+
+    print("Plotting data from second model.")
+    ax = fig.add_subplot(1, 4, 2)
+    model_name = str(answers["cvms"]["cvm2"])
+    if "dataproductreader" in model_name.lower():
+        model_name = model_name.lower().replace("dataproductreader[", "").replace("]", "").split(os.path.sep)[-1]
+    ax.set_title("2nd Model: " + model_name)
+    h2 = HorizontalSlice.from_dictionary(
+        {
+            "bottom_left_point": {
+                "x": answers["start_point"]["x"],
+                "y": answers["start_point"]["y"],
+                "z": answers["start_point"]["z"],
+                "depth_elev": answers["start_point"]["depth_elev"],
+                "projection": answers["start_point"]["projection"]
+            },
+            "properties": {
+                "rotation": 0,
+                "spacing": answers["properties"]["spacing"]["width"],
+                "num_x": int((float(answers["end_point"]["x"]) - float(answers["start_point"]["x"])) /
+                             float(answers["properties"]["spacing"]["width"])),
+                "num_y": int((float(answers["end_point"]["y"]) - float(answers["start_point"]["y"])) /
+                             float(answers["properties"]["spacing"]["width"]))
+            },
+            "cvm_list": answers["cvms"]["cvm2"],
+            "plot": {
+                "property": answers["properties"]["property"]
+            }
+        }
+    )
+    # Extract the data but don't actually show the plot.
+    h2.plot(basic=True)
+    cax = plt.axes([0.26, 0.15, 0.20, 0.03])
+    cbar = fig.colorbar(t, cax=cax, orientation="horizontal")
+    tick_locator = ticker.LinearLocator(3)
+    cbar.locator = tick_locator
+    cbar.update_ticks()
+    cbar.set_label(str(answers["properties"]["property"]).capitalize())
+
+    print("Plotting differences.")
+    ax = fig.add_subplot(1, 4, 3)
+    ax.set_title("Difference")
+    d = Difference.between_two_horizontal_slices(h1, h2)
+    t = d.plot(prop=answers["properties"]["property"], basic=True)
+    cax = plt.axes([0.52, 0.15, 0.20, 0.03])
+    cbar = fig.colorbar(t, cax=cax, orientation="horizontal")
+    tick_locator = ticker.LinearLocator(3)
+    cbar.locator = tick_locator
+    cbar.update_ticks()
+    cbar.set_label("model 1 / model 2 %")
+
+    print("Plotting histogram.")
+    ax = fig.add_subplot(1, 4, 4)
+    ax.set_title("Histogram of Different Values")
+    not_zero, total_points = d.plot_histogram(prop=answers["properties"]["property"], basic=True)
+    ax.set_ylabel("# of Points")
+    ax.set_xlabel("% difference\n# of points different: " + str(not_zero) + "\nTotal # of points sampled: " +
+                  str(total_points) + "\n%% of points different: %.4f" % (not_zero / total_points * 100))
+
+    stderr_cpy = sys.stderr
+    sys.stderr = None
+
+    fig.set_tight_layout(True)
+    plt.show()
+
+    sys.stderr = stderr_cpy
+
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -28,6 +28,7 @@ from ucvm.src.shared.properties import SeismicData, Point
 from ucvm.src.shared.errors import display_and_raise_error
 from ucvm_c_common import UCVMCCommon
 
+
 class DataProductReaderVelocityModel(VelocityModel):
 
     def __init__(self):
@@ -43,7 +44,16 @@ class DataProductReaderVelocityModel(VelocityModel):
         self.corners = ()
         super().__init__()
 
-    def _initialize(self, xml_file):
+    def _initialize(self, xml_file) -> None:
+        """
+        Initialization helper function. This reads in the tags from the XML file and sets all the variables.
+
+        Args:
+            xml_file (dict): The already-parsed XML file as a dictionary.
+
+        Returns:
+            Nothing
+        """
         self.source = xml_file["mesh_name"] if "mesh_name" in xml_file else xml_file["etree_name"]
 
         if "initial_point" in xml_file:
@@ -96,7 +106,17 @@ class DataProductReaderVelocityModel(VelocityModel):
                 (float(xml_file["corners"]["br"]["x"]), float(xml_file["corners"]["br"]["y"]))
             )
 
-    def _awp_query(self, data: List[SeismicData]):
+    def _awp_query(self, data: List[SeismicData]) -> None:
+        """
+        Query function for an AWP-style mesh (IJK-12).
+
+        Args:
+            data (`obj`:List of `obj`:SeismicData): The list of SeismicData objects for which material properties need
+                to be retrieved.
+
+        Returns:
+            Nothing
+        """
         p1 = pyproj.Proj(UCVM_DEFAULT_PROJECTION)
         p2 = pyproj.Proj(self.projection)
 
@@ -212,6 +232,16 @@ class DataProductReaderVelocityModel(VelocityModel):
             )
 
     def _rwg_query(self, data: List[SeismicData]):
+        """
+        Query function for a RWG style mesh.
+
+        Args:
+            data (`obj`:List of `obj`:SeismicData): The list of SeismicData objects for which material properties need
+                to be retrieved.
+
+        Returns:
+            Nothing
+        """
         p1 = pyproj.Proj(UCVM_DEFAULT_PROJECTION)
         p2 = pyproj.Proj(self.projection)
 
@@ -340,6 +370,16 @@ class DataProductReaderVelocityModel(VelocityModel):
             )
 
     def _etree_query(self, data: List[SeismicData]):
+        """
+        Query function for an e-tree.
+
+        Args:
+            data(`obj`: List of `obj`: SeismicData): The list of SeismicData objects for which material properties need
+                to be retrieved.
+
+        Returns:
+            Nothing
+        """
         obj = os.path.join(self.data_dir, self.source + ".e").encode("ASCII")
         etree = UCVMCCommon.c_etree_open(obj, 0)
         metadata = UCVMCCommon.c_etree_getappmeta(etree)
@@ -377,9 +417,14 @@ class DataProductReaderVelocityModel(VelocityModel):
         if "params" not in kwargs:
             display_and_raise_error(21)
 
-        with open(kwargs["params"], "r") as fd:
-            xml_in = xmltodict.parse(fd.read())
-            self.data_dir = os.path.dirname(kwargs["params"])
+        try:
+            with open(kwargs["params"], "r") as fd:
+                xml_in = xmltodict.parse(fd.read())
+                self.data_dir = os.path.dirname(kwargs["params"])
+        except FileNotFoundError:
+            with open(kwargs["params"] + ".xml", "r") as fd:
+                xml_in = xmltodict.parse(fd.read())
+                self.data_dir = os.path.dirname(kwargs["params"] + ".xml")
 
         self._initialize(xml_in["root"])
 

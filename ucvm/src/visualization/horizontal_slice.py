@@ -12,6 +12,13 @@ import numpy as np
 
 from collections import namedtuple
 
+try:
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+except ImportError:
+    display_and_raise_error(8)
+    plt = None                      # Make PyCharm happy.
+
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.visualization.plot import Plot
 from ucvm.src.shared.constants import UCVM_DEFAULT_PROJECTION
@@ -176,7 +183,7 @@ class HorizontalSlice(Plot):
             with open(self.extras["save_file"], "wb") as fd:
                 np.save(fd, self.extracted_data)
 
-    def plot(self):
+    def plot(self, basic: bool=False):
         if self.needs_extraction:
             self.extract()
         else:
@@ -287,4 +294,4 @@ class HorizontalSlice(Plot):
 
         # Ok, now that we have the 2D array of lons, lats, and data, let's call on our inherited
         # classes show_plot function to actually show the plot.
-        super(HorizontalSlice, self).show_plot(lons, lats, data, True, topography=topography)
+        return super(HorizontalSlice, self).show_plot(lons, lats, data, True, topography=topography, basic=basic)

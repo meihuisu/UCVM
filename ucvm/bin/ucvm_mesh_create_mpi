@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 """
 Generates a binary float mesh from a given model string using MPI to parallelize the task.
-This utility can read in legacy UCVM 15.10.0 and below configuration files as well as use the new
-XML configuration format. If no file-format is specified, then this utility will ask a series of
-prompts before generating the mesh.
+This utility can read in the new XML configuration format. If no file-format is specified,
+then this utility will ask a series of prompts before generating the mesh.
 
 :copyright: Southern California Earthquake Center
 :author:    David Gill <davidgil@usc.edu>
