@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<projection>geo-bilinear</projection>
+	<minimums>
+		<vp>1700</vp>
+		<vs>500</vs>
+	</minimums>
+	<author>
+		<title>High-F E-tree</title>
+		<person>David Gill</person>
+		<date>2016-12-01 00:07:42.010714</date>
+	</author>
+	<format>etree</format>
+	<etree_name>high_f_etree</etree_name>
+	<dimensions>
+		<y>135000.0</y>
+		<x>180000.0</x>
+		<z>61875.0</z>
+	</dimensions>
+	<properties>
+		<parts_per_wavelength>4.0</parts_per_wavelength>
+		<max_frequency>0.5</max_frequency>
+		<max_octant_size>2000.0</max_octant_size>
+	</properties>
+	<cvm_list>cvms4</cvm_list>
+	<out_dir>./</out_dir>
+	<corners>
+		<ul>
+			<y>35.061096</y>
+			<x>-118.354016</x>
+		</ul>
+		<bl>
+			<y>34.120549</y>
+			<x>-119.288842</x>
+		</bl>
+		<ur>
+			<y>34.025873</y>
+			<x>-116.846030</x>
+		</ur>
+		<br>
+			<y>33.096503</y>
+			<x>-117.780976</x>
+		</br>
+	</corners>
+</root>

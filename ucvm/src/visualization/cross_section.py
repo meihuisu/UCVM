@@ -120,11 +120,13 @@ class CrossSection(Plot):
                     SeismicData(Point(lon, lat, j, int(self.start_point.depth_elev)))
                 )
 
-        UCVM.query(self.sd_array, self.cvms)
+        UCVM.query(self.sd_array, self.cvms, ["elevation", "velocity"])
 
         num_x = num_prof + 1
         num_y = int(math.ceil(self.end_point.z_value - self.start_point.z_value) /
                     self.cross_section_properties.height_spacing)
+
+        print(num_x, num_y)
 
         self.extracted_data = np.arange(num_x * num_y * 6, dtype=float).reshape(num_y, num_x * 6)
 

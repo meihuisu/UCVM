@@ -50,7 +50,7 @@
 	</minimums>
 
     <!-- The mesh type -->
-	<mesh_type>IJK-12</mesh_type>
+	<format>awp</format>
 
     <!-- The output directory for the mesh -->
 	<out_dir></out_dir>

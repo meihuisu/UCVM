@@ -11,11 +11,11 @@ models and can remove existing ones.
 """
 import os
 import sys
+from subprocess import Popen, PIPE
 
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.model import get_list_of_installable_internet_models, get_list_of_installed_models, \
-                           install_internet_ucvm_model
-from subprocess import call, PIPE, STDOUT
+                           install_internet_ucvm_model, UCVM_MODELS_DIRECTORY
 
 
 def usage() -> None:
@@ -91,8 +91,22 @@ def main() -> int:
         info = install_internet_ucvm_model(found["id"], found["name"])
 
         # Now run the tests, through the command line so that the library paths are correct!
-        call([os.path.join(os.path.dirname(os.path.abspath(__file__)), "ucvm_run_tests"),
-              "-m", info["id"]])
+        environment_variable = "LD_LIBRARY_PATH"
+        if sys.platform == "darwin":
+            environment_variable = "DYLD_LIBRARY_PATH"
+
+        paths = []
+        if environment_variable in os.environ:
+            paths = str(os.environ[environment_variable]).split(":")
+
+        # This is Cythonized code.
+        paths.append(os.path.join(UCVM_MODELS_DIRECTORY, found["id"], "lib"))
+
+        os.environ[environment_variable] = ":".join(paths)
+
+        p = Popen([sys.executable] + [os.path.join(os.path.dirname(os.path.abspath(__file__)), "ucvm_run_tests"),
+                                      "-m", info["id"]], env=os.environ)
+        p.wait()
     else:
         model_list = get_list_of_installable_internet_models()
         installed_list = get_list_of_installed_models()

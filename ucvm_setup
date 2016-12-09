@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+"""
+Gets and sets some of the prerequisites before running the setup.py script.
+
+Copyright:
+    Southern California Earthquake Center
+
+Author:
+    David Gill <davidgil@usc.edu>
+"""
+# Python Imports
+import os
+import socket
+import sys
+from subprocess import Popen, PIPE
+
+if sys.version_info.major < 3:
+    print("Error: UCVM requires at least Python 3 or higher to install. Please install Python 3 and try again.")
+    sys.exit(-1)
+
+print(
+    "\n"
+    "Thank you for downloading and installing UCVM!\n"
+    "\n"
+    "The UCVM framework is a collection of software tools designed to provide a standard\n"
+    "interface to multiple, alternative 3D velocity models.\n"
+    "\n"
+    "UCVM requires the 1D velocity model, the DataProductReader model, the USGS/NOAA digital\n"
+    "elevation model, and the Wills-Wald Vs30 model to operate. Additional velocity, elevation,\n"
+    "and Vs30 models are available for download. These models cover various regions within the\n"
+    "world, although most are located within California.\n"
+)
+
+try:
+    host = socket.gethostbyaddr(socket.gethostname())[0]
+except socket.herror:
+    host = socket.gethostname()
+
+if "mira" in host and "alcf.anl.gov" in host:
+    print("Setup has detected that you are installing on Mira.\n")
+    p = Popen(["/usr/local/bin/myprojectquotas"], stdout=PIPE, stdin=PIPE)
+    out = p.communicate()[0].split("\n")
+    default_dir = ""
+    for i in range(len(out)):
+        if "=====" in out[i] and len(str(out[i + 1]).split()) > 1 and str(out[i + 1]).split()[0].strip() != "":
+            default_dir = os.path.join("/", "projects", str(out[i + 1]).split()[0].strip(), "ucvm-16.12.0")
+else:
+    default_dir = os.path.abspath(os.path.expanduser("~/ucvm-16.12.0"))
+
+directory = ""
+
+while directory == "":
+    directory = input(
+        "The default installation path for UCVM %s.\nHit enter to install UCVM there or type in a different path: " %
+        ("is " + default_dir if default_dir != "" else "cannot be determined")
+    )
+    if directory.strip() == "" and default_dir != "":
+        directory = default_dir
+    elif directory.strip() == "":
+        print("Error: no directory provided.")
+        directory = ""
+
+print("")
+p = Popen([sys.executable, "setup.py", "install", "--prefix=" + os.path.abspath(directory)])
+p.wait()

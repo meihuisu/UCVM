@@ -24,12 +24,6 @@ from ucvm.src.framework.mesh_common import InternalMesh, AWPInternalMeshIterator
 class Difference(Plot):
 
     def __init__(self, **kwargs):
-        """
-        Handles generating difference plots for any UCVM plotting utility.
-
-        Args:
-            kwargs (dict): Keyword arguments (these are just passed to the Plot superclass.
-        """
         super().__init__(**kwargs)
         self.dataset1 = None
         self.dataset2 = None
@@ -40,20 +34,13 @@ class Difference(Plot):
 
     @classmethod
     def between_two_horizontal_slices(cls, h1: HorizontalSlice, h2: HorizontalSlice):
-        """
-        "Extracts" the difference between two horizontal slices. The difference is defined as the percentage difference
-        between h2 / h1 multiplied by 100. So if h2 is 104 and h1 is 100, then the difference wou
-        :param h1:
-        :param h2:
-        :return:
-        """
         d = Difference()
 
         d.extracted_data = np.zeros(len(h1.extracted_data))
 
         for i in range(len(d.extracted_data)):
             if not math.isnan(h2.extracted_data[i]) and not math.isnan(h1.extracted_data[i]):
-                d.extracted_data[i] = (h2.extracted_data[i] / h1.extracted_data[i] - 1) * 100
+                d.extracted_data[i] = (h1.extracted_data[i] / h2.extracted_data[i] - 1) * 100
             else:
                 d.extracted_data[i] = float("NaN")
 
@@ -136,11 +123,10 @@ class Difference(Plot):
 
         # Ok, now that we have the 2D array of lons, lats, and data, let's call on our inherited
         # classes show_plot function to actually show the plot.
-        super(Difference, self).show_plot(lons, lats, data, True, basic=basic)
+        return super(Difference, self).show_plot(lons, lats, data, True, basic=basic)
 
     def plot_histogram(self, prop: str="vp", basic: bool=False) -> tuple:
-        data = np.zeros(self.dataset1.slice_properties.num_x * self.dataset1.slice_properties.num_y,
-                        dtype=float)
+        data = []
 
         if str(prop).lower().strip() == "vp":
             position = 0
@@ -161,13 +147,15 @@ class Difference(Plot):
 
         not_zero_counter = 0
 
-        for i in range(len(data)):
+        for i in range(self.dataset1.slice_properties.num_x * self.dataset1.slice_properties.num_y):
             if not math.isnan(self.extracted_data[i * 6 + position]):
-                data[i] = self.extracted_data[i * 6 + position]
-                if data[i] != 0:
+                if self.extracted_data[i * 6 + position] != 0:
+                    data.append(self.extracted_data[i * 6 + position])
                     not_zero_counter += 1
 
-        plt.hist(data, bins=[-100, -20, -15, -10, -5, -1, 1, 5, 10, 15, 20, 100], facecolor="green")
+        plt.hist(np.clip(data, -100, 100),
+                 bins=[-100, -100, -90, -80, -70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60,
+                       70, 80, 90, 100, 100], facecolor="green")
         plt.grid(True)
 
-        return not_zero_counter, len(data)
+        return not_zero_counter, self.dataset1.slice_properties.num_x * self.dataset1.slice_properties.num_y

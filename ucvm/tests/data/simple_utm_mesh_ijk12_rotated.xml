@@ -27,7 +27,7 @@
 	<spacing>3</spacing>
 
     <!-- The rotation angle for the mesh -->
-	<rotation>-30.0</rotation>
+	<rotation>30.0</rotation>
 
     <!-- The initial point. Note that if the initial point is in elevation, the entire mesh is -->
     <!-- queried in elevation. If the point is in depth, then the mesh is in depth -->
@@ -50,7 +50,7 @@
 	</minimums>
 
     <!-- The mesh type -->
-	<mesh_type>IJK-12</mesh_type>
+	<format>awp</format>
 
     <!-- The output directory for the mesh -->
 	<out_dir></out_dir>

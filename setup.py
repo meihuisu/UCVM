@@ -4,12 +4,13 @@ Defines the setup script. This installs UCVM and downloads all the requested mod
 can be added or deleted after the fact with the ucvm_model_manager utility. This auto-downloads new
 models and can remove existing ones.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   July 6, 2016
-:modified:  July 21, 2016
-"""
+Copyright:
+    Southern California Earthquake Center
 
+Author:
+    David Gill <davidgil@usc.edu>
+"""
+# Python Imports
 from setuptools import setup
 from distutils.command.install import install
 import urllib.request
@@ -20,9 +21,7 @@ from math import log
 from subprocess import Popen, PIPE, CalledProcessError
 import shutil
 import sys
-
 from collections import OrderedDict
-
 
 UCVM_INFORMATION = {
     "short_name": "ucvm",
@@ -33,11 +32,6 @@ UCVM_INFORMATION = {
     "url": "http://www.scec.org/projects/ucvm"
 }
 
-_HYPOCENTER_BASE = "http://hypocenter.usc.edu/research/ucvm/" + UCVM_INFORMATION["version"]
-_HYPOCENTER_MODEL_LIST = _HYPOCENTER_BASE + "/model_list.xml"
-
-INSTALL_REQUIRES = ["tables", "xmltodict", "humanize", "pyproj", "Cython", "psutil", "matplotlib"]
-
 
 class OnlyGetScriptPath(install):
     def run(self):
@@ -46,6 +40,8 @@ class OnlyGetScriptPath(install):
 
 
 def get_setuptools_script_dir():
+    s_out = sys.stdout
+    sys.stdout = StringIO()
     dist = setup(name=UCVM_INFORMATION["short_name"],
                  version=UCVM_INFORMATION["version"],
                  cmdclass={'install': OnlyGetScriptPath})
@@ -53,16 +49,31 @@ def get_setuptools_script_dir():
     command = dist.get_command_obj('install')
     command.ensure_finalized()
     command.run()
+    sys.stdout = s_out
     return dist.package_dir, dist.install_scripts
 
+try:
+    os.makedirs(os.path.abspath(get_setuptools_script_dir()[0]), exist_ok=True)
+    os.makedirs(os.path.abspath(get_setuptools_script_dir()[1]), exist_ok=True)
+except OSError as e:
+    print("Could not create the directory " + os.path.abspath(get_setuptools_script_dir()[0]) + ".\n" +
+          "Please try again with a different prefix or make that directory yourself.")
+    sys.exit(-1)
+
+if "ucvm_setup_bootstrapped" not in os.environ:
+    os.environ["ucvm_setup_bootstrapped"] = "YES"
+    os.environ["PYTHONPATH"] = os.path.abspath(get_setuptools_script_dir()[0]) + ":" + os.environ["PYTHONPATH"]
+    os.execv(sys.executable, [sys.executable] + sys.argv)
+
+_HYPOCENTER_BASE = "http://hypocenter.usc.edu/research/ucvm/" + UCVM_INFORMATION["version"]
+_HYPOCENTER_MODEL_LIST = _HYPOCENTER_BASE + "/model_list.xml"
+
+INSTALL_REQUIRES = ["xmltodict", "humanize", "pyproj", "Cython", "psutil", "matplotlib"]
 
 def execute(cmd):
     popen = Popen(cmd, stdout=PIPE, universal_newlines=True)
-    stdout_lines = iter(popen.stdout.readline, "")
-    for stdout_line in stdout_lines:
+    for stdout_line in iter(popen.stdout.readline, ""):
         yield stdout_line
-
-    popen.stdout.close()
     return_code = popen.wait()
     if return_code != 0:
         raise CalledProcessError(return_code, cmd)
@@ -139,22 +150,9 @@ models_to_download = [
     ("dataproductreader", "Data Product Reader")
 ]
 
-print(
-    "\n"
-    "Thank you for downloading and installing UCVM " + UCVM_INFORMATION["version"] + "!\n"
-    "\n"
-    "UCVM software framework is a collection of software tools designed to provide a standard\n"
-    "interface to multiple, alternative 3D velocity models.\n"
-    "\n"
-    "UCVM requires the 1D velocity model, USGS/NOAA digital elevation model, and the Wills-Wald\n"
-    "Vs30 model to operate. Additional velocity, elevation, and Vs30 models are available for\n"
-    "download. These models cover various regions within the world, although most are located\n"
-    "within California.\n"
-)
-
 if shutil.which("mpicc") is not None:
-    print("Setup has detected that you have MPI installed on your computer. UCVM will be\n"
-          "installed with MPI support.\n")
+    print("Setup has detected that you have MPI installed on your computer. UCVM will be installed\n"
+          "with MPI support.\n")
     INSTALL_REQUIRES += ["mpi4py", "psutil"]
 
 print("Specify which of the following models you wish to download and install with UCVM:\n")
@@ -213,6 +211,8 @@ if not download_everything:
 
 print("\nInstalling UCVM...")
 
+s_out = sys.stdout
+sys.stdout = StringIO()
 setup(name=UCVM_INFORMATION["short_name"],
       version=UCVM_INFORMATION["version"],
       description=UCVM_INFORMATION["long_name"],
@@ -222,7 +222,7 @@ setup(name=UCVM_INFORMATION["short_name"],
       packages=["ucvm", "ucvm.src", "ucvm.src.framework", "ucvm.src.model",
                 "ucvm.src.model.velocity", "ucvm.src.model.elevation", "ucvm.src.model.vs30",
                 "ucvm.src.model.fault", "ucvm.src.model.operator", "ucvm.src.shared",
-                "ucvm.src.visualization", "ucvm.models", "ucvm.src.visualization.internal_basemap",
+                "ucvm.src.visualization", "ucvm.models",
                 "ucvm.tests", "ucvm.tests.data", "ucvm.tests.scratch", "ucvm.libraries"],
       package_dir={'ucvm': 'ucvm',
                    'ucvm.src': 'ucvm/src',
@@ -236,8 +236,6 @@ setup(name=UCVM_INFORMATION["short_name"],
                    'ucvm.src.shared': 'ucvm/src/shared',
                    'ucvm.src.visualization': 'ucvm/src/visualization',
                    'ucvm.models': 'ucvm/models',
-                   'ucvm.src.visualization.internal_basemap':
-                       'ucvm/src/visualization/internal_basemap',
                    'ucvm.tests': 'ucvm/tests',
                    'ucvm.tests.data': 'ucvm/tests/data',
                    'ucvm.tests.scratch': 'ucvm/tests/scratch',
@@ -253,12 +251,14 @@ setup(name=UCVM_INFORMATION["short_name"],
                                        'ucvm/tests/data/simple_mesh_ijk12_unrotated.xml',
                                        'ucvm/tests/data/simple_mesh_ijk12_rotated.xml'])],
       install_requires=INSTALL_REQUIRES,
-      scripts=['ucvm/bin/ucvm_query', 'ucvm/bin/ucvm_model_manager', 'ucvm/bin/ucvm_mesh_create',
-               'ucvm/bin/ucvm_model_manager', 'ucvm/bin/ucvm_plot_cross_section',
-               'ucvm/bin/ucvm_plot_depth_profile', 'ucvm/bin/ucvm_plot_horizontal_slice',
-               'ucvm/bin/ucvm_run_tests', 'ucvm/bin/ucvm_help'],
+      scripts=['ucvm/bin/ucvm_etree_create', 'ucvm/bin/ucvm_help',
+               'ucvm/bin/ucvm_mesh_create', 'ucvm/bin/ucvm_mesh_create_mpi', 'ucvm/bin/ucvm_model_manager',
+               'ucvm/bin/ucvm_plot_comparison', 'ucvm/bin/ucvm_plot_cross_section',
+               'ucvm/bin/ucvm_plot_depth_profile', 'ucvm/bin/ucvm_plot_horizontal_slice', 'ucvm/bin/ucvm_query',
+               'ucvm/bin/ucvm_run_tests', 'ucvm/bin/ucvm_start_web'],
       zip_safe=False
       )
+sys.stdout = s_out
 
 _LOCAL_LIBRARY_PATH, _LOCAL_SCRIPT_PATH = get_setuptools_script_dir()
 _LOCAL_LIBRARY_PATH = os.path.join(
@@ -267,6 +267,7 @@ _LOCAL_LIBRARY_PATH = os.path.join(
                                    str(sys.version_info.minor)]) + ".egg",
     "ucvm", "libraries"
 )
+_LOCAL_LIBRARY_PATH = os.path.abspath(_LOCAL_LIBRARY_PATH)
 print("")
 
 from ucvm.src.shared.constants import HYPOCENTER_PREFIX
@@ -318,10 +319,10 @@ ext_modules = [
 
 old_stdout = sys.stdout
 old_stderr = sys.stderr
-#s_out = StringIO()
-#s_err = StringIO()
-#sys.stdout = s_out
-#sys.stderr = s_err
+s_out = StringIO()
+s_err = StringIO()
+sys.stdout = s_out
+sys.stderr = s_err
 setup(
     name="ucvm_c_common",
     cmdclass={"build_ext": build_ext},

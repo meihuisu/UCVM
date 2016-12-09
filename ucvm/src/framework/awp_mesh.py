@@ -80,6 +80,9 @@ def mesh_extract_single(information: dict, **kwargs) -> bool:
 
     print("\nExtraction done.")
 
+    return True
+
+
 def _mesh_extract_single_awp(sd_array: List[SeismicData], information: dict, im: InternalMesh) -> None:
     """
     Takes an InternalMesh object, the mesh information file, and the iterator, and generates, using

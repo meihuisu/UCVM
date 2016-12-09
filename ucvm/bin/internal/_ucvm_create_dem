@@ -24,7 +24,7 @@ import struct
 import sys
 
 # Package Imports
-import tables
+import h5py
 import numpy as np
 
 try:
@@ -146,15 +146,7 @@ def main() -> int:
     temp_file_list = [f for f in os.listdir(options["input-dir"])
                       if os.path.isfile(os.path.join(options["input-dir"], f))]
 
-    out_file = tables.open_file(options["output-file"], mode="w")
-    filters = tables.Filters(complevel=7, complib='blosc')
-
-    class DEMHeader(tables.IsDescription):
-        cellsize = tables.Float32Col(pos=0)
-        xllcorner = tables.Float32Col(pos=1)
-        yllcorner = tables.Float32Col(pos=2)
-        numcols = tables.Int32Col(pos=3)
-        numrows = tables.Int32Col(pos=4)
+    out_file = h5py.File(options["output-file"], mode="w")
 
     for file in temp_file_list:
         # Handle the bathymetry data.
@@ -163,36 +155,31 @@ def main() -> int:
             header = parse_noaa_header(os.path.join(options["input-dir"],
                                                     file.replace(".flt", ".hdr")))
 
-            grp = out_file.create_group(out_file.root, "dem_etopo1")
+            grp = out_file.create_group("dem_etopo1")
 
-            table_grp = out_file.create_table(grp, "metadata", DEMHeader)
+            # Attach the metadata to it.
+            header_d = grp.create_dataset("metadata", (5, 1), "f")
+            header_d[0] = header["cellsize"]
+            header_d[1] = header["xllcorner"]
+            header_d[2] = header["yllcorner"]
+            header_d[3] = header["ncols"]
+            header_d[4] = header["nrows"]
 
-            row = table_grp.row
-            row["cellsize"] = header["cellsize"]
-            row["xllcorner"] = header["xllcorner"]
-            row["yllcorner"] = header["yllcorner"]
-            row["numcols"] = header["ncols"]
-            row["numrows"] = header["nrows"]
-            row.append()
-            table_grp.flush()
-
-            arr = np.zeros((header["nrows"], header["ncols"]), dtype="<f8")
+            arr = np.zeros((header["nrows"], header["ncols"]), dtype="<f4")
 
             # Now read in the floats.
             fin = open(os.path.join(options["input-dir"], file), "rb")
 
+            print("\tReading in data...")
             for i in range(header["nrows"] - 1, -1, -1):
                 for j in range(0, header["ncols"]):
                     bytes_val = fin.read(4)
-                    input_data = struct.unpack('f', bytes_val)
-                    arr[i][j] = input_data[0]
+                    arr[i][j] = struct.unpack('f', bytes_val)[0]
 
-            data = out_file.create_earray(grp, "data", tables.Atom.from_dtype(arr.dtype),
-                                          shape=(0, arr.shape[-1]), filters=filters,
-                                          expectedrows=len(arr))
-
-            for i in range(0, len(arr)):
-                data.append(arr[i][None])
+            print("\tSaving to HDF5 file...")
+            grp.create_dataset(
+                "data", (header["nrows"], header["ncols"]), arr.dtype, chunks=True, data=arr, compression="lzf"
+            )
 
             fin.close()
 
@@ -210,38 +197,31 @@ def main() -> int:
 
             lon = multiplier * int(match.group(3))
 
-            grp = out_file.create_group(out_file.root, "dem_nationalmap_" + str(-1 * lon) +
-                                        "_" + str(lat))
-
-            table_grp = out_file.create_table(grp, "metadata", DEMHeader)
+            grp = out_file.create_group("dem_nationalmap_" + str(-1 * lon) + "_" + str(lat))
 
             # Attach the metadata to it.
-            row = table_grp.row
-            row["cellsize"] = header["cellsize"]
-            row["xllcorner"] = header["xllcorner"]
-            row["yllcorner"] = header["yllcorner"]
-            row["numcols"] = header["ncols"]
-            row["numrows"] = header["nrows"]
-            row.append()
-            table_grp.flush()
+            header_d = grp.create_dataset("metadata", (5, 1), "f")
+            header_d[0] = header["cellsize"]
+            header_d[1] = header["xllcorner"]
+            header_d[2] = header["yllcorner"]
+            header_d[3] = header["ncols"]
+            header_d[4] = header["nrows"]
 
-            arr = np.zeros((header["nrows"], header["ncols"]), dtype="<f8")
+            arr = np.zeros((header["nrows"], header["ncols"]), dtype="<f4")
 
             # Now read in the floats.
             fin = open(os.path.join(options["input-dir"], file), "rb")
 
+            print("\tReading in data...")
             for i in range(header["nrows"] - 1, -1, -1):
                 for j in range(0, header["ncols"]):
                     bytes_val = fin.read(4)
-                    input_data = struct.unpack('f', bytes_val)
-                    arr[i][j] = input_data[0]
+                    arr[i][j] = struct.unpack('f', bytes_val)[0]
 
-            data = out_file.create_earray(grp, "data", tables.Atom.from_dtype(arr.dtype),
-                                          shape=(0, arr.shape[-1]), filters=filters,
-                                          expectedrows=len(arr))
-
-            for i in range(0, len(arr)):
-                data.append(arr[i][None])
+            print("\tSaving to HDF5 file...")
+            grp.create_dataset(
+                "data", (arr.shape[0], arr.shape[1]), arr.dtype, chunks=True, data=arr, compression="lzf"
+            )
 
             fin.close()
 

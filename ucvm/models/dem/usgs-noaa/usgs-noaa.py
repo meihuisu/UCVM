@@ -24,7 +24,7 @@ import math
 from typing import List
 
 # Package Imports
-import tables
+import h5py
 
 # UCVM Imports
 from ucvm.src.model.elevation.elevation_model import ElevationModel
@@ -64,21 +64,21 @@ class USGSNOAAElevationModel(ElevationModel):
             return False
 
         # Make sure we can get the National Map data.
-        if hasattr(self._opened_file.root, "dem_nationalmap_" +
+        if hasattr(self._opened_file, "dem_nationalmap_" +
                    str(math.ceil(-1 * datum.converted_point.x_value)) +
                    "_" + str(math.floor(datum.converted_point.y_value))):
-            use_data = getattr(self._opened_file.root, "dem_nationalmap_" +
+            use_data = getattr(self._opened_file, "dem_nationalmap_" +
                                str(-1 * math.floor(datum.converted_point.x_value)) +
                                "_" + str(math.floor(datum.converted_point.y_value)))
         else:
             return False
 
         rect = SimpleRotatedRectangle(
-            use_data.metadata[0][1],
-            use_data.metadata[0][2],
+            use_data["metadata"][1][0],
+            use_data["metadata"][2][0],
             0,
-            use_data.metadata[0][0],
-            use_data.metadata[0][0]
+            use_data["metadata"][0][0],
+            use_data["metadata"][0][0]
         )
 
         value = calculate_bilinear_value(bilinear_point, rect, use_data.data)
@@ -115,15 +115,15 @@ class USGSNOAAElevationModel(ElevationModel):
             return False
 
         rect = SimpleRotatedRectangle(
-            self._opened_file.root.dem_etopo1.metadata[0][1],
-            self._opened_file.root.dem_etopo1.metadata[0][2],
+            self._opened_file["dem_etopo1"]["metadata"][1][0],
+            self._opened_file["dem_etopo1"]["metadata"][2][0],
             0,
-            self._opened_file.root.dem_etopo1.metadata[0][0],
-            self._opened_file.root.dem_etopo1.metadata[0][0]
+            self._opened_file["dem_etopo1"]["metadata"][0][0],
+            self._opened_file["dem_etopo1"]["metadata"][0][0]
         )
 
         datum.set_elevation_data(ElevationProperties(
-            calculate_bilinear_value(bilinear_point, rect, self._opened_file.root.dem_etopo1.data),
+            calculate_bilinear_value(bilinear_point, rect, self._opened_file["dem_etopo1"]["data"]),
             self._public_metadata["id"]
         ))
 
@@ -141,8 +141,8 @@ class USGSNOAAElevationModel(ElevationModel):
         Returns:
             True on success, false if there is an error.
         """
-        self._opened_file = tables.open_file(
-            os.path.join(self.get_model_dir(), "data", self.DATA_FILE), "r"
+        self._opened_file = h5py.File(
+            os.path.join(self.get_model_dir(), "data", self.DATA_FILE), mode="r"
         )
 
         for point in points:

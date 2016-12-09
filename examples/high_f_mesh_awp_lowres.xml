@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<mesh_name>high_f_mesh_awp</mesh_name>
+	<minimums>
+		<vp>1700</vp>
+		<vs>500</vs>
+	</minimums>
+	<rotation>39.9</rotation>
+	<projection>+proj=utm +datum=WGS84 +zone=11</projection>
+	<grid_type>center</grid_type>
+	<dimensions>
+		<y>270</y>
+		<z>130</z>
+		<x>360</x>
+	</dimensions>
+	<initial_point>
+		<y>34.120549</y>
+		<z>0.0</z>
+		<projection>+proj=latlong +datum=WGS84</projection>
+		<depth_elev>depth</depth_elev>
+		<x>-119.288842</x>
+	</initial_point>
+	<cvm_list>cvms4</cvm_list>
+	<out_dir>./</out_dir>
+	<spacing>500</spacing>
+	<format>awp</format>
+</root>

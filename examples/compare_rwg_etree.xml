@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<cvms>
+		<cvm1>dataproductreader[high_f_etree]</cvm1>
+		<cvm2>dataproductreader[high_f_mesh_rwg]</cvm2>
+	</cvms>
+	<save>y</save>
+	<end_point>
+		<x>-116.87</x>
+		<projection>+proj=latlong +datum=WGS84</projection>
+		<y>35.3</y>
+		<depth_elev>0</depth_elev>
+		<z>0.0</z>
+	</end_point>
+	<type>horizontal</type>
+	<properties>
+		<property>vs</property>
+		<spacing>
+			<width>0.01</width>
+			<height>0.01</height>
+		</spacing>
+	</properties>
+	<start_point>
+		<x>-119.27</x>
+		<projection>+proj=latlong +datum=WGS84</projection>
+		<y>33.0</y>
+		<depth_elev>0</depth_elev>
+		<z>0.0</z>
+	</start_point>
+</root>

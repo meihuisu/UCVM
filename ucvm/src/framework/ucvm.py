@@ -241,7 +241,7 @@ class UCVM:
             if model_strings_expanded[i].strip() is "":
                 continue
 
-            individual_models = re.split(r"\.+(?=[^\[\]]*(?:\(|$))", model_strings_expanded[i])
+            individual_models = model_strings_expanded[i].split(".")
             models_to_add = {}
             current_index = 0
 

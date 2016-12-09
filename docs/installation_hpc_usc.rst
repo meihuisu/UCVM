@@ -1,8 +1,8 @@
-Mira (HPC)
+USC (HPC)
 ==========
 
-UCVM is fully compatible with Mira. This document describes how to install UCVM on Mira and also how to find and
-submit the example jobs.
+UCVM is mostly compatible with the HPC cluster at USC. This document describes how to install UCVM on the USC cluster
+and also how to find and submit the example jobs.
 
 Supported Capabilities
 ----------------------
@@ -12,7 +12,7 @@ Supported Capabilities
 +-----------------------------+-----------------------------+
 | Generate Material Models    | ✓ Yes                       |
 +-----------------------------+-----------------------------+
-| Visualization               | ✓ Yes                       |
+| Visualization               | ✕ No                        |
 +-----------------------------+-----------------------------+
 
 Setup

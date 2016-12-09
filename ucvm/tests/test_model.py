@@ -25,13 +25,16 @@ In the case of TestVs30Model:
 Vs30 = Abs(Lon - Lat)
 Vs30_source = TestVs30Model
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   August 9, 2016
-:modified:  August 9, 2016
+Copyright:
+    Southern California Earthquake Center
+
+Author:
+    David Gill <davidgil@usc.edu>
 """
+# Python Imports
 from typing import List
 
+# UCVM Imports
 from ucvm.src.model.velocity.velocity_model import VelocityModel
 from ucvm.src.shared.properties import SeismicData
 from ucvm.src.shared import VelocityProperties, UCVM_DEPTH, UCVM_DEFAULT_PROJECTION
@@ -46,7 +49,8 @@ class TestVelocityModel(VelocityModel):
             "description": "Tests the velocity model.",
             "website": "http://www.scec.org",
             "references": ["TEST"],
-            "license": "Test License"
+            "license": "Test License",
+            "type": "velocity"
         }
 
         self._private_metadata = {
@@ -63,12 +67,12 @@ class TestVelocityModel(VelocityModel):
         for datum in data:
             datum.set_velocity_data(
                 VelocityProperties(
-                    datum.original_point.y_value + datum.original_point.x_value +
-                    datum.original_point.z_value,
-                    datum.original_point.y_value - datum.original_point.x_value,
-                    (datum.original_point.y_value + datum.original_point.x_value) / 2,
-                    (datum.original_point.y_value - datum.original_point.x_value) / 4,
-                    (datum.original_point.y_value + datum.original_point.x_value) / 4,
+                    datum.converted_point.y_value + datum.converted_point.x_value +
+                    datum.converted_point.z_value,
+                    datum.converted_point.y_value - datum.converted_point.x_value,
+                    (datum.converted_point.y_value + datum.converted_point.x_value) / 2,
+                    (datum.converted_point.y_value - datum.converted_point.x_value) / 4,
+                    (datum.converted_point.y_value + datum.converted_point.x_value) / 4,
                     "TestVelocityModel_Vp", "TestVelocityModel_Vs", "TestVelocityModel_Density",
                     "TestVelocityModel_Qp", "TestVelocityModel_Qs"
                 )

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<initial_point>
+		<y>34.120549</y>
+		<x>-119.288842</x>
+		<z>0.0</z>
+		<depth_elev>depth</depth_elev>
+		<projection>+proj=latlong +datum=WGS84</projection>
+	</initial_point>
+	<minimums>
+		<vp>1700</vp>
+		<vs>500</vs>
+	</minimums>
+	<spacing>500</spacing>
+	<cvm_list>cvms4</cvm_list>
+	<rotation>39.9</rotation>
+	<out_dir>./</out_dir>
+	<dimensions>
+		<y>270</y>
+		<x>360</x>
+		<z>130</z>
+	</dimensions>
+	<format>rwg</format>
+	<mesh_name>high_f_mesh_rwg</mesh_name>
+	<grid_type>center</grid_type>
+	<projection>+proj=utm +datum=WGS84 +zone=11</projection>
+</root>

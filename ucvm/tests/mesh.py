@@ -2,19 +2,21 @@
 Defines all the tests for the UCVM meshing framework. This checks to see that the meshing
 capabilities work and that things like the InternalMesh class are working.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   August 9, 2016
-:modified:  August 9, 2016
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
 """
+# Python Imports
 import unittest
 import xmltodict
 import os
 import struct
 import inspect
-
 from contextlib import redirect_stdout
 
+# UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.framework.mesh_common import InternalMesh, AWPInternalMeshIterator
 from ucvm.src.shared.properties import SeismicData, Point
@@ -58,19 +60,19 @@ class UCVMMeshTest(unittest.TestCase):
     def test_internal_mesh_basics(self):
         self.assertEqual(self.im_1.rotation, 0)
         self.assertEqual(self.im_1.spacing, 0.01)
-        self.assertEqual(self.im_1.mesh_type, "IJK-12")
+        self.assertEqual(self.im_1.format, "awp")
         self.assertEqual(self.im_1.slice_size, 20301)
         self.assertEqual(self.im_1.total_size, 101505)
         self.assertEqual(self.im_1.get_grid_file_size()["real"], 1218060)
         self.assertEqual(self.im_2.rotation, -45)
         self.assertEqual(self.im_2.spacing, 0.01)
-        self.assertEqual(self.im_2.mesh_type, "IJK-12")
+        self.assertEqual(self.im_2.format, "awp")
         self.assertEqual(self.im_2.slice_size, 10201)
         self.assertEqual(self.im_2.total_size, 51005)
         self.assertEqual(self.im_2.get_grid_file_size()["real"], 612060)
         self.assertEqual(self.im_3.rotation, -30)
         self.assertEqual(self.im_3.spacing, 3)
-        self.assertEqual(self.im_3.mesh_type, "IJK-12")
+        self.assertEqual(self.im_3.format, "awp")
         self.assertEqual(self.im_3.slice_size, 20301)
         self.assertEqual(self.im_3.total_size, 101505)
         self.assertEqual(self.im_3.get_grid_file_size()["real"], 1218060)
@@ -80,23 +82,23 @@ class UCVMMeshTest(unittest.TestCase):
 
     def test_internal_mesh_iterator(self):
         next(self.im_1_iterator_1)
-        self.assertEqual(self.sd[0].original_point.x_value, -118)
-        self.assertEqual(self.sd[0].original_point.y_value, 34)
-        self.assertEqual(self.sd[0].original_point.z_value, 0)
-        self.assertEqual(self.sd[1004].original_point.x_value, -116)
-        self.assertEqual(self.sd[1004].original_point.y_value, 34.04)
-        self.assertEqual(self.sd[1004].original_point.z_value, 0)
+        self.assertAlmostEqual(self.sd[0].original_point.x_value, -118)
+        self.assertAlmostEqual(self.sd[0].original_point.y_value, 34)
+        self.assertAlmostEqual(self.sd[0].original_point.z_value, 0)
+        self.assertAlmostEqual(self.sd[1004].original_point.x_value, -116)
+        self.assertAlmostEqual(self.sd[1004].original_point.y_value, 34.04)
+        self.assertAlmostEqual(self.sd[1004].original_point.z_value, 0)
         next(self.im_1_iterator_1)
-        self.assertEqual(self.sd[0].original_point.x_value, -118)
-        self.assertEqual(self.sd[0].original_point.y_value, 34.05)
-        self.assertEqual(self.sd[0].original_point.z_value, 0)
-        self.assertEqual(self.sd[1004].original_point.x_value, -116)
-        self.assertEqual(self.sd[1004].original_point.y_value, 34.09)
-        self.assertEqual(self.sd[1004].original_point.z_value, 0)
+        self.assertAlmostEqual(self.sd[0].original_point.x_value, -118)
+        self.assertAlmostEqual(self.sd[0].original_point.y_value, 34.05)
+        self.assertAlmostEqual(self.sd[0].original_point.z_value, 0)
+        self.assertAlmostEqual(self.sd[1004].original_point.x_value, -116)
+        self.assertAlmostEqual(self.sd[1004].original_point.y_value, 34.09)
+        self.assertAlmostEqual(self.sd[1004].original_point.z_value, 0)
         next(self.im_1_iterator_2)
-        self.assertEqual(self.sd[101504].original_point.x_value, -116)
-        self.assertEqual(self.sd[101504].original_point.y_value, 35)
-        self.assertEqual(self.sd[101504].original_point.z_value, 0.04)
+        self.assertAlmostEqual(self.sd[101504].original_point.x_value, -116)
+        self.assertAlmostEqual(self.sd[101504].original_point.y_value, 35)
+        self.assertAlmostEqual(self.sd[101504].original_point.z_value, 0.04)
         with self.assertRaises(StopIteration):
             next(self.im_1_iterator_2)
         next(self.im_2_iterator_1)
@@ -110,16 +112,12 @@ class UCVMMeshTest(unittest.TestCase):
         with self.assertRaises(StopIteration):
             next(self.im_2_iterator_2)
         next(self.im_3_iterator_1)
-        self.assertAlmostEqual(self.sd3[200].original_point.x_value, 407650.39665618504 +
-                               (0.86602540378444 * 200 * 3), places=3)
-        self.assertAlmostEqual(self.sd3[200].original_point.y_value, 3762606.659633445 -
-                               (0.5 * 200 * 3), places=3)
+        self.assertAlmostEqual(self.sd3[200].original_point.x_value, -117.99434261156043, places=5)
+        self.assertAlmostEqual(self.sd3[200].original_point.y_value, 33.99734, places=5)
         self.assertEqual(self.sd3[200].original_point.z_value, 0)
         next(self.im_3_iterator_2)
-        self.assertAlmostEqual(self.sd3[101504].original_point.x_value, 407650.39665618504 +
-                               669.61524227066, places=3)
-        self.assertAlmostEqual(self.sd3[20300].original_point.y_value, 3762606.659633445 +
-                               (-40.192378864668), places=3)
+        self.assertAlmostEqual(self.sd3[101504].original_point.x_value, -117.99274586863415, places=5)
+        self.assertAlmostEqual(self.sd3[101504].original_point.y_value, 33.999696, places=5)
         self.assertEqual(self.sd3[101504].original_point.z_value, 12)
         with self.assertRaises(StopIteration):
             next(self.im_3_iterator_2)
@@ -139,7 +137,7 @@ class UCVMMeshTest(unittest.TestCase):
         spacing = 0.01
 
         # Check that the mesh is valid.
-        with open(os.path.join(self.dir, "scratch", "simplemeshunrotated.data"), "rb") as fd:
+        with open(os.path.join(self.dir, "scratch", "simple_mesh_unrotated.awp"), "rb") as fd:
             for z_val in range(0, 5):
                 for y_val in range(0, 101):
                     for x_val in range(0, 201):
@@ -169,7 +167,7 @@ class UCVMMeshTest(unittest.TestCase):
             os.path.join(self.dir, "data", "simple_mesh_ijk12_rotated.xml")
         )
 
-        with open(os.path.join(self.dir, "scratch", "simplemeshrotated.data"), "rb") as fd:
+        with open(os.path.join(self.dir, "scratch", "simple_mesh_rotated.awp"), "rb") as fd:
             for z_val in range(0, 5):
                 for y_val in range(0, 101):
                     for x_val in range(0, 101):
@@ -186,6 +184,8 @@ class UCVMMeshTest(unittest.TestCase):
 
     def test_generate_simple_utm_mesh_ijk12_rotated(self):
         UCVM.instantiated_models["testvelocitymodel"] = test_model.TestVelocityModel()
+        UCVM.instantiated_models["testvelocitymodel"]._private_metadata["projection"] = \
+            "+proj=utm +zone=11 +datum=WGS84"
         with open(os.path.join(self.dir, "data", "simple_utm_mesh_ijk12_rotated.xml")) as fd:
             simple_mesh_ijk12_xml = xmltodict.parse(fd.read())
         simple_mesh_ijk12_xml = simple_mesh_ijk12_xml["root"]
@@ -199,7 +199,7 @@ class UCVMMeshTest(unittest.TestCase):
             os.path.join(self.dir, "data", "simple_utm_mesh_ijk12_rotated.xml")
         )
 
-        with open(os.path.join(self.dir, "scratch", "simpleutmmeshrotated.data"), "rb") as fd:
+        with open(os.path.join(self.dir, "scratch", "simple_utm_mesh_rotated.awp"), "rb") as fd:
             for z_val in range(0, 5):
                 for y_val in range(0, 101):
                     for x_val in range(0, 201):
@@ -215,6 +215,43 @@ class UCVMMeshTest(unittest.TestCase):
                                                y_prop - x_prop, places=0)
                         self.assertAlmostEqual(struct.unpack("f", fd.read(4))[0],
                                                (y_prop + x_prop) / 2, places=0)
+
+    def test_generate_simple_utm_mesh_rwg_rotated(self):
+        UCVM.instantiated_models["testvelocitymodel"] = test_model.TestVelocityModel()
+        UCVM.instantiated_models["testvelocitymodel"]._private_metadata["projection"] = \
+            "+proj=utm +zone=11 +datum=WGS84"
+        with open(os.path.join(self.dir, "data", "simple_utm_mesh_ijk12_rotated.xml")) as fd:
+            simple_mesh_rwg_xml = xmltodict.parse(fd.read())
+        simple_mesh_rwg_xml = simple_mesh_rwg_xml["root"]
+        simple_mesh_rwg_xml["out_dir"] = os.path.join(self.dir, "scratch")
+        simple_mesh_rwg_xml["format"] = "rwg"
+        with redirect_stdout(open(os.devnull, "w")):
+            self.assertTrue(mesh_extract_single(simple_mesh_rwg_xml, custom_model_order={
+                0: {0: "testvelocitymodel"}
+            }))
+
+        i_test = InternalMesh.from_xml_file(
+            os.path.join(self.dir, "data", "simple_utm_mesh_ijk12_rotated.xml")
+        )
+
+        with open(os.path.join(self.dir, "scratch", "simple_utm_mesh_rotated.rwgvp"), "rb") as fdvp, \
+            open(os.path.join(self.dir, "scratch", "simple_utm_mesh_rotated.rwgvs"), "rb") as fdvs, \
+            open(os.path.join(self.dir, "scratch", "simple_utm_mesh_rotated.rwgdn"), "rb") as fddn:
+            for y_val in range(0, 101):
+                for z_val in range(0, 5):
+                    for x_val in range(0, 201):
+                        x_prop = 407650.39665729157 + (i_test.cos_angle * x_val -
+                                                       i_test.sin_angle * y_val) * 3.0
+                        y_prop = 3762606.6598763773 + (i_test.sin_angle * x_val +
+                                                       i_test.cos_angle * y_val) * 3.0
+
+                        self.assertAlmostEqual(struct.unpack("f", fdvp.read(4))[0],
+                                               (y_prop + x_prop + z_val * 3.0) / 1000,
+                                               places=0)
+                        self.assertAlmostEqual(struct.unpack("f", fdvs.read(4))[0],
+                                               (y_prop - x_prop) / 1000, places=0)
+                        self.assertAlmostEqual(struct.unpack("f", fddn.read(4))[0],
+                                               ((y_prop + x_prop) / 2) / 1000, places=0)
 
 
 def make_suite(path: str=None) -> unittest.TestSuite:

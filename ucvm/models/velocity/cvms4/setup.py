@@ -17,7 +17,7 @@ from Cython.Distutils import build_ext
 
 ext_modules = [
     Extension("CVMS4VelocityModel", ["cvms4.pyx"], extra_compile_args=["-Wunused-function"],
-              libraries=["cvms"], library_dirs=["./src/"])
+              include_dirs=["src"], libraries=["cvms"], library_dirs=["./src/"])
 ]
 
 setup(

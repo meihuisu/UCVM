@@ -60,9 +60,9 @@ class USGSNOAAElevationModelTest(UCVMTestCase):
 
         self.assertTrue(UCVM.query(sd_test, "usgs-noaa", ["elevation"]))
 
-        self.assertAlmostEqual(sd_test[0].elevation_properties.elevation, 276.293, 3)
+        self.assertAlmostEqual(sd_test[0].elevation_properties.elevation, 287.997, 3)
         self.assertEqual(sd_test[0].elevation_properties.elevation_source, "usgs-noaa")
-        self.assertAlmostEqual(sd_test[1].elevation_properties.elevation, 453.782, 3)
+        self.assertAlmostEqual(sd_test[1].elevation_properties.elevation, 466.993, 3)
         self.assertEqual(sd_test[1].elevation_properties.elevation_source, "usgs-noaa")
 
         self._test_end()

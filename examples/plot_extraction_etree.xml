@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<data>
+		<save>extraction_etree.data</save>
+	</data>
+	<plot>
+		<property>vs</property>
+		<generate>y</generate>
+		<title>E-tree Surface</title>
+		<features>
+			<scale>discrete</scale>
+			<faults>Yes</faults>
+			<colormap>RdBu</colormap>
+			<topography>No</topography>
+		</features>
+	</plot>
+	<cvm_list>dataproductreader[/Users/davidgil/PycharmProjects/UCVM/ucvm/bin/high_f_etree.xml]</cvm_list>
+	<bottom_left_point>
+		<y>33</y>
+		<x>-119.27</x>
+		<z>0.0</z>
+		<projection>+proj=latlong +datum=WGS84</projection>
+		<depth_elev>0</depth_elev>
+	</bottom_left_point>
+	<properties>
+		<num_x>240</num_x>
+		<rotation>0.0</rotation>
+		<num_y>230</num_y>
+		<spacing>0.01</spacing>
+	</properties>
+</root>

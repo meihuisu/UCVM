@@ -5,6 +5,7 @@ import shutil
 import copy
 import ucvm.models
 import urllib.request
+import sys
 
 from subprocess import Popen, PIPE, STDOUT
 
@@ -274,6 +275,15 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
             shutil.copy(os.path.join(os.path.dirname(xml_file), library["#text"] + ".so"),
                         os.path.join(new_path, "lib"))
 
+    if len(build["setuppy"]) != 0:
+        print("\tExecuting build script for legacy model code...")
+        revert_dir = os.getcwd()
+        os.chdir(os.path.dirname(xml_file))
+        p = Popen(["python3", "setup.py", "install", "--prefix=" + os.path.abspath("../../../../../../../../")],
+                  stdout=PIPE, stderr=PIPE)
+        p.wait()
+        os.chdir(revert_dir)
+
     # Finally, we copy the data.
     if len(build["dirs"]) != 0:
         print("\tMoving model data to directory...")
@@ -286,16 +296,8 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
                 except FileExistsError:
                     pass
             p = Popen("mv " + os.path.join(os.path.dirname(xml_file), directory["#text"], "*") +
-                      " " + copy_to, stdout=PIPE, stderr=STDOUT, shell=True)
+                      " " + copy_to, shell=True)
             p.communicate()
-
-    if len(build["setuppy"]) != 0:
-        print("\tExecuting build script for legacy model code...")
-        revert_dir = os.getcwd()
-        os.chdir(os.path.dirname(xml_file))
-        p = Popen(["python3", "setup.py", "install", "--user"], stdout=PIPE, stderr=PIPE)
-        p.communicate()
-        os.chdir(revert_dir)
 
     # Append the model to the model list.
     with open(UCVM_MODEL_LIST_FILE, "r") as fd:
