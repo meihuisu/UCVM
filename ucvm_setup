@@ -39,7 +39,7 @@ except socket.herror:
 if "mira" in host and "alcf.anl.gov" in host:
     print("Setup has detected that you are installing on Mira.\n")
     p = Popen(["/usr/local/bin/myprojectquotas"], stdout=PIPE, stdin=PIPE)
-    out = p.communicate()[0].split("\n")
+    out = p.communicate()[0].decode("ASCII").split("\n")
     default_dir = ""
     for i in range(len(out)):
         if "=====" in out[i] and len(str(out[i + 1]).split()) > 1 and str(out[i + 1]).split()[0].strip() != "":

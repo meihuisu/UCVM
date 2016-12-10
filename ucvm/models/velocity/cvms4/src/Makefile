@@ -4,7 +4,7 @@ lib_LIBRARIES = libcvms.a libcvms.so
 # General compiler/linker flags
 FC = gfortran
 AR = ar
-FFLAGS = -arch x86_64 -w -O3 -ffixed-line-length-132 -finit-local-zero
+FFLAGS = -w -O3 -ffixed-line-length-132 -finit-local-zero
 
 TARGETS = libcvms.a libcvms.so
 

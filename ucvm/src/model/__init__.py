@@ -83,9 +83,10 @@ def install_internet_ucvm_model(model_ucvm_name: str, long_name: str) -> bool:
 
     print("Downloading " + long_name + "...")
 
-    model_file = urllib.request.URLopener()
-    model_file.retrieve(HYPOCENTER_PREFIX + "/models/" + model_ucvm_name + ".ucv",
-                        os.path.join(UCVM_MODELS_DIRECTORY, "temp", model_ucvm_name + ".ucv"))
+    urllib.request.urlretrieve(
+        HYPOCENTER_PREFIX + "/models/" + model_ucvm_name + ".ucv",
+        os.path.join(UCVM_MODELS_DIRECTORY, "temp", model_ucvm_name + ".ucv")
+    )
 
     try:
         os.mkdir(os.path.join(UCVM_MODELS_DIRECTORY, "temp", model_ucvm_name))
