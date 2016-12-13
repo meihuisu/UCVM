@@ -53,6 +53,7 @@ if "mira" in host and "alcf.anl.gov" in host:
             default_dir = os.path.join("/", "projects", str(out[i + 1]).split()[0].strip(), "ucvm-16.12.0")
 elif "hpc-login" in host and "usc.edu" in host:
     print("Setup has detected that you are installing on USC HPC.\n")
+    default_dir = os.path.abspath(os.path.expanduser("~/ucvm-16.12.0"))
 else:
     default_dir = os.path.abspath(os.path.expanduser("~/ucvm-16.12.0"))
 
