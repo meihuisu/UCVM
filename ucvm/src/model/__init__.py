@@ -5,7 +5,7 @@ import shutil
 import copy
 import ucvm.models
 import urllib.request
-import sys
+import socket
 
 from subprocess import Popen, PIPE, STDOUT
 
@@ -83,10 +83,16 @@ def install_internet_ucvm_model(model_ucvm_name: str, long_name: str) -> bool:
 
     print("Downloading " + long_name + "...")
 
-    urllib.request.urlretrieve(
-        HYPOCENTER_PREFIX + "/models/" + model_ucvm_name + ".ucv",
-        os.path.join(UCVM_MODELS_DIRECTORY, "temp", model_ucvm_name + ".ucv")
-    )
+    error_raised = True
+    while error_raised:
+        try:
+            urllib.request.urlretrieve(
+                HYPOCENTER_PREFIX + "/models/" + model_ucvm_name + ".ucv",
+                os.path.join(UCVM_MODELS_DIRECTORY, "temp", model_ucvm_name + ".ucv")
+            )
+        except socket.error:
+            continue
+        error_raised = False
 
     try:
         os.mkdir(os.path.join(UCVM_MODELS_DIRECTORY, "temp", model_ucvm_name))

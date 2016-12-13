@@ -18,23 +18,16 @@ Supported Capabilities
 Setup
 -----
 
-Installing UCVM on Mira requires a few additional steps in addition to the standard installation script.
+Installing UCVM on HPC requires a few additional steps in addition to the standard installation script.
 
 1. Configuration
 ~~~~~~~~~~~~~~~~
 
-Login to Mira as follows:
+Login to USC HPC as follows:
 
 .. code-block:: bash
 
-   ssh -Y <user name>@mira.alcf.anl.gov
-
-Once you are logged in, you will need to edit your ~/.soft file to add in support for Python 3.5. If you have not
-already modified this file, run the following command:
-
-.. code-block:: bash
-
-   echo "+python-3.5.1" >> ~/.soft
+   ssh -Y <user name>@hpc.usc.edu
 
 2. Clone the UCVM Repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,7 +36,7 @@ We want to check out the master branch from GitHub. This contains all the code n
 
 .. code-block:: bash
 
-   cd ~
+   cd <ucvm install dir>
    git clone https://github.com/SCECcode/UCVM.git
 
 3. Start Setup Script
@@ -57,7 +50,7 @@ to your **projects** directory.
    cd UCVM
    ./ucvm_setup
 
-UCVM will detect that you are running on Mira.
+UCVM will detect that you are running on USC HPC.
 
 .. code-block:: text
 

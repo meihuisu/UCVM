@@ -14,8 +14,20 @@ import socket
 import sys
 from subprocess import Popen, PIPE
 
+try:
+    host = socket.gethostbyaddr(socket.gethostname())[0]
+except socket.herror:
+    host = socket.gethostname()
+
 if sys.version_info.major < 3:
-    print("Error: UCVM requires at least Python 3 or higher to install. Please install Python 3 and try again.")
+    if "hpc-login" in host and "usc.edu" in host:
+        print(
+            "Error: UCVM requires at least Python 3 or higher to install. On USC HPC, you must source Python 3 before\n"
+            "running this script. To do so, type in source /usr/usc/python/3.5.2/setup.csh if you are running Tcsh or\n"
+            "source /usr/usc/python/3.5.2/setup.sh if you are running Bash. Then run this script again."
+        )
+    else:
+        print("Error: UCVM requires at least Python 3 or higher to install. Please install Python 3 and try again.")
     sys.exit(-1)
 
 print(
@@ -31,11 +43,6 @@ print(
     "world, although most are located within California.\n"
 )
 
-try:
-    host = socket.gethostbyaddr(socket.gethostname())[0]
-except socket.herror:
-    host = socket.gethostname()
-
 if "mira" in host and "alcf.anl.gov" in host:
     print("Setup has detected that you are installing on Mira.\n")
     p = Popen(["/usr/local/bin/myprojectquotas"], stdout=PIPE, stdin=PIPE)
@@ -44,6 +51,8 @@ if "mira" in host and "alcf.anl.gov" in host:
     for i in range(len(out)):
         if "=====" in out[i] and len(str(out[i + 1]).split()) > 1 and str(out[i + 1]).split()[0].strip() != "":
             default_dir = os.path.join("/", "projects", str(out[i + 1]).split()[0].strip(), "ucvm-16.12.0")
+elif "hpc-login" in host and "usc.edu" in host:
+    print("Setup has detected that you are installing on USC HPC.\n")
 else:
     default_dir = os.path.abspath(os.path.expanduser("~/ucvm-16.12.0"))
 

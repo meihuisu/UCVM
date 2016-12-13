@@ -62,7 +62,10 @@ except OSError as e:
 
 if "ucvm_setup_bootstrapped" not in os.environ:
     os.environ["ucvm_setup_bootstrapped"] = "YES"
-    os.environ["PYTHONPATH"] = os.path.abspath(get_setuptools_script_dir()[0]) + ":" + os.environ["PYTHONPATH"]
+    if "PYTHONPATH" in os.environ:
+        os.environ["PYTHONPATH"] = os.path.abspath(get_setuptools_script_dir()[0]) + ":" + os.environ["PYTHONPATH"]
+    else:
+        os.environ["PYTHONPATH"] = os.path.abspath(get_setuptools_script_dir()[0])
     os.execv(sys.executable, [sys.executable] + sys.argv)
 
 _HYPOCENTER_BASE = "http://hypocenter.usc.edu/research/ucvm/" + UCVM_INFORMATION["version"]
