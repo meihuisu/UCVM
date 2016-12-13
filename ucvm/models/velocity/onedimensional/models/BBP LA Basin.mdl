@@ -4,7 +4,7 @@
 <root>
 
     <!-- Specifies the name of the 1D model. -->
-    <name>Whittier Narrows 1D BBP</name>
+    <name>BBP LA Basin</name>
 
     <!-- Specifies the format - either bbp for the Broadband format or scec for the historical -->
     <!-- SCEC 1D format. -->

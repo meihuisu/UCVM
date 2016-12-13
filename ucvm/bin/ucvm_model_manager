@@ -15,7 +15,7 @@ from subprocess import Popen, PIPE
 
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.model import get_list_of_installable_internet_models, get_list_of_installed_models, \
-                           install_internet_ucvm_model, UCVM_MODELS_DIRECTORY
+                           install_internet_ucvm_model, UCVM_MODELS_DIRECTORY, UCVM_LIBRARIES_DIRECTORY
 
 
 def usage() -> None:
@@ -101,6 +101,7 @@ def main() -> int:
 
         # This is Cythonized code.
         paths.append(os.path.join(UCVM_MODELS_DIRECTORY, found["id"], "lib"))
+        paths.append(os.path.join(UCVM_LIBRARIES_DIRECTORY, "euclid3", "lib"))
 
         os.environ[environment_variable] = ":".join(paths)
 

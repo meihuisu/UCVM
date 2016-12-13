@@ -73,10 +73,9 @@ _HYPOCENTER_MODEL_LIST = _HYPOCENTER_BASE + "/model_list.xml"
 
 INSTALL_REQUIRES = ["h5py", "xmltodict", "humanize", "pyproj", "Cython", "psutil", "matplotlib"]
 
+
 def execute(cmd):
-    popen = Popen(cmd, stdout=PIPE, universal_newlines=True)
-    for stdout_line in iter(popen.stdout.readline, ""):
-        yield stdout_line
+    popen = Popen(cmd, universal_newlines=True)
     return_code = popen.wait()
     if return_code != 0:
         raise CalledProcessError(return_code, cmd)
@@ -338,13 +337,11 @@ print("")
 
 # Now that UCVM is installed, we can go through the requested models and install them.
 for model in models_to_download:
-    for line in execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_model_manager"), "-a", model[0]]):
-        print(line, end="")
+    execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_model_manager"), "-a", model[0]])
     print("")
 
 # Run the tests.
-for line in execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_run_tests"), "-t"]):
-    print(line, end="")
+execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_run_tests"), "-t"])
 
 print("Thank you for installing UCVM. The installation is now complete. To learn more about")
 print("UCVM, please run the command ucvm_help.")

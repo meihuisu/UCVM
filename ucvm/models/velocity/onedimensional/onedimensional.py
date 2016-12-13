@@ -179,8 +179,8 @@ class OneDimensionalVelocityModel(VelocityModel):
                     split_str.remove("none")
 
                 paths = [
-                    os.path.join(".", ",".join(split_str) + ".mdl"),
-                    os.path.join(self.model_location, "data", ",".join(split_str) + ".mdl")
+                    os.path.join(".", kwargs["params"].strip().split(",")[0] + ".mdl"),
+                    os.path.join(self.model_location, "data", kwargs["params"].strip().split(",")[0] + ".mdl")
                 ]
             else:
                 # Let's try and find the model.
@@ -190,9 +190,9 @@ class OneDimensionalVelocityModel(VelocityModel):
                 ]
 
         else:
-            kwargs["params"] = "SCEC 1D"
+            kwargs["params"] = "SCEC"
             paths = [
-                os.path.join(self.model_location, "data", "SCEC 1D.mdl")
+                os.path.join(self.model_location, "data", "SCEC.mdl")
             ]
 
         for path in paths:

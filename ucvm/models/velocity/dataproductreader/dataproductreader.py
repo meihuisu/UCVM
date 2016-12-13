@@ -20,6 +20,8 @@ from typing import List
 import pyproj
 import xmltodict
 
+print(os.environ["LD_LIBRARY_PATH"])
+
 # UCVM Imports
 from ucvm.src.model.velocity.velocity_model import VelocityModel
 from ucvm.src.shared import VelocityProperties

@@ -45,39 +45,39 @@ class OneDimensionalVelocityModelTest(UCVMTestCase):
         """
         self._test_start("1D BBP format")
 
-        UCVM.query(self.data["depth"], "1d[Whittier Narrows]", ["velocity"])
+        UCVM.query(self.data["depth"], "1d[BBP LA Basin]", ["velocity"])
 
         assert_velocity_properties(
             self,
             self.data["depth"][0],
             VelocityProperties(1700, 450, 2000, 45.0, 22.5,
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp")
+                               "bbp la basin", "bbp la basin",
+                               "bbp la basin", "bbp la basin",
+                               "bbp la basin")
         )
         assert_velocity_properties(
             self,
             self.data["depth"][1],
             VelocityProperties(1900, 950, 2100, 95.0, 47.5,
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp")
+                               "bbp la basin", "bbp la basin",
+                               "bbp la basin", "bbp la basin",
+                               "bbp la basin")
         )
         assert_velocity_properties(
             self,
             self.data["depth"][2],
             VelocityProperties(2000, 1150, 2200, 115.0, 57.5,
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp")
+                               "bbp la basin", "bbp la basin",
+                               "bbp la basin", "bbp la basin",
+                               "bbp la basin")
         )
         assert_velocity_properties(
             self,
             self.data["depth"][3],
             VelocityProperties(7800, 4500, 3200, 450.0, 225.0,
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp", "whittier narrows 1d bbp",
-                               "whittier narrows 1d bbp")
+                               "bbp la basin", "bbp la basin",
+                               "bbp la basin", "bbp la basin",
+                               "bbp la basin")
         )
 
         self._test_end()
@@ -91,47 +91,47 @@ class OneDimensionalVelocityModelTest(UCVMTestCase):
         """
         self._test_start("1D SCEC format")
 
-        UCVM.query(self.data["depth"], "1d[Whittier Narrows,linear]", ["velocity"])
+        UCVM.query(self.data["depth"], "1d[BBP LA Basin,linear]", ["velocity"])
 
         assert_velocity_properties(
             self,
             self.data["depth"][0],
             VelocityProperties(1700, 450, 2000, 45.0, 22.5,
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)")
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)")
         )
         assert_velocity_properties(
             self,
             self.data["depth"][1],
             VelocityProperties(1950, 1050, 2150, 105.0, 52.5,
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)")
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)")
         )
         assert_velocity_properties(
             self,
             self.data["depth"][2],
             VelocityProperties(2000, 1150, 2200, 115.0, 57.5,
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)")
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)")
         )
         assert_velocity_properties(
             self,
             self.data["depth"][3],
             VelocityProperties(7800, 4500, 3200, 450.0, 225.0,
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)",
-                               "whittier narrows 1d bbp (interpolated)")
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)",
+                               "bbp la basin (interpolated)")
         )
 
         self._test_end()
