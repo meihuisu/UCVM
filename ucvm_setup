@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """
 Gets and sets some of the prerequisites before running the setup.py script.
 
@@ -12,6 +12,7 @@ Author:
 import os
 import socket
 import sys
+import shutil
 from subprocess import Popen, PIPE
 
 try:
@@ -53,6 +54,14 @@ if "mira" in host and "alcf.anl.gov" in host:
             default_dir = os.path.join("/", "projects", str(out[i + 1]).split()[0].strip(), "ucvm-16.12.0")
 elif "hpc-login" in host and "usc.edu" in host:
     print("Setup has detected that you are installing on USC HPC.\n")
+    # Check for MPI loaded.
+    if not shutil.which("mpicc"):
+        print(
+            "UCVM includes support for MPI. This support is required to extract large-scale material models. It is\n"
+            "recommended that you exit this install script (Ctrl-C) and include MPI support. On USC HPC, the way you\n"
+            "do this is source /usr/usc/openmpi/default/setup.csh if you are on Tcsh or \n"
+            "source /usr/usc/openmpi/default/setup.sh if you are on Bash.\n"
+        )
     default_dir = os.path.abspath(os.path.expanduser("~/ucvm-16.12.0"))
 else:
     default_dir = os.path.abspath(os.path.expanduser("~/ucvm-16.12.0"))

@@ -39,8 +39,8 @@ We want to check out the master branch from GitHub. This contains all the code n
    cd <ucvm install dir>
    git clone https://github.com/SCECcode/UCVM.git
 
-3. Start Setup Script
-~~~~~~~~~~~~~~~~~~~~~
+3. Install Software
+~~~~~~~~~~~~~~~~~~~
 
 Now that our repository is checked out, we need to install UCVM. It is strongly recommended that you install UCVM
 to your **projects** directory.
@@ -54,7 +54,18 @@ UCVM will detect that you are running on USC HPC.
 
 .. code-block:: text
 
+   UCVM requires the 1D velocity model, the DataProductReader model, the USGS/NOAA digital
+   elevation model, and the Wills-Wald Vs30 model to operate. Additional velocity, elevation,
+   and Vs30 models are available for download. These models cover various regions within the
+   world, although most are located within California.
 
+   **Setup has detected that you are installing on USC HPC.**
+
+Set the location to which UCVM should be installed. Due to disk quotas, UCVM cannot be installed on rcf filesystems.
+You will need to install to either a SCEC disk (if you have a SCEC account) or your staging filesystem
+(/staging/<pi>/<your username>).
+
+Also select the models you want to install. Hit return.
 
 .. toctree::
    :maxdepth: 2

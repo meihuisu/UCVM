@@ -319,19 +319,11 @@ ext_modules = [
               include_dirs=[os.path.join(_LOCAL_LIBRARY_PATH, "euclid3", "include")])
 ]
 
-old_stdout = sys.stdout
-old_stderr = sys.stderr
-s_out = StringIO()
-s_err = StringIO()
-sys.stdout = s_out
-sys.stderr = s_err
 setup(
     name="ucvm_c_common",
     cmdclass={"build_ext": build_ext},
     ext_modules=ext_modules
 )
-sys.stdout = old_stdout
-sys.stderr = old_stderr
 print("\tDone!")
 print("")
 
