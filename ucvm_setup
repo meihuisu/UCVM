@@ -20,7 +20,10 @@ try:
 except socket.herror:
     host = socket.gethostname()
 
-if sys.version_info.major < 3:
+if shutil.which("python3"):
+    if "python3" not in sys.executable:
+        os.execv("python3", ["python3"] + sys.argv)
+else:
     if "hpc-login" in host and "usc.edu" in host:
         print(
             "Error: UCVM requires at least Python 3 or higher to install. On USC HPC, you must source Python 3 before\n"
