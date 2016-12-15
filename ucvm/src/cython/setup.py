@@ -10,7 +10,7 @@ _LOCAL_LIBRARY_PATH = UCVM_LIBRARIES_DIRECTORY
 print("Installing C components of UCVM...")
 
 ext_modules = [
-    Extension("ucvm_c_common", ["common.pyx"], libraries=["etree"],
+    Extension("ucvm_c_common", ["ucvm_c_common.pyx"], libraries=["etree"],
               library_dirs=[os.path.join(_LOCAL_LIBRARY_PATH, "euclid3", "lib")],
               include_dirs=[os.path.join(_LOCAL_LIBRARY_PATH, "euclid3", "include")])
 ]

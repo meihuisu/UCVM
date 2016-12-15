@@ -262,6 +262,8 @@ setup(name=UCVM_INFORMATION["short_name"],
       )
 sys.stdout = s_out
 
+print("Installing C components of UCVM...")
+
 _LOCAL_LIBRARY_PATH, _LOCAL_SCRIPT_PATH = get_setuptools_script_dir()
 _LOCAL_LIBRARY_PATH = os.path.join(
     _LOCAL_LIBRARY_PATH, "-".join([UCVM_INFORMATION["short_name"], UCVM_INFORMATION["version"],
@@ -272,12 +274,10 @@ _LOCAL_LIBRARY_PATH = os.path.join(
 _LOCAL_LIBRARY_PATH = os.path.abspath(_LOCAL_LIBRARY_PATH)
 print("")
 
-from ucvm.src.shared.constants import HYPOCENTER_PREFIX
-
 os.mkdir(os.path.join(_LOCAL_LIBRARY_PATH, "temp"))
 library_file = urllib.request.URLopener()
-library_file.retrieve(HYPOCENTER_PREFIX + "/libraries/euclid3.ucv",
-                      os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3.ucv"))
+library_file.retrieve("http://hypocenter.usc.edu/ucvm/16.12.0/" + UCVM_INFORMATION["version"] +
+                      "/libraries/euclid3.ucv", os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3.ucv"))
 try:
     os.mkdir(os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3"))
 except FileExistsError:
@@ -292,7 +292,7 @@ p = Popen(["tar", "-zxvf", os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3.uc
            "-C", os.path.join(_LOCAL_LIBRARY_PATH, "euclid3")], stdout=PIPE, stderr=PIPE)
 p.wait()
 
-print("Installing E-tree Library...")
+print("\tInstalling E-tree Library.")
 
 cwd = os.getcwd()
 os.chdir(os.path.join(_LOCAL_LIBRARY_PATH, "euclid3"))
@@ -309,12 +309,18 @@ from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
 
-print("Installing C components of UCVM...")
+print("\tInstalling UCVM C library.")
+
+# It seems like the Cython library on USC HPC needs a little bit of time to boot up before compiling. This gives
+# it the fraction of an extra second or so it needs.
+x = 0
+for i in range(1000):
+    x += 1
 
 os.chdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ucvm", "src", "cython"))
 
 ext_modules = [
-    Extension("ucvm_c_common", ["common.pyx"], libraries=["etree"],
+    Extension("ucvm_c_common", ["ucvm_c_common.pyx"], libraries=["etree"],
               library_dirs=[os.path.join(_LOCAL_LIBRARY_PATH, "euclid3", "lib")],
               include_dirs=[os.path.join(_LOCAL_LIBRARY_PATH, "euclid3", "include")])
 ]

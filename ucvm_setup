@@ -23,7 +23,10 @@ except socket.herror:
 
 if find_executable("python3"):
     if "python3" not in sys.executable:
-        os.execv("python3", ["python3"] + sys.argv)
+        os.execv(find_executable("python3"), [find_executable("python3")] + sys.argv)
+elif find_executable("python-3"):
+    if "python-3" not in sys.executable:
+        os.execv(find_executable("python-3"), [find_executable("python-3")] + sys.argv)
 else:
     if "hpc-login" in host and "usc.edu" in host:
         print(

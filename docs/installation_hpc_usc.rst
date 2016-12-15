@@ -1,5 +1,5 @@
 USC (HPC)
-==========
+=========
 
 UCVM is mostly compatible with the HPC cluster at USC. This document describes how to install UCVM on the USC cluster
 and also how to find and submit the example jobs.
@@ -43,14 +43,14 @@ We want to check out the master branch from GitHub. This contains all the code n
 ~~~~~~~~~~~~~~~~~~~
 
 Now that our repository is checked out, we need to install UCVM. It is strongly recommended that you install UCVM
-to your **projects** directory.
+to your **staging** directory.
 
 .. code-block:: bash
 
    cd UCVM
    ./ucvm_setup
 
-UCVM will detect that you are running on USC HPC.
+UCVM will detect that you are running on USC HPC (look for the last line below in your terminal output).
 
 .. code-block:: text
 
@@ -59,13 +59,90 @@ UCVM will detect that you are running on USC HPC.
    and Vs30 models are available for download. These models cover various regions within the
    world, although most are located within California.
 
-   **Setup has detected that you are installing on USC HPC.**
+   Setup has detected that you are installing on USC HPC.
 
 Set the location to which UCVM should be installed. Due to disk quotas, UCVM cannot be installed on rcf filesystems.
-You will need to install to either a SCEC disk (if you have a SCEC account) or your staging filesystem
-(/staging/<pi>/<your username>).
+You will need to install to either a SCEC disk (if you have a SCEC account), your own disk space with a quota that is
+big enough for the UCVM distribution, or your staging filesystem (/staging/<pi>/<your username>).
 
 Also select the models you want to install. Hit return.
+
+You should see some warnings as the installation progresses. This is normal. They do not affect the UCVM distribution
+and they are a result of the included libraries and dependencies.
+
+Eventually UCVM will begin installing the models and running the tests, like so:
+
+.. code-block:: text
+
+   Downloading 1D...
+   Extracting 1D...
+   Installing 1D...
+       Moving model data to directory...
+   Running tests for 1D...
+   Testing 1D...
+       [2 tests]
+       [001] Running 1D BBP format...
+             PASSED
+       [002] Running 1D SCEC format...
+             PASSED
+
+Please be patient as this process can take a substantial amount of time (on the order of 20 minutes or longer).
+
+UCVM will then proceed to conduct tests to ensure the installation is working right. All these tests should pass. If
+one of them does not, then the installation process has failed. For example, you should see something like this towards
+the end of the installation:
+
+.. code-block:: text
+
+
+Finally, UCVM will recommend that you add the following to your .bashrc or .tcshrc file:
+
+.. code-block:: text
+
+**You must add this or UCVM will not work correctly.**
+
+4. Running Your Installation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+UCVM is now fully installed. Try running an example query
+
+Examples
+--------
+
+Please note that the following examples assume that **CVM-S4 is installed**. If it is not then you will need to modify
+the xml files in your GitHub UCVM/examples directory. Change the <cvm_list>cvms4</cvm_list> tag to read <cvm_list>
+your desired models</cvm_list>.
+
+1. Create The Example Meshes and E-trees
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+UCVM includes multiple execution examples for a variety of platforms. Two examples are included in your GitHub
+UCVM/examples directory:
+
+* extract_test_mesh_mpi_awp.usc
+* extract_test_tree_mpi_her.usc
+
+These extract a test AWP cartesian mesh and a test E-tree for Hercules. To use this examples you will need to open
+the extract_test files and change the following parameters:
+
+Then you can run the examples using the following commands.
+
+.. code-block:: text
+
+   cd <github UCVM directory>/examples
+   ucvm_mesh_create_mpi -f ./extract_test_mesh_mpi_awp.usc
+   ucvm_etree_create_mpi -f ./extract_test_etree_mpi_her.usc
+
+2. Verify Extracted Model Correctness
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+UCVM also includes utilities that enable you to compare models and ensure they are correct.
+
+Further Reading
+---------------
+
+To learn more about UCVM, please visit our UCVM overview page which discusses how UCVM works and what data products
+it can produce.
 
 .. toctree::
    :maxdepth: 2
