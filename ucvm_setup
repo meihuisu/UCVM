@@ -14,13 +14,14 @@ import socket
 import sys
 import shutil
 from subprocess import Popen, PIPE
+from distutils.spawn import find_executable
 
 try:
     host = socket.gethostbyaddr(socket.gethostname())[0]
 except socket.herror:
     host = socket.gethostname()
 
-if shutil.which("python3"):
+if find_executable("python3"):
     if "python3" not in sys.executable:
         os.execv("python3", ["python3"] + sys.argv)
 else:
