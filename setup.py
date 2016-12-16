@@ -265,6 +265,7 @@ sys.stdout = s_out
 print("Installing C components of UCVM...")
 
 _LOCAL_LIBRARY_PATH, _LOCAL_SCRIPT_PATH = get_setuptools_script_dir()
+_LOCAL_PACKAGE_PATH = _LOCAL_LIBRARY_PATH
 _LOCAL_LIBRARY_PATH = os.path.join(
     _LOCAL_LIBRARY_PATH, "-".join([UCVM_INFORMATION["short_name"], UCVM_INFORMATION["version"],
                                    "py" + str(sys.version_info.major) + "." +
@@ -272,11 +273,10 @@ _LOCAL_LIBRARY_PATH = os.path.join(
     "ucvm", "libraries"
 )
 _LOCAL_LIBRARY_PATH = os.path.abspath(_LOCAL_LIBRARY_PATH)
-print("")
 
 os.mkdir(os.path.join(_LOCAL_LIBRARY_PATH, "temp"))
 library_file = urllib.request.URLopener()
-library_file.retrieve("http://hypocenter.usc.edu/ucvm/16.12.0/" + UCVM_INFORMATION["version"] +
+library_file.retrieve("http://hypocenter.usc.edu/research/ucvm/" + UCVM_INFORMATION["version"] +
                       "/libraries/euclid3.ucv", os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3.ucv"))
 try:
     os.mkdir(os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3"))
@@ -297,7 +297,7 @@ print("\tInstalling E-tree Library.")
 cwd = os.getcwd()
 os.chdir(os.path.join(_LOCAL_LIBRARY_PATH, "euclid3"))
 
-p = Popen(["python3", "build.py"], stdout=PIPE, stderr=PIPE)
+p = Popen(["python3", "build.py"])
 p.communicate()
 
 os.chdir(cwd)
@@ -305,31 +305,10 @@ os.chdir(cwd)
 os.remove(os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3.ucv"))
 
 # Install C framework.
-from distutils.core import setup
-from distutils.extension import Extension
-from Cython.Distutils import build_ext
-
 print("\tInstalling UCVM C library.")
-
-# It seems like the Cython library on USC HPC needs a little bit of time to boot up before compiling. This gives
-# it the fraction of an extra second or so it needs.
-x = 0
-for i in range(1000):
-    x += 1
-
 os.chdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ucvm", "src", "cython"))
-
-ext_modules = [
-    Extension("ucvm_c_common", ["ucvm_c_common.pyx"], libraries=["etree"],
-              library_dirs=[os.path.join(_LOCAL_LIBRARY_PATH, "euclid3", "lib")],
-              include_dirs=[os.path.join(_LOCAL_LIBRARY_PATH, "euclid3", "include")])
-]
-
-setup(
-    name="ucvm_c_common",
-    cmdclass={"build_ext": build_ext},
-    ext_modules=ext_modules
-)
+p = Popen(["python3", "setup.py", "--prefix=" + _LOCAL_PACKAGE_PATH])
+p.communicate()
 print("\tDone!")
 print("")
 

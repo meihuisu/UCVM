@@ -13,15 +13,13 @@ Developer:
 # Python Imports
 from distutils.core import setup
 from distutils.extension import Extension
-from Cython.Distutils import build_ext
 
 ext_modules = [
-    Extension("CVMS4VelocityModel", ["cvms4.pyx"], extra_compile_args=["-Wunused-function"],
+    Extension("CVMS4VelocityModel", ["cvms4.c"], extra_compile_args=["-Wunused-function"],
               include_dirs=["src"], libraries=["cvms"], library_dirs=["./src/"])
 ]
 
 setup(
     name="CVMS4",
-    cmdclass={"build_ext": build_ext},
     ext_modules=ext_modules
 )
