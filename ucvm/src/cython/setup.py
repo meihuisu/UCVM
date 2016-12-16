@@ -22,5 +22,3 @@ setup(
     name="ucvm_c_common",
     ext_modules=ext_modules
 )
-print("\tDone!")
-print("")

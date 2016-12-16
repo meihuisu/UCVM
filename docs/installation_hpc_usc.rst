@@ -94,6 +94,9 @@ the end of the installation:
 
 .. code-block:: text
 
+   test_generate_simple_mesh_ijk12_rotated (ucvm.tests.mesh.UCVMMeshTest) ... ok
+   test_generate_simple_mesh_ijk12_unrotated (ucvm.tests.mesh.UCVMMeshTest) ... ok
+   test_generate_simple_utm_mesh_ijk12_rotated (ucvm.tests.mesh.UCVMMeshTest) ... ok
 
 Finally, UCVM will recommend that you add the following to your .bashrc or .tcshrc file:
 

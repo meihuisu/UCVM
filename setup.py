@@ -71,11 +71,14 @@ if "ucvm_setup_bootstrapped" not in os.environ:
 _HYPOCENTER_BASE = "http://hypocenter.usc.edu/research/ucvm/" + UCVM_INFORMATION["version"]
 _HYPOCENTER_MODEL_LIST = _HYPOCENTER_BASE + "/model_list.xml"
 
-INSTALL_REQUIRES = ["h5py", "xmltodict", "humanize", "pyproj", "Cython", "psutil", "matplotlib"]
+INSTALL_REQUIRES = ["h5py", "xmltodict", "humanize", "pyproj", "psutil", "matplotlib"]
 
 
-def execute(cmd):
-    popen = Popen(cmd, universal_newlines=True)
+def execute(cmd, **kwargs):
+    env = os.environ
+    if "env" in kwargs:
+        env = kwargs["env"]
+    popen = Popen(cmd, universal_newlines=True, env=env)
     return_code = popen.wait()
     if return_code != 0:
         raise CalledProcessError(return_code, cmd)
@@ -307,7 +310,9 @@ os.remove(os.path.join(_LOCAL_LIBRARY_PATH, "temp", "euclid3.ucv"))
 # Install C framework.
 print("\tInstalling UCVM C library.")
 os.chdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "ucvm", "src", "cython"))
-p = Popen(["python3", "setup.py", "--prefix=" + _LOCAL_PACKAGE_PATH])
+p = Popen(["python3", "setup.py", "install", "--prefix=" +
+           os.path.abspath(os.path.join(_LOCAL_PACKAGE_PATH, "..", "..", "..")), "--library-path=" +
+           _LOCAL_LIBRARY_PATH])
 p.communicate()
 print("\tDone!")
 print("")
@@ -317,8 +322,21 @@ for model in models_to_download:
     execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_model_manager"), "-a", model[0]])
     print("")
 
+# Now run the tests, through the command line so that the library paths are correct!
+environment_variable = "LD_LIBRARY_PATH"
+if sys.platform == "darwin":
+    environment_variable = "DYLD_LIBRARY_PATH"
+
+paths = []
+if environment_variable in os.environ:
+    paths = str(os.environ[environment_variable]).split(":")
+
+# This is Cythonized code.
+paths.append(os.path.join(_LOCAL_LIBRARY_PATH, "euclid3", "lib"))
+os.environ[environment_variable] = ":".join(paths)
+
 # Run the tests.
-execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_run_tests"), "-t"])
+execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_run_tests"), "-t"], env=os.environ)
 
 print("Thank you for installing UCVM. The installation is now complete. To learn more about")
 print("UCVM, please run the command ucvm_help.")
