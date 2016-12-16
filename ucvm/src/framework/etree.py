@@ -11,6 +11,7 @@ Developer:
 """
 # Python Imports
 import os
+import sys
 import math
 from datetime import datetime
 from typing import List
@@ -29,7 +30,10 @@ def etree_extract_single(information: dict) -> bool:
     schema = "float Vp; float Vs; float density;".encode("ASCII")
     path = (information["etree_name"] + ".e").encode("ASCII")
 
-    ep = UCVMCCommon.c_etree_open(path, 1538)
+    if sys.byteorder == "big":
+        ep = UCVMCCommon.c_etree_open(path, 578)
+    else:
+        ep = UCVMCCommon.c_etree_open(path, 1538)
     UCVMCCommon.c_etree_registerschema(ep, schema)
 
     # Calculate the specifications for the e-tree.

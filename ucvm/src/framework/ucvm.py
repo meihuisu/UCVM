@@ -24,7 +24,7 @@ import copy
 
 from typing import List
 
-from ucvm.src.shared.constants import UCVM_MODEL_LIST_FILE, UCVM_MODELS_DIRECTORY, \
+from ucvm.src.shared.constants import UCVM_MODEL_LIST_FILE, UCVM_MODELS_DIRECTORY, UCVM_LIBRARIES_DIRECTORY, \
                                       UCVM_DEFAULT_DEM, UCVM_DEFAULT_VS30, UCVM_DEFAULT_VELOCITY, \
                                       INTERNAL_DATA_DIRECTORY, UCVM_DEPTH, UCVM_ELEVATION, \
                                       UCVM_ELEV_ANY
@@ -77,6 +77,9 @@ class UCVM:
             if ".py" not in item["file"]:
                 # This is Cythonized code.
                 paths.append(os.path.join(UCVM_MODELS_DIRECTORY, item["id"], "lib"))
+
+        paths.append(os.path.join(UCVM_LIBRARIES_DIRECTORY, "euclid3", "lib"))
+        paths.append(os.path.join(UCVM_LIBRARIES_DIRECTORY, "proj4", "lib"))
 
         os.environ[environment_variable] = ":".join(paths)
 
