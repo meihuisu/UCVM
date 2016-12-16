@@ -17,9 +17,9 @@ class UCVMTestCase(unittest.TestCase):
         super(UCVMTestCase, cls).setUpClass()
         print("Testing %s..." % cls.description)
         if cls.get_number_of_tests(cls) == 1:
-            print("\t[%d test]" % cls.get_number_of_tests(cls))
+            print("    [%d test]" % cls.get_number_of_tests(cls))
         else:
-            print("\t[%d tests]" % cls.get_number_of_tests(cls))
+            print("    [%d tests]" % cls.get_number_of_tests(cls))
         UCVMTestCase.current_test = 1
 
     @classmethod

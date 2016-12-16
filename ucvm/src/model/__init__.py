@@ -138,7 +138,7 @@ def download_and_install_library(library_name: str) -> bool:
     except FileExistsError:
         pass
 
-    print("\t\tDownloading library " + library_name + "...")
+    print("        Downloading library " + library_name + "...")
 
     library_file = urllib.request.URLopener()
     library_file.retrieve(HYPOCENTER_PREFIX + "/libraries/" + library_name + ".ucv",
@@ -154,7 +154,7 @@ def download_and_install_library(library_name: str) -> bool:
     except FileExistsError:
         pass
 
-    print("\t\tExtracting " + library_name + "...")
+    print("        Extracting " + library_name + "...")
 
     p = Popen(["tar", "-zxvf",
                os.path.join(UCVM_LIBRARIES_DIRECTORY, "temp", library_name + ".ucv"),
@@ -162,7 +162,7 @@ def download_and_install_library(library_name: str) -> bool:
               stderr=PIPE)
     p.wait()
 
-    print("\t\tInstalling " + library_name + "...")
+    print("        Installing " + library_name + "...")
 
     cwd = os.getcwd()
     os.chdir(os.path.join(UCVM_LIBRARIES_DIRECTORY, library_name))
@@ -222,12 +222,12 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
 
     # Get the libraries.
     if len(build["requires_lib"]) != 0:
-        print("\tInstalling pre-requisite libraries...")
+        print("    Installing pre-requisite libraries...")
         for library in build["requires_lib"]:
             download_and_install_library(library["#text"])
 
     if len(build["configure"]) != 0 or len(build["makefile"]) != 0:
-        print("\tStarting build process...")
+        print("    Starting build process...")
 
     # We need to execute the config file(s).
     if len(build["configure"]) != 0:
@@ -283,7 +283,7 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
                         os.path.join(new_path, "lib"))
 
     if len(build["setuppy"]) != 0:
-        print("\tExecuting build script for legacy model code...")
+        print("    Executing build script for legacy model code...")
         revert_dir = os.getcwd()
         os.chdir(os.path.dirname(xml_file))
         p = Popen(["python3", "setup.py", "install", "--prefix=" + os.path.abspath("../../../../../../../../")],
@@ -293,7 +293,7 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
 
     # Finally, we copy the data.
     if len(build["dirs"]) != 0:
-        print("\tMoving model data to directory...")
+        print("    Moving model data to directory...")
         for directory in build["dirs"]:
             copy_to = os.path.join(new_path, "data")
             if "#copyto" in directory:
