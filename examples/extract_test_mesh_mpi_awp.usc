@@ -1,0 +1,16 @@
+#!/bin/bash
+#PBS -l nodes=4:ppn=2
+#PBS -l walltime=00:30:00
+
+cd "$PBS_O_WORKDIR"
+
+PATH_TO_UCVM = /staging/your/path/to/ucvm-16.12.0
+OUTPUT_DIRECTORY = ./
+
+NP=`wc -l < $PBS_NODEFILE`
+echo "Running on $NP processors: "`cat $PBS_NODEFILE`
+
+mpiexec ucvm_mesh_create_mpi -f high_f_mesh_awp_lowres.xml
+
+echo "Done " `date`
+exit 0

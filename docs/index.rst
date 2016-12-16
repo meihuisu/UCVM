@@ -18,5 +18,7 @@ If you have any questions regarding UCVM, please email
 
    introduction
    installation
+   features
    tutorial
+   reference
    api

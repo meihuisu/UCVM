@@ -1,7 +1,7 @@
 USC (HPC)
 =========
 
-UCVM is mostly compatible with the HPC cluster at USC. This document describes how to install UCVM on the USC cluster
+UCVM is fully compatible with the HPC cluster at USC. This document describes how to install UCVM on the USC cluster
 and also how to find and submit the example jobs.
 
 Supported Capabilities
@@ -12,7 +12,7 @@ Supported Capabilities
 +-----------------------------+-----------------------------+
 | Generate Material Models    | ✓ Yes                       |
 +-----------------------------+-----------------------------+
-| Visualization               | ✕ No                        |
+| Visualization               | ✓ Yes                       |
 +-----------------------------+-----------------------------+
 
 Setup
@@ -42,8 +42,16 @@ We want to check out the master branch from GitHub. This contains all the code n
 3. Install Software
 ~~~~~~~~~~~~~~~~~~~
 
-Now that our repository is checked out, we need to install UCVM. It is strongly recommended that you install UCVM
-to your **staging** directory.
+Now that our repository is checked out, we need to source two files in order to install UCVM. Type in the commands
+below:
+
+.. code-block:: bash
+
+   source /usr/usc/python/3.5.2/setup.csh
+   source /usr/usc/openmpi/default/setup.csh
+
+We can now proceed with the installation. It is strongly recommended that you install UCVM to your **staging**
+directory.
 
 .. code-block:: bash
 
@@ -98,11 +106,44 @@ the end of the installation:
    test_generate_simple_mesh_ijk12_unrotated (ucvm.tests.mesh.UCVMMeshTest) ... ok
    test_generate_simple_utm_mesh_ijk12_rotated (ucvm.tests.mesh.UCVMMeshTest) ... ok
 
-Finally, UCVM will recommend that you add the following to your .bashrc or .tcshrc file:
+Finally, UCVM will recommend that you add something like the following to your .bashrc or .tcshrc file (the paths below
+will be your actual paths when you run the setup script):
 
 .. code-block:: text
 
-**You must add this or UCVM will not work correctly.**
+   For Tcsh Users:
+
+   Thank you for installing UCVM. You must now update your PYTHONPATH and PATH variables for the
+   new software. Please modify your ~/.cshrc file to include the following:
+
+   if (! $?PATH) then
+      setenv PATH "/path/to/ucvm-16.12.0/bin"
+   else
+      setenv PATH "/path/to/ucvm-16.12.0/bin:$PATH"
+   endif
+
+   if (! $?PYTHONPATH) then
+      setenv PYTHONPATH "/path/to/ucvm-16.12.0/lib/python3.5/site-packages"
+   else
+      setenv PYTHONPATH "/path/to/ucvm-16.12.0/lib/python3.5/site-packages:$PYTHONPATH"
+   endif
+
+   For Bash Users:
+
+   PYTHONPATH="/path/to/ucvm-16.12.0/lib/directory:$PYTHONPATH"
+   PATH="/path/to/ucvm-16.12.0/bin:$PATH"
+   export PYTHONPATH
+   export PATH
+
+**You must add the lines above to your respective shell source files or UCVM will not work correctly.**
+
+In order to use the updated variables, we must re-source our ~/.*rc file.
+
+.. code-block:: bash
+
+   source .
+
+That's it! UCVM should now be installed and operational on your USC HPC account!
 
 4. Running Your Installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,8 +174,8 @@ Then you can run the examples using the following commands.
 .. code-block:: text
 
    cd <github UCVM directory>/examples
-   ucvm_mesh_create_mpi -f ./extract_test_mesh_mpi_awp.usc
-   ucvm_etree_create_mpi -f ./extract_test_etree_mpi_her.usc
+   qsub extract_test_mesh_mpi_awp.usc
+   qsub extract_test_etree_mpi_her.usc
 
 2. Verify Extracted Model Correctness
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -144,8 +185,8 @@ UCVM also includes utilities that enable you to compare models and ensure they a
 Further Reading
 ---------------
 
-To learn more about UCVM, please visit our UCVM overview page which discusses how UCVM works and what data products
-it can produce.
+To learn more about UCVM, please visit our UCVM overview page which discusses how UCVM works, what data products
+it can produce, and more about the commands included with the platform.
 
 .. toctree::
    :maxdepth: 2

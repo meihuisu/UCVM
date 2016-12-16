@@ -72,7 +72,7 @@ class CVMS4VelocityModelTest(UCVMTestCase):
         assert_velocity_properties(
             self,
             sd_test[0],
-            VelocityProperties(2649.2849, 725.390, 2287.7236, None, None,
+            VelocityProperties(2677.1596, 725.390, 2287.7236, None, None,
                                "cvms4", "cvms4", "cvms4", None, None)
         )
 

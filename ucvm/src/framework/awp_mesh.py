@@ -16,7 +16,7 @@ import sys
 import struct
 import math
 import time
-from multiprocessing import cpu_count, Pool, Queue, current_process
+from multiprocessing import current_process
 from typing import List
 
 # Package Imports
@@ -29,14 +29,125 @@ from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.shared.constants import UCVM_DEFAULT_PROJECTION
 from ucvm.src.shared.functions import ask_and_validate, is_number, is_valid_proj4_string, \
     is_acceptable_value, get_utm_zone_for_lon
-from ucvm.src.shared.properties import Point, SeismicData, VelocityProperties
+from ucvm.src.shared.properties import SeismicData, VelocityProperties
 from ucvm.src.framework.mesh_common import InternalMesh, AWPInternalMeshIterator, \
     RWGInternalMeshIterator
 
-_MPI_QUEUE = []
-_MPI_RESULT_QUEUE = Queue()
-_MPI_FILE_OUT = None
-_MPI_RANK = -1
+
+def mesh_extract_mpi(information: dict, start_end: tuple) -> bool:
+    """
+    Extracts the parameters for the MPI process.
+
+    Args:
+        information (dict): The dictionary containing the metadata defining the extraction.
+        start_end (tuple): The tuple defining the start and end poing.
+
+    Returns:
+        True, when successful. Raises an error if the extraction fails.
+    """
+    from mpi4py import MPI
+
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+
+    internal_mesh = InternalMesh(information)
+    max_pts = InternalMesh.get_max_points_extract(2)
+
+    sd_array = UCVM.create_max_seismicdata_array()
+
+    print(
+        "[Node %d] Responsible for extracting %d grid points. We can extract %d at once.\nStarting extraction...\n" % (
+            rank, start_end[1] - start_end[0], max_pts
+        )
+    )
+
+    information["minimums"]["vp"] = float(information["minimums"]["vp"])
+    information["minimums"]["vs"] = float(information["minimums"]["vs"])
+
+    _mesh_extract_mpi_awp(sd_array, information, internal_mesh, start_end)
+
+    print(
+        "[Node %d] Extraction is done!" % rank
+    )
+
+
+def _mesh_extract_mpi_awp(sd_array: List[SeismicData], information: dict, im: InternalMesh, start_end: tuple) -> bool:
+    """
+    Extract an AWP mesh using MPI. Internal method.
+
+    Args:
+
+    Returns:
+        True, if successful. Raises an error if not successful.
+    """
+    from mpi4py import MPI
+
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+
+    file_out = information["mesh_name"] + ".awp"
+
+    im_iter = AWPInternalMeshIterator(im, start_end[0], start_end[1], len(sd_array), sd_array)
+
+    progress = start_end[0]
+    sqrt2 = math.sqrt(2)
+
+    fh = MPI.File.Open(MPI.COMM_WORLD, file_out, amode=MPI.MODE_WRONLY | MPI.MODE_CREATE)
+
+    while progress < im_iter.end_point:
+        count = next(im_iter)
+
+        UCVM.query(sd_array[0:count], information["cvm_list"], ["velocity"])
+
+        fl_array = []
+        for s in sd_array[0:count]:
+            if s.velocity_properties is not None and s.velocity_properties.vs is not None and \
+               s.velocity_properties.vs < information["minimums"]["vs"]:
+                s.set_velocity_data(
+                    VelocityProperties(
+                        information["minimums"]["vp"], information["minimums"]["vs"],
+                        s.velocity_properties.density, s.velocity_properties.qp,
+                        s.velocity_properties.qs, s.velocity_properties.vp_source,
+                        s.velocity_properties.vs_source, s.velocity_properties.density_source,
+                        s.velocity_properties.qp_source, s.velocity_properties.qs_source
+                    )
+                )
+
+            fl_array.append(s.velocity_properties.vp)
+            fl_array.append(s.velocity_properties.vs)
+            fl_array.append(s.velocity_properties.density)
+
+            if s.velocity_properties is None or s.velocity_properties.vp is None or \
+               s.velocity_properties.vs is None or s.velocity_properties.density is None:
+                print("[Node %d] Attention! %.3f, %.3f, %.3f has no material properties." % (
+                    rank, s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
+                ), flush=True)
+            if s.velocity_properties is not None and \
+               s.velocity_properties.vp / s.velocity_properties.vs < sqrt2:
+                print("[Node %d] Warning: %.3f, %.3f, %.3f has a Vp/Vs ratio of less than sqrt(2)." % (
+                    rank, s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
+                ), flush=True)
+        s = struct.pack('f' * len(fl_array), *fl_array)
+        fh.Write_at_all(progress * 12, s)
+
+        progress += count
+
+        print("[Node %d] %-4.2f" % (rank, ((progress - start_end[0]) / (start_end[1] - start_end[0])) * 100.0) +
+              "% complete. Wrote " + humanize.intcomma(count) + " more grid points.", flush=True)
+
+    fh.Close()
+
+    print("\n[Node " + str(rank) + "] Expected file size is " + im.get_grid_file_size()["display"] + ". " +
+          "Actual size is " + humanize.naturalsize(os.path.getsize(
+          os.path.join(information["out_dir"], file_out)), gnu=False) + ".", flush=True)
+
+    if im.get_grid_file_size()["real"] == \
+       os.path.getsize(os.path.join(information["out_dir"], file_out)):
+        print("Generated file size matches the expected file size.")
+    else:
+        print("ERROR! File sizes DO NOT MATCH!")
+
+    return True
 
 
 def mesh_extract_single(information: dict, **kwargs) -> bool:
@@ -83,7 +194,7 @@ def mesh_extract_single(information: dict, **kwargs) -> bool:
     return True
 
 
-def _mesh_extract_single_awp(sd_array: List[SeismicData], information: dict, im: InternalMesh) -> None:
+def _mesh_extract_single_awp(sd_array: List[SeismicData], information: dict, im: InternalMesh) -> bool:
     """
     Takes an InternalMesh object, the mesh information file, and the iterator, and generates, using
     one core only, the mesh in AWP-ODC format.
@@ -158,7 +269,7 @@ def _mesh_extract_single_awp(sd_array: List[SeismicData], information: dict, im:
 
 
 def _mesh_extract_single_rwg(sd_array: List[SeismicData], information: dict, im: InternalMesh,
-                             im_iter: RWGInternalMeshIterator) -> None:
+                             im_iter: RWGInternalMeshIterator) -> bool:
     """
     Takes an InternalMesh object, the mesh information file, and the iterator, and generates, using
     one core only, the mesh in RWG format.
@@ -241,182 +352,6 @@ def _mesh_extract_single_rwg(sd_array: List[SeismicData], information: dict, im:
 
     return True
 
-
-def _mesh_extract_mpi_iterator(next_task: dict) -> None:
-    """
-    Given an internal mesh object and an iterator, this extracts the material properties and
-    queues up the data to be written.
-    :param i_mesh:
-    :param mesh_iterator:
-    :return:
-    """
-    from mpi4py import MPI
-
-    comm = MPI.COMM_WORLD
-    rank = comm.Get_rank()
-
-    mesh_iterator = next_task["iterator"]
-    next(mesh_iterator)
-    i_mesh = next_task["internalmesh"]
-
-    sys.stdout.write(
-        "[Node %5d] Thread ID %s extracting %s points." % (rank, current_process().name,
-        humanize.intcomma(mesh_iterator.end_point - mesh_iterator.start_point))
-    )
-    sys.stdout.flush()
-
-    """UCVM.query(mesh_iterator.init_array[0:mesh_iterator.end_point - mesh_iterator.start_point],
-               i_mesh.cvm_list, ["velocity"])
-
-    fl_array = []
-    for s in mesh_iterator.init_array[0:mesh_iterator.end_point - mesh_iterator.start_point]:
-        fl_array.append(s.velocity_properties.vp)
-        fl_array.append(s.velocity_properties.vs)
-        fl_array.append(s.velocity_properties.density)
-    _MPI_RESULT_QUEUE.put({
-        "start": mesh_iterator.start_point,
-        "data": fl_array
-    })"""
-
-    sys.stdout.write(
-        "[Node %5d] Thread ID %s done extracting %s points." % (rank, current_process().name,
-        humanize.intcomma(mesh_iterator.end_point - mesh_iterator.start_point))
-    )
-    sys.stdout.flush()
-
-
-def _mesh_extract_mpi_write_data() -> None:
-    from mpi4py import MPI
-
-    comm = MPI.COMM_WORLD
-    rank = comm.Get_rank()
-
-    global _MPI_RESULT_QUEUE
-
-    while not _MPI_QUEUE.empty() or not _MPI_RESULT_QUEUE.empty():
-        next_task = _MPI_RESULT_QUEUE.get()
-
-        print("[Node %5d] Writing %s points to data file." %
-              (rank, humanize.intcomma(int(len(next_task["data"]) / 3))))
-        sys.stdout.flush()
-
-        _MPI_FILE_OUT.Write_at(int(next_task["start"] * 12),
-                               struct.pack('f' * len(next_task["data"]), *next_task["data"]))
-
-        print("[Node %5d] Finished writing %s points to data file." %
-              (rank, humanize.intcomma(int(len(next_task["data"]) / 3))))
-        sys.stdout.flush()
-
-
-def test_multiprocessing_shared_object(item: dict) -> bool:
-    print("HERE")
-    return True
-
-
-def mesh_extract_mpi(i_mesh: InternalMesh, max_points_per_cpu: int, start_end: tuple,
-                     file_out: str) -> bool:
-    """
-    Given a dictionary containing the relevant parameters for the extraction, extract the material
-    properties for a single process.
-    :param i_mesh:
-    :param max_points_per_cpu:
-    :param start_end:
-    :param file_out:
-    :return: True, when successful. It will raise an error if the extraction is not successful.
-    """
-    from mpi4py import MPI
-
-    global _MPI_FILE_OUT, _MPI_QUEUE, _MPI_RESULT_QUEUE
-    _MPI_FILE_OUT = MPI.File.Open(MPI.COMM_WORLD, file_out, amode=MPI.MODE_WRONLY | MPI.MODE_CREATE)
-
-    comm = MPI.COMM_WORLD
-    rank = comm.Get_rank()
-
-    num_cpus = cpu_count() - 1
-    sd_array = []
-    current_point = 0
-    num_jobs = 0
-
-    print("[Node %5d] Initializing temporary arrays of buffer objects." % rank)
-    sys.stdout.flush()
-
-    # We will build a list of iterators.
-    for i in range(0, num_cpus):
-        sd_array.append([SeismicData() for _ in range(0, max_points_per_cpu)])
-
-    print("[Node %5d] Temporary array completed. Enqueuing jobs." % rank)
-    sys.stdout.flush()
-
-    while current_point < start_end[1] - start_end[0]:
-        sys.stdout.flush()
-        if num_cpus * max_points_per_cpu > start_end[1] - start_end[0] - current_point:
-            temp_points_left = start_end[1] - start_end[0] - current_point
-            for i in range(0, num_cpus):
-                if i < num_cpus - 1:
-                    _MPI_QUEUE.append({
-                        "internalmesh": i_mesh,
-                        "iterator": InternalMeshIterator(
-                            i_mesh, current_point,
-                            current_point + int(math.floor(temp_points_left / num_cpus)),
-                            int(math.floor(temp_points_left / num_cpus)),
-                            sd_array[i]
-                        )
-                    })
-
-                    current_point += int(math.floor(temp_points_left / num_cpus))
-                else:
-                    _MPI_QUEUE.append({
-                        "internalmesh": i_mesh,
-                        "iterator": InternalMeshIterator(
-                            i_mesh, current_point,
-                            int(start_end[1]),
-                            int(start_end[1] - current_point),
-                            sd_array[i]
-                        )
-                    })
-                    current_point += start_end[1] - current_point
-                num_jobs += 1
-        else:
-            for i in range(0, num_cpus):
-                _MPI_QUEUE.append({
-                    "internalmesh": i_mesh,
-                    "iterator": InternalMeshIterator(
-                        i_mesh, current_point, max_points_per_cpu, max_points_per_cpu, sd_array[i]
-                    )
-                })
-                current_point += max_points_per_cpu
-                num_jobs += 1
-
-    print("[Node %5d] %d jobs enqueued. Initializing threads and starting extraction." %
-          (rank, num_jobs))
-    sys.stdout.flush()
-
-    # Initialize the models.
-    UCVM.query([], i_mesh.cvm_list, ["velocity"])
-
-    p = Pool()
-    p.map(test_multiprocessing_shared_object, _MPI_QUEUE)
-    p.close()
-    p.join()
-
-    #_mesh_extract_mpi_write_data()
-
-    #_MPI_QUEUE.join()
-
-    print("[Node %5d] MPI extraction complete." % rank)
-    sys.stdout.flush()
-
-    if rank == 0:
-        if i_mesh.mesh_type == "IJK-12":
-            print("\nExpected file size is " + i_mesh.get_grid_file_size()["display"] + ". " +
-                  "Actual size is " + humanize.naturalsize(os.path.getsize(file_out), gnu=False) +
-                  ".")
-
-            if i_mesh.get_grid_file_size()["real"] == \
-                    os.path.getsize(file_out):
-                print("File sizes match!")
-            else:
-                print("ERROR! File sizes DO NOT MATCH!")
 
 def ask_questions() -> dict:
     """

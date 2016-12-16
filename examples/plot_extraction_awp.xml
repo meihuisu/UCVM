@@ -14,7 +14,7 @@
 			<topography>No</topography>
 		</features>
 	</plot>
-	<cvm_list>dataproductreader[/Users/davidgil/PycharmProjects/UCVM/ucvm/bin/high_f_mesh_awp.xml]</cvm_list>
+	<cvm_list>dataproductreader[high_f_mesh_awp_lowres]</cvm_list>
 	<bottom_left_point>
 		<y>33</y>
 		<x>-119.27</x>

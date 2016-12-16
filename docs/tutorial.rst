@@ -1,5 +1,5 @@
-Installation and Tutorial
-=========================
+Tutorial
+========
 
 This is a short walkthrough that demonstrates a typical "use-case" for UCVM.
 

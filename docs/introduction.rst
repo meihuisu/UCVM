@@ -11,3 +11,6 @@ Primary Features
 
 UCVM |version| includes key capabilities that are critical for scientists' ability to run large-scale 3D wave
 propagation simulations. However, that's not to say that UCVM is strictly limited to
+
+.. toctree::
+   :maxdepth: 1

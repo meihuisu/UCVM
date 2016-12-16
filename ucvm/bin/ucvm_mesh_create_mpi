@@ -4,29 +4,33 @@ Generates a binary float mesh from a given model string using MPI to parallelize
 This utility can read in the new XML configuration format. If no file-format is specified,
 then this utility will ask a series of prompts before generating the mesh.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   July 29, 2016
-:modified:  July 29, 2016
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
 """
 import sys
 import xmltodict
 import humanize
 import os
-import inspect
+
+os.environ["ucvm_has_bootstrapped"] = "Yes"
 
 from mpi4py import MPI
 from multiprocessing import cpu_count
 
-#from ucvm.src.framework.ucvm_back import UCVM
-#from ucvm.src.framework.awp_mesh import ask_questions, mesh_extract_mpi
-#from ucvm.src.framework.mesh_common import InternalMesh
+from ucvm.src.framework.ucvm import UCVM
+from ucvm.src.framework.awp_mesh import ask_questions, mesh_extract_mpi
+from ucvm.src.framework.mesh_common import InternalMesh
 
 
 def usage() -> None:
     """
     Displays the help text associated with this utility.
-    :return: Nothing.
+
+    Returns:
+        Nothing
     """
     UCVM.print_with_replacements(
         "\n"
@@ -44,12 +48,14 @@ def usage() -> None:
         "                       style configuration file vs. the new XML format.\n"
     )
 
-"""
+
 def main() -> int:
-
+    """
     The main UCVM mesh create MPI function.
-    :return: 0 if successful. Raises an error code otherwise, if not.
 
+    Returns:
+         0 if successful. Raises an error code otherwise, if not.
+    """
     try:
         options = UCVM.parse_options([
             {"short": "c", "long": "config-only", "value": True, "required": False},
@@ -87,22 +93,19 @@ def main() -> int:
     else:
         mesh_information = None
 
-    comm.Barrier()
-
-    mesh_information = comm.bcast(dict(mesh_information), root=0)
+    mesh_information = comm.bcast(mesh_information, root=0)
 
     # If we were just using the MPI utility to generate a configuration file, then exit.
     if should_exit:
         return 0
 
     i_mesh = InternalMesh(mesh_information)
-    max_points_per_cpu = i_mesh.get_max_points_extract(cpu_count() - 1)
+    max_points_per_cpu = i_mesh.get_max_points_extract(2)
 
     # All processes that are not rank 0 should send the number of computing CPUs that they have
     # available to them.
     if rank != 0:
         comm.send({
-            "cpus": cpu_count() - 1,
             "max_per_cpu": max_points_per_cpu
         }, dest=0)
 
@@ -110,8 +113,7 @@ def main() -> int:
     if rank == 0:
         topology = {
             0: {
-                "cpus": int(cpu_count() - 1),
-                "max_per_cpu": int(i_mesh.get_max_points_extract(cpu_count() - 1))
+                "max_per_cpu": int(i_mesh.get_max_points_extract(2))
             }
         }
         for i in range(1, size):
@@ -121,16 +123,19 @@ def main() -> int:
         print("Starting MPI mesh extraction for " + mesh_information["mesh_name"] + "\n")
 
         for i in range(0, len(topology)):
-            print("Node %d has %d CPUs available. Each CPU can extract %s points at once." % (
-                i, topology[i]["cpus"], humanize.intcomma(topology[i]["max_per_cpu"])
+            print("Process %d can extract %s points." % (
+                i, humanize.intcomma(topology[i]["max_per_cpu"])
             ))
 
-        points_per_node = i_mesh.total_size / size
+        points_per_process = int(i_mesh.total_size / size) + 1
 
         for i in range(1, size):
-            comm.send((i * points_per_node, (i + 1) * points_per_node), dest=0)
+            if i == size - 1:
+                comm.send((i * points_per_process, i_mesh.total_size), dest=i)
+            else:
+                comm.send((i * points_per_process, (i + 1) * points_per_process), dest=i)
 
-        (start_point, end_point) = (0, points_per_node)
+        (start_point, end_point) = (0, points_per_process)
     else:
         (start_point, end_point) = comm.recv(source=0)
 
@@ -138,14 +143,7 @@ def main() -> int:
 
     comm.Barrier()
 
-    #mesh_extract_mpi(i_mesh, max_points_per_cpu, (start_point, end_point),
-    #                 os.path.join(mesh_information["out_dir"],
-    #                              mesh_information["mesh_name"] + ".data"))
-"""
-
-def main() -> int:
-    print("HERE")
-    return 0
+    mesh_extract_mpi(mesh_information, (start_point, end_point))
 
 if __name__ == "__main__":
     sys.exit(main())
