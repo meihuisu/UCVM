@@ -17,7 +17,7 @@ from typing import List
 
 # Package Imports
 import xmltodict
-import tables
+import h5py
 
 # UCVM Imports
 from ucvm.src.model.velocity.velocity_model import VelocityModel
@@ -95,16 +95,16 @@ class GriddedVelocityModel(VelocityModel):
                 float(self.config_dict["dimensions"]["y"]) - 1)
         }
 
-        self._opened_file = tables.open_file(
+        self._opened_file = h5py.File(
             os.path.join(self.get_model_dir(), "data", self._public_metadata["id"] + ".dat"), "r"
         )
 
         self.model_has = []
-        if hasattr(self._opened_file.root, "vp"):
+        if "vp" in self._opened_file:
             self.model_has.append("vp")
-        if hasattr(self._opened_file.root, "vs"):
+        if "vs" in self._opened_file:
             self.model_has.append("vs")
-        if hasattr(self._opened_file.root, "density"):
+        if "density" in self._opened_file:
             self.model_has.append("density")
 
         self.mesh = {}
@@ -167,11 +167,10 @@ class GriddedVelocityModel(VelocityModel):
 
             for prop_given in self.model_has:
                 if coords["z"] not in self.mesh[prop_given]:
-                    l = getattr(self._opened_file.root, prop_given)
-                    self.mesh[prop_given][coords["z"]] = l[coords["z"], :, :]
+                    self.mesh[prop_given][coords["z"]] = self._opened_file[prop_given]["data"][coords["z"], :, :]
                 if coords["z"] - 1 not in self.mesh[prop_given]:
-                    l = getattr(self._opened_file.root, prop_given)
-                    self.mesh[prop_given][coords["z"] - 1] = l[coords["z"] - 1, :, :]
+                    self.mesh[prop_given][coords["z"] - 1] = \
+                        self._opened_file[prop_given]["data"][coords["z"] - 1, :, :]
 
                 if coords["z"] + 1 in self.mesh[prop_given]:
                     del self.mesh[prop_given][coords["z"] + 1]
@@ -198,6 +197,8 @@ class GriddedVelocityModel(VelocityModel):
                 density=v["density"], density_source=v["density_source"], qp=v["qp"],
                 qp_source=v["qp_source"], qs=v["qs"], qs_source=v["qs_source"]
             ))
+
+        return True
 
     def __del__(self):
         self._opened_file.close()

@@ -27,5 +27,5 @@ class CVMS426VelocityModelTest(UCVMTestCase):
             None
         """
         self._test_start("CVM-S4.26 acceptance test")
-        self.assertTrue(run_acceptance_test(None, "cvms426"))
+        self.assertTrue(run_acceptance_test(self, "cvms426"))
         self._test_end()

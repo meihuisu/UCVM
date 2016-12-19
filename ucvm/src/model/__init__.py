@@ -81,6 +81,7 @@ def install_internet_ucvm_model(model_ucvm_name: str, long_name: str) -> bool:
     except FileExistsError:
         pass
 
+    """
     print("Downloading " + long_name + "...")
 
     error_raised = True
@@ -93,6 +94,12 @@ def install_internet_ucvm_model(model_ucvm_name: str, long_name: str) -> bool:
         except socket.error:
             continue
         error_raised = False
+    """
+    print("Copying " + long_name + "...")
+    shutil.copy(
+        "/Users/davidgil/PycharmProjects/UCVM/distribution/models/" + model_ucvm_name + ".ucv",
+        os.path.join(UCVM_MODELS_DIRECTORY, "temp", model_ucvm_name + ".ucv")
+    )
 
     try:
         os.mkdir(os.path.join(UCVM_MODELS_DIRECTORY, "temp", model_ucvm_name))

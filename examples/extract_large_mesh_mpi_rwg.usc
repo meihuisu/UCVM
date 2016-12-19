@@ -25,6 +25,8 @@ cd "$PBS_O_WORKDIR"
 NP=`wc -l < $PBS_NODEFILE`
 echo "Running on $NP processors: "`cat $PBS_NODEFILE`
 
+cp ./high_f_mesh_rwg.highres.xml /scratch
+
 cd /scratch
 
 mpiexec ucvm_mesh_create_mpi -f high_f_mesh_rwg_highres.xml
