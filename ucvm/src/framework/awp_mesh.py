@@ -137,15 +137,112 @@ def _mesh_extract_mpi_awp(sd_array: List[SeismicData], information: dict, im: In
 
     fh.Close()
 
-    print("\n[Node " + str(rank) + "] Expected file size is " + im.get_grid_file_size()["display"] + ". " +
-          "Actual size is " + humanize.naturalsize(os.path.getsize(
-          os.path.join(information["out_dir"], file_out)), gnu=False) + ".", flush=True)
+    if rank == 0:
+        print("\n[Node " + str(rank) + "] Expected file size is " + im.get_grid_file_size()["display"] + ". " +
+              "Actual size is " + humanize.naturalsize(os.path.getsize(
+              os.path.join(information["out_dir"], file_out)), gnu=False) + ".", flush=True)
 
-    if im.get_grid_file_size()["real"] == \
-       os.path.getsize(os.path.join(information["out_dir"], file_out)):
-        print("Generated file size matches the expected file size.")
-    else:
-        print("ERROR! File sizes DO NOT MATCH!")
+        if im.get_grid_file_size()["real"] == \
+           os.path.getsize(os.path.join(information["out_dir"], file_out)):
+            print("Generated file size matches the expected file size.")
+        else:
+            print("ERROR! File sizes DO NOT MATCH!")
+
+    return True
+
+
+def _mesh_extract_mpi_rwg(sd_array: List[SeismicData], information: dict, im: InternalMesh, start_end: tuple) -> bool:
+    """
+    Extract a RWG mesh using MPI. Internal method.
+
+    Args:
+
+    Returns:
+        True, if successful. Raises an error if not successful.
+    """
+    from mpi4py import MPI
+
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+
+    file_out_vp = information["mesh_name"] + ".rwgvp"
+    file_out_vs = information["mesh_name"] + ".rwgvs"
+    file_out_dn = information["mesh_name"] + ".rwgdn"
+
+    im_iter = RWGInternalMeshIterator(im, start_end[0], start_end[1], len(sd_array), sd_array)
+
+    progress = start_end[0]
+    sqrt2 = math.sqrt(2)
+
+    fh_vp = MPI.File.Open(MPI.COMM_WORLD, file_out_vp, amode=MPI.MODE_WRONLY | MPI.MODE_CREATE)
+    fh_vs = MPI.File.Open(MPI.COMM_WORLD, file_out_vs, amode=MPI.MODE_WRONLY | MPI.MODE_CREATE)
+    fh_dn = MPI.File.Open(MPI.COMM_WORLD, file_out_dn, amode=MPI.MODE_WRONLY | MPI.MODE_CREATE)
+
+    while progress < im_iter.end_point:
+        count = next(im_iter)
+
+        UCVM.query(sd_array[0:count], information["cvm_list"], ["velocity"])
+
+        vp_array = []
+        vs_array = []
+        dn_array = []
+        for s in sd_array[0:count]:
+            if s.velocity_properties is not None and s.velocity_properties.vs is not None and \
+               s.velocity_properties.vs < information["minimums"]["vs"]:
+                s.set_velocity_data(
+                    VelocityProperties(
+                        information["minimums"]["vp"], information["minimums"]["vs"],
+                        s.velocity_properties.density, s.velocity_properties.qp,
+                        s.velocity_properties.qs, s.velocity_properties.vp_source,
+                        s.velocity_properties.vs_source, s.velocity_properties.density_source,
+                        s.velocity_properties.qp_source, s.velocity_properties.qs_source
+                    )
+                )
+
+            vp_array.append(s.velocity_properties.vp / 1000)
+            vs_array.append(s.velocity_properties.vs / 1000)
+            dn_array.append(s.velocity_properties.density / 1000)
+
+            if s.velocity_properties is None or s.velocity_properties.vp is None or \
+               s.velocity_properties.vs is None or s.velocity_properties.density is None:
+                print("[Node %d] Attention! %.3f, %.3f, %.3f has no material properties." % (
+                    rank, s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
+                ), flush=True)
+            if s.velocity_properties is not None and \
+               s.velocity_properties.vp / s.velocity_properties.vs < sqrt2:
+                print("[Node %d] Warning: %.3f, %.3f, %.3f has a Vp/Vs ratio of less than sqrt(2)." % (
+                    rank, s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
+                ), flush=True)
+        s = struct.pack('f' * len(vp_array), *vp_array)
+        fh_vp.Write_at_all(progress * 4, s)
+        s = struct.pack('f' * len(vs_array), *vs_array)
+        fh_vs.Write_at_all(progress * 4, s)
+        s = struct.pack('f' * len(dn_array), *dn_array)
+        fh_dn.Write_at_all(progress * 4, s)
+
+        progress += count
+
+        print("[Node %d] %-4.2f" % (rank, ((progress - start_end[0]) / (start_end[1] - start_end[0])) * 100.0) +
+              "% complete. Wrote " + humanize.intcomma(count) + " more grid points.", flush=True)
+
+    fh_vp.Close()
+    fh_vs.Close()
+    fh_dn.Close()
+
+    if rank == 0:
+        print("\n[Node " + str(rank) + "] Expected file size is " + im.get_grid_file_size()["display"] + ". " +
+              "Actual size is " + humanize.naturalsize(os.path.getsize(
+              os.path.join(information["out_dir"], file_out_vp)), gnu=False) + ".", flush=True)
+
+        if im.get_grid_file_size()["real"] == \
+           os.path.getsize(os.path.join(information["out_dir"], file_out_vp)) and \
+           im.get_grid_file_size()["real"] == \
+           os.path.getsize(os.path.join(information["out_dir"], file_out_vs)) and \
+           im.get_grid_file_size()["real"] == \
+           os.path.getsize(os.path.join(information["out_dir"], file_out_dn)):
+            print("Generated file size matches the expected file size.")
+        else:
+            print("ERROR! File sizes DO NOT MATCH!")
 
     return True
 

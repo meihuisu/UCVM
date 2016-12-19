@@ -61,7 +61,14 @@ UCVM will detect that you are running on Mira.
 
 .. code-block:: text
 
+Edit your ~/.bashrc file:
 
+.. code-block:: text
+
+   PYTHONPATH="/path/to/ucvm-16.12.0/lib/directory:$PYTHONPATH"
+   PATH="/path/to/ucvm-16.12.0/bin:$PATH"
+   export PYTHONPATH
+   export PATH
 
 .. toctree::
    :maxdepth: 2

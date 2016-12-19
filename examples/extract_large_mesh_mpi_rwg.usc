@@ -1,6 +1,6 @@
 #!/bin/bash
-#PBS -l nodes=4:ppn=8
-#PBS -l walltime=00:30:00
+#PBS -l nodes=20:ppn=8
+#PBS -l walltime=04:00:00
 
 source /usr/usc/python/3.5.2/setup.sh
 source /usr/usc/openmpi/default/setup.sh
@@ -25,7 +25,11 @@ cd "$PBS_O_WORKDIR"
 NP=`wc -l < $PBS_NODEFILE`
 echo "Running on $NP processors: "`cat $PBS_NODEFILE`
 
-mpiexec ucvm_mesh_create_mpi -f high_f_mesh_awp_lowres.xml
+cd /scratch
+
+mpiexec ucvm_mesh_create_mpi -f high_f_mesh_rwg_highres.xml
+
+cp /scratch/* $PBS_O_WORKDIR/
 
 echo "Done " `date`
 exit 0
