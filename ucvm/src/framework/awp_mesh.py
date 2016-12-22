@@ -51,14 +51,14 @@ def mesh_extract_mpi(information: dict, start_end: tuple) -> bool:
     rank = comm.Get_rank()
 
     internal_mesh = InternalMesh(information)
-    max_pts = InternalMesh.get_max_points_extract(2)
+    max_pts = InternalMesh.get_max_points_extract(3)
 
-    sd_array = UCVM.create_max_seismicdata_array()
+    sd_array = [SeismicData() for _ in range(0, max_pts)]
 
     print(
-        "[Node %d] Responsible for extracting %d grid points. We can extract %d at once.\nStarting extraction...\n" % (
+        "[Node %d] Responsible for extracting %d grid points. We can extract %d at once.\nStarting extraction..." % (
             rank, start_end[1] - start_end[0], max_pts
-        )
+        ), flush=True
     )
 
     information["minimums"]["vp"] = float(information["minimums"]["vp"])
@@ -122,8 +122,8 @@ def _mesh_extract_mpi_awp(sd_array: List[SeismicData], information: dict, im: In
                 print("[Node %d] Attention! %.3f, %.3f, %.3f has no material properties." % (
                     rank, s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                 ), flush=True)
-            if s.velocity_properties is not None and \
-               s.velocity_properties.vp / s.velocity_properties.vs < sqrt2:
+            if s.velocity_properties is not None and s.velocity_properties.vp is not None and \
+               s.velocity_properties.vs is not None and s.velocity_properties.vp / s.velocity_properties.vs < sqrt2:
                 print("[Node %d] Warning: %.3f, %.3f, %.3f has a Vp/Vs ratio of less than sqrt(2)." % (
                     rank, s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                 ), flush=True)
@@ -208,8 +208,8 @@ def _mesh_extract_mpi_rwg(sd_array: List[SeismicData], information: dict, im: In
                 print("[Node %d] Attention! %.3f, %.3f, %.3f has no material properties." % (
                     rank, s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                 ), flush=True)
-            if s.velocity_properties is not None and \
-               s.velocity_properties.vp / s.velocity_properties.vs < sqrt2:
+            if s.velocity_properties is not None and s.velocity_properties.vp is not None and \
+               s.velocity_properties.vs is not None and s.velocity_properties.vp / s.velocity_properties.vs < sqrt2:
                 print("[Node %d] Warning: %.3f, %.3f, %.3f has a Vp/Vs ratio of less than sqrt(2)." % (
                     rank, s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                 ), flush=True)
@@ -341,8 +341,8 @@ def _mesh_extract_single_awp(sd_array: List[SeismicData], information: dict, im:
                     print("Attention! %.3f, %.3f, %.3f has no material properties." % (
                         s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                     ))
-                if s.velocity_properties is not None and \
-                   s.velocity_properties.vp / s.velocity_properties.vs < sqrt2:
+                if s.velocity_properties is not None and s.velocity_properties.vp is not None and \
+                   s.velocity_properties.vs is not None and s.velocity_properties.vp / s.velocity_properties.vs < sqrt2:
                     print("Warning: %.3f, %.3f, %.3f has a Vp/Vs ratio of less than sqrt(2)." % (
                         s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                     ))
@@ -418,8 +418,8 @@ def _mesh_extract_single_rwg(sd_array: List[SeismicData], information: dict, im:
                     print("Attention! %.3f, %.3f, %.3f has no material properties." % (
                         s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                     ))
-                if s.velocity_properties is not None and \
-                                    s.velocity_properties.vp / s.velocity_properties.vs < 1.45:
+                if s.velocity_properties is not None and s.velocity_properties.vp is not None and \
+                   s.velocity_properties.vs is not None and s.velocity_properties.vp / s.velocity_properties.vs < 1.45:
                     print("Warning: %.3f, %.3f, %.3f has a Vp/Vs ratio of less than 1.45." % (
                         s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                     ))

@@ -61,6 +61,8 @@ class OneDimensionalVelocityModel(VelocityModel):
                                qs_attenuation])
                 current_depth += float(split_str[0]) * 1000
 
+        layers.append(layers[-1])
+
     @classmethod
     def _parse_scec_model(cls, data_info: dict, layers: list) -> None:
         """
@@ -97,6 +99,8 @@ class OneDimensionalVelocityModel(VelocityModel):
                            qs_attenuation])
             last_depth = layer_dict[i]["depth"] * 1000
 
+        layers.append(layers[-1])
+
     @classmethod
     def _get_velocity_data(cls, depth: float, layers: list, interpolate: bool, name: str) \
             -> VelocityProperties:
@@ -115,7 +119,6 @@ class OneDimensionalVelocityModel(VelocityModel):
         """
         previous_layer = None
         current_layer = None
-        layers.append(layers[-1])
         for layer in layers:
             previous_layer = current_layer
             current_layer = layer

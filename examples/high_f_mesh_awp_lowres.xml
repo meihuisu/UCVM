@@ -20,7 +20,7 @@
 		<depth_elev>depth</depth_elev>
 		<x>-119.288842</x>
 	</initial_point>
-	<cvm_list>cvms4</cvm_list>
+	<cvm_list>cvms426;1d[SCEC]</cvm_list>
 	<out_dir>./</out_dir>
 	<spacing>500</spacing>
 	<format>awp</format>
