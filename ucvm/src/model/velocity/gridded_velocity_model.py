@@ -123,6 +123,15 @@ class GriddedVelocityModel(VelocityModel):
         Returns:
             True on success, false if there is an error.
         """
+        # Check to see if we are querying by Y, Z, or neither.
+        query_by = "z"
+        if "params" in kwargs:
+            if "query_by=y" in kwargs["params"]:
+                query_by = "y"
+                for key in self.mesh.keys():
+                    if len(self.mesh[key]) == 0:
+                        self.mesh[key] = self._opened_file[key]["data"][:, :, :]
+
         for sd_object in points:
 
             x_value = sd_object.converted_point.x_value
@@ -166,27 +175,41 @@ class GriddedVelocityModel(VelocityModel):
                  "qs": None, "qs_source": None}
 
             for prop_given in self.model_has:
-                if coords["z"] not in self.mesh[prop_given]:
-                    self.mesh[prop_given][coords["z"]] = self._opened_file[prop_given]["data"][coords["z"], :, :]
-                if coords["z"] - 1 not in self.mesh[prop_given]:
-                    self.mesh[prop_given][coords["z"] - 1] = \
-                        self._opened_file[prop_given]["data"][coords["z"] - 1, :, :]
+                if query_by == "z":
+                    if coords["z"] not in self.mesh[prop_given]:
+                        self.mesh[prop_given][coords["z"]] = self._opened_file[prop_given]["data"][coords["z"], :, :]
+                    if coords["z"] - 1 not in self.mesh[prop_given]:
+                        self.mesh[prop_given][coords["z"] - 1] = \
+                            self._opened_file[prop_given]["data"][coords["z"] - 1, :, :]
 
-                if coords["z"] + 1 in self.mesh[prop_given]:
-                    del self.mesh[prop_given][coords["z"] + 1]
+                    if coords["z"] + 1 in self.mesh[prop_given]:
+                        del self.mesh[prop_given][coords["z"] + 1]
 
-                # Interpolate
-                v[prop_given] = UCVMCCommon.trilinear_interpolate(
-                    self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"]],
-                    self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"]],
-                    self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"] + 1],
-                    self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"] + 1],
-                    self.mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"]],
-                    self.mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"]],
-                    self.mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"] + 1],
-                    self.mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"] + 1],
-                    percentages["x"], percentages["y"], percentages["z"]
-                )
+                    # Interpolate
+                    v[prop_given] = UCVMCCommon.trilinear_interpolate(
+                        self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"]],
+                        self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"]],
+                        self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"] + 1],
+                        self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"] + 1],
+                        self.mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"]],
+                        self.mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"]],
+                        self.mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"] + 1],
+                        self.mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"] + 1],
+                        percentages["x"], percentages["y"], percentages["z"]
+                    )
+                elif query_by == "y":
+                    v[prop_given] = UCVMCCommon.trilinear_interpolate(
+                        self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"]],
+                        self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"]],
+                        self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"] + 1],
+                        self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"] + 1],
+                        self.mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"]],
+                        self.mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"]],
+                        self.mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"] + 1],
+                        self.mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"] + 1],
+                        percentages["x"], percentages["y"], percentages["z"]
+                    )
+
                 v[str(prop_given) + "_source"] = self.get_metadata()["id"]
 
             if v["density"] is None and v["vp"] is not None:

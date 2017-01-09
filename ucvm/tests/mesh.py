@@ -14,11 +14,12 @@ import xmltodict
 import os
 import struct
 import inspect
+import math
 from contextlib import redirect_stdout
 
 # UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
-from ucvm.src.framework.mesh_common import InternalMesh, AWPInternalMeshIterator
+from ucvm.src.framework.mesh_common import InternalMesh, AWPInternalMeshIterator, RWGInternalMeshIterator
 from ucvm.src.shared.properties import SeismicData, Point
 from ucvm.src.framework.awp_mesh import mesh_extract_single
 
@@ -121,6 +122,44 @@ class UCVMMeshTest(unittest.TestCase):
         self.assertEqual(self.sd3[101504].original_point.z_value, 12)
         with self.assertRaises(StopIteration):
             next(self.im_3_iterator_2)
+
+    def test_awp_rwg_equivalent(self):
+        sd_awp = [SeismicData(Point(-118, 34, 0)) for _ in range(0, 101505)]
+        sd_rwg = [SeismicData(Point(-119, 35, 0)) for _ in range(0, 101505)]
+        awp_im = InternalMesh.from_xml_file(
+            os.path.join(self.dir, "data", "simple_mesh_ijk12_unrotated.xml")
+        )
+        awp_iterator = AWPInternalMeshIterator(awp_im, 0, 101505, 101505, sd_awp)
+        rwg_im = InternalMesh.from_xml_file(
+            os.path.join(self.dir, "data", "simple_mesh_rwg_unrotated.xml")
+        )
+        rwg_iterator = RWGInternalMeshIterator(rwg_im, 0, 101505, 101505, sd_rwg)
+        next(awp_iterator)
+        next(rwg_iterator)
+
+        counter = 0
+
+        for item_awp in sd_awp:
+            # For time reasons, don't test every point. Test every 250 points.
+            if counter == 250:
+                counter = 0
+            else:
+                counter += 1
+                continue
+
+            found = False
+            for item_rwg in sd_rwg:
+                if math.isclose(item_rwg.original_point.x_value, item_awp.original_point.x_value) and \
+                   math.isclose(item_rwg.original_point.y_value, item_awp.original_point.y_value) and \
+                   math.isclose(item_rwg.original_point.z_value, item_awp.original_point.z_value):
+                    found = True
+                    sd_rwg.remove(item_rwg)
+                    break
+            if not found:
+                print(item_awp.original_point.x_value, item_awp.original_point.y_value, item_awp.original_point.z_value)
+                self.assertTrue(False)
+
+        self.assertTrue(True)
 
     def test_generate_simple_mesh_ijk12_unrotated(self):
         UCVM.instantiated_models["testvelocitymodel"] = test_model.TestVelocityModel()

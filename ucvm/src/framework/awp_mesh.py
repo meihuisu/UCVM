@@ -64,7 +64,12 @@ def mesh_extract_mpi(information: dict, start_end: tuple) -> bool:
     information["minimums"]["vp"] = float(information["minimums"]["vp"])
     information["minimums"]["vs"] = float(information["minimums"]["vs"])
 
-    _mesh_extract_mpi_awp(sd_array, information, internal_mesh, start_end)
+    if information["format"] == "rwg":
+        _mesh_extract_mpi_rwg(sd_array, information, internal_mesh, start_end)
+    elif information["format"] == "awp":
+        _mesh_extract_mpi_awp(sd_array, information, internal_mesh, start_end)
+    else:
+        raise ValueError("Invalid mesh format.")
 
     print(
         "[Node %d] Extraction is done!" % rank
@@ -181,7 +186,7 @@ def _mesh_extract_mpi_rwg(sd_array: List[SeismicData], information: dict, im: In
     while progress < im_iter.end_point:
         count = next(im_iter)
 
-        UCVM.query(sd_array[0:count], information["cvm_list"], ["velocity"])
+        UCVM.query(sd_array[0:count], information["cvm_list"], ["velocity"], None, "query_by=y")
 
         vp_array = []
         vs_array = []
@@ -392,7 +397,7 @@ def _mesh_extract_single_rwg(sd_array: List[SeismicData], information: dict, im:
             count = next(im_iter)
             progress += count
 
-            UCVM.query(sd_array[0:count], information["cvm_list"], ["velocity"])
+            UCVM.query(sd_array[0:count], information["cvm_list"], ["velocity"], None, "query_by=y")
 
             vp_array = []
             vs_array = []

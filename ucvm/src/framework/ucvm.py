@@ -93,7 +93,7 @@ class UCVM:
 
     @classmethod
     def query(cls, points: List[SeismicData], model_string: str,
-              desired_properties: List[str]=None, custom_model_query: dict=None) -> bool:
+              desired_properties: List[str]=None, custom_model_query: dict=None, add_params: str="") -> bool:
         """
         Given a list of SeismicData objects, each one containing a valid Point object, and a
         model_string to parse, this function will get the velocity, elevation, and Vs30 data.
@@ -118,11 +118,16 @@ class UCVM:
                 UCVM.get_model_instance(model_to_query[0])
 
                 if len(model_to_query) == 1:
-                    UCVM.instantiated_models[model_to_query[0]].query(points)
+                    UCVM.instantiated_models[model_to_query[0]].query(points, params=add_params)
                 else:
-                    UCVM.instantiated_models[model_to_query[0]].query(
-                        points, params=model_to_query[1]
-                    )
+                    if add_params != "":
+                        UCVM.instantiated_models[model_to_query[0]].query(
+                            points, params=",".join([model_to_query[1], add_params])
+                        )
+                    else:
+                        UCVM.instantiated_models[model_to_query[0]].query(
+                            points, params=model_to_query[1]
+                        )
 
                 for point in points:
                     if point.is_property_type_set("velocity"):

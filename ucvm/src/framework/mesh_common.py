@@ -198,6 +198,7 @@ class AWPInternalMeshIterator:
 
         return internal_counter
 
+
 class RWGInternalMeshIterator:
 
     def __init__(self, im: InternalMesh, start_point: int, end_point: int, num_at_a_time: int,
@@ -233,13 +234,13 @@ class RWGInternalMeshIterator:
                 x_val += 0.5
                 y_val += 0.5
 
+            x_point = self.internal_mesh.origin.x_value + (
+                self.internal_mesh.cos_angle * x_val - self.internal_mesh.sin_angle * y_val
+            ) * self.internal_mesh.spacing
             y_point = self.internal_mesh.origin.y_value + (
                 self.internal_mesh.sin_angle * x_val + self.internal_mesh.cos_angle * y_val
             ) * self.internal_mesh.spacing
             z_point = z_val * self.internal_mesh.spacing
-            x_point = self.internal_mesh.origin.x_value + (
-                self.internal_mesh.cos_angle * x_val - self.internal_mesh.sin_angle * y_val
-            ) * self.internal_mesh.spacing
 
             self.init_array[internal_counter].original_point.depth_elev = \
                 self.internal_mesh.origin.depth_elev

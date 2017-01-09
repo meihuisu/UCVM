@@ -12,7 +12,7 @@
 		<vs>500</vs>
 	</minimums>
 	<spacing>500</spacing>
-	<cvm_list>cvms4</cvm_list>
+	<cvm_list>cvms426;1d[SCEC]</cvm_list>
 	<rotation>39.9</rotation>
 	<out_dir>./</out_dir>
 	<dimensions>
