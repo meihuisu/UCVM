@@ -13,6 +13,7 @@ Developer:
 import os
 import sys
 import math
+import copy
 from datetime import datetime
 from typing import List
 
@@ -26,6 +27,98 @@ from ucvm.src.shared.functions import ask_and_validate, is_number
 from ucvm_c_common import UCVMCCommon
 
 
+def etree_extract_mpi(information: dict) -> bool:
+    from mpi4py import MPI
+
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+    size = comm.Get_size()
+
+    stats = _calculate_etree_stats(
+        information, int(information["properties"]["columns"]), int(information["properties"]["rows"])
+    )
+
+    if rank == 0:
+        schema = "float Vp; float Vs; float density;".encode("ASCII")
+        path = (information["etree_name"] + ".e").encode("ASCII")
+
+        if sys.byteorder == "big":
+            ep = UCVMCCommon.c_etree_open(path, 578)
+        else:
+            ep = UCVMCCommon.c_etree_open(path, 1538)
+        UCVMCCommon.c_etree_registerschema(ep, schema)
+
+        total_rows_and_columns = int(information["properties"]["rows"]) * int(information["properties"]["columns"])
+        current_proc = 0
+        rcs_to_extract = []
+
+        for i in range(total_rows_and_columns):
+            # Next row, column.
+            row_n = math.floor(i / int(information["properties"]["columns"]))
+            col_n = i - (row_n * int(information["properties"]["columns"]))
+
+            rcs_to_extract.append((row_n, col_n))
+
+        total_extracted = 0
+        is_done = [False for _ in range(size - 1)]
+
+        while True:
+            data = comm.recv(source=MPI.ANY_SOURCE)
+
+            if data["data"] == "another":
+                if len(rcs_to_extract) > 0:
+                    comm.send(rcs_to_extract.pop(0), dest=data["source"])
+                else:
+                    comm.send("done", dest=data["source"])
+                    is_done[data["source"] - 1] = True
+            else:
+                print("[Node %d] Writing data from node %d to file." % (rank, data["source"]), flush=True)
+                _etree_writer(ep, data["data"][0], data["data"][1], data["data"][2])
+                total_extracted += data["data"][2]
+                print("[Node %d] Data written successfully!" % rank, flush=True)
+
+            if False not in is_done:
+                break
+
+        metadata_string = ("Title:%s Author:%s Date:%s %u %s %f %f %f %f %f %f %u %u %u" % (
+            str(information["author"]["title"]).replace(" ", "_"),
+            str(information["author"]["person"]).replace(" ", "_"),
+            str(information["author"]["date"]).replace(" ", "_"), 3, "Vp(float);Vs(float);density(float)",
+            float(information["corners"]["bl"]["y"]), float(information["corners"]["bl"]["x"]),
+            float(information["dimensions"]["x"]), float(information["dimensions"]["y"]),
+            0, float(information["dimensions"]["z"]), int(stats["max_ticks"]["width"]),
+            int(stats["max_ticks"]["height"]), int(stats["max_ticks"]["depth"])
+        )).encode("ASCII")
+
+        print("[Node %d] Total number of octants extracted: %d." % (rank, total_extracted), flush=True)
+
+        UCVMCCommon.c_etree_setappmeta(ep, metadata_string)
+
+        UCVMCCommon.c_etree_close(ep)
+    else:
+        done = False
+        print("[Node %d] Maximum points per section is %d." % (rank, stats["max_points"]), flush=True)
+        sd_array = UCVM.create_max_seismicdata_array(stats["max_points"], 1)
+        count = 0
+
+        while not done:
+            comm.send({"source": rank, "data": "another"}, dest=0)
+            row_col = comm.recv(source=0)
+
+            if row_col == "done":
+                break
+
+            print("[Node %d] Received instruction to extract column (%d, %d)." % (rank, row_col[0], row_col[1]),
+                  flush=True)
+            data = _extract_mpi(rank, sd_array, information, stats, row_col[1], row_col[0])
+            count += data[2]
+            comm.send({"source": rank, "data": data}, dest=0)
+
+        print("[Node %d] Finished extracting %d octants." % (rank, count), flush=True)
+
+    return True
+
+
 def etree_extract_single(information: dict) -> bool:
     schema = "float Vp; float Vs; float density;".encode("ASCII")
     path = (information["etree_name"] + ".e").encode("ASCII")
@@ -36,23 +129,19 @@ def etree_extract_single(information: dict) -> bool:
         ep = UCVMCCommon.c_etree_open(path, 1538)
     UCVMCCommon.c_etree_registerschema(ep, schema)
 
-    # Calculate the specifications for the e-tree.
-    information["properties"]["columns"] = 4
-    information["properties"]["rows"] = 3
-
     octant_count = 0
 
     stats = _calculate_etree_stats(
-        information, information["properties"]["columns"], information["properties"]["rows"]
+        information, int(information["properties"]["columns"]), int(information["properties"]["rows"])
     )
 
     sd_array = UCVM.create_max_seismicdata_array(stats["max_points"], 1)
 
     print("Maximum points per section is %d" % stats["max_points"])
 
-    for j in range(information["properties"]["rows"]):
-        for i in range(information["properties"]["columns"]):
-            count = _extract(ep, sd_array, information, stats, i, j)
+    for j in range(int(information["properties"]["rows"])):
+        for i in range(int(information["properties"]["columns"])):
+            count = _extract_single(ep, sd_array, information, stats, i, j)
             if count is not None:
                 octant_count += count
             else:
@@ -75,6 +164,7 @@ def etree_extract_single(information: dict) -> bool:
 
     return True
 
+
 def _etree_writer(ep: int, etree_pnts: dict, props: List[SeismicData], n: int):
     for i in range(n):
         UCVMCCommon.c_etree_insert(
@@ -83,14 +173,20 @@ def _etree_writer(ep: int, etree_pnts: dict, props: List[SeismicData], n: int):
             props[i].velocity_properties.density
         )
 
-def _extract(ep: int, sd_array: List[SeismicData], cfg: dict, stats: dict, column: int, row: int) -> int:
+
+def _extract_mpi(rank: int, sd_array: List[SeismicData], cfg: dict, stats: dict, column: int, row: int) \
+        -> (dict, list, int):
     level = int(stats["max_level"])
     edgesize = stats["max_length"] / (1 << level)
     edgetics = 1 << (31 - level)
     extracted = 0
     ztics = 0
 
-    print("Extracting row %d, column %d..." % (row, column))
+    ret_dict = {}
+    ret_dict_counter = 0
+    ret_list = []
+
+    print("[Node %d] Extracting row %d, column %d..." % (rank, row + 1, column + 1), flush=True)
 
     num_points, etree_addrs = _get_grid(sd_array, cfg, stats, level, column, row, ztics)
 
@@ -101,7 +197,7 @@ def _extract(ep: int, sd_array: List[SeismicData], cfg: dict, stats: dict, colum
         if ztics % (1 << (31 - level)) != 0:
             print("ERROR: Ztics")
 
-        print("\tQuerying velocity model for %d points" % num_points)
+        print("[Node %d]\tQuerying velocity model for %d points" % (rank, num_points), flush=True)
 
         UCVM.query(sd_array[0:num_points], cfg["cvm_list"], ["velocity"])
 
@@ -113,13 +209,84 @@ def _extract(ep: int, sd_array: List[SeismicData], cfg: dict, stats: dict, colum
             scanlevel = int(stats["max_level"])
 
         if level < scanlevel:
-            print("Increasing scan level to %d" % scanlevel)
+            print("[Node %d]\tIncreasing scan level to %d" % (rank, scanlevel), flush=True)
             level = scanlevel
             edgesize = stats["max_length"] / (1 << level)
             edgetics = 1 << (31 - level)
             num_points, etree_addrs = _get_grid(sd_array, cfg, stats, level, column, row, ztics)
-            print("\tQuerying velocity model for %d points" % num_points)
-            UCVM.query(sd_array[0:num_points], cfg["cvm_list"], ["velocity", "elevation"])
+            print("[Node %d]\tQuerying velocity model for %d points" % (rank, num_points), flush=True)
+            UCVM.query(sd_array[0:num_points], cfg["cvm_list"], ["velocity"])
+        elif level > scanlevel:
+            for l in range(scanlevel, level):
+                if ztics % (1 << (31 - l)) == 0 and \
+                   ztics + (1 << (31 - l)) <= stats["max_ticks"]["depth"]:
+                    print("[Node %d]\tDecreasing scan level to %d" % (rank, l), flush=True)
+                    level = l
+                    edgesize = stats["max_length"] / (1 << level)
+                    edgetics = 1 << (31 - level)
+                    num_points, etree_addrs = _get_grid(sd_array, cfg, stats, level, column, row, ztics)
+                    print("[Node %d]\tQuerying velocity model for %d points" % (rank, num_points), flush=True)
+                    UCVM.query(sd_array[0:num_points], cfg["cvm_list"], ["velocity"])
+                    break
+
+        print("[Node %d]\tAdding points to be written to file." % rank, flush=True)
+        #_etree_writer(ep, etree_addrs, sd_array, num_points)
+        for i in range(num_points):
+            ret_list.append(copy.copy(sd_array[i]))
+            ret_dict[ret_dict_counter] = copy.copy(etree_addrs[i])
+            ret_dict_counter += 1
+        extracted += num_points
+
+        ztics += edgetics
+
+        for item in sd_array:
+            item.original_point.z_value = (ztics * stats["tick_size"]) + edgesize / 2.0
+        for _, item in etree_addrs.items():
+            item["z"] = ztics
+
+    if ztics != stats["max_ticks"]["depth"]:
+        raise Exception("Ticks mismatch")
+
+    return ret_dict, ret_list, extracted
+
+
+def _extract_single(ep: int, sd_array: List[SeismicData], cfg: dict, stats: dict, column: int, row: int) -> int:
+    level = int(stats["max_level"])
+    edgesize = stats["max_length"] / (1 << level)
+    edgetics = 1 << (31 - level)
+    extracted = 0
+    ztics = 0
+
+    print("Extracting row %d, column %d..." % (row + 1, column + 1), flush=True)
+
+    num_points, etree_addrs = _get_grid(sd_array, cfg, stats, level, column, row, ztics)
+
+    if num_points > stats["max_points"]:
+        print("ERROR: Num points exceeds max points")
+
+    while ztics < stats["max_ticks"]["depth"]:
+        if ztics % (1 << (31 - level)) != 0:
+            print("ERROR: Ztics")
+
+        print("\tQuerying velocity model for %d points" % num_points, flush=True)
+
+        UCVM.query(sd_array[0:num_points], cfg["cvm_list"], ["velocity"])
+
+        scanlevel = _get_level(cfg, stats, sd_array, num_points)
+
+        if scanlevel < int(stats["min_level"]):
+            scanlevel = int(stats["min_level"])
+        elif scanlevel > int(stats["max_level"]):
+            scanlevel = int(stats["max_level"])
+
+        if level < scanlevel:
+            print("\tIncreasing scan level to %d" % scanlevel)
+            level = scanlevel
+            edgesize = stats["max_length"] / (1 << level)
+            edgetics = 1 << (31 - level)
+            num_points, etree_addrs = _get_grid(sd_array, cfg, stats, level, column, row, ztics)
+            print("\tQuerying velocity model for %d points" % num_points, flush=True)
+            UCVM.query(sd_array[0:num_points], cfg["cvm_list"], ["velocity"])
         elif level > scanlevel:
             for l in range(scanlevel, level):
                 if ztics % (1 << (31 - l)) == 0 and \
@@ -129,11 +296,11 @@ def _extract(ep: int, sd_array: List[SeismicData], cfg: dict, stats: dict, colum
                     edgesize = stats["max_length"] / (1 << level)
                     edgetics = 1 << (31 - level)
                     num_points, etree_addrs = _get_grid(sd_array, cfg, stats, level, column, row, ztics)
-                    print("\tQuerying velocity model for %d points" % num_points)
-                    UCVM.query(sd_array[0:num_points], cfg["cvm_list"], ["velocity", "elevation"])
+                    print("\tQuerying velocity model for %d points" % num_points, flush=True)
+                    UCVM.query(sd_array[0:num_points], cfg["cvm_list"], ["velocity"])
                     break
 
-        print("\tWriting points to e-tree file")
+        print("\tWriting points to e-tree file", flush=True)
         _etree_writer(ep, etree_addrs, sd_array, num_points)
         extracted += num_points
 
@@ -147,7 +314,8 @@ def _extract(ep: int, sd_array: List[SeismicData], cfg: dict, stats: dict, colum
     if ztics != stats["max_ticks"]["depth"]:
         raise Exception("Ticks mismatch")
 
-    return 0
+    return extracted
+
 
 def ask_questions() -> dict:
     """
@@ -185,7 +353,9 @@ def ask_questions() -> dict:
         "properties": {
             "max_frequency": 0,
             "parts_per_wavelength": 0,
-            "max_octant_size": 0
+            "max_octant_size": 0,
+            "columns": 0,
+            "rows": 0
         },
         "minimums": {
             "vp": 0,
@@ -275,6 +445,13 @@ def ask_questions() -> dict:
     answers["properties"]["max_octant_size"] = float(ask_and_validate(
         "What is the maximum size that each octant can be (in meters)?",
         is_number, "Answer must be a number."
+    ))
+
+    answers["properties"]["columns"] = float(ask_and_validate(
+        "\nWhat should the column size for extraction be?", is_number, "Answer must be a number."
+    ))
+    answers["properties"]["rows"] = float(ask_and_validate(
+        "What should the row size for extraction be?", is_number, "Answer must be a number."
     ))
 
     answers["author"]["title"] = ask_and_validate(
@@ -444,6 +621,7 @@ def ask_questions() -> dict:
         "e-tree, and the\nKML file to visualize the boundaries."
     )
 
+
 def _get_grid(sd_array: List[SeismicData], cfg: dict, stats: dict, level: int, column: int,
               row: int, ztics: int) -> (int, dict):
     """
@@ -544,6 +722,7 @@ def _get_level(cfg: dict, stats: dict, sd_array: List[SeismicData], num_points: 
         (vs_min / (float(cfg["properties"]["parts_per_wavelength"]) * float(cfg["properties"]["max_frequency"])))
     ) / math.log(2.0) + 1)
 
+
 def _calculate_etree_stats(information: dict, cols: int, rows: int) -> dict:
     """
     Given the XML description of the desired e-tree as a dictionary as well as the number of columns
@@ -582,8 +761,6 @@ def _calculate_etree_stats(information: dict, cols: int, rows: int) -> dict:
         "height": (float(information["dimensions"]["y"]) / max_length) * (1 << 31),
         "depth": (float(information["dimensions"]["z"]) / max_length) * (1 << 31)
     }
-
-    print(information["dimensions"]["z"])
 
     maxrez = 1 << (31 - max_level)
     max_points = int((column_ticks / maxrez) * (row_ticks / maxrez))

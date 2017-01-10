@@ -11,18 +11,18 @@
 		<date>2016-12-01 00:07:42.010714</date>
 	</author>
 	<format>etree</format>
-	<etree_name>high_f_etree_mpi</etree_name>
+	<etree_name>high_f_etree</etree_name>
 	<dimensions>
 		<x>180000.0</x>
 		<y>135000.0</y>
 		<z>61875.0</z>
 	</dimensions>
 	<properties>
-		<parts_per_wavelength>4.0</parts_per_wavelength>
-		<max_frequency>0.5</max_frequency>
-		<max_octant_size>2000.0</max_octant_size>
-		<columns>4</columns>
-		<rows>3</rows>
+		<parts_per_wavelength>16.0</parts_per_wavelength>
+		<max_frequency>4.0</max_frequency>
+		<max_octant_size>1000.0</max_octant_size>
+		<columns>256</columns>
+		<rows>192</rows>
 	</properties>
 	<cvm_list>cvms426;1d[SCEC]</cvm_list>
 	<out_dir>./</out_dir>

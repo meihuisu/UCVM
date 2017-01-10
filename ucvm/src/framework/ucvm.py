@@ -509,11 +509,8 @@ class UCVM:
         _SD_SIZE = 200
         free_mem = psutil.virtual_memory().free
         return min(
-            min(
-                math.floor((free_mem * _MAX_PERCENT_FREE) / _SD_SIZE / processes),
-                total_points
-            ),
-            250000
+            math.floor((free_mem * _MAX_PERCENT_FREE) / _SD_SIZE / processes),
+            total_points
         )
 
 UCVM.bootstrap()

@@ -1,0 +1,109 @@
+#!/usr/bin/env python
+"""
+Generates an e-tree from a given model string using MPI to parallelize the task.
+This utility can read in the new XML configuration format. If no file-format is specified,
+then this utility will ask a series of prompts before generating the e-tree.
+
+Copyright:
+    Southern California Earthquake Center
+
+Developer:
+    David Gill <davidgil@usc.edu>
+"""
+import sys
+import xmltodict
+import time
+import os
+
+os.environ["ucvm_has_bootstrapped"] = "Yes"
+
+from mpi4py import MPI
+
+from ucvm.src.framework.ucvm import UCVM
+from ucvm.src.framework.etree import ask_questions, etree_extract_mpi
+
+
+def usage() -> None:
+    """
+    Displays the help text associated with this utility.
+
+    Returns:
+        Nothing
+    """
+    UCVM.print_with_replacements(
+        "\n"
+        "ucvm_etree_create_mpi - UCVM Version [version]\n"
+        "\n"
+        "Creates an e-tree or an e-tree configuration file with the given parameters. This generates\n"
+        "a file that is compatible with wave propagation code such as Hercules. If your wave propagation\n"
+        "code (such as AWP-ODC) uses the binary float mesh format, then you need to use the\n"
+        "ucvm_mesh_create or ucvm_mesh_create_mpi utility.\n"
+        "\n"
+        "-c, --config-only c:   Generates the XML-style configuration file only. No mesh will be\n"
+        "                       made at the end of the questions.\n"
+        "-f, --file f:          Specifies the configuration file from which this utility should\n"
+        "                       read. Note that this auto-detects a legacy (before UCVM 15.10.0)\n"
+        "                       style configuration file vs. the new XML format.\n"
+    )
+
+
+def main() -> int:
+    """
+    The main UCVM e-tree create MPI function.
+
+    Returns:
+         0 if successful. Raises an error code otherwise, if not.
+    """
+    start_time = time.time()
+
+    try:
+        options = UCVM.parse_options([
+            {"short": "c", "long": "config-only", "value": True, "required": False},
+            {"short": "f", "long": "file", "value": True, "required": False}
+        ], usage)
+    except ValueError as v_err:
+        print("[ERROR]: " + str(v_err) + "\n")
+        sys.exit(-1)
+
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+
+    should_exit = False
+
+    if rank == 0:
+        if options["config-only"] is not None:
+            with open(options["config-only"], "w") as fd:
+                fd.write(xmltodict.unparse({"root": ask_questions()}, pretty=True))
+            print(
+                "\n"
+                "Your e-tree configuration file has been saved to " + options["config-only"] + ".\n"
+                "\n"
+                "To extract an e-tree with your new configuration, run\n"
+                "ucvm_etree_create_mpi -f " + options["config-only"] + ""
+                "\n"
+            )
+            should_exit = comm.bcast(True, root=0)
+
+        if options["file"] is not None:
+            with open(options["file"], "r") as fd:
+                etree_information = xmltodict.parse(fd.read())["root"]
+        else:
+            etree_information = ask_questions()
+    else:
+        etree_information = None
+
+    etree_information = comm.bcast(etree_information, root=0)
+
+    # If we were just using the MPI utility to generate a configuration file, then exit.
+    if should_exit:
+        return 0
+
+    comm.Barrier()
+
+    etree_extract_mpi(etree_information)
+
+    if rank == 0:
+        print("\nE-tree extraction finished in %s seconds" % (time.time() - start_time), flush=True)
+
+if __name__ == "__main__":
+    sys.exit(main())
