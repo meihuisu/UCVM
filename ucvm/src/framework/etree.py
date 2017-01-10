@@ -49,7 +49,6 @@ def etree_extract_mpi(information: dict) -> bool:
         UCVMCCommon.c_etree_registerschema(ep, schema)
 
         total_rows_and_columns = int(information["properties"]["rows"]) * int(information["properties"]["columns"])
-        current_proc = 0
         rcs_to_extract = []
 
         for i in range(total_rows_and_columns):
@@ -65,13 +64,18 @@ def etree_extract_mpi(information: dict) -> bool:
         while True:
             data = comm.recv(source=MPI.ANY_SOURCE)
 
-            if data["data"] == "another":
+            if data["data"] == "start":
                 if len(rcs_to_extract) > 0:
                     comm.send(rcs_to_extract.pop(0), dest=data["source"])
                 else:
                     comm.send("done", dest=data["source"])
                     is_done[data["source"] - 1] = True
             else:
+                if len(rcs_to_extract) > 0:
+                    comm.send(rcs_to_extract.pop(0), dest=data["source"])
+                else:
+                    comm.send("done", dest=data["source"])
+                    is_done[data["source"] - 1] = True
                 print("[Node %d] Writing data from node %d to file." % (rank, data["source"]), flush=True)
                 _etree_writer(ep, data["data"][0], data["data"][1], data["data"][2])
                 total_extracted += data["data"][2]
@@ -101,8 +105,9 @@ def etree_extract_mpi(information: dict) -> bool:
         sd_array = UCVM.create_max_seismicdata_array(stats["max_points"], 1)
         count = 0
 
+        comm.send({"source": rank, "data": "start"}, dest=0)
+
         while not done:
-            comm.send({"source": rank, "data": "another"}, dest=0)
             row_col = comm.recv(source=0)
 
             if row_col == "done":
