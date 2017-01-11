@@ -1,18 +1,18 @@
 #!/bin/bash
-#PBS -l nodes=4:ppn=8
-#PBS -l walltime=00:30:00
+#PBS -l nodes=10:ppn=24
+#PBS -l walltime=01:00:00
 
 source /usr/usc/python/3.5.2/setup.sh
 source /usr/usc/openmpi/default/setup.sh
 
 PATH_TO_UCVM=/staging/path/to/your/ucvm
 
-LIB_PATH=$PATH_TO_UCVM/lib/python3.5/site-packages/ucvm-16.12.0-py3.5.egg/ucvm/libraries
+LIB_PATH=$PATH_TO_UCVM/lib/python3.5/site-packages/ucvm-17.1.0-py3.5.egg/ucvm/libraries
 for d in $(find $LIB_PATH -mindepth 1 -maxdepth 1 -type d); do
         LD_LIBRARY_PATH="$d/lib:$LD_LIBRARY_PATH"
 done
 
-MODEL_PATH=$PATH_TO_UCVM/lib/python3.5/site-packages/ucvm-16.12.0-py3.5.egg/ucvm/models
+MODEL_PATH=$PATH_TO_UCVM/lib/python3.5/site-packages/ucvm-17.1.0-py3.5.egg/ucvm/models
 echo $(find $MODEL_PATH -mindepth 1 -maxdepth 1 -type d)
 for d in $(find $MODEL_PATH -mindepth 1 -maxdepth 1 -type d); do
         LD_LIBRARY_PATH="$d/lib:$LD_LIBRARY_PATH"
@@ -25,7 +25,7 @@ cd "$PBS_O_WORKDIR"
 NP=`wc -l < $PBS_NODEFILE`
 echo "Running on $NP processors: "`cat $PBS_NODEFILE`
 
-mpiexec ucvm_mesh_create_mpi -f high_f_mesh_awp_lowres.xml
+mpiexec ucvm_etree_create_mpi -f high_f_etree_highres.xml
 
 echo "Done " `date`
 exit 0

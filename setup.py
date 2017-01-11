@@ -25,7 +25,7 @@ from collections import OrderedDict
 
 UCVM_INFORMATION = {
     "short_name": "ucvm",
-    "version": "16.12.0",
+    "version": "17.1.0",
     "long_name": "Unified Community Velocity Model Framework",
     "author": "Southern California Earthquake Center",
     "email": "software@scec.org",

@@ -265,19 +265,7 @@ def mesh_extract_single(information: dict, **kwargs) -> bool:
     """
     internal_mesh = InternalMesh(information)
 
-    progress = {
-        "last": 0,
-        "max": InternalMesh.get_max_points_extract()
-    }
-
-    stime = time.time()
     sd_array = UCVM.create_max_seismicdata_array(internal_mesh.total_size, 1)
-
-    if internal_mesh.format == "awp":
-        pass
-    elif internal_mesh.format == "rwg":
-        internal_mesh_iter = RWGInternalMeshIterator(internal_mesh, 0, internal_mesh.total_size,
-                                                     len(sd_array), sd_array)
 
     print("\nThere are a total of " + humanize.intcomma(internal_mesh.total_size) + " grid points "
           "to extract.\nWe can extract " + humanize.intcomma(len(sd_array)) + " points at once.\n"
@@ -289,7 +277,7 @@ def mesh_extract_single(information: dict, **kwargs) -> bool:
     if internal_mesh.format == "awp":
         _mesh_extract_single_awp(sd_array, information, internal_mesh)
     elif internal_mesh.format == "rwg":
-        _mesh_extract_single_rwg(sd_array, information, internal_mesh, internal_mesh_iter)
+        _mesh_extract_single_rwg(sd_array, information, internal_mesh)
 
     print("\nExtraction done.")
 
@@ -370,8 +358,7 @@ def _mesh_extract_single_awp(sd_array: List[SeismicData], information: dict, im:
     return True
 
 
-def _mesh_extract_single_rwg(sd_array: List[SeismicData], information: dict, im: InternalMesh,
-                             im_iter: RWGInternalMeshIterator) -> bool:
+def _mesh_extract_single_rwg(sd_array: List[SeismicData], information: dict, im: InternalMesh) -> bool:
     """
     Takes an InternalMesh object, the mesh information file, and the iterator, and generates, using
     one core only, the mesh in RWG format.
@@ -379,7 +366,6 @@ def _mesh_extract_single_rwg(sd_array: List[SeismicData], information: dict, im:
     Args:
         information (dict): The mesh information dictionary (from the XML config file).
         im (InternalMesh): The internal representation of the RWG mesh.
-        im_iter (RWGInternalMeshIterator): The internal mesh iterator that was generated from im.
 
     Returns:
         Nothing
@@ -387,6 +373,8 @@ def _mesh_extract_single_rwg(sd_array: List[SeismicData], information: dict, im:
     file_out_vp = information["mesh_name"] + ".rwgvp"
     file_out_vs = information["mesh_name"] + ".rwgvs"
     file_out_dn = information["mesh_name"] + ".rwgdn"
+
+    im_iter = RWGInternalMeshIterator(im, 0, im.total_size, len(sd_array), sd_array)
 
     progress = 0
 

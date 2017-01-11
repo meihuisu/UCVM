@@ -42,7 +42,7 @@ def etree_extract_mpi(information: dict) -> bool:
         schema = "float Vp; float Vs; float density;".encode("ASCII")
         path = (information["etree_name"] + ".e").encode("ASCII")
 
-        if sys.byteorder == "big":
+        if sys.byteorder == "little" and sys.platform != "darwin":
             ep = UCVMCCommon.c_etree_open(path, 578)
         else:
             ep = UCVMCCommon.c_etree_open(path, 1538)
@@ -64,13 +64,18 @@ def etree_extract_mpi(information: dict) -> bool:
         while True:
             data = comm.recv(source=MPI.ANY_SOURCE)
 
-            if data["data"] == "start":
+            if data["code"] == "start":
                 if len(rcs_to_extract) > 0:
                     comm.send(rcs_to_extract.pop(0), dest=data["source"])
                 else:
                     comm.send("done", dest=data["source"])
                     is_done[data["source"] - 1] = True
-            else:
+            elif data["code"] == "write":
+                print("[Node %d] Writing data from node %d to file." % (rank, data["source"]), flush=True)
+                _etree_writer(ep, data["data"][0], data["data"][1], data["data"][2])
+                total_extracted += data["data"][2]
+                print("[Node %d] Data written successfully!" % rank, flush=True)
+            elif data["code"] == "new":
                 if len(rcs_to_extract) > 0:
                     comm.send(rcs_to_extract.pop(0), dest=data["source"])
                 else:
@@ -105,7 +110,7 @@ def etree_extract_mpi(information: dict) -> bool:
         sd_array = UCVM.create_max_seismicdata_array(stats["max_points"], 1)
         count = 0
 
-        comm.send({"source": rank, "data": "start"}, dest=0)
+        comm.send({"source": rank, "data": "", "code": "start"}, dest=0)
 
         while not done:
             row_col = comm.recv(source=0)
@@ -113,11 +118,12 @@ def etree_extract_mpi(information: dict) -> bool:
             if row_col == "done":
                 break
 
-            print("[Node %d] Received instruction to extract column (%d, %d)." % (rank, row_col[0], row_col[1]),
+            print("[Node %d] Received instruction to extract column (%d, %d)." % (rank, row_col[0] + 1, row_col[1] + 1),
                   flush=True)
             data = _extract_mpi(rank, sd_array, information, stats, row_col[1], row_col[0])
             count += data[2]
-            comm.send({"source": rank, "data": data}, dest=0)
+            print("[Node %d] Finished extracting column (%d, %d)" % (rank, row_col[0] + 1, row_col[1] + 1))
+            comm.send({"source": rank, "data": data, "code": "new"}, dest=0)
 
         print("[Node %d] Finished extracting %d octants." % (rank, count), flush=True)
 
@@ -128,7 +134,7 @@ def etree_extract_single(information: dict) -> bool:
     schema = "float Vp; float Vs; float density;".encode("ASCII")
     path = (information["etree_name"] + ".e").encode("ASCII")
 
-    if sys.byteorder == "big":
+    if sys.byteorder == "little" and sys.platform != "darwin":
         ep = UCVMCCommon.c_etree_open(path, 578)
     else:
         ep = UCVMCCommon.c_etree_open(path, 1538)
@@ -180,7 +186,11 @@ def _etree_writer(ep: int, etree_pnts: dict, props: List[SeismicData], n: int):
 
 
 def _extract_mpi(rank: int, sd_array: List[SeismicData], cfg: dict, stats: dict, column: int, row: int) \
-        -> (dict, list, int):
+        -> (dict, list, int, int):
+    from mpi4py import MPI
+
+    comm = MPI.COMM_WORLD
+
     level = int(stats["max_level"])
     edgesize = stats["max_length"] / (1 << level)
     edgetics = 1 << (31 - level)
@@ -188,7 +198,6 @@ def _extract_mpi(rank: int, sd_array: List[SeismicData], cfg: dict, stats: dict,
     ztics = 0
 
     ret_dict = {}
-    ret_dict_counter = 0
     ret_list = []
 
     print("[Node %d] Extracting row %d, column %d..." % (rank, row + 1, column + 1), flush=True)
@@ -234,12 +243,15 @@ def _extract_mpi(rank: int, sd_array: List[SeismicData], cfg: dict, stats: dict,
                     UCVM.query(sd_array[0:num_points], cfg["cvm_list"], ["velocity"])
                     break
 
-        print("[Node %d]\tAdding points to be written to file." % rank, flush=True)
-        #_etree_writer(ep, etree_addrs, sd_array, num_points)
         for i in range(num_points):
             ret_list.append(copy.copy(sd_array[i]))
-            ret_dict[ret_dict_counter] = copy.copy(etree_addrs[i])
-            ret_dict_counter += 1
+            ret_dict[len(ret_list) - 1] = copy.copy(etree_addrs[i])
+
+        if len(ret_list) > 100000:
+            comm.send({"source": rank, "data": (ret_dict, ret_list, len(ret_list)), "code": "write"}, dest=0)
+            ret_list = []
+            ret_dict = {}
+
         extracted += num_points
 
         ztics += edgetics
@@ -252,7 +264,7 @@ def _extract_mpi(rank: int, sd_array: List[SeismicData], cfg: dict, stats: dict,
     if ztics != stats["max_ticks"]["depth"]:
         raise Exception("Ticks mismatch")
 
-    return ret_dict, ret_list, extracted
+    return ret_dict, ret_list, len(ret_list), extracted
 
 
 def _extract_single(ep: int, sd_array: List[SeismicData], cfg: dict, stats: dict, column: int, row: int) -> int:

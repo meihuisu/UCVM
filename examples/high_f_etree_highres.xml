@@ -18,11 +18,11 @@
 		<z>61875.0</z>
 	</dimensions>
 	<properties>
-		<parts_per_wavelength>16.0</parts_per_wavelength>
+		<parts_per_wavelength>10.0</parts_per_wavelength>
 		<max_frequency>4.0</max_frequency>
 		<max_octant_size>1000.0</max_octant_size>
-		<columns>256</columns>
-		<rows>192</rows>
+		<columns>64</columns>
+		<rows>48</rows>
 	</properties>
 	<cvm_list>cvms426;1d[SCEC]</cvm_list>
 	<out_dir>./</out_dir>
