@@ -59,7 +59,9 @@ def main() -> int:
     try:
         options = UCVM.parse_options([
             {"short": "c", "long": "config-only", "value": True, "required": False},
-            {"short": "f", "long": "file", "value": True, "required": False}
+            {"short": "f", "long": "file", "value": True, "required": False},
+            {"short": "r", "long": "rows", "value": True, "required": False},
+            {"short": "i", "long": "interval", "value": True, "required": False}
         ], usage)
     except ValueError as v_err:
         print("[ERROR]: " + str(v_err) + "\n")
@@ -100,7 +102,7 @@ def main() -> int:
 
     comm.Barrier()
 
-    etree_extract_mpi(etree_information)
+    etree_extract_mpi(etree_information, options["rows"], options["interval"])
 
     if rank == 0:
         print("\nE-tree extraction finished in %s seconds" % (time.time() - start_time), flush=True)

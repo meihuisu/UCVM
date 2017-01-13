@@ -59,7 +59,9 @@ def main() -> int:
     try:
         options = UCVM.parse_options([
             {"short": "c", "long": "config-only", "value": False, "required": False},
-            {"short": "f", "long": "file", "value": True, "required": False}
+            {"short": "f", "long": "file", "value": True, "required": False},
+            {"short": "s", "long": "slices", "value": True, "required": False},
+            {"short": "i", "long": "interval", "value": True, "required": False}
         ], usage)
     except ValueError as v_err:
         print("[ERROR]: " + str(v_err) + "\n")

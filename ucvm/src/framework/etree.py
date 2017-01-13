@@ -27,7 +27,7 @@ from ucvm.src.shared.functions import ask_and_validate, is_number
 from ucvm_c_common import UCVMCCommon
 
 
-def etree_extract_mpi(information: dict) -> bool:
+def etree_extract_mpi(information: dict, rows: str=None, interval: str=None) -> bool:
     from mpi4py import MPI
 
     comm = MPI.COMM_WORLD
@@ -38,6 +38,29 @@ def etree_extract_mpi(information: dict) -> bool:
         information, int(information["properties"]["columns"]), int(information["properties"]["rows"])
     )
 
+    start_rc = [1, 1]
+    end_rc = [information["properties"]["rows"], information["properties"]["columns"]]
+
+    if rows is not None:
+        if "-" in rows:
+            parts = rows.split("-")
+            start_rc = [int(parts[0]), 1]
+            end_rc = [int(parts[1]), int(information["properties"]["columns"])]
+        else:
+            start_rc = [int(rows), 1]
+            end_rc = [int(rows), int(information["properties"]["columns"])]
+    elif interval is not None:
+        if "-" in interval:
+            parts = interval.split("-")
+            parts1 = parts[0].split(",")
+            start_rc = [int(parts1[0]), int(parts1[1])]
+            parts2 = parts[1].split(",")
+            end_rc = [int(parts2[0]), int(parts2[1])]
+        else:
+            interval = interval.split(",")
+            start_rc = [int(interval[0]), int(interval[1])]
+            end_rc = [int(interval[0]), int(interval[1])]
+
     if rank == 0:
         schema = "float Vp; float Vs; float density;".encode("ASCII")
         path = (information["etree_name"] + ".e").encode("ASCII")
@@ -45,18 +68,22 @@ def etree_extract_mpi(information: dict) -> bool:
         if sys.byteorder == "little" and sys.platform != "darwin":
             ep = UCVMCCommon.c_etree_open(path, 578)
         else:
-            ep = UCVMCCommon.c_etree_open(path, 1538)
+            if start_rc[0] == 1 and start_rc[1] == 1:
+                ep = UCVMCCommon.c_etree_open(path, 1538)
+            else:
+                ep = UCVMCCommon.c_etree_open(path, 2)
+
         UCVMCCommon.c_etree_registerschema(ep, schema)
 
-        total_rows_and_columns = int(information["properties"]["rows"]) * int(information["properties"]["columns"])
         rcs_to_extract = []
 
-        for i in range(total_rows_and_columns):
-            # Next row, column.
-            row_n = math.floor(i / int(information["properties"]["columns"]))
-            col_n = i - (row_n * int(information["properties"]["columns"]))
-
-            rcs_to_extract.append((row_n, col_n))
+        current_rc = start_rc
+        while not (current_rc[0] == end_rc[0] and current_rc[1] == end_rc[1] + 1):
+            if current_rc[1] > int(information["properties"]["columns"]):
+                current_rc[0] += 1
+                current_rc[1] = 1
+            rcs_to_extract.append((current_rc[0], current_rc[1]))
+            current_rc[1] += 1
 
         total_extracted = 0
         is_done = [False for _ in range(size - 1)]
@@ -118,11 +145,11 @@ def etree_extract_mpi(information: dict) -> bool:
             if row_col == "done":
                 break
 
-            print("[Node %d] Received instruction to extract column (%d, %d)." % (rank, row_col[0] + 1, row_col[1] + 1),
+            print("[Node %d] Received instruction to extract column (%d, %d)." % (rank, row_col[0], row_col[1]),
                   flush=True)
-            data = _extract_mpi(rank, sd_array, information, stats, row_col[1], row_col[0])
+            data = _extract_mpi(rank, sd_array, information, stats, row_col[1] - 1, row_col[0] - 1)
             count += data[2]
-            print("[Node %d] Finished extracting column (%d, %d)" % (rank, row_col[0] + 1, row_col[1] + 1))
+            print("[Node %d] Finished extracting column (%d, %d)" % (rank, row_col[0], row_col[1]))
             comm.send({"source": rank, "data": data, "code": "new"}, dest=0)
 
         print("[Node %d] Finished extracting %d octants." % (rank, count), flush=True)
@@ -130,14 +157,41 @@ def etree_extract_mpi(information: dict) -> bool:
     return True
 
 
-def etree_extract_single(information: dict) -> bool:
+def etree_extract_single(information: dict, rows: str=None, interval: str=None) -> bool:
     schema = "float Vp; float Vs; float density;".encode("ASCII")
     path = (information["etree_name"] + ".e").encode("ASCII")
+
+    start_rc = [1, 1]
+    end_rc = [information["properties"]["rows"], information["properties"]["columns"]]
+
+    if rows is not None:
+        if "-" in rows:
+            parts = rows.split("-")
+            start_rc = [int(parts[0]), 1]
+            end_rc = [int(parts[1]), int(information["properties"]["columns"])]
+        else:
+            start_rc = [int(rows), 1]
+            end_rc = [int(rows), int(information["properties"]["columns"])]
+    elif interval is not None:
+        if "-" in interval:
+            parts = interval.split("-")
+            parts1 = parts[0].split(",")
+            start_rc = [int(parts1[0]), int(parts1[1])]
+            parts2 = parts[1].split(",")
+            end_rc = [int(parts2[0]), int(parts2[1])]
+        else:
+            interval = interval.split(",")
+            start_rc = [int(interval[0]), int(interval[1])]
+            end_rc = [int(interval[0]), int(interval[1])]
 
     if sys.byteorder == "little" and sys.platform != "darwin":
         ep = UCVMCCommon.c_etree_open(path, 578)
     else:
-        ep = UCVMCCommon.c_etree_open(path, 1538)
+        if start_rc[0] == 1 and start_rc[1] == 1:
+            ep = UCVMCCommon.c_etree_open(path, 1538)
+        else:
+            ep = UCVMCCommon.c_etree_open(path, 2)
+
     UCVMCCommon.c_etree_registerschema(ep, schema)
 
     octant_count = 0
@@ -150,13 +204,21 @@ def etree_extract_single(information: dict) -> bool:
 
     print("Maximum points per section is %d" % stats["max_points"])
 
-    for j in range(int(information["properties"]["rows"])):
-        for i in range(int(information["properties"]["columns"])):
-            count = _extract_single(ep, sd_array, information, stats, i, j)
-            if count is not None:
-                octant_count += count
-            else:
-                raise Exception("HELP!")
+    current_rc = start_rc
+
+    while not (current_rc[0] == end_rc[0] and current_rc[1] == end_rc[1] + 1):
+        if current_rc[1] > int(information["properties"]["columns"]):
+            current_rc[0] += 1
+            current_rc[1] = 1
+
+        count = _extract_single(ep, sd_array, information, stats, current_rc[1] - 1, current_rc[0] - 1)
+
+        if count is not None:
+            octant_count += count
+        else:
+            raise Exception("HELP!")
+
+        current_rc[1] += 1
 
     print(str(octant_count) + " octants were extracted.")
 
