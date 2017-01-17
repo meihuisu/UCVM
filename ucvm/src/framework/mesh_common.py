@@ -75,6 +75,9 @@ class InternalMesh(object):
         self.sin_angle = math.sin(math.radians(self.rotation))
         self.cos_angle = math.cos(math.radians(self.rotation))
 
+        self.full_size = None
+        self.end_point = self.total_size
+
     @classmethod
     def from_xml_file(cls, file: str):
         with open(file, "r") as fd:
@@ -105,16 +108,37 @@ class InternalMesh(object):
 
         return im_instance
 
+    def do_slices(self, slices: str) -> bool:
+        self.full_size = self.total_size
+        if "-" in slices:
+            parts = slices.split("-")
+            self.end_point = int(parts[1]) * self.slice_size
+            self.total_size = (int(parts[1]) - int(parts[0]) + 1) * self.slice_size
+        else:
+            self.end_point = int(slices) * self.slice_size
+            self.total_size = self.slice_size
+        return True
+
+    def do_interval(self, interval: str):
+        self.full_size = self.total_size
+        if "-" in interval:
+            parts = interval.split("-")
+            self.end_point = int(float(parts[1]) / 100 * self.total_size)
+            self.total_size = int(((float(parts[1]) - float(parts[0])) / 100) * self.total_size)
+        else:
+            raise ValueError("Interval must be a range (e.g. 0-10 which means generate the first 10% of the mesh).")
+        return True
+
     def get_grid_file_size(self) -> dict:
         if self.format == "awp":
             return {
-                "display": humanize.naturalsize(self.total_size * 12, gnu=False),
-                "real": self.total_size * 12
+                "display": humanize.naturalsize(self.end_point * 12, gnu=False),
+                "real": self.end_point * 12
             }
         if self.format == "rwg":
             return {
-                "display": humanize.naturalsize(self.total_size * 4, gnu=False),
-                "real": self.total_size * 4
+                "display": humanize.naturalsize(self.end_point * 4, gnu=False),
+                "real": self.end_point * 4
             }
 
     @staticmethod

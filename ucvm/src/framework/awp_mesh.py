@@ -252,7 +252,7 @@ def _mesh_extract_mpi_rwg(sd_array: List[SeismicData], information: dict, im: In
     return True
 
 
-def mesh_extract_single(information: dict, **kwargs) -> bool:
+def mesh_extract_single(information: dict, slices: str=None, interval: str=None, **kwargs) -> bool:
     """
     Given a dictionary containing the relevant parameters for the extraction, extract the material
     properties for a single process.
@@ -265,7 +265,12 @@ def mesh_extract_single(information: dict, **kwargs) -> bool:
     """
     internal_mesh = InternalMesh(information)
 
-    sd_array = UCVM.create_max_seismicdata_array(internal_mesh.total_size, 1)
+    if slices is not None:
+        internal_mesh.do_slices(slices)
+    elif interval is not None:
+        internal_mesh.do_interval(interval)
+
+    sd_array = UCVM.create_max_seismicdata_array(min(internal_mesh.total_size, 250000), 1)
 
     print("\nThere are a total of " + humanize.intcomma(internal_mesh.total_size) + " grid points "
           "to extract.\nWe can extract " + humanize.intcomma(len(sd_array)) + " points at once.\n"
@@ -275,7 +280,7 @@ def mesh_extract_single(information: dict, **kwargs) -> bool:
     information["minimums"]["vs"] = float(information["minimums"]["vs"])
 
     if internal_mesh.format == "awp":
-        _mesh_extract_single_awp(sd_array, information, internal_mesh)
+        _mesh_extract_single_awp(sd_array, information, internal_mesh, slices, interval)
     elif internal_mesh.format == "rwg":
         _mesh_extract_single_rwg(sd_array, information, internal_mesh)
 
@@ -284,7 +289,8 @@ def mesh_extract_single(information: dict, **kwargs) -> bool:
     return True
 
 
-def _mesh_extract_single_awp(sd_array: List[SeismicData], information: dict, im: InternalMesh) -> bool:
+def _mesh_extract_single_awp(sd_array: List[SeismicData], information: dict, im: InternalMesh, slices: str=None,
+                             interval: str=None) -> bool:
     """
     Takes an InternalMesh object, the mesh information file, and the iterator, and generates, using
     one core only, the mesh in AWP-ODC format.
@@ -299,15 +305,34 @@ def _mesh_extract_single_awp(sd_array: List[SeismicData], information: dict, im:
     """
     file_out = information["mesh_name"] + ".awp"
 
-    im_iter = AWPInternalMeshIterator(im, 0, im.total_size, len(sd_array), sd_array)
+    start_point = 0
+    end_point = im.total_size
+
+    if slices is not None:
+        if "-" in slices:
+            parts = slices.split("-")
+            start_point = (int(parts[0]) - 1) * im.slice_size
+            end_point = (int(parts[1])) * im.slice_size
+        else:
+            start_point = (int(slices) - 1) * im.slice_size
+            end_point = int(slices) * im.slice_size
+    elif interval is not None:
+        if "-" in interval:
+            parts = interval.split("-")
+            start_point = (int(parts[0]) / 100) * im.full_size
+            end_point = (int(parts[1]) / 100) * im.full_size
+        else:
+            raise ValueError("Interval must be a range (e.g. 0-10 which means generate the first 10% of the mesh).")
+
+    im_iter = AWPInternalMeshIterator(im, start_point, end_point, len(sd_array), sd_array)
+    progress = start_point
 
     progress = 0
     sqrt2 = math.sqrt(2)
 
-    with open(os.path.join(information["out_dir"], file_out), "wb") as fd:
-        while progress < im_iter.end_point:
+    with open(os.path.join(information["out_dir"], file_out), "ab+") as fd:
+        while progress < im.total_size:
             count = next(im_iter)
-            progress += count
 
             UCVM.query(sd_array[0:count], information["cvm_list"], ["velocity"])
 
@@ -340,9 +365,12 @@ def _mesh_extract_single_awp(sd_array: List[SeismicData], information: dict, im:
                         s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                     ))
             s = struct.pack('f' * len(fl_array), *fl_array)
+            fd.seek(progress * 12)
             fd.write(s)
 
-            print("%-4.2f" % ((progress / im_iter.end_point) * 100.0) +
+            progress += count
+
+            print("%-4.2f" % ((progress / (im_iter.end_point - start_point)) * 100.0) +
                   "% complete. Wrote " + humanize.intcomma(count) + " more grid points.")
 
         print("\nExpected file size is " + im.get_grid_file_size()["display"] + ". " +

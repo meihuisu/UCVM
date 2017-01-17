@@ -11,7 +11,7 @@
 		<vp>1700</vp>
 		<vs>500</vs>
 	</minimums>
-	<spacing>25</spacing>
+	<spacing>20</spacing>
 	<cvm_list>cvms426;1d[SCEC]</cvm_list>
 	<rotation>39.9</rotation>
 	<out_dir>./</out_dir>

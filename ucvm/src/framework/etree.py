@@ -66,7 +66,10 @@ def etree_extract_mpi(information: dict, rows: str=None, interval: str=None) -> 
         path = (information["etree_name"] + ".e").encode("ASCII")
 
         if sys.byteorder == "little" and sys.platform != "darwin":
-            ep = UCVMCCommon.c_etree_open(path, 578)
+            if start_rc[0] == 1 and start_rc[1] == 1:
+                ep = UCVMCCommon.c_etree_open(path, 578)
+            else:
+                ep = UCVMCCommon.c_etree_open(path, 2)
         else:
             if start_rc[0] == 1 and start_rc[1] == 1:
                 ep = UCVMCCommon.c_etree_open(path, 1538)
@@ -185,7 +188,10 @@ def etree_extract_single(information: dict, rows: str=None, interval: str=None) 
             end_rc = [int(interval[0]), int(interval[1])]
 
     if sys.byteorder == "little" and sys.platform != "darwin":
-        ep = UCVMCCommon.c_etree_open(path, 578)
+        if start_rc[0] == 1 and start_rc[1] == 1:
+            ep = UCVMCCommon.c_etree_open(path, 578)
+        else:
+            ep = UCVMCCommon.c_etree_open(path, 2)
     else:
         if start_rc[0] == 1 and start_rc[1] == 1:
             ep = UCVMCCommon.c_etree_open(path, 1538)
@@ -309,7 +315,7 @@ def _extract_mpi(rank: int, sd_array: List[SeismicData], cfg: dict, stats: dict,
             ret_list.append(copy.copy(sd_array[i]))
             ret_dict[len(ret_list) - 1] = copy.copy(etree_addrs[i])
 
-        if len(ret_list) > 100000:
+        if len(ret_list) > 250000:
             comm.send({"source": rank, "data": (ret_dict, ret_list, len(ret_list)), "code": "write"}, dest=0)
             ret_list = []
             ret_dict = {}

@@ -77,7 +77,7 @@ def main() -> int:
     else:
         mesh_information = ask_questions()
 
-    mesh_extract_single(mesh_information)
+    mesh_extract_single(mesh_information, options["slices"], options["interval"])
 
     print("\nMesh extraction finished in %s seconds" % (time.time() - start_time))
 
