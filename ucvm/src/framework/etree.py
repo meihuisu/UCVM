@@ -39,7 +39,7 @@ def etree_extract_mpi(information: dict, rows: str=None, interval: str=None) -> 
     )
 
     start_rc = [1, 1]
-    end_rc = [information["properties"]["rows"], information["properties"]["columns"]]
+    end_rc = [int(information["properties"]["rows"]), int(information["properties"]["columns"])]
 
     if rows is not None:
         if "-" in rows:
@@ -165,7 +165,7 @@ def etree_extract_single(information: dict, rows: str=None, interval: str=None) 
     path = (information["etree_name"] + ".e").encode("ASCII")
 
     start_rc = [1, 1]
-    end_rc = [information["properties"]["rows"], information["properties"]["columns"]]
+    end_rc = [int(information["properties"]["rows"]), int(information["properties"]["columns"])]
 
     if rows is not None:
         if "-" in rows:
@@ -244,12 +244,11 @@ def etree_extract_single(information: dict, rows: str=None, interval: str=None) 
     return True
 
 
-def _etree_writer(ep: int, etree_pnts: dict, props: List[SeismicData], n: int):
+def _etree_writer(ep: int, props: list, etree_pnts: list, n: int):
     for i in range(n):
         UCVMCCommon.c_etree_insert(
-            ep, etree_pnts[i]["x"], etree_pnts[i]["y"], etree_pnts[i]["z"], etree_pnts[i]["level"],
-            props[i].velocity_properties.vp, props[i].velocity_properties.vs,
-            props[i].velocity_properties.density
+            ep, etree_pnts[i * 4], etree_pnts[i * 4 + 1], etree_pnts[i * 4 + 2], etree_pnts[i * 4 + 3],
+            props[i * 3], props[i * 3 + 1], props[i * 3 + 2]
         )
 
 
@@ -265,8 +264,13 @@ def _extract_mpi(rank: int, sd_array: List[SeismicData], cfg: dict, stats: dict,
     extracted = 0
     ztics = 0
 
-    ret_dict = {}
-    ret_list = []
+    MAX_POINTS = 250000
+    master_array_mp = [-1.2 for _ in range(MAX_POINTS * 3 + 3)]
+    master_array_ea = [-1.2 for _ in range(MAX_POINTS * 4 + 4)]
+
+    ret_matprop = copy.copy(master_array_mp)
+    ret_etree_addrs = copy.copy(master_array_ea)
+    cursor = 0
 
     print("[Node %d] Extracting row %d, column %d..." % (rank, row + 1, column + 1), flush=True)
 
@@ -312,13 +316,20 @@ def _extract_mpi(rank: int, sd_array: List[SeismicData], cfg: dict, stats: dict,
                     break
 
         for i in range(num_points):
-            ret_list.append(copy.copy(sd_array[i]))
-            ret_dict[len(ret_list) - 1] = copy.copy(etree_addrs[i])
-
-        if len(ret_list) > 250000:
-            comm.send({"source": rank, "data": (ret_dict, ret_list, len(ret_list)), "code": "write"}, dest=0)
-            ret_list = []
-            ret_dict = {}
+            ret_matprop[cursor * 3] = sd_array[i].velocity_properties.vp
+            ret_matprop[cursor * 3 + 1] = sd_array[i].velocity_properties.vs
+            ret_matprop[cursor * 3 + 2] = sd_array[i].velocity_properties.density
+            ret_etree_addrs[cursor * 4] = etree_addrs[i]["x"]
+            ret_etree_addrs[cursor * 4 + 1] = etree_addrs[i]["y"]
+            ret_etree_addrs[cursor * 4 + 2] = etree_addrs[i]["z"]
+            ret_etree_addrs[cursor * 4 + 3] = etree_addrs[i]["level"]
+            if cursor == MAX_POINTS:
+                comm.send({"source": rank, "data": (ret_matprop, ret_etree_addrs, MAX_POINTS), "code": "write"}, dest=0)
+                ret_matprop = copy.copy(master_array_mp)
+                ret_etree_addrs = copy.copy(master_array_ea)
+                cursor = 0
+            else:
+                cursor += 1
 
         extracted += num_points
 
@@ -332,7 +343,7 @@ def _extract_mpi(rank: int, sd_array: List[SeismicData], cfg: dict, stats: dict,
     if ztics != stats["max_ticks"]["depth"]:
         raise Exception("Ticks mismatch")
 
-    return ret_dict, ret_list, len(ret_list), extracted
+    return ret_matprop, ret_etree_addrs, cursor, extracted
 
 
 def _extract_single(ep: int, sd_array: List[SeismicData], cfg: dict, stats: dict, column: int, row: int) -> int:
@@ -345,6 +356,9 @@ def _extract_single(ep: int, sd_array: List[SeismicData], cfg: dict, stats: dict
     print("Extracting row %d, column %d..." % (row + 1, column + 1), flush=True)
 
     num_points, etree_addrs = _get_grid(sd_array, cfg, stats, level, column, row, ztics)
+
+    ret_matprop = [-1.2 for _ in range(num_points * 3 + 3)]
+    ret_etree_addrs = [-1.2 for _ in range(num_points * 4 + 4)]
 
     if num_points > stats["max_points"]:
         print("ERROR: Num points exceeds max points")
@@ -386,7 +400,15 @@ def _extract_single(ep: int, sd_array: List[SeismicData], cfg: dict, stats: dict
                     break
 
         print("\tWriting points to e-tree file", flush=True)
-        _etree_writer(ep, etree_addrs, sd_array, num_points)
+        for i in range(num_points):
+            ret_matprop[i * 3] = sd_array[i].velocity_properties.vp
+            ret_matprop[i * 3 + 1] = sd_array[i].velocity_properties.vs
+            ret_matprop[i * 3 + 2] = sd_array[i].velocity_properties.density
+            ret_etree_addrs[i * 4] = etree_addrs[i]["x"]
+            ret_etree_addrs[i * 4 + 1] = etree_addrs[i]["y"]
+            ret_etree_addrs[i * 4 + 2] = etree_addrs[i]["z"]
+            ret_etree_addrs[i * 4 + 3] = etree_addrs[i]["level"]
+        _etree_writer(ep, ret_matprop, ret_etree_addrs, num_points)
         extracted += num_points
 
         ztics += edgetics
