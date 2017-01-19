@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l nodes=3:ppn=22
+#PBS -l nodes=1:ppn=24
 #PBS -l walltime=01:00:00
 
 source /usr/usc/python/3.5.2/setup.sh
@@ -27,7 +27,7 @@ cd "$PBS_O_WORKDIR"
 NP=`wc -l < $PBS_NODEFILE`
 echo "Running on $NP processors: "`cat $PBS_NODEFILE`
 
-mpiexec ucvm_etree_create_mpi -f high_f_etree_highres.xml -r 1
+mpiexec ucvm_mesh_create_mpi -f high_f_mesh_awp_highres.xml -s 1
 
 echo "Done " `date`
 exit 0

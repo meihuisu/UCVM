@@ -76,6 +76,7 @@ class InternalMesh(object):
         self.cos_angle = math.cos(math.radians(self.rotation))
 
         self.full_size = None
+        self.start_point = 0
         self.end_point = self.total_size
 
     @classmethod
@@ -112,9 +113,11 @@ class InternalMesh(object):
         self.full_size = self.total_size
         if "-" in slices:
             parts = slices.split("-")
+            self.start_point = (int(parts[0]) - 1) * self.slice_size
             self.end_point = int(parts[1]) * self.slice_size
             self.total_size = (int(parts[1]) - int(parts[0]) + 1) * self.slice_size
         else:
+            self.start_point = (int(slices) - 1) * self.slice_size
             self.end_point = int(slices) * self.slice_size
             self.total_size = self.slice_size
         return True

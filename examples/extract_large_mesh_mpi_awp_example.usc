@@ -1,11 +1,13 @@
 #!/bin/bash
-#PBS -l nodes=30:ppn=24
-#PBS -l walltime=08:00:00
+#PBS -l nodes=1:ppn=24
+#PBS -l walltime=01:00:00
 
 source /usr/usc/python/3.5.2/setup.sh
 source /usr/usc/openmpi/default/setup.sh
 
-PATH_TO_UCVM=/staging/path/to/your/ucvm
+PATH_TO_UCVM=/staging/path/to/your/ucvm-venv
+
+source $PATH_TO_UCVM/bin/activate
 
 LIB_PATH=$PATH_TO_UCVM/lib/python3.5/site-packages/ucvm-17.1.0-py3.5.egg/ucvm/libraries
 for d in $(find $LIB_PATH -mindepth 1 -maxdepth 1 -type d); do
@@ -25,7 +27,7 @@ cd "$PBS_O_WORKDIR"
 NP=`wc -l < $PBS_NODEFILE`
 echo "Running on $NP processors: "`cat $PBS_NODEFILE`
 
-mpiexec ucvm_mesh_create_mpi -f high_f_mesh_awp_highres.xml
+mpiexec ucvm_mesh_create_mpi -f high_f_mesh_awp_highres.xml -s 1
 
 echo "Done " `date`
 exit 0

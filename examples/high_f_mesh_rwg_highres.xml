@@ -16,9 +16,9 @@
 	<rotation>39.9</rotation>
 	<out_dir>./</out_dir>
 	<dimensions>
-		<y>5400</y>
-		<x>7200</x>
-		<z>2600</z>
+		<y>6750</y>
+		<x>9000</x>
+		<z>3100</z>
 	</dimensions>
 	<format>rwg</format>
 	<mesh_name>high_f_mesh_rwg</mesh_name>

@@ -103,6 +103,12 @@ def main() -> int:
     i_mesh = InternalMesh(mesh_information)
     max_points_per_cpu = i_mesh.get_max_points_extract(2)
 
+    # Check to see if we are doing an interval or if we are doing one or more slices.
+    if options["slices"] is not None:
+        i_mesh.do_slices(options["slices"])
+    elif options["interval"] is not None:
+        i_mesh.do_interval(options["interval"])
+
     # All processes that are not rank 0 should send the number of computing CPUs that they have
     # available to them.
     if rank != 0:
