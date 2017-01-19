@@ -186,7 +186,7 @@ def _mesh_extract_mpi_rwg(sd_array: List[SeismicData], information: dict, im: In
     while progress < im_iter.end_point:
         count = next(im_iter)
 
-        UCVM.query(sd_array[0:count], information["cvm_list"], ["velocity"], None, "query_by=y")
+        UCVM.query(sd_array[0:count], information["cvm_list"], ["velocity"], None)
 
         vp_array = []
         vs_array = []
@@ -413,7 +413,7 @@ def _mesh_extract_single_rwg(sd_array: List[SeismicData], information: dict, im:
             count = next(im_iter)
             progress += count
 
-            UCVM.query(sd_array[0:count], information["cvm_list"], ["velocity"], None, "query_by=y")
+            UCVM.query(sd_array[0:count], information["cvm_list"], ["velocity"], None)
 
             vp_array = []
             vs_array = []
