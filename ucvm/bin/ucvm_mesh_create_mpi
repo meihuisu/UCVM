@@ -118,21 +118,8 @@ def main() -> int:
 
     # Rank zero has the task of compiling the topology of CPUs available to us.
     if rank == 0:
-        topology = {
-            0: {
-                "max_per_cpu": int(i_mesh.get_max_points_extract(2))
-            }
-        }
-        for i in range(1, size):
-            topology[i] = comm.recv(source=i)
-
         # Make each node responsible for its share of the mesh.
         print("Starting MPI mesh extraction for " + mesh_information["mesh_name"] + "\n")
-
-        for i in range(0, len(topology)):
-            print("Process %d can extract %s points." % (
-                i, humanize.intcomma(topology[i]["max_per_cpu"])
-            ))
 
         points_per_process = int(i_mesh.total_size / size) + 1
 
@@ -149,6 +136,8 @@ def main() -> int:
     sys.stdout.flush()
 
     comm.Barrier()
+
+    exit()
 
     mesh_extract_mpi(mesh_information, (start_point, end_point))
 
