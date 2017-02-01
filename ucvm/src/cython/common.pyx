@@ -206,16 +206,16 @@ class UCVMCCommon:
         return f1 + f2 + f3 + f4
 
     @staticmethod
-    def calculate_grid_point(float width, float height, float depth, float x_value, float y_value,
-                             float z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
+    def calculate_grid_point(double width, double height, double depth, double x_value, double y_value,
+                             double z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
 
         cdef int x_c = (int)(floor(x_value / width * (dim_x - 1)))
         cdef int y_c = (int)(floor(y_value / height * (dim_y - 1)))
         cdef int z_c = (int)(floor(depth / z_interval - 1) - floor(z_value / z_interval))
 
-        cdef float x_p = fmod(x_value, (width / (dim_x - 1))) / (dim_x - 1)
-        cdef float y_p = fmod(y_value, (height / (dim_y - 1))) / (dim_y - 1)
-        cdef float z_p = fmod(z_value, z_interval) / z_interval
+        cdef double x_p = fmod(x_value, (width / (dim_x - 1))) / (width / (dim_x - 1))
+        cdef double y_p = fmod(y_value, (height / (dim_y - 1))) / (height / (dim_y - 1))
+        cdef double z_p = fmod(z_value, z_interval) / z_interval
 
         return {"x": x_c, "y": y_c, "z": z_c}, {"x": x_p, "y": y_p, "z": z_p}
 
@@ -247,26 +247,26 @@ class UCVMCCommon:
         and En-Jui used in their conversions does.
 
         Args:
-            longitude (float): The longitude in decimal degrees.
-            latitude (float): The latitude in decimal degrees.
+            longitude (double): The longitude in decimal degrees.
+            latitude (double): The latitude in decimal degrees.
             zone (int): The UTM zone to which the conversions should be done.
 
         Returns:
             A tuple containing two floats (easting and northing) in UTM projection.
         """
-        cdef float semimaj = 6378206.40
-        cdef float semimin = 6356583.80
-        cdef float scfa = 0.9996
-        cdef float north = 0.0
-        cdef float east = 500000.0
+        cdef double semimaj = 6378206.40
+        cdef double semimin = 6356583.80
+        cdef double scfa = 0.9996
+        cdef double north = 0.0
+        cdef double east = 500000.0
 
-        cdef float pi = 4.0 * atan(1.0)
-        cdef float degrad = pi / 180.0
+        cdef double pi = 4.0 * atan(1.0)
+        cdef double degrad = pi / 180.0
 
-        cdef float e2, e4, e6, ep2, cm, rm, rn, new_lat, delam
-        cdef float f1, f2, f3, f4
+        cdef double e2, e4, e6, ep2, cm, rm, rn, new_lat, delam
+        cdef double f1, f2, f3, f4
 
-        cdef float xx, yy
+        cdef double xx, yy
 
         e2 = 1.0 - pow((semimin / semimaj), 2)
         e4 = e2 * e2

@@ -32,7 +32,7 @@ def usage() -> None:
         "would like to do.\n"
         "\n"
         "-f, --file f:          The configuration file to read from.\n"
-        "-a, --advanced:        If this flag is set, advanced questions will be asked."
+        "-a, --advanced:        If this flag is set, additional questions will be asked."
     )
 
 

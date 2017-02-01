@@ -186,6 +186,10 @@ def main() -> int:
         with open(options["input"]) as the_file:
             lines.append(the_file.readline())
     else:
+        print(
+            "Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered\n"
+            "all of your points, hit enter twice or press Ctrl-D to retrieve the material properties."
+        )
         for line in sys.stdin:
             if line.strip() != "":
                 lines.append(line)

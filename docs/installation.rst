@@ -7,7 +7,7 @@ UCVM on your particular system, please choose your platform below.
 .. toctree::
    :maxdepth: 1
 
-   installation_mac
    installation_linux
+   installation_mac
    installation_hpc_bluewaters
    installation_hpc_usc

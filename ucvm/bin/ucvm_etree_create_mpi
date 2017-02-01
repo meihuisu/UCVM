@@ -41,9 +41,14 @@ def usage() -> None:
         "\n"
         "-c, --config-only c:   Generates the XML-style configuration file only. No mesh will be\n"
         "                       made at the end of the questions.\n"
-        "-f, --file f:          Specifies the configuration file from which this utility should\n"
-        "                       read. Note that this auto-detects a legacy (before UCVM 15.10.0)\n"
-        "                       style configuration file vs. the new XML format.\n"
+        "-f, --file f:          Specifies the configuration file from which this utility should read.\n"
+        "-r, --rows r:          Extracts one or more rows of the etree. If r is a number like '1'\n"
+        "                       just that row will be extracted. If r is an interval like '1-5'\n"
+        "                       those rows (1, 2, 3, 4, 5 e.g.) inclusive will be extracted.\n"
+        "-i, --interval i:      Extracts exactly the interval desired. The parameter must be\n"
+        "                       specified as row,column-row,column. E.g. the parameters\n"
+        "                       1,5-10,12 would extract row 1, column 5 through row 10,\n"
+        "                       column 12 inclusive."
     )
 
 

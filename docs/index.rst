@@ -7,18 +7,16 @@ models, building meshes, and visualizing velocity models easier to do through a 
 interface. UCVM has been used extensively to generate meshes and e-trees that are then used for
 3D wave propagation simulations within California
 
-The UCVM documentation comes with a tutorial and also sections describing the underlying Python
-code and implementation.
-
 If you have any questions regarding UCVM, please email
 `software@scec.org <mailto:software@scec.org>`_. We will try and respond within two business days.
 
 .. toctree::
    :maxdepth: 2
 
-   introduction
+   newfeatures
    installation
-   features
    tutorial
-   reference
+   availablemodels
+   commands
+   configurationfiles
    api

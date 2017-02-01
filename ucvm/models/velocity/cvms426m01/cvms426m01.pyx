@@ -22,7 +22,7 @@ cimport cython
 from libc.stdlib cimport malloc, free
 
 # UCVM Imports
-from ucvm.src.model.velocity.legacy import VelocityModel
+from ucvm.src.model.velocity import VelocityModel
 from ucvm.src.shared import VelocityProperties
 from ucvm.src.shared.properties import SeismicData
 

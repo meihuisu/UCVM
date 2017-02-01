@@ -28,9 +28,8 @@ def usage() -> None:
         "ucvm_model_manager - UCVM Version [version]\n"
         "\n"
         "Add and remove models from UCVM with this program. Models can be downloaded through the\n"
-        "web, they can be added locally, or they can be added manually (i.e. specifying the class\n"
-        "and the file that conforms to the Model abstract class). This utility can also be used\n"
-        "to list installed models and to also remove models as well.\n"
+        "web or they can be added locally. This utility can also be used to list and remove\n"
+        "installed models.\n"
         "\n"
         "-l, --list:            Lists all models available and states which ones are installed.\n"
         "-a, --add model:       Downloads and installs 'model' and adds it to UCVM.\n"
@@ -40,9 +39,6 @@ def usage() -> None:
         "-r, --remove model:    Removes 'model' from the UCVM list of models. For models\n"
         "                       downloaded and installed from the web, or copied locally, this\n"
         "                       will also delete the model code and data itself.\n"
-        "-m, --manual file/cls: Manually creates an entry for model 'cls' in 'dir'. Specified\n"
-        "                       like --manual /Users/johndoe/foo/model.py Bar would load class\n"
-        "                       Bar(Model) from /Users/johndoe/foo/model.py.\n"
     )
 
 

@@ -47,7 +47,6 @@ def main() -> int:
     """
 
     # Set our variable defaults.
-    iteration = -1
     username = ""
     path = "/home/scec-01/enjuilee/work/CVM4SI26_ascii"
 
@@ -76,7 +75,7 @@ def main() -> int:
 
     vp_arr = np.zeros((dimension_z, dimension_x, dimension_y), dtype="<f4")
     vs_arr = np.zeros((dimension_z, dimension_x, dimension_y), dtype="<f4")
-    #density_arr = np.zeros((dimension_z, dimension_x, dimension_y), dtype="<f")
+    density_arr = np.zeros((dimension_z, dimension_x, dimension_y), dtype="<f4")
 
     for line in f:
         arr = line.split()
@@ -89,7 +88,7 @@ def main() -> int:
 
         vp_arr[z_pos][x_pos][y_pos] = vp
         vs_arr[z_pos][x_pos][y_pos] = vs
-        #density_arr[z_pos][x_pos][y_pos] = density
+        density_arr[z_pos][x_pos][y_pos] = density
 
     f.close()
 
@@ -97,6 +96,7 @@ def main() -> int:
     out_file = h5py.File("cvms426.dat", mode="w")
     grp_vp = out_file.create_group("vp")
     grp_vs = out_file.create_group("vs")
+    grp_dn = out_file.create_group("dn")
 
     grp_vp.create_dataset(
         "data", (vp_arr.shape[0], vp_arr.shape[1], vp_arr.shape[2]), vp_arr.dtype, chunks=True, data=vp_arr,
@@ -105,6 +105,10 @@ def main() -> int:
     grp_vs.create_dataset(
         "data", (vs_arr.shape[0], vs_arr.shape[1], vs_arr.shape[2]), vs_arr.dtype, chunks=True, data=vs_arr,
         compression="lzf"
+    )
+    grp_dn.create_dataset(
+        "data", (density_arr.shape[0], density_arr.shape[1], density_arr.shape[2]), density_arr.dtype, chunks=True,
+        data=density_arr, compression="lzf"
     )
 
     out_file.close()

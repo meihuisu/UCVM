@@ -43,9 +43,13 @@ def usage() -> None:
         "\n"
         "-c, --config-only c:   Generates the XML-style configuration file only. No mesh will be\n"
         "                       made at the end of the questions.\n"
-        "-f, --file f:          Specifies the configuration file from which this utility should\n"
-        "                       read. Note that this auto-detects a legacy (before UCVM 15.10.0)\n"
-        "                       style configuration file vs. the new XML format.\n"
+        "-f, --file f:          Specifies the configuration file from which this utility should read.\n"
+        "-s, --slices s:        Extracts one or more slices. If slice is a number, like '1' or '5',\n"
+        "                       that slice is extracted. If slice is a range, like 1-5, then slices\n"
+        "                       1, 2, 3, 4, and 5, will be extracted. Slice 1 is the surface.\n"
+        "-i, --interval i:      Extracts a percentage of the mesh. If i is '0-10', for example, then\n"
+        "                       the first 10% of the mesh will be extracted. If i is '50-75' then\n"
+        "                       the third quarter of the mesh will be extracted.\n"
     )
 
 

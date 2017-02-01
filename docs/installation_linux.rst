@@ -1,25 +1,75 @@
 Linux
 =====
 
-Fedora 25
----------
+CentOS 6.8+
+-----------
 
-In order to install UCVM on Fedora, a few required packages must be installed first.
+Prerequisites
+~~~~~~~~~~~~~
 
-sudo yum install freetype-devel
-sudo yum install python3-devel make automake gcc gcc-c++ gcc-gfortran
-sudo yum install redhat-rpm-config
-sudo yum install subverison
-sudo yum install hdf5 hdf5-devel
+UCVM has been tested and confirmed to work with CentOS. The VirtualBox version of UCVM uses CentOS 6.8. In order to
+install UCVM on this distribution of Linux, a few required packages must be installed first.
+::
 
-To also add MPI support:
+    sudo yum install epel-release
+    sudo yum install git
+    sudo yum install freetype-devel make automake gcc gcc-c++ gcc-gfortran
+        redhat-rpm-config subverison hdf5 hdf5-devel openssl-devel libpng-devel
 
-sudo yum install openmpi openmpi-devel
+To also add MPI support, the following packages need to be installed.
+::
 
-Ubuntu 16.04
+    sudo yum install openmpi openmpi-devel
 
-sudo apt install git
-sudo apt install libfreetype6-dev
-apt install python3-dev
-apt install libhdf5-serial-dev
+If you are on CentOS 5.6 then Python 3 is not installable via yum. In order to build Python 3.5 from scratch, do
+the following:
+::
+
+    wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz
+    tar zxvf Python-3.5.2.tgz
+    cd Python-3.5.2
+    ./configure
+    make altinstall
+
+If you are on a later version of CentOS or on another distribution that has Python 3.5 installed, then you need
+the following package:
+::
+
+    sudo yum install python3-devel
+
+Verify that you do indeed have a working Python 3.5 installation by running:
+::
+
+    python3.5 -v
+
+Installing UCVM
+~~~~~~~~~~~~~~~
+
+It is strongly recommended that users of UCVM use Python virtual environments to install UCVM. Python virtual
+environments allow all the UCVM components to be installed in one folder and independently of other Python packages.
+This guide will detail how to install UCVM using a virtual environment first. The Advanced section at the end of this
+document explains how to install UCVM without a virtual environment.
+
+To create and activate your virtual environment, do the following:
+::
+
+    python3.5 -m venv ~/ucvm-|version|
+    source ~/ucvm-|version|/bin/activate
+
+You should notice that your command line prompt has changed include "ucvm-|version|" in brackets. If you don't see this,
+then the virtual environment has not been activated correctly.
+::
+
+    (ucvm-|version|) sceccme@bash-3.2$
+
+Now we can clone the UCVM software.
+::
+
+    git clone https://github.com/SCECcode/UCVM
+
+Run the ucvm_setup script. This script does some basic sanity checks of the installation environment and makes sure
+that the installation looks like it can proceed successfully.
+::
+
+    ./ucvm_setup
 

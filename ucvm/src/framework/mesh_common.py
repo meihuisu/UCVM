@@ -126,6 +126,7 @@ class InternalMesh(object):
         self.full_size = self.total_size
         if "-" in interval:
             parts = interval.split("-")
+            self.start_point = int(float(parts[0]) / 100 * self.total_size)
             self.end_point = int(float(parts[1]) / 100 * self.total_size)
             self.total_size = int(((float(parts[1]) - float(parts[0])) / 100) * self.total_size)
         else:

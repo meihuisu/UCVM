@@ -48,9 +48,9 @@ def usage() -> None:
         "\n"
         "ucvm_plot_comparison - UCVM Version [version]\n"
         "\n"
-        "Compares two or more meshes, models, and/or e-trees to check if they are equivalent or\n"
-        "not. This utility generates horizontal slices and calculates various statistics to\n"
-        "determine equivalency.\n"
+        "Compares two or more slices from meshes, models, and/or e-trees to check if they are equivalent\n"
+        "or not. This utility generates horizontal slices and calculates various statistics to determine\n"
+        "equivalency.\n"
         "\n"
         "-f,  --file path:           Specifies a previously generated configuration file."
     )

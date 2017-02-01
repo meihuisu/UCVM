@@ -18,7 +18,7 @@ Supported Capabilities
 Setup
 -----
 
-Installing UCVM on HPC requires a few additional steps in addition to the standard installation script.
+Installing UCVM on HPC is a straightforward process requiring .
 
 1. Configuration
 ~~~~~~~~~~~~~~~~

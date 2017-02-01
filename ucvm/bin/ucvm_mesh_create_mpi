@@ -125,19 +125,18 @@ def main() -> int:
 
         for i in range(1, size):
             if i == size - 1:
-                comm.send((i * points_per_process, i_mesh.total_size), dest=i)
+                comm.send((i * points_per_process + i_mesh.start_point, i_mesh.total_size + i_mesh.start_point), dest=i)
             else:
-                comm.send((i * points_per_process, (i + 1) * points_per_process), dest=i)
+                comm.send((i * points_per_process + i_mesh.start_point, (i + 1) * points_per_process +
+                           i_mesh.start_point), dest=i)
 
-        (start_point, end_point) = (0, points_per_process)
+        (start_point, end_point) = (i_mesh.start_point, points_per_process + i_mesh.start_point)
     else:
         (start_point, end_point) = comm.recv(source=0)
 
     sys.stdout.flush()
 
     comm.Barrier()
-
-    exit()
 
     mesh_extract_mpi(mesh_information, (start_point, end_point))
 

@@ -7,7 +7,7 @@
             "/Users/davidgil/PycharmProjects/UCVM/ucvm/models/velocity/cvmh1510/src/src/vx_sub.h"
         ]
     },
-    "module_name": "cvmh1510"
+    "module_name": "CVMH1510VelocityModel"
 }
 END: Cython Metadata */
 
@@ -277,8 +277,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__cvmh1510
-#define __PYX_HAVE_API__cvmh1510
+#define __PYX_HAVE__CVMH1510VelocityModel
+#define __PYX_HAVE_API__CVMH1510VelocityModel
 #include "src/src/vx_sub.h"
 #ifdef _OPENMP
 #include <omp.h>
@@ -495,20 +495,20 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "cvmh1510.pyx",
+  "CVMH1510VelocityModel.pyx",
 };
 
 /*--- Type declarations ---*/
-struct __pyx_t_8cvmh1510_vx_entry_t;
+struct __pyx_t_21CVMH1510VelocityModel_vx_entry_t;
 
-/* "cvmh1510.pyx":41
+/* "CVMH1510VelocityModel.pyx":41
  *     void vx_getsurface(double *, int, float *)
  * 
  * cdef struct vx_entry_t:             # <<<<<<<<<<<<<<
  *     double coor[3]
  *     int coor_type
  */
-struct __pyx_t_8cvmh1510_vx_entry_t {
+struct __pyx_t_21CVMH1510VelocityModel_vx_entry_t {
   double coor[3];
   int coor_type;
   double coor_utm[3];
@@ -864,11 +864,11 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'cython' */
 
-/* Module declarations from 'cvmh1510' */
-#define __Pyx_MODULE_NAME "cvmh1510"
-int __pyx_module_is_main_cvmh1510 = 0;
+/* Module declarations from 'CVMH1510VelocityModel' */
+#define __Pyx_MODULE_NAME "CVMH1510VelocityModel"
+int __pyx_module_is_main_CVMH1510VelocityModel = 0;
 
-/* Implementation of 'cvmh1510' */
+/* Implementation of 'CVMH1510VelocityModel' */
 static PyObject *__pyx_builtin_super;
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_builtin_range;
@@ -912,7 +912,6 @@ static const char __pyx_k_vx_surf[] = "vx_surf";
 static const char __pyx_k_x_value[] = "x_value";
 static const char __pyx_k_y_value[] = "y_value";
 static const char __pyx_k_z_value[] = "z_value";
-static const char __pyx_k_cvmh1510[] = "cvmh1510";
 static const char __pyx_k_qualname[] = "__qualname__";
 static const char __pyx_k_metaclass[] = "__metaclass__";
 static const char __pyx_k_depth_elev[] = "depth_elev";
@@ -929,14 +928,14 @@ static const char __pyx_k_ucvm_src_shared[] = "ucvm.src.shared";
 static const char __pyx_k_set_velocity_data[] = "set_velocity_data";
 static const char __pyx_k_VelocityProperties[] = "VelocityProperties";
 static const char __pyx_k_CVMH1510VelocityModel[] = "CVMH1510VelocityModel";
+static const char __pyx_k_ucvm_src_model_velocity[] = "ucvm.src.model.velocity";
 static const char __pyx_k_ucvm_src_shared_properties[] = "ucvm.src.shared.properties";
 static const char __pyx_k_CVMH1510VelocityModel___del[] = "CVMH1510VelocityModel.__del__";
 static const char __pyx_k_CVMH1510VelocityModel___init[] = "CVMH1510VelocityModel.__init__";
 static const char __pyx_k_CVMH1510VelocityModel__query[] = "CVMH1510VelocityModel._query";
 static const char __pyx_k_set_velocity_properties_none[] = "_set_velocity_properties_none";
 static const char __pyx_k_Defines_the_CVM_H_interface_to[] = "\n    Defines the CVM-H interface to UCVM. This class queries the legacy C code to retrieve\n    the material properties and records the data to the new UCVM data structures.\n    ";
-static const char __pyx_k_Users_davidgil_PycharmProjects[] = "/Users/davidgil/PycharmProjects/UCVM/ucvm/models/velocity/cvmh1510/cvmh1510.pyx";
-static const char __pyx_k_ucvm_src_model_velocity_legacy[] = "ucvm.src.model.velocity.legacy";
+static const char __pyx_k_Users_davidgil_PycharmProjects[] = "/Users/davidgil/PycharmProjects/UCVM/ucvm/models/velocity/cvmh1510/CVMH1510VelocityModel.pyx";
 static const char __pyx_k_CVM_H_15_1_0_Velocity_Model_The[] = "\nCVM-H 15.1.0 Velocity Model\n\nThe SCEC CVM-H velocity model describes seismic P- and S-wave velocities and densities, and is\ncomprised of basin structures embedded in tomographic and teleseismic crust and upper mantle\nmodels. This latest release of the CVM-H (15.1.0) represents the integration of various model\ncomponents, including fully 3D waveform tomographic results.\n\nThis code is the Cython interface to the legacy CVM-H model C code. It returns equivalent\nmaterial properties to UCVM.\n\nCopyright:\n    Southern California Earthquake Center\n\nDeveloper:\n    David Gill <davidgil@usc.edu>\n";
 static const char __pyx_k_CVM_H_15_1_0_could_not_be_initia[] = "CVM-H 15.1.0 could not be initialized correctly.";
 static PyObject *__pyx_kp_s_1d;
@@ -955,7 +954,6 @@ static PyObject *__pyx_n_s_VelocityModel;
 static PyObject *__pyx_n_s_VelocityProperties;
 static PyObject *__pyx_kp_s__3;
 static PyObject *__pyx_n_s_converted_point;
-static PyObject *__pyx_n_s_cvmh1510;
 static PyObject *__pyx_n_s_data;
 static PyObject *__pyx_n_s_del;
 static PyObject *__pyx_n_s_depth_elev;
@@ -997,7 +995,7 @@ static PyObject *__pyx_n_s_strip;
 static PyObject *__pyx_n_s_super;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_typing;
-static PyObject *__pyx_n_s_ucvm_src_model_velocity_legacy;
+static PyObject *__pyx_n_s_ucvm_src_model_velocity;
 static PyObject *__pyx_n_s_ucvm_src_shared;
 static PyObject *__pyx_n_s_ucvm_src_shared_properties;
 static PyObject *__pyx_n_s_vx_surf;
@@ -1005,9 +1003,9 @@ static PyObject *__pyx_n_s_x;
 static PyObject *__pyx_n_s_x_value;
 static PyObject *__pyx_n_s_y_value;
 static PyObject *__pyx_n_s_z_value;
-static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_kwargs); /* proto */
-static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_points, PyObject *__pyx_v_kwargs); /* proto */
-static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_4__del__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_21CVMH1510VelocityModel_21CVMH1510VelocityModel___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_kwargs); /* proto */
+static PyObject *__pyx_pf_21CVMH1510VelocityModel_21CVMH1510VelocityModel_2_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_points, PyObject *__pyx_v_kwargs); /* proto */
+static PyObject *__pyx_pf_21CVMH1510VelocityModel_21CVMH1510VelocityModel_4__del__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__2;
@@ -1019,7 +1017,7 @@ static PyObject *__pyx_codeobj__6;
 static PyObject *__pyx_codeobj__8;
 static PyObject *__pyx_codeobj__10;
 
-/* "cvmh1510.pyx":63
+/* "CVMH1510VelocityModel.pyx":63
  *     """
  * 
  *     def __init__(self, **kwargs):             # <<<<<<<<<<<<<<
@@ -1028,9 +1026,9 @@ static PyObject *__pyx_codeobj__10;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_8cvmh1510_21CVMH1510VelocityModel_1__init__ = {"__init__", (PyCFunction)__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_1__init__, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_21CVMH1510VelocityModel_21CVMH1510VelocityModel_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_21CVMH1510VelocityModel_21CVMH1510VelocityModel_1__init__ = {"__init__", (PyCFunction)__pyx_pw_21CVMH1510VelocityModel_21CVMH1510VelocityModel_1__init__, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_21CVMH1510VelocityModel_21CVMH1510VelocityModel_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_self = 0;
   PyObject *__pyx_v_kwargs = 0;
   PyObject *__pyx_r = 0;
@@ -1070,11 +1068,11 @@ static PyObject *__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_1__init__(PyObject *
   __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 63, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
-  __Pyx_AddTraceback("cvmh1510.CVMH1510VelocityModel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("CVMH1510VelocityModel.CVMH1510VelocityModel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(__pyx_self, __pyx_v_self, __pyx_v_kwargs);
+  __pyx_r = __pyx_pf_21CVMH1510VelocityModel_21CVMH1510VelocityModel___init__(__pyx_self, __pyx_v_self, __pyx_v_kwargs);
 
   /* function exit code */
   __Pyx_XDECREF(__pyx_v_kwargs);
@@ -1082,7 +1080,7 @@ static PyObject *__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_1__init__(PyObject *
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_kwargs) {
+static PyObject *__pyx_pf_21CVMH1510VelocityModel_21CVMH1510VelocityModel___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_kwargs) {
   char *__pyx_v_model_path;
   PyObject *__pyx_v_model_data_path = NULL;
   PyObject *__pyx_r = NULL;
@@ -1097,7 +1095,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(CYTHON_UNUS
   int __pyx_t_8;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "cvmh1510.pyx":64
+  /* "CVMH1510VelocityModel.pyx":64
  * 
  *     def __init__(self, **kwargs):
  *         super().__init__(**kwargs)             # <<<<<<<<<<<<<<
@@ -1126,7 +1124,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(CYTHON_UNUS
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cvmh1510.pyx":68
+  /* "CVMH1510VelocityModel.pyx":68
  *         cdef char *model_path
  * 
  *         model_data_path = os.path.join(self.model_location, "data").encode("ASCII")             # <<<<<<<<<<<<<<
@@ -1179,7 +1177,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(CYTHON_UNUS
   __pyx_v_model_data_path = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "cvmh1510.pyx":69
+  /* "CVMH1510VelocityModel.pyx":69
  * 
  *         model_data_path = os.path.join(self.model_location, "data").encode("ASCII")
  *         model_path = model_data_path             # <<<<<<<<<<<<<<
@@ -1189,7 +1187,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(CYTHON_UNUS
   __pyx_t_7 = __Pyx_PyObject_AsString(__pyx_v_model_data_path); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L1_error)
   __pyx_v_model_path = __pyx_t_7;
 
-  /* "cvmh1510.pyx":70
+  /* "CVMH1510VelocityModel.pyx":70
  *         model_data_path = os.path.join(self.model_location, "data").encode("ASCII")
  *         model_path = model_data_path
  *         if vx_setup(model_path) != 0:             # <<<<<<<<<<<<<<
@@ -1199,7 +1197,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(CYTHON_UNUS
   __pyx_t_8 = ((vx_setup(__pyx_v_model_path) != 0) != 0);
   if (__pyx_t_8) {
 
-    /* "cvmh1510.pyx":71
+    /* "CVMH1510VelocityModel.pyx":71
  *         model_path = model_data_path
  *         if vx_setup(model_path) != 0:
  *             raise RuntimeError("CVM-H 15.1.0 could not be initialized correctly.")             # <<<<<<<<<<<<<<
@@ -1212,7 +1210,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(CYTHON_UNUS
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __PYX_ERR(0, 71, __pyx_L1_error)
 
-    /* "cvmh1510.pyx":70
+    /* "CVMH1510VelocityModel.pyx":70
  *         model_data_path = os.path.join(self.model_location, "data").encode("ASCII")
  *         model_path = model_data_path
  *         if vx_setup(model_path) != 0:             # <<<<<<<<<<<<<<
@@ -1221,7 +1219,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(CYTHON_UNUS
  */
   }
 
-  /* "cvmh1510.pyx":63
+  /* "CVMH1510VelocityModel.pyx":63
  *     """
  * 
  *     def __init__(self, **kwargs):             # <<<<<<<<<<<<<<
@@ -1238,7 +1236,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(CYTHON_UNUS
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("cvmh1510.CVMH1510VelocityModel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("CVMH1510VelocityModel.CVMH1510VelocityModel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_model_data_path);
@@ -1247,7 +1245,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(CYTHON_UNUS
   return __pyx_r;
 }
 
-/* "cvmh1510.pyx":73
+/* "CVMH1510VelocityModel.pyx":73
  *             raise RuntimeError("CVM-H 15.1.0 could not be initialized correctly.")
  * 
  *     def _query(self, points: List[SeismicData], **kwargs) -> bool:             # <<<<<<<<<<<<<<
@@ -1256,10 +1254,10 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel___init__(CYTHON_UNUS
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_3_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_8cvmh1510_21CVMH1510VelocityModel_2_query[] = "\n        This is the method that all models override. It handles querying the velocity model\n        and filling in the SeismicData structures.\n\n        Args:\n            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the\n                points in depth. These are to be populated with :obj:`VelocityProperties`:\n\n        Returns:\n            True on success, false if there is an error.\n        ";
-static PyMethodDef __pyx_mdef_8cvmh1510_21CVMH1510VelocityModel_3_query = {"_query", (PyCFunction)__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_3_query, METH_VARARGS|METH_KEYWORDS, __pyx_doc_8cvmh1510_21CVMH1510VelocityModel_2_query};
-static PyObject *__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_3_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_21CVMH1510VelocityModel_21CVMH1510VelocityModel_3_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_21CVMH1510VelocityModel_21CVMH1510VelocityModel_2_query[] = "\n        This is the method that all models override. It handles querying the velocity model\n        and filling in the SeismicData structures.\n\n        Args:\n            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the\n                points in depth. These are to be populated with :obj:`VelocityProperties`:\n\n        Returns:\n            True on success, false if there is an error.\n        ";
+static PyMethodDef __pyx_mdef_21CVMH1510VelocityModel_21CVMH1510VelocityModel_3_query = {"_query", (PyCFunction)__pyx_pw_21CVMH1510VelocityModel_21CVMH1510VelocityModel_3_query, METH_VARARGS|METH_KEYWORDS, __pyx_doc_21CVMH1510VelocityModel_21CVMH1510VelocityModel_2_query};
+static PyObject *__pyx_pw_21CVMH1510VelocityModel_21CVMH1510VelocityModel_3_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_self = 0;
   PyObject *__pyx_v_points = 0;
   PyObject *__pyx_v_kwargs = 0;
@@ -1308,11 +1306,11 @@ static PyObject *__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_3_query(PyObject *__
   __Pyx_RaiseArgtupleInvalid("_query", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 73, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
-  __Pyx_AddTraceback("cvmh1510.CVMH1510VelocityModel._query", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("CVMH1510VelocityModel.CVMH1510VelocityModel._query", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(__pyx_self, __pyx_v_self, __pyx_v_points, __pyx_v_kwargs);
+  __pyx_r = __pyx_pf_21CVMH1510VelocityModel_21CVMH1510VelocityModel_2_query(__pyx_self, __pyx_v_self, __pyx_v_points, __pyx_v_kwargs);
 
   /* function exit code */
   __Pyx_XDECREF(__pyx_v_kwargs);
@@ -1320,8 +1318,8 @@ static PyObject *__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_3_query(PyObject *__
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_points, PyObject *__pyx_v_kwargs) {
-  struct __pyx_t_8cvmh1510_vx_entry_t __pyx_v_entry;
+static PyObject *__pyx_pf_21CVMH1510VelocityModel_21CVMH1510VelocityModel_2_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_points, PyObject *__pyx_v_kwargs) {
+  struct __pyx_t_21CVMH1510VelocityModel_vx_entry_t __pyx_v_entry;
   float __pyx_v_vx_surf;
   PyObject *__pyx_v_id_cvmh = NULL;
   PyObject *__pyx_v_items = NULL;
@@ -1347,7 +1345,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
   PyObject *__pyx_t_16 = NULL;
   __Pyx_RefNannySetupContext("_query", 0);
 
-  /* "cvmh1510.pyx":88
+  /* "CVMH1510VelocityModel.pyx":88
  *         cdef float vx_surf
  * 
  *         id_cvmh = self._public_metadata["id"]             # <<<<<<<<<<<<<<
@@ -1362,7 +1360,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
   __pyx_v_id_cvmh = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "cvmh1510.pyx":90
+  /* "CVMH1510VelocityModel.pyx":90
  *         id_cvmh = self._public_metadata["id"]
  * 
  *         if "params" in kwargs:             # <<<<<<<<<<<<<<
@@ -1373,7 +1371,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
   __pyx_t_4 = (__pyx_t_3 != 0);
   if (__pyx_t_4) {
 
-    /* "cvmh1510.pyx":91
+    /* "CVMH1510VelocityModel.pyx":91
  * 
  *         if "params" in kwargs:
  *             items = [str(x).lower().strip() for x in str(kwargs["params"]).split(",")]             # <<<<<<<<<<<<<<
@@ -1497,7 +1495,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     __pyx_v_items = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "cvmh1510.pyx":92
+    /* "CVMH1510VelocityModel.pyx":92
  *         if "params" in kwargs:
  *             items = [str(x).lower().strip() for x in str(kwargs["params"]).split(",")]
  *             if "gtl" in items:             # <<<<<<<<<<<<<<
@@ -1508,7 +1506,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     __pyx_t_3 = (__pyx_t_4 != 0);
     if (__pyx_t_3) {
 
-      /* "cvmh1510.pyx":93
+      /* "CVMH1510VelocityModel.pyx":93
  *             items = [str(x).lower().strip() for x in str(kwargs["params"]).split(",")]
  *             if "gtl" in items:
  *                 vx_setgtl(1)             # <<<<<<<<<<<<<<
@@ -1517,7 +1515,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
  */
       vx_setgtl(1);
 
-      /* "cvmh1510.pyx":92
+      /* "CVMH1510VelocityModel.pyx":92
  *         if "params" in kwargs:
  *             items = [str(x).lower().strip() for x in str(kwargs["params"]).split(",")]
  *             if "gtl" in items:             # <<<<<<<<<<<<<<
@@ -1527,7 +1525,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
       goto __pyx_L6;
     }
 
-    /* "cvmh1510.pyx":95
+    /* "CVMH1510VelocityModel.pyx":95
  *                 vx_setgtl(1)
  *             else:
  *                 vx_setgtl(0)             # <<<<<<<<<<<<<<
@@ -1539,7 +1537,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     }
     __pyx_L6:;
 
-    /* "cvmh1510.pyx":96
+    /* "CVMH1510VelocityModel.pyx":96
  *             else:
  *                 vx_setgtl(0)
  *             if "1d" in items:             # <<<<<<<<<<<<<<
@@ -1550,7 +1548,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     __pyx_t_4 = (__pyx_t_3 != 0);
     if (__pyx_t_4) {
 
-      /* "cvmh1510.pyx":97
+      /* "CVMH1510VelocityModel.pyx":97
  *                 vx_setgtl(0)
  *             if "1d" in items:
  *                 vx_register_scec()             # <<<<<<<<<<<<<<
@@ -1559,7 +1557,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
  */
       vx_register_scec();
 
-      /* "cvmh1510.pyx":96
+      /* "CVMH1510VelocityModel.pyx":96
  *             else:
  *                 vx_setgtl(0)
  *             if "1d" in items:             # <<<<<<<<<<<<<<
@@ -1569,7 +1567,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
       goto __pyx_L7;
     }
 
-    /* "cvmh1510.pyx":99
+    /* "CVMH1510VelocityModel.pyx":99
  *                 vx_register_scec()
  *             else:
  *                 vx_register_bkg(NULL)             # <<<<<<<<<<<<<<
@@ -1581,7 +1579,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     }
     __pyx_L7:;
 
-    /* "cvmh1510.pyx":90
+    /* "CVMH1510VelocityModel.pyx":90
  *         id_cvmh = self._public_metadata["id"]
  * 
  *         if "params" in kwargs:             # <<<<<<<<<<<<<<
@@ -1591,7 +1589,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     goto __pyx_L3;
   }
 
-  /* "cvmh1510.pyx":101
+  /* "CVMH1510VelocityModel.pyx":101
  *                 vx_register_bkg(NULL)
  *         else:
  *             vx_setgtl(0)             # <<<<<<<<<<<<<<
@@ -1601,7 +1599,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
   /*else*/ {
     vx_setgtl(0);
 
-    /* "cvmh1510.pyx":102
+    /* "CVMH1510VelocityModel.pyx":102
  *         else:
  *             vx_setgtl(0)
  *             vx_register_bkg(NULL)             # <<<<<<<<<<<<<<
@@ -1612,7 +1610,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
   }
   __pyx_L3:;
 
-  /* "cvmh1510.pyx":104
+  /* "CVMH1510VelocityModel.pyx":104
  *             vx_register_bkg(NULL)
  * 
  *         for i in range(0, len(points)):             # <<<<<<<<<<<<<<
@@ -1623,7 +1621,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
   for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_6; __pyx_t_11+=1) {
     __pyx_v_i = __pyx_t_11;
 
-    /* "cvmh1510.pyx":105
+    /* "CVMH1510VelocityModel.pyx":105
  * 
  *         for i in range(0, len(points)):
  *             if points[i].original_point.depth_elev == 0:             # <<<<<<<<<<<<<<
@@ -1645,7 +1643,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (__pyx_t_4) {
 
-      /* "cvmh1510.pyx":106
+      /* "CVMH1510VelocityModel.pyx":106
  *         for i in range(0, len(points)):
  *             if points[i].original_point.depth_elev == 0:
  *                 vx_setzmode(1)             # <<<<<<<<<<<<<<
@@ -1654,7 +1652,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
  */
       vx_setzmode(1);
 
-      /* "cvmh1510.pyx":105
+      /* "CVMH1510VelocityModel.pyx":105
  * 
  *         for i in range(0, len(points)):
  *             if points[i].original_point.depth_elev == 0:             # <<<<<<<<<<<<<<
@@ -1664,7 +1662,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
       goto __pyx_L10;
     }
 
-    /* "cvmh1510.pyx":108
+    /* "CVMH1510VelocityModel.pyx":108
  *                 vx_setzmode(1)
  *             else:
  *                 vx_setzmode(0)             # <<<<<<<<<<<<<<
@@ -1676,7 +1674,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     }
     __pyx_L10:;
 
-    /* "cvmh1510.pyx":110
+    /* "CVMH1510VelocityModel.pyx":110
  *                 vx_setzmode(0)
  * 
  *             entry.coor_type = 0             # <<<<<<<<<<<<<<
@@ -1685,7 +1683,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
  */
     __pyx_v_entry.coor_type = 0;
 
-    /* "cvmh1510.pyx":111
+    /* "CVMH1510VelocityModel.pyx":111
  * 
  *             entry.coor_type = 0
  *             entry.coor[0] = points[i].converted_point.x_value             # <<<<<<<<<<<<<<
@@ -1704,7 +1702,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     (__pyx_v_entry.coor[0]) = __pyx_t_12;
 
-    /* "cvmh1510.pyx":112
+    /* "CVMH1510VelocityModel.pyx":112
  *             entry.coor_type = 0
  *             entry.coor[0] = points[i].converted_point.x_value
  *             entry.coor[1] = points[i].converted_point.y_value             # <<<<<<<<<<<<<<
@@ -1723,7 +1721,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     (__pyx_v_entry.coor[1]) = __pyx_t_12;
 
-    /* "cvmh1510.pyx":113
+    /* "CVMH1510VelocityModel.pyx":113
  *             entry.coor[0] = points[i].converted_point.x_value
  *             entry.coor[1] = points[i].converted_point.y_value
  *             entry.coor[2] = points[i].converted_point.z_value             # <<<<<<<<<<<<<<
@@ -1742,7 +1740,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     (__pyx_v_entry.coor[2]) = __pyx_t_12;
 
-    /* "cvmh1510.pyx":114
+    /* "CVMH1510VelocityModel.pyx":114
  *             entry.coor[1] = points[i].converted_point.y_value
  *             entry.coor[2] = points[i].converted_point.z_value
  *             vx_getsurface(&(entry.coor[0]), entry.coor_type, &vx_surf)             # <<<<<<<<<<<<<<
@@ -1751,7 +1749,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
  */
     vx_getsurface((&(__pyx_v_entry.coor[0])), __pyx_v_entry.coor_type, (&__pyx_v_vx_surf));
 
-    /* "cvmh1510.pyx":116
+    /* "CVMH1510VelocityModel.pyx":116
  *             vx_getsurface(&(entry.coor[0]), entry.coor_type, &vx_surf)
  * 
  *             vx_getcoord(&entry)             # <<<<<<<<<<<<<<
@@ -1760,7 +1758,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
  */
     vx_getcoord((&__pyx_v_entry));
 
-    /* "cvmh1510.pyx":118
+    /* "CVMH1510VelocityModel.pyx":118
  *             vx_getcoord(&entry)
  * 
  *             if entry.data_src != 0 and entry.vp != -99999:             # <<<<<<<<<<<<<<
@@ -1778,7 +1776,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     __pyx_L12_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "cvmh1510.pyx":119
+      /* "CVMH1510VelocityModel.pyx":119
  * 
  *             if entry.data_src != 0 and entry.vp != -99999:
  *                 points[i].set_velocity_data(             # <<<<<<<<<<<<<<
@@ -1791,7 +1789,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "cvmh1510.pyx":120
+      /* "CVMH1510VelocityModel.pyx":120
  *             if entry.data_src != 0 and entry.vp != -99999:
  *                 points[i].set_velocity_data(
  *                     VelocityProperties(             # <<<<<<<<<<<<<<
@@ -1801,7 +1799,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
       __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_VelocityProperties); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 120, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
 
-      /* "cvmh1510.pyx":121
+      /* "CVMH1510VelocityModel.pyx":121
  *                 points[i].set_velocity_data(
  *                     VelocityProperties(
  *                         entry.vp, entry.vs, entry.rho, None, None,             # <<<<<<<<<<<<<<
@@ -1815,7 +1813,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
       __pyx_t_13 = PyFloat_FromDouble(__pyx_v_entry.rho); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 121, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
 
-      /* "cvmh1510.pyx":122
+      /* "CVMH1510VelocityModel.pyx":122
  *                     VelocityProperties(
  *                         entry.vp, entry.vs, entry.rho, None, None,
  *                         id_cvmh, id_cvmh, id_cvmh, None, None             # <<<<<<<<<<<<<<
@@ -1901,7 +1899,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-      /* "cvmh1510.pyx":118
+      /* "CVMH1510VelocityModel.pyx":118
  *             vx_getcoord(&entry)
  * 
  *             if entry.data_src != 0 and entry.vp != -99999:             # <<<<<<<<<<<<<<
@@ -1911,7 +1909,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
       goto __pyx_L11;
     }
 
-    /* "cvmh1510.pyx":126
+    /* "CVMH1510VelocityModel.pyx":126
  *                 )
  *             else:
  *                 self._set_velocity_properties_none(points[i])             # <<<<<<<<<<<<<<
@@ -1954,7 +1952,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
     __pyx_L11:;
   }
 
-  /* "cvmh1510.pyx":128
+  /* "CVMH1510VelocityModel.pyx":128
  *                 self._set_velocity_properties_none(points[i])
  * 
  *         return True             # <<<<<<<<<<<<<<
@@ -1966,7 +1964,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
   __pyx_r = Py_True;
   goto __pyx_L0;
 
-  /* "cvmh1510.pyx":73
+  /* "CVMH1510VelocityModel.pyx":73
  *             raise RuntimeError("CVM-H 15.1.0 could not be initialized correctly.")
  * 
  *     def _query(self, points: List[SeismicData], **kwargs) -> bool:             # <<<<<<<<<<<<<<
@@ -1985,7 +1983,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
   __Pyx_XDECREF(__pyx_t_13);
   __Pyx_XDECREF(__pyx_t_14);
   __Pyx_XDECREF(__pyx_t_16);
-  __Pyx_AddTraceback("cvmh1510.CVMH1510VelocityModel._query", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("CVMH1510VelocityModel.CVMH1510VelocityModel._query", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_id_cvmh);
@@ -1996,7 +1994,7 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
   return __pyx_r;
 }
 
-/* "cvmh1510.pyx":130
+/* "CVMH1510VelocityModel.pyx":130
  *         return True
  * 
  *     def __del__(self):             # <<<<<<<<<<<<<<
@@ -2004,32 +2002,32 @@ static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_2_query(CYTHON_UNUSE
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_5__del__(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
-static PyMethodDef __pyx_mdef_8cvmh1510_21CVMH1510VelocityModel_5__del__ = {"__del__", (PyCFunction)__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_5__del__, METH_O, 0};
-static PyObject *__pyx_pw_8cvmh1510_21CVMH1510VelocityModel_5__del__(PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_21CVMH1510VelocityModel_21CVMH1510VelocityModel_5__del__(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
+static PyMethodDef __pyx_mdef_21CVMH1510VelocityModel_21CVMH1510VelocityModel_5__del__ = {"__del__", (PyCFunction)__pyx_pw_21CVMH1510VelocityModel_21CVMH1510VelocityModel_5__del__, METH_O, 0};
+static PyObject *__pyx_pw_21CVMH1510VelocityModel_21CVMH1510VelocityModel_5__del__(PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_8cvmh1510_21CVMH1510VelocityModel_4__del__(__pyx_self, ((PyObject *)__pyx_v_self));
+  __pyx_r = __pyx_pf_21CVMH1510VelocityModel_21CVMH1510VelocityModel_4__del__(__pyx_self, ((PyObject *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8cvmh1510_21CVMH1510VelocityModel_4__del__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
+static PyObject *__pyx_pf_21CVMH1510VelocityModel_21CVMH1510VelocityModel_4__del__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__del__", 0);
 
-  /* "cvmh1510.pyx":131
+  /* "CVMH1510VelocityModel.pyx":131
  * 
  *     def __del__(self):
  *         vx_cleanup()             # <<<<<<<<<<<<<<
  */
   vx_cleanup();
 
-  /* "cvmh1510.pyx":130
+  /* "CVMH1510VelocityModel.pyx":130
  *         return True
  * 
  *     def __del__(self):             # <<<<<<<<<<<<<<
@@ -2054,7 +2052,7 @@ static struct PyModuleDef __pyx_moduledef = {
   #else
     PyModuleDef_HEAD_INIT,
   #endif
-    "cvmh1510",
+    "CVMH1510VelocityModel",
     __pyx_k_CVM_H_15_1_0_Velocity_Model_The, /* m_doc */
     -1, /* m_size */
     __pyx_methods /* m_methods */,
@@ -2082,7 +2080,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_VelocityProperties, __pyx_k_VelocityProperties, sizeof(__pyx_k_VelocityProperties), 0, 0, 1, 1},
   {&__pyx_kp_s__3, __pyx_k__3, sizeof(__pyx_k__3), 0, 0, 1, 0},
   {&__pyx_n_s_converted_point, __pyx_k_converted_point, sizeof(__pyx_k_converted_point), 0, 0, 1, 1},
-  {&__pyx_n_s_cvmh1510, __pyx_k_cvmh1510, sizeof(__pyx_k_cvmh1510), 0, 0, 1, 1},
   {&__pyx_n_s_data, __pyx_k_data, sizeof(__pyx_k_data), 0, 0, 1, 1},
   {&__pyx_n_s_del, __pyx_k_del, sizeof(__pyx_k_del), 0, 0, 1, 1},
   {&__pyx_n_s_depth_elev, __pyx_k_depth_elev, sizeof(__pyx_k_depth_elev), 0, 0, 1, 1},
@@ -2124,7 +2121,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_super, __pyx_k_super, sizeof(__pyx_k_super), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_typing, __pyx_k_typing, sizeof(__pyx_k_typing), 0, 0, 1, 1},
-  {&__pyx_n_s_ucvm_src_model_velocity_legacy, __pyx_k_ucvm_src_model_velocity_legacy, sizeof(__pyx_k_ucvm_src_model_velocity_legacy), 0, 0, 1, 1},
+  {&__pyx_n_s_ucvm_src_model_velocity, __pyx_k_ucvm_src_model_velocity, sizeof(__pyx_k_ucvm_src_model_velocity), 0, 0, 1, 1},
   {&__pyx_n_s_ucvm_src_shared, __pyx_k_ucvm_src_shared, sizeof(__pyx_k_ucvm_src_shared), 0, 0, 1, 1},
   {&__pyx_n_s_ucvm_src_shared_properties, __pyx_k_ucvm_src_shared_properties, sizeof(__pyx_k_ucvm_src_shared_properties), 0, 0, 1, 1},
   {&__pyx_n_s_vx_surf, __pyx_k_vx_surf, sizeof(__pyx_k_vx_surf), 0, 0, 1, 1},
@@ -2147,7 +2144,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "cvmh1510.pyx":68
+  /* "CVMH1510VelocityModel.pyx":68
  *         cdef char *model_path
  * 
  *         model_data_path = os.path.join(self.model_location, "data").encode("ASCII")             # <<<<<<<<<<<<<<
@@ -2158,7 +2155,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "cvmh1510.pyx":71
+  /* "CVMH1510VelocityModel.pyx":71
  *         model_path = model_data_path
  *         if vx_setup(model_path) != 0:
  *             raise RuntimeError("CVM-H 15.1.0 could not be initialized correctly.")             # <<<<<<<<<<<<<<
@@ -2169,7 +2166,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "cvmh1510.pyx":91
+  /* "CVMH1510VelocityModel.pyx":91
  * 
  *         if "params" in kwargs:
  *             items = [str(x).lower().strip() for x in str(kwargs["params"]).split(",")]             # <<<<<<<<<<<<<<
@@ -2180,7 +2177,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "cvmh1510.pyx":63
+  /* "CVMH1510VelocityModel.pyx":63
  *     """
  * 
  *     def __init__(self, **kwargs):             # <<<<<<<<<<<<<<
@@ -2192,7 +2189,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__5);
   __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(1, 0, 4, 0, CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_init, 63, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 63, __pyx_L1_error)
 
-  /* "cvmh1510.pyx":73
+  /* "CVMH1510VelocityModel.pyx":73
  *             raise RuntimeError("CVM-H 15.1.0 could not be initialized correctly.")
  * 
  *     def _query(self, points: List[SeismicData], **kwargs) -> bool:             # <<<<<<<<<<<<<<
@@ -2204,7 +2201,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__7);
   __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(2, 0, 9, 0, CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_query, 73, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 73, __pyx_L1_error)
 
-  /* "cvmh1510.pyx":130
+  /* "CVMH1510VelocityModel.pyx":130
  *         return True
  * 
  *     def __del__(self):             # <<<<<<<<<<<<<<
@@ -2230,11 +2227,11 @@ static int __Pyx_InitGlobals(void) {
 }
 
 #if PY_MAJOR_VERSION < 3
-PyMODINIT_FUNC initcvmh1510(void); /*proto*/
-PyMODINIT_FUNC initcvmh1510(void)
+PyMODINIT_FUNC initCVMH1510VelocityModel(void); /*proto*/
+PyMODINIT_FUNC initCVMH1510VelocityModel(void)
 #else
-PyMODINIT_FUNC PyInit_cvmh1510(void); /*proto*/
-PyMODINIT_FUNC PyInit_cvmh1510(void)
+PyMODINIT_FUNC PyInit_CVMH1510VelocityModel(void); /*proto*/
+PyMODINIT_FUNC PyInit_CVMH1510VelocityModel(void)
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
@@ -2255,7 +2252,7 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
           Py_FatalError("failed to import 'refnanny' module");
   }
   #endif
-  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_cvmh1510(void)", 0);
+  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_CVMH1510VelocityModel(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -2284,7 +2281,7 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   #endif
   /*--- Module creation code ---*/
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("cvmh1510", __pyx_methods, __pyx_k_CVM_H_15_1_0_Velocity_Model_The, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("CVMH1510VelocityModel", __pyx_methods, __pyx_k_CVM_H_15_1_0_Velocity_Model_The, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -2301,14 +2298,14 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_cvmh1510) {
+  if (__pyx_module_is_main_CVMH1510VelocityModel) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "cvmh1510")) {
-      if (unlikely(PyDict_SetItemString(modules, "cvmh1510", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "CVMH1510VelocityModel")) {
+      if (unlikely(PyDict_SetItemString(modules, "CVMH1510VelocityModel", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -2328,7 +2325,7 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "cvmh1510.pyx":19
+  /* "CVMH1510VelocityModel.pyx":19
  * """
  * # Python Imports
  * import os             # <<<<<<<<<<<<<<
@@ -2340,7 +2337,7 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_os, __pyx_t_1) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cvmh1510.pyx":20
+  /* "CVMH1510VelocityModel.pyx":20
  * # Python Imports
  * import os
  * from typing import List             # <<<<<<<<<<<<<<
@@ -2361,10 +2358,10 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cvmh1510.pyx":26
+  /* "CVMH1510VelocityModel.pyx":26
  * 
  * # UCVM Imports
- * from ucvm.src.model.velocity.legacy import VelocityModel             # <<<<<<<<<<<<<<
+ * from ucvm.src.model.velocity import VelocityModel             # <<<<<<<<<<<<<<
  * from ucvm.src.shared import VelocityProperties
  * from ucvm.src.shared.properties import SeismicData
  */
@@ -2373,7 +2370,7 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   __Pyx_INCREF(__pyx_n_s_VelocityModel);
   __Pyx_GIVEREF(__pyx_n_s_VelocityModel);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_VelocityModel);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_ucvm_src_model_velocity_legacy, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_ucvm_src_model_velocity, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_VelocityModel); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
@@ -2382,9 +2379,9 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cvmh1510.pyx":27
+  /* "CVMH1510VelocityModel.pyx":27
  * # UCVM Imports
- * from ucvm.src.model.velocity.legacy import VelocityModel
+ * from ucvm.src.model.velocity import VelocityModel
  * from ucvm.src.shared import VelocityProperties             # <<<<<<<<<<<<<<
  * from ucvm.src.shared.properties import SeismicData
  * 
@@ -2403,8 +2400,8 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cvmh1510.pyx":28
- * from ucvm.src.model.velocity.legacy import VelocityModel
+  /* "CVMH1510VelocityModel.pyx":28
+ * from ucvm.src.model.velocity import VelocityModel
  * from ucvm.src.shared import VelocityProperties
  * from ucvm.src.shared.properties import SeismicData             # <<<<<<<<<<<<<<
  * 
@@ -2424,7 +2421,7 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cvmh1510.pyx":57
+  /* "CVMH1510VelocityModel.pyx":57
  *     double rho
  * 
  * class CVMH1510VelocityModel(VelocityModel):             # <<<<<<<<<<<<<<
@@ -2440,19 +2437,19 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_CVMH1510VelocityModel, __pyx_n_s_CVMH1510VelocityModel, (PyObject *) NULL, __pyx_n_s_cvmh1510, __pyx_kp_s_Defines_the_CVM_H_interface_to); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_CVMH1510VelocityModel, __pyx_n_s_CVMH1510VelocityModel, (PyObject *) NULL, __pyx_n_s_CVMH1510VelocityModel, __pyx_kp_s_Defines_the_CVM_H_interface_to); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
 
-  /* "cvmh1510.pyx":63
+  /* "CVMH1510VelocityModel.pyx":63
  *     """
  * 
  *     def __init__(self, **kwargs):             # <<<<<<<<<<<<<<
  *         super().__init__(**kwargs)
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_8cvmh1510_21CVMH1510VelocityModel_1__init__, 0, __pyx_n_s_CVMH1510VelocityModel___init, NULL, __pyx_n_s_cvmh1510, __pyx_d, ((PyObject *)__pyx_codeobj__6)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_21CVMH1510VelocityModel_21CVMH1510VelocityModel_1__init__, 0, __pyx_n_s_CVMH1510VelocityModel___init, NULL, __pyx_n_s_CVMH1510VelocityModel, __pyx_d, ((PyObject *)__pyx_codeobj__6)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF(__pyx_t_5);
   PyList_Append(__pyx_t_4, __pyx_t_5);
@@ -2460,7 +2457,7 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_init, __pyx_t_5) < 0) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "cvmh1510.pyx":73
+  /* "CVMH1510VelocityModel.pyx":73
  *             raise RuntimeError("CVM-H 15.1.0 could not be initialized correctly.")
  * 
  *     def _query(self, points: List[SeismicData], **kwargs) -> bool:             # <<<<<<<<<<<<<<
@@ -2480,25 +2477,25 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_points, __pyx_t_8) < 0) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_return, ((PyObject*)&PyBool_Type)) < 0) __PYX_ERR(0, 73, __pyx_L1_error)
-  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_8cvmh1510_21CVMH1510VelocityModel_3_query, 0, __pyx_n_s_CVMH1510VelocityModel__query, NULL, __pyx_n_s_cvmh1510, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_21CVMH1510VelocityModel_21CVMH1510VelocityModel_3_query, 0, __pyx_n_s_CVMH1510VelocityModel__query, NULL, __pyx_n_s_CVMH1510VelocityModel, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_8, __pyx_t_5);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_query, __pyx_t_8) < 0) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "cvmh1510.pyx":130
+  /* "CVMH1510VelocityModel.pyx":130
  *         return True
  * 
  *     def __del__(self):             # <<<<<<<<<<<<<<
  *         vx_cleanup()
  */
-  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_8cvmh1510_21CVMH1510VelocityModel_5__del__, 0, __pyx_n_s_CVMH1510VelocityModel___del, NULL, __pyx_n_s_cvmh1510, __pyx_d, ((PyObject *)__pyx_codeobj__10)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_21CVMH1510VelocityModel_21CVMH1510VelocityModel_5__del__, 0, __pyx_n_s_CVMH1510VelocityModel___del, NULL, __pyx_n_s_CVMH1510VelocityModel, __pyx_d, ((PyObject *)__pyx_codeobj__10)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_del, __pyx_t_8) < 0) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "cvmh1510.pyx":57
+  /* "CVMH1510VelocityModel.pyx":57
  *     double rho
  * 
  * class CVMH1510VelocityModel(VelocityModel):             # <<<<<<<<<<<<<<
@@ -2515,7 +2512,7 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cvmh1510.pyx":1
+  /* "CVMH1510VelocityModel.pyx":1
  * """             # <<<<<<<<<<<<<<
  * CVM-H 15.1.0 Velocity Model
  * 
@@ -2539,11 +2536,11 @@ PyMODINIT_FUNC PyInit_cvmh1510(void)
   __Pyx_XDECREF(__pyx_t_8);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init cvmh1510", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init CVMH1510VelocityModel", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init cvmh1510");
+    PyErr_SetString(PyExc_ImportError, "init CVMH1510VelocityModel");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

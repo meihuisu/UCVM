@@ -28,7 +28,7 @@ def usage() -> None:
         "\n"
         "Plots a cross-section given a series of questions.\n"
         "\n"
-        "-f, --file f:          The configuration file to read from."
+        "-f, --file f:          The configuration file from which to read."
     )
 
 

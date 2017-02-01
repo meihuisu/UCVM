@@ -104,12 +104,15 @@ class GriddedVelocityModel(VelocityModel):
             self.model_has.append("vp")
         if "vs" in self._opened_file:
             self.model_has.append("vs")
-        if "density" in self._opened_file:
+        if "dn" in self._opened_file:
             self.model_has.append("density")
 
         self.mesh = {}
         for m in self.model_has:
-            self.mesh[m] = self._opened_file[m]["data"][:, :, :]
+            if m != "density":
+                self.mesh[m] = self._opened_file[m]["data"][:, :, :]
+            else:
+                self.mesh[m] = self._opened_file["dn"]["data"][:, :, :]
 
     def _query(self, points: List[SeismicData], **kwargs) -> bool:
         """
@@ -123,11 +126,6 @@ class GriddedVelocityModel(VelocityModel):
         Returns:
             True on success, false if there is an error.
         """
-        # Check to see if we are querying by Y, Z, or neither.
-        #query_by = "z"
-        #if "params" in kwargs:
-        #    if "query_by=y" in kwargs["params"]:
-        #        query_by = "y"
 
         for sd_object in points:
 
@@ -185,32 +183,6 @@ class GriddedVelocityModel(VelocityModel):
                     percentages["x"], percentages["y"], percentages["z"]
                 )
                 v[str(prop_given) + "_source"] = self.get_metadata()["id"]
-
-                """
-                if query_by == "z":
-                    if coords["z"] not in self.mesh[prop_given]:
-                        self.mesh[prop_given][coords["z"]] = self._opened_file[prop_given]["data"][coords["z"], :, :]
-                    if coords["z"] - 1 not in self.mesh[prop_given]:
-                        self.mesh[prop_given][coords["z"] - 1] = \
-                            self._opened_file[prop_given]["data"][coords["z"] - 1, :, :]
-
-                    if coords["z"] + 1 in self.mesh[prop_given]:
-                        del self.mesh[prop_given][coords["z"] + 1]
-
-
-                elif query_by == "y":
-                    v[prop_given] = UCVMCCommon.trilinear_interpolate(
-                        self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"]],
-                        self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"]],
-                        self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"] + 1],
-                        self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"] + 1],
-                        self.mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"]],
-                        self.mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"]],
-                        self.mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"] + 1],
-                        self.mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"] + 1],
-                        percentages["x"], percentages["y"], percentages["z"]
-                    )
-                """
 
             if v["density"] is None and v["vp"] is not None:
                 v["density"] = calculate_nafe_drake_density(float(v["vp"]))

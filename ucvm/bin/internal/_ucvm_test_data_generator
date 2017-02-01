@@ -95,6 +95,8 @@ def main() -> int:
                 item_to_use = "cvmsi"
             elif item == "cvms426":
                 item_to_use = "cvms5"
+            elif item == "cca06":
+                item_to_use = "cca"
 
             os.chdir("/Users/davidgil/ucvm-15.10.0-2/bin")
             proc = Popen(["./ucvm_query", "-f", "../conf/ucvm.conf", "-m", item_to_use],

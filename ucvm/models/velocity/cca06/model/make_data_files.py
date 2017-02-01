@@ -82,9 +82,9 @@ def main() -> int:
     print("\nWriting out CCA data file\n")
     f = open("./" + model + iteration.zfill(2) + ".ascii")
 
-    vp_arr = np.zeros((dimension_x, dimension_y, dimension_z), dtype="<f8")
-    vs_arr = np.zeros((dimension_x, dimension_y, dimension_z), dtype="<f8")
-    density_arr = np.zeros((dimension_x, dimension_y, dimension_z), dtype="<f8")
+    vp_arr = np.zeros((dimension_z, dimension_x, dimension_y), dtype="<f4")
+    vs_arr = np.zeros((dimension_z, dimension_x, dimension_y), dtype="<f4")
+    density_arr = np.zeros((dimension_z, dimension_x, dimension_y), dtype="<f4")
 
     for line in f:
         arr = line.split()
@@ -95,9 +95,9 @@ def main() -> int:
         vs = float(arr[4])
         density = float(arr[5])
 
-        vp_arr[x_pos][y_pos][z_pos] = vp
-        vs_arr[x_pos][y_pos][z_pos] = vs
-        density_arr[x_pos][y_pos][z_pos] = density
+        vp_arr[z_pos][x_pos][y_pos] = vp
+        vs_arr[z_pos][x_pos][y_pos] = vs
+        density_arr[z_pos][x_pos][y_pos] = density
 
     f.close()
 

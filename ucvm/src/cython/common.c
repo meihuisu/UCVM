@@ -5,7 +5,7 @@
     "distutils": {
         "depends": []
     },
-    "module_name": "ucvm.src.cython.common"
+    "module_name": "ucvm_c_common"
 }
 END: Cython Metadata */
 
@@ -275,8 +275,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__ucvm__src__cython__common
-#define __PYX_HAVE_API__ucvm__src__cython__common
+#define __PYX_HAVE__ucvm_c_common
+#define __PYX_HAVE_API__ucvm_c_common
 #include "math.h"
 #include "stdint.h"
 #include "etree.h"
@@ -495,20 +495,20 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "ucvm/src/cython/common.pyx",
+  "ucvm_c_common.pyx",
 };
 
 /*--- Type declarations ---*/
-struct __pyx_t_4ucvm_3src_6cython_6common_ucvm_epayload_t;
+struct __pyx_t_13ucvm_c_common_ucvm_epayload_t;
 
-/* "ucvm/src/cython/common.pyx":4
+/* "ucvm_c_common.pyx":4
  * from libc.stdint cimport uintptr_t, int32_t, uint32_t
  * 
  * cdef struct ucvm_epayload_t:             # <<<<<<<<<<<<<<
  *     float Vp
  *     float Vs
  */
-struct __pyx_t_4ucvm_3src_6cython_6common_ucvm_epayload_t {
+struct __pyx_t_13ucvm_c_common_ucvm_epayload_t {
   float Vp;
   float Vs;
   float density;
@@ -815,11 +815,11 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libc.stdint' */
 
-/* Module declarations from 'ucvm.src.cython.common' */
-#define __Pyx_MODULE_NAME "ucvm.src.cython.common"
-int __pyx_module_is_main_ucvm__src__cython__common = 0;
+/* Module declarations from 'ucvm_c_common' */
+#define __Pyx_MODULE_NAME "ucvm_c_common"
+int __pyx_module_is_main_ucvm_c_common = 0;
 
-/* Implementation of 'ucvm.src.cython.common' */
+/* Implementation of 'ucvm_c_common' */
 static PyObject *__pyx_builtin_staticmethod;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_Exception;
@@ -971,6 +971,7 @@ static const char __pyx_k_opened_etree[] = "opened_etree";
 static const char __pyx_k_staticmethod[] = "staticmethod";
 static const char __pyx_k_c_etree_close[] = "c_etree_close";
 static const char __pyx_k_c_etree_query[] = "c_etree_query";
+static const char __pyx_k_ucvm_c_common[] = "ucvm_c_common";
 static const char __pyx_k_c_etree_insert[] = "c_etree_insert";
 static const char __pyx_k_c_etree_getappmeta[] = "c_etree_getappmeta";
 static const char __pyx_k_c_etree_setappmeta[] = "c_etree_setappmeta";
@@ -979,7 +980,6 @@ static const char __pyx_k_calculate_grid_point[] = "calculate_grid_point";
 static const char __pyx_k_trilinear_interpolate[] = "trilinear_interpolate";
 static const char __pyx_k_c_etree_registerschema[] = "c_etree_registerschema";
 static const char __pyx_k_fortran_convert_ll_utm[] = "fortran_convert_ll_utm";
-static const char __pyx_k_ucvm_src_cython_common[] = "ucvm.src.cython.common";
 static const char __pyx_k_c_etree_bilinear_geo2xy[] = "c_etree_bilinear_geo2xy";
 static const char __pyx_k_c_etree_bilinear_xy2geo[] = "c_etree_bilinear_xy2geo";
 static const char __pyx_k_UCVMCCommon_c_etree_open[] = "UCVMCCommon.c_etree_open";
@@ -989,7 +989,7 @@ static const char __pyx_k_UCVMCCommon_c_etree_insert[] = "UCVMCCommon.c_etree_in
 static const char __pyx_k_c_etree_bilinear_interpolate[] = "c_etree_bilinear_interpolate";
 static const char __pyx_k_UCVMCCommon_c_etree_getappmeta[] = "UCVMCCommon.c_etree_getappmeta";
 static const char __pyx_k_UCVMCCommon_c_etree_setappmeta[] = "UCVMCCommon.c_etree_setappmeta";
-static const char __pyx_k_Users_davidgil_PycharmProjects[] = "/Users/davidgil/PycharmProjects/UCVM/ucvm/src/cython/common.pyx";
+static const char __pyx_k_Users_davidgil_PycharmProjects[] = "/Users/davidgil/PycharmProjects/UCVM/ucvm/src/cython/ucvm_c_common.pyx";
 static const char __pyx_k_Could_not_convert_lon_lat_to_XY[] = "Could not convert lon, lat to XY.";
 static const char __pyx_k_UCVMCCommon_bilinear_interpolate[] = "UCVMCCommon.bilinear_interpolate";
 static const char __pyx_k_UCVMCCommon_c_etree_bilinear_geo[] = "UCVMCCommon.c_etree_bilinear_geo2xy";
@@ -1133,7 +1133,7 @@ static PyObject *__pyx_n_s_trilinear_interpolate;
 static PyObject *__pyx_n_s_tx1;
 static PyObject *__pyx_n_s_tx2;
 static PyObject *__pyx_n_s_ty;
-static PyObject *__pyx_n_s_ucvm_src_cython_common;
+static PyObject *__pyx_n_s_ucvm_c_common;
 static PyObject *__pyx_n_s_v1;
 static PyObject *__pyx_n_s_v2;
 static PyObject *__pyx_n_s_v3;
@@ -1175,20 +1175,20 @@ static PyObject *__pyx_n_s_z_p;
 static PyObject *__pyx_n_s_z_percent;
 static PyObject *__pyx_n_s_z_value;
 static PyObject *__pyx_n_s_zone;
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_c_etree_open(CYTHON_UNUSED PyObject *__pyx_self, char *__pyx_v_path, int __pyx_v_mode); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_2c_etree_setappmeta(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, char *__pyx_v_metadata); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_getappmeta(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_6c_etree_registerschema(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, char *__pyx_v_defstring); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_8c_etree_close(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_insert(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, long __pyx_v_addr_x, long __pyx_v_addr_y, long __pyx_v_addr_z, int __pyx_v_level, float __pyx_v_vp, float __pyx_v_vs, float __pyx_v_density); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_query(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, float __pyx_v_lon, float __pyx_v_lat, float __pyx_v_depth, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims, PyObject *__pyx_v_ticks); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bilinear_geo2xy(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_lon, float __pyx_v_lat, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_16c_etree_bilinear_xy2geo(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_x, float __pyx_v_y, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_18c_etree_bilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_x, float __pyx_v_y, float __pyx_v_x1, float __pyx_v_y1, float __pyx_v_x2, float __pyx_v_y2, float __pyx_v_q11, float __pyx_v_q21, float __pyx_v_q12, float __pyx_v_q22); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_20calculate_grid_point(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_width, float __pyx_v_height, float __pyx_v_depth, float __pyx_v_x_value, float __pyx_v_y_value, float __pyx_v_z_value, int __pyx_v_dim_x, int __pyx_v_dim_y, int __pyx_v_z_interval); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_t1, float __pyx_v_t2, float __pyx_v_t3, float __pyx_v_t4, float __pyx_v_b1, float __pyx_v_b2, float __pyx_v_b3, float __pyx_v_b4, float __pyx_v_x_percent, float __pyx_v_y_percent, float __pyx_v_z_percent); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_24bilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_v1, float __pyx_v_v2, float __pyx_v_v3, float __pyx_v_v4, float __pyx_v_x_percent, float __pyx_v_y_percent); /* proto */
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_convert_ll_utm(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_longitude, float __pyx_v_latitude, int __pyx_v_zone); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_c_etree_open(CYTHON_UNUSED PyObject *__pyx_self, char *__pyx_v_path, int __pyx_v_mode); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_2c_etree_setappmeta(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, char *__pyx_v_metadata); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_4c_etree_getappmeta(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_6c_etree_registerschema(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, char *__pyx_v_defstring); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_8c_etree_close(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_10c_etree_insert(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, long __pyx_v_addr_x, long __pyx_v_addr_y, long __pyx_v_addr_z, int __pyx_v_level, float __pyx_v_vp, float __pyx_v_vs, float __pyx_v_density); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_12c_etree_query(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, float __pyx_v_lon, float __pyx_v_lat, float __pyx_v_depth, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims, PyObject *__pyx_v_ticks); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_14c_etree_bilinear_geo2xy(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_lon, float __pyx_v_lat, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_16c_etree_bilinear_xy2geo(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_x, float __pyx_v_y, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_18c_etree_bilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_x, float __pyx_v_y, float __pyx_v_x1, float __pyx_v_y1, float __pyx_v_x2, float __pyx_v_y2, float __pyx_v_q11, float __pyx_v_q21, float __pyx_v_q12, float __pyx_v_q22); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_20calculate_grid_point(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_width, double __pyx_v_height, double __pyx_v_depth, double __pyx_v_x_value, double __pyx_v_y_value, double __pyx_v_z_value, int __pyx_v_dim_x, int __pyx_v_dim_y, int __pyx_v_z_interval); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_22trilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_t1, float __pyx_v_t2, float __pyx_v_t3, float __pyx_v_t4, float __pyx_v_b1, float __pyx_v_b2, float __pyx_v_b3, float __pyx_v_b4, float __pyx_v_x_percent, float __pyx_v_y_percent, float __pyx_v_z_percent); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_24bilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_v1, float __pyx_v_v2, float __pyx_v_v3, float __pyx_v_v4, float __pyx_v_x_percent, float __pyx_v_y_percent); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_26fortran_convert_ll_utm(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_longitude, float __pyx_v_latitude, int __pyx_v_zone); /* proto */
 static PyObject *__pyx_float_2_0;
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_tuple__2;
@@ -1225,7 +1225,7 @@ static PyObject *__pyx_codeobj__31;
 static PyObject *__pyx_codeobj__33;
 static PyObject *__pyx_codeobj__35;
 
-/* "ucvm/src/cython/common.pyx":32
+/* "ucvm_c_common.pyx":32
  * 
  *     @staticmethod
  *     def c_etree_open(char *path, int mode):             # <<<<<<<<<<<<<<
@@ -1234,9 +1234,9 @@ static PyObject *__pyx_codeobj__35;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_1c_etree_open(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_1c_etree_open = {"c_etree_open", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_1c_etree_open, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_1c_etree_open(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_1c_etree_open(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_1c_etree_open = {"c_etree_open", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_1c_etree_open, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_1c_etree_open(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   char *__pyx_v_path;
   int __pyx_v_mode;
   PyObject *__pyx_r = 0;
@@ -1281,18 +1281,18 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_1c_etree_open
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("c_etree_open", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 32, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_open", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_open", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_c_etree_open(__pyx_self, __pyx_v_path, __pyx_v_mode);
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_c_etree_open(__pyx_self, __pyx_v_path, __pyx_v_mode);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_c_etree_open(CYTHON_UNUSED PyObject *__pyx_self, char *__pyx_v_path, int __pyx_v_mode) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_c_etree_open(CYTHON_UNUSED PyObject *__pyx_self, char *__pyx_v_path, int __pyx_v_mode) {
   int32_t __pyx_v_imode;
   int32_t __pyx_v_bufsize;
   int32_t __pyx_v_payloadsize;
@@ -1302,7 +1302,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_c_etree_open(
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("c_etree_open", 0);
 
-  /* "ucvm/src/cython/common.pyx":33
+  /* "ucvm_c_common.pyx":33
  *     @staticmethod
  *     def c_etree_open(char *path, int mode):
  *         cdef int32_t imode = mode             # <<<<<<<<<<<<<<
@@ -1311,7 +1311,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_c_etree_open(
  */
   __pyx_v_imode = __pyx_v_mode;
 
-  /* "ucvm/src/cython/common.pyx":34
+  /* "ucvm_c_common.pyx":34
  *     def c_etree_open(char *path, int mode):
  *         cdef int32_t imode = mode
  *         cdef int32_t bufsize = 64             # <<<<<<<<<<<<<<
@@ -1320,7 +1320,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_c_etree_open(
  */
   __pyx_v_bufsize = 64;
 
-  /* "ucvm/src/cython/common.pyx":35
+  /* "ucvm_c_common.pyx":35
  *         cdef int32_t imode = mode
  *         cdef int32_t bufsize = 64
  *         cdef int32_t payloadsize = 0             # <<<<<<<<<<<<<<
@@ -1329,7 +1329,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_c_etree_open(
  */
   __pyx_v_payloadsize = 0;
 
-  /* "ucvm/src/cython/common.pyx":36
+  /* "ucvm_c_common.pyx":36
  *         cdef int32_t bufsize = 64
  *         cdef int32_t payloadsize = 0
  *         cdef int32_t dimensions = 3             # <<<<<<<<<<<<<<
@@ -1338,7 +1338,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_c_etree_open(
  */
   __pyx_v_dimensions = 3;
 
-  /* "ucvm/src/cython/common.pyx":37
+  /* "ucvm_c_common.pyx":37
  *         cdef int32_t payloadsize = 0
  *         cdef int32_t dimensions = 3
  *         return <uintptr_t>etree_open(path, imode, bufsize, payloadsize, dimensions)             # <<<<<<<<<<<<<<
@@ -1352,7 +1352,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_c_etree_open(
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ucvm/src/cython/common.pyx":32
+  /* "ucvm_c_common.pyx":32
  * 
  *     @staticmethod
  *     def c_etree_open(char *path, int mode):             # <<<<<<<<<<<<<<
@@ -1363,7 +1363,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_c_etree_open(
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_open", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_open", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1371,7 +1371,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_c_etree_open(
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":40
+/* "ucvm_c_common.pyx":40
  * 
  *     @staticmethod
  *     def c_etree_setappmeta(uintptr_t opened_etree, char *metadata) -> int:             # <<<<<<<<<<<<<<
@@ -1380,9 +1380,9 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_c_etree_open(
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_3c_etree_setappmeta(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_3c_etree_setappmeta = {"c_etree_setappmeta", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_3c_etree_setappmeta, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_3c_etree_setappmeta(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_3c_etree_setappmeta(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_3c_etree_setappmeta = {"c_etree_setappmeta", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_3c_etree_setappmeta, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_3c_etree_setappmeta(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   uintptr_t __pyx_v_opened_etree;
   char *__pyx_v_metadata;
   PyObject *__pyx_r = 0;
@@ -1427,24 +1427,24 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_3c_etree_seta
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("c_etree_setappmeta", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 40, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_setappmeta", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_setappmeta", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_2c_etree_setappmeta(__pyx_self, __pyx_v_opened_etree, __pyx_v_metadata);
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_2c_etree_setappmeta(__pyx_self, __pyx_v_opened_etree, __pyx_v_metadata);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_2c_etree_setappmeta(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, char *__pyx_v_metadata) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_2c_etree_setappmeta(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, char *__pyx_v_metadata) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("c_etree_setappmeta", 0);
 
-  /* "ucvm/src/cython/common.pyx":41
+  /* "ucvm_c_common.pyx":41
  *     @staticmethod
  *     def c_etree_setappmeta(uintptr_t opened_etree, char *metadata) -> int:
  *         return etree_setappmeta(<etree_t *>opened_etree, metadata)             # <<<<<<<<<<<<<<
@@ -1458,7 +1458,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_2c_etree_seta
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ucvm/src/cython/common.pyx":40
+  /* "ucvm_c_common.pyx":40
  * 
  *     @staticmethod
  *     def c_etree_setappmeta(uintptr_t opened_etree, char *metadata) -> int:             # <<<<<<<<<<<<<<
@@ -1469,7 +1469,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_2c_etree_seta
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_setappmeta", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_setappmeta", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1477,7 +1477,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_2c_etree_seta
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":44
+/* "ucvm_c_common.pyx":44
  * 
  *     @staticmethod
  *     def c_etree_getappmeta(uintptr_t opened_etree) -> dict:             # <<<<<<<<<<<<<<
@@ -1486,9 +1486,9 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_2c_etree_seta
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_5c_etree_getappmeta(PyObject *__pyx_self, PyObject *__pyx_arg_opened_etree); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_5c_etree_getappmeta = {"c_etree_getappmeta", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_5c_etree_getappmeta, METH_O, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_5c_etree_getappmeta(PyObject *__pyx_self, PyObject *__pyx_arg_opened_etree) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_5c_etree_getappmeta(PyObject *__pyx_self, PyObject *__pyx_arg_opened_etree); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_5c_etree_getappmeta = {"c_etree_getappmeta", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_5c_etree_getappmeta, METH_O, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_5c_etree_getappmeta(PyObject *__pyx_self, PyObject *__pyx_arg_opened_etree) {
   uintptr_t __pyx_v_opened_etree;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
@@ -1498,18 +1498,18 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_5c_etree_geta
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_getappmeta", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_getappmeta", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_getappmeta(__pyx_self, ((uintptr_t)__pyx_v_opened_etree));
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_4c_etree_getappmeta(__pyx_self, ((uintptr_t)__pyx_v_opened_etree));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_getappmeta(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_4c_etree_getappmeta(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree) {
   char *__pyx_v_appmeta;
   PyObject *__pyx_v_appmeta_dict = NULL;
   PyObject *__pyx_r = NULL;
@@ -1521,7 +1521,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("c_etree_getappmeta", 0);
 
-  /* "ucvm/src/cython/common.pyx":45
+  /* "ucvm_c_common.pyx":45
  *     @staticmethod
  *     def c_etree_getappmeta(uintptr_t opened_etree) -> dict:
  *         cdef char *appmeta = etree_getappmeta(<etree_t *>opened_etree)             # <<<<<<<<<<<<<<
@@ -1530,7 +1530,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
  */
   __pyx_v_appmeta = etree_getappmeta(((struct etree_t *)__pyx_v_opened_etree));
 
-  /* "ucvm/src/cython/common.pyx":46
+  /* "ucvm_c_common.pyx":46
  *     def c_etree_getappmeta(uintptr_t opened_etree) -> dict:
  *         cdef char *appmeta = etree_getappmeta(<etree_t *>opened_etree)
  *         appmeta_dict = bytes(appmeta).decode("utf-8").split()             # <<<<<<<<<<<<<<
@@ -1556,7 +1556,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
   __pyx_v_appmeta_dict = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "ucvm/src/cython/common.pyx":48
+  /* "ucvm_c_common.pyx":48
  *         appmeta_dict = bytes(appmeta).decode("utf-8").split()
  * 
  *         return {             # <<<<<<<<<<<<<<
@@ -1565,7 +1565,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "ucvm/src/cython/common.pyx":49
+  /* "ucvm_c_common.pyx":49
  * 
  *         return {
  *             "title": appmeta_dict[0].split(":"),             # <<<<<<<<<<<<<<
@@ -1585,7 +1585,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
   if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_title, __pyx_t_2) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":50
+  /* "ucvm_c_common.pyx":50
  *         return {
  *             "title": appmeta_dict[0].split(":"),
  *             "author": appmeta_dict[1].split(":"),             # <<<<<<<<<<<<<<
@@ -1603,7 +1603,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
   if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_author, __pyx_t_2) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":51
+  /* "ucvm_c_common.pyx":51
  *             "title": appmeta_dict[0].split(":"),
  *             "author": appmeta_dict[1].split(":"),
  *             "date": appmeta_dict[2].split(":"),             # <<<<<<<<<<<<<<
@@ -1621,7 +1621,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
   if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_date, __pyx_t_2) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":52
+  /* "ucvm_c_common.pyx":52
  *             "author": appmeta_dict[1].split(":"),
  *             "date": appmeta_dict[2].split(":"),
  *             "numfields": appmeta_dict[3],             # <<<<<<<<<<<<<<
@@ -1633,7 +1633,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
   if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_numfields, __pyx_t_2) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":53
+  /* "ucvm_c_common.pyx":53
  *             "date": appmeta_dict[2].split(":"),
  *             "numfields": appmeta_dict[3],
  *             "payload": appmeta_dict[4].split(";"),             # <<<<<<<<<<<<<<
@@ -1651,7 +1651,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
   if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_payload, __pyx_t_2) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":54
+  /* "ucvm_c_common.pyx":54
  *             "numfields": appmeta_dict[3],
  *             "payload": appmeta_dict[4].split(";"),
  *             "origin": [float(appmeta_dict[6]), float(appmeta_dict[5]), float(appmeta_dict[9])],             # <<<<<<<<<<<<<<
@@ -1687,7 +1687,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
   if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_origin, __pyx_t_2) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":55
+  /* "ucvm_c_common.pyx":55
  *             "payload": appmeta_dict[4].split(";"),
  *             "origin": [float(appmeta_dict[6]), float(appmeta_dict[5]), float(appmeta_dict[9])],
  *             "dims": [float(appmeta_dict[7]), float(appmeta_dict[8]), float(appmeta_dict[10])],             # <<<<<<<<<<<<<<
@@ -1723,7 +1723,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
   if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dims, __pyx_t_2) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":56
+  /* "ucvm_c_common.pyx":56
  *             "origin": [float(appmeta_dict[6]), float(appmeta_dict[5]), float(appmeta_dict[9])],
  *             "dims": [float(appmeta_dict[7]), float(appmeta_dict[8]), float(appmeta_dict[10])],
  *             "ticks": [int(appmeta_dict[11]), int(appmeta_dict[12]), int(appmeta_dict[13])]             # <<<<<<<<<<<<<<
@@ -1762,7 +1762,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ucvm/src/cython/common.pyx":44
+  /* "ucvm_c_common.pyx":44
  * 
  *     @staticmethod
  *     def c_etree_getappmeta(uintptr_t opened_etree) -> dict:             # <<<<<<<<<<<<<<
@@ -1777,7 +1777,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_getappmeta", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_getappmeta", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_appmeta_dict);
@@ -1786,7 +1786,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":60
+/* "ucvm_c_common.pyx":60
  * 
  *     @staticmethod
  *     def c_etree_registerschema(uintptr_t opened_etree, char *defstring) -> int:             # <<<<<<<<<<<<<<
@@ -1795,9 +1795,9 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_4c_etree_geta
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_7c_etree_registerschema(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_7c_etree_registerschema = {"c_etree_registerschema", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_7c_etree_registerschema, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_7c_etree_registerschema(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_7c_etree_registerschema(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_7c_etree_registerschema = {"c_etree_registerschema", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_7c_etree_registerschema, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_7c_etree_registerschema(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   uintptr_t __pyx_v_opened_etree;
   char *__pyx_v_defstring;
   PyObject *__pyx_r = 0;
@@ -1842,24 +1842,24 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_7c_etree_regi
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("c_etree_registerschema", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 60, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_registerschema", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_registerschema", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_6c_etree_registerschema(__pyx_self, __pyx_v_opened_etree, __pyx_v_defstring);
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_6c_etree_registerschema(__pyx_self, __pyx_v_opened_etree, __pyx_v_defstring);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_6c_etree_registerschema(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, char *__pyx_v_defstring) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_6c_etree_registerschema(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, char *__pyx_v_defstring) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("c_etree_registerschema", 0);
 
-  /* "ucvm/src/cython/common.pyx":61
+  /* "ucvm_c_common.pyx":61
  *     @staticmethod
  *     def c_etree_registerschema(uintptr_t opened_etree, char *defstring) -> int:
  *         return etree_registerschema(<etree_t *>opened_etree, defstring)             # <<<<<<<<<<<<<<
@@ -1873,7 +1873,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_6c_etree_regi
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ucvm/src/cython/common.pyx":60
+  /* "ucvm_c_common.pyx":60
  * 
  *     @staticmethod
  *     def c_etree_registerschema(uintptr_t opened_etree, char *defstring) -> int:             # <<<<<<<<<<<<<<
@@ -1884,7 +1884,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_6c_etree_regi
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_registerschema", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_registerschema", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1892,7 +1892,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_6c_etree_regi
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":64
+/* "ucvm_c_common.pyx":64
  * 
  *     @staticmethod
  *     def c_etree_close(uintptr_t opened_etree):             # <<<<<<<<<<<<<<
@@ -1901,9 +1901,9 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_6c_etree_regi
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_9c_etree_close(PyObject *__pyx_self, PyObject *__pyx_arg_opened_etree); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_9c_etree_close = {"c_etree_close", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_9c_etree_close, METH_O, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_9c_etree_close(PyObject *__pyx_self, PyObject *__pyx_arg_opened_etree) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_9c_etree_close(PyObject *__pyx_self, PyObject *__pyx_arg_opened_etree); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_9c_etree_close = {"c_etree_close", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_9c_etree_close, METH_O, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_9c_etree_close(PyObject *__pyx_self, PyObject *__pyx_arg_opened_etree) {
   uintptr_t __pyx_v_opened_etree;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
@@ -1913,23 +1913,23 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_9c_etree_clos
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_close", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_close", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_8c_etree_close(__pyx_self, ((uintptr_t)__pyx_v_opened_etree));
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_8c_etree_close(__pyx_self, ((uintptr_t)__pyx_v_opened_etree));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_8c_etree_close(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_8c_etree_close(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("c_etree_close", 0);
 
-  /* "ucvm/src/cython/common.pyx":65
+  /* "ucvm_c_common.pyx":65
  *     @staticmethod
  *     def c_etree_close(uintptr_t opened_etree):
  *         etree_close(<etree_t *>opened_etree)             # <<<<<<<<<<<<<<
@@ -1938,7 +1938,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_8c_etree_clos
  */
   etree_close(((struct etree_t *)__pyx_v_opened_etree));
 
-  /* "ucvm/src/cython/common.pyx":64
+  /* "ucvm_c_common.pyx":64
  * 
  *     @staticmethod
  *     def c_etree_close(uintptr_t opened_etree):             # <<<<<<<<<<<<<<
@@ -1953,7 +1953,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_8c_etree_clos
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":68
+/* "ucvm_c_common.pyx":68
  * 
  *     @staticmethod
  *     def c_etree_insert(uintptr_t opened_etree, long addr_x, long addr_y, long addr_z, int level,             # <<<<<<<<<<<<<<
@@ -1962,9 +1962,9 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_8c_etree_clos
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_11c_etree_insert(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_11c_etree_insert = {"c_etree_insert", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_11c_etree_insert, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_11c_etree_insert(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_11c_etree_insert(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_11c_etree_insert = {"c_etree_insert", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_11c_etree_insert, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_11c_etree_insert(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   uintptr_t __pyx_v_opened_etree;
   long __pyx_v_addr_x;
   long __pyx_v_addr_y;
@@ -2063,26 +2063,26 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_11c_etree_ins
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("c_etree_insert", 1, 8, 8, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 68, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_insert(__pyx_self, __pyx_v_opened_etree, __pyx_v_addr_x, __pyx_v_addr_y, __pyx_v_addr_z, __pyx_v_level, __pyx_v_vp, __pyx_v_vs, __pyx_v_density);
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_10c_etree_insert(__pyx_self, __pyx_v_opened_etree, __pyx_v_addr_x, __pyx_v_addr_y, __pyx_v_addr_z, __pyx_v_level, __pyx_v_vp, __pyx_v_vs, __pyx_v_density);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_insert(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, long __pyx_v_addr_x, long __pyx_v_addr_y, long __pyx_v_addr_z, int __pyx_v_level, float __pyx_v_vp, float __pyx_v_vs, float __pyx_v_density) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_10c_etree_insert(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, long __pyx_v_addr_x, long __pyx_v_addr_y, long __pyx_v_addr_z, int __pyx_v_level, float __pyx_v_vp, float __pyx_v_vs, float __pyx_v_density) {
   struct etree_addr_t __pyx_v_addr;
-  struct __pyx_t_4ucvm_3src_6cython_6common_ucvm_epayload_t __pyx_v_payload;
+  struct __pyx_t_13ucvm_c_common_ucvm_epayload_t __pyx_v_payload;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("c_etree_insert", 0);
 
-  /* "ucvm/src/cython/common.pyx":73
+  /* "ucvm_c_common.pyx":73
  *         cdef ucvm_epayload_t payload
  * 
  *         addr.x = addr_x             # <<<<<<<<<<<<<<
@@ -2091,7 +2091,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_ins
  */
   __pyx_v_addr.x = __pyx_v_addr_x;
 
-  /* "ucvm/src/cython/common.pyx":74
+  /* "ucvm_c_common.pyx":74
  * 
  *         addr.x = addr_x
  *         addr.y = addr_y             # <<<<<<<<<<<<<<
@@ -2100,7 +2100,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_ins
  */
   __pyx_v_addr.y = __pyx_v_addr_y;
 
-  /* "ucvm/src/cython/common.pyx":75
+  /* "ucvm_c_common.pyx":75
  *         addr.x = addr_x
  *         addr.y = addr_y
  *         addr.z = addr_z             # <<<<<<<<<<<<<<
@@ -2109,7 +2109,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_ins
  */
   __pyx_v_addr.z = __pyx_v_addr_z;
 
-  /* "ucvm/src/cython/common.pyx":76
+  /* "ucvm_c_common.pyx":76
  *         addr.y = addr_y
  *         addr.z = addr_z
  *         addr.level = level             # <<<<<<<<<<<<<<
@@ -2118,7 +2118,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_ins
  */
   __pyx_v_addr.level = __pyx_v_level;
 
-  /* "ucvm/src/cython/common.pyx":78
+  /* "ucvm_c_common.pyx":78
  *         addr.level = level
  * 
  *         payload.Vp = vp             # <<<<<<<<<<<<<<
@@ -2127,7 +2127,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_ins
  */
   __pyx_v_payload.Vp = __pyx_v_vp;
 
-  /* "ucvm/src/cython/common.pyx":79
+  /* "ucvm_c_common.pyx":79
  * 
  *         payload.Vp = vp
  *         payload.Vs = vs             # <<<<<<<<<<<<<<
@@ -2136,7 +2136,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_ins
  */
   __pyx_v_payload.Vs = __pyx_v_vs;
 
-  /* "ucvm/src/cython/common.pyx":80
+  /* "ucvm_c_common.pyx":80
  *         payload.Vp = vp
  *         payload.Vs = vs
  *         payload.density = density             # <<<<<<<<<<<<<<
@@ -2145,7 +2145,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_ins
  */
   __pyx_v_payload.density = __pyx_v_density;
 
-  /* "ucvm/src/cython/common.pyx":82
+  /* "ucvm_c_common.pyx":82
  *         payload.density = density
  * 
  *         return etree_insert(<etree_t *>opened_etree, addr, &payload)             # <<<<<<<<<<<<<<
@@ -2159,7 +2159,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_ins
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ucvm/src/cython/common.pyx":68
+  /* "ucvm_c_common.pyx":68
  * 
  *     @staticmethod
  *     def c_etree_insert(uintptr_t opened_etree, long addr_x, long addr_y, long addr_z, int level,             # <<<<<<<<<<<<<<
@@ -2170,7 +2170,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_ins
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2178,7 +2178,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_ins
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":85
+/* "ucvm_c_common.pyx":85
  * 
  *     @staticmethod
  *     def c_etree_query(uintptr_t opened_etree, float lon, float lat, float depth, corners: tuple,             # <<<<<<<<<<<<<<
@@ -2187,9 +2187,9 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_10c_etree_ins
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_13c_etree_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_13c_etree_query = {"c_etree_query", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_13c_etree_query, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_13c_etree_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_13c_etree_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_13c_etree_query = {"c_etree_query", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_13c_etree_query, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_13c_etree_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   uintptr_t __pyx_v_opened_etree;
   float __pyx_v_lon;
   float __pyx_v_lat;
@@ -2279,20 +2279,20 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_13c_etree_que
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("c_etree_query", 1, 7, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 85, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_query", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_query", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_query(__pyx_self, __pyx_v_opened_etree, __pyx_v_lon, __pyx_v_lat, __pyx_v_depth, __pyx_v_corners, __pyx_v_dims, __pyx_v_ticks);
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_12c_etree_query(__pyx_self, __pyx_v_opened_etree, __pyx_v_lon, __pyx_v_lat, __pyx_v_depth, __pyx_v_corners, __pyx_v_dims, __pyx_v_ticks);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_query(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, float __pyx_v_lon, float __pyx_v_lat, float __pyx_v_depth, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims, PyObject *__pyx_v_ticks) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_12c_etree_query(CYTHON_UNUSED PyObject *__pyx_self, uintptr_t __pyx_v_opened_etree, float __pyx_v_lon, float __pyx_v_lat, float __pyx_v_depth, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims, PyObject *__pyx_v_ticks) {
   struct etree_addr_t __pyx_v_addr;
-  struct __pyx_t_4ucvm_3src_6cython_6common_ucvm_epayload_t __pyx_v_payload;
+  struct __pyx_t_13ucvm_c_common_ucvm_epayload_t __pyx_v_payload;
   CYTHON_UNUSED uint32_t __pyx_v_i;
   PyObject *__pyx_v_x_coord = NULL;
   PyObject *__pyx_v_y_coord = NULL;
@@ -2311,7 +2311,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
   int __pyx_t_10;
   __Pyx_RefNannySetupContext("c_etree_query", 0);
 
-  /* "ucvm/src/cython/common.pyx":89
+  /* "ucvm_c_common.pyx":89
  *         cdef etree_addr_t addr
  *         cdef ucvm_epayload_t payload
  *         cdef uint32_t i = 0             # <<<<<<<<<<<<<<
@@ -2320,7 +2320,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
  */
   __pyx_v_i = 0;
 
-  /* "ucvm/src/cython/common.pyx":90
+  /* "ucvm_c_common.pyx":90
  *         cdef ucvm_epayload_t payload
  *         cdef uint32_t i = 0
  *         x_coord, y_coord = UCVMCCommon.c_etree_bilinear_geo2xy(lon, lat, corners, dims)             # <<<<<<<<<<<<<<
@@ -2424,7 +2424,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
   __pyx_v_y_coord = __pyx_t_7;
   __pyx_t_7 = 0;
 
-  /* "ucvm/src/cython/common.pyx":91
+  /* "ucvm_c_common.pyx":91
  *         cdef uint32_t i = 0
  *         x_coord, y_coord = UCVMCCommon.c_etree_bilinear_geo2xy(lon, lat, corners, dims)
  *         z_coord = depth             # <<<<<<<<<<<<<<
@@ -2436,7 +2436,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
   __pyx_v_z_coord = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "ucvm/src/cython/common.pyx":93
+  /* "ucvm_c_common.pyx":93
  *         z_coord = depth
  * 
  *         x_coord = x_coord / dims[0] * ticks[0]             # <<<<<<<<<<<<<<
@@ -2457,7 +2457,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
   __Pyx_DECREF_SET(__pyx_v_x_coord, __pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":94
+  /* "ucvm_c_common.pyx":94
  * 
  *         x_coord = x_coord / dims[0] * ticks[0]
  *         y_coord = y_coord / dims[1] * ticks[1]             # <<<<<<<<<<<<<<
@@ -2478,7 +2478,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
   __Pyx_DECREF_SET(__pyx_v_y_coord, __pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "ucvm/src/cython/common.pyx":95
+  /* "ucvm_c_common.pyx":95
  *         x_coord = x_coord / dims[0] * ticks[0]
  *         y_coord = y_coord / dims[1] * ticks[1]
  *         z_coord = z_coord / dims[2] * ticks[2]             # <<<<<<<<<<<<<<
@@ -2499,7 +2499,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
   __Pyx_DECREF_SET(__pyx_v_z_coord, __pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "ucvm/src/cython/common.pyx":97
+  /* "ucvm_c_common.pyx":97
  *         z_coord = z_coord / dims[2] * ticks[2]
  * 
  *         addr.x = <long>x_coord             # <<<<<<<<<<<<<<
@@ -2509,7 +2509,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
   __pyx_t_9 = __Pyx_PyInt_As_long(__pyx_v_x_coord); if (unlikely((__pyx_t_9 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L1_error)
   __pyx_v_addr.x = ((long)__pyx_t_9);
 
-  /* "ucvm/src/cython/common.pyx":98
+  /* "ucvm_c_common.pyx":98
  * 
  *         addr.x = <long>x_coord
  *         addr.y = <long>y_coord             # <<<<<<<<<<<<<<
@@ -2519,7 +2519,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
   __pyx_t_9 = __Pyx_PyInt_As_long(__pyx_v_y_coord); if (unlikely((__pyx_t_9 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L1_error)
   __pyx_v_addr.y = ((long)__pyx_t_9);
 
-  /* "ucvm/src/cython/common.pyx":99
+  /* "ucvm_c_common.pyx":99
  *         addr.x = <long>x_coord
  *         addr.y = <long>y_coord
  *         addr.z = <long>z_coord             # <<<<<<<<<<<<<<
@@ -2529,7 +2529,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
   __pyx_t_9 = __Pyx_PyInt_As_long(__pyx_v_z_coord); if (unlikely((__pyx_t_9 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 99, __pyx_L1_error)
   __pyx_v_addr.z = ((long)__pyx_t_9);
 
-  /* "ucvm/src/cython/common.pyx":100
+  /* "ucvm_c_common.pyx":100
  *         addr.y = <long>y_coord
  *         addr.z = <long>z_coord
  *         addr.level = 31             # <<<<<<<<<<<<<<
@@ -2538,7 +2538,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
  */
   __pyx_v_addr.level = 31;
 
-  /* "ucvm/src/cython/common.pyx":102
+  /* "ucvm_c_common.pyx":102
  *         addr.level = 31
  * 
  *         if etree_search(<etree_t *>opened_etree, addr, NULL, "*", &payload) == 0:             # <<<<<<<<<<<<<<
@@ -2548,7 +2548,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
   __pyx_t_10 = ((etree_search(((struct etree_t *)__pyx_v_opened_etree), __pyx_v_addr, NULL, ((char const *)"*"), (&__pyx_v_payload)) == 0) != 0);
   if (__pyx_t_10) {
 
-    /* "ucvm/src/cython/common.pyx":103
+    /* "ucvm_c_common.pyx":103
  * 
  *         if etree_search(<etree_t *>opened_etree, addr, NULL, "*", &payload) == 0:
  *             return (payload.Vp, payload.Vs, payload.density)             # <<<<<<<<<<<<<<
@@ -2577,7 +2577,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "ucvm/src/cython/common.pyx":102
+    /* "ucvm_c_common.pyx":102
  *         addr.level = 31
  * 
  *         if etree_search(<etree_t *>opened_etree, addr, NULL, "*", &payload) == 0:             # <<<<<<<<<<<<<<
@@ -2586,7 +2586,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
  */
   }
 
-  /* "ucvm/src/cython/common.pyx":105
+  /* "ucvm_c_common.pyx":105
  *             return (payload.Vp, payload.Vs, payload.density)
  *         else:
  *             return None             # <<<<<<<<<<<<<<
@@ -2600,7 +2600,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
     goto __pyx_L0;
   }
 
-  /* "ucvm/src/cython/common.pyx":85
+  /* "ucvm_c_common.pyx":85
  * 
  *     @staticmethod
  *     def c_etree_query(uintptr_t opened_etree, float lon, float lat, float depth, corners: tuple,             # <<<<<<<<<<<<<<
@@ -2616,7 +2616,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_query", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_query", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_x_coord);
@@ -2627,7 +2627,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":108
+/* "ucvm_c_common.pyx":108
  * 
  *     @staticmethod
  *     def c_etree_bilinear_geo2xy(float lon, float lat, corners: tuple, dims: tuple) -> (float, float):             # <<<<<<<<<<<<<<
@@ -2636,9 +2636,9 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_12c_etree_que
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_15c_etree_bilinear_geo2xy(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_15c_etree_bilinear_geo2xy = {"c_etree_bilinear_geo2xy", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_15c_etree_bilinear_geo2xy, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_15c_etree_bilinear_geo2xy(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_15c_etree_bilinear_geo2xy(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_15c_etree_bilinear_geo2xy = {"c_etree_bilinear_geo2xy", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_15c_etree_bilinear_geo2xy, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_15c_etree_bilinear_geo2xy(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   float __pyx_v_lon;
   float __pyx_v_lat;
   PyObject *__pyx_v_corners = 0;
@@ -2701,18 +2701,18 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_15c_etree_bil
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("c_etree_bilinear_geo2xy", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 108, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_bilinear_geo2xy", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_bilinear_geo2xy", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bilinear_geo2xy(__pyx_self, __pyx_v_lon, __pyx_v_lat, __pyx_v_corners, __pyx_v_dims);
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_14c_etree_bilinear_geo2xy(__pyx_self, __pyx_v_lon, __pyx_v_lat, __pyx_v_corners, __pyx_v_dims);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bilinear_geo2xy(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_lon, float __pyx_v_lat, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_14c_etree_bilinear_geo2xy(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_lon, float __pyx_v_lat, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims) {
   int __pyx_v_i;
   int __pyx_v_k;
   double __pyx_v_x;
@@ -2746,7 +2746,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
   int __pyx_t_9;
   __Pyx_RefNannySetupContext("c_etree_bilinear_geo2xy", 0);
 
-  /* "ucvm/src/cython/common.pyx":109
+  /* "ucvm_c_common.pyx":109
  *     @staticmethod
  *     def c_etree_bilinear_geo2xy(float lon, float lat, corners: tuple, dims: tuple) -> (float, float):
  *         cdef int i = 0, k = 0             # <<<<<<<<<<<<<<
@@ -2756,7 +2756,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
   __pyx_v_i = 0;
   __pyx_v_k = 0;
 
-  /* "ucvm/src/cython/common.pyx":110
+  /* "ucvm_c_common.pyx":110
  *     def c_etree_bilinear_geo2xy(float lon, float lat, corners: tuple, dims: tuple) -> (float, float):
  *         cdef int i = 0, k = 0
  *         cdef double x = 0, y = 0, x0 = 0, y0 = 0, dx = 0, dy = 0             # <<<<<<<<<<<<<<
@@ -2770,7 +2770,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
   __pyx_v_dx = 0.0;
   __pyx_v_dy = 0.0;
 
-  /* "ucvm/src/cython/common.pyx":115
+  /* "ucvm_c_common.pyx":115
  *         cdef double j2[4]
  *         cdef double jinv[4]
  *         cdef double xce = 0, yce = 0             # <<<<<<<<<<<<<<
@@ -2780,7 +2780,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
   __pyx_v_xce = 0.0;
   __pyx_v_yce = 0.0;
 
-  /* "ucvm/src/cython/common.pyx":116
+  /* "ucvm_c_common.pyx":116
  *         cdef double jinv[4]
  *         cdef double xce = 0, yce = 0
  *         cdef double res = 1, d = 0, p = 0, q = 0             # <<<<<<<<<<<<<<
@@ -2792,7 +2792,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
   __pyx_v_p = 0.0;
   __pyx_v_q = 0.0;
 
-  /* "ucvm/src/cython/common.pyx":121
+  /* "ucvm_c_common.pyx":121
  *         cdef double ethai[4]
  * 
  *         csii[0] = -1.0             # <<<<<<<<<<<<<<
@@ -2801,7 +2801,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   (__pyx_v_csii[0]) = -1.0;
 
-  /* "ucvm/src/cython/common.pyx":122
+  /* "ucvm_c_common.pyx":122
  * 
  *         csii[0] = -1.0
  *         csii[1] = -1.0             # <<<<<<<<<<<<<<
@@ -2810,7 +2810,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   (__pyx_v_csii[1]) = -1.0;
 
-  /* "ucvm/src/cython/common.pyx":123
+  /* "ucvm_c_common.pyx":123
  *         csii[0] = -1.0
  *         csii[1] = -1.0
  *         csii[2] = 1.0             # <<<<<<<<<<<<<<
@@ -2819,7 +2819,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   (__pyx_v_csii[2]) = 1.0;
 
-  /* "ucvm/src/cython/common.pyx":124
+  /* "ucvm_c_common.pyx":124
  *         csii[1] = -1.0
  *         csii[2] = 1.0
  *         csii[3] = 1.0             # <<<<<<<<<<<<<<
@@ -2828,7 +2828,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   (__pyx_v_csii[3]) = 1.0;
 
-  /* "ucvm/src/cython/common.pyx":126
+  /* "ucvm_c_common.pyx":126
  *         csii[3] = 1.0
  * 
  *         ethai[0] = -1.0             # <<<<<<<<<<<<<<
@@ -2837,7 +2837,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   (__pyx_v_ethai[0]) = -1.0;
 
-  /* "ucvm/src/cython/common.pyx":127
+  /* "ucvm_c_common.pyx":127
  * 
  *         ethai[0] = -1.0
  *         ethai[1] = 1.0             # <<<<<<<<<<<<<<
@@ -2846,7 +2846,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   (__pyx_v_ethai[1]) = 1.0;
 
-  /* "ucvm/src/cython/common.pyx":128
+  /* "ucvm_c_common.pyx":128
  *         ethai[0] = -1.0
  *         ethai[1] = 1.0
  *         ethai[2] = 1.0             # <<<<<<<<<<<<<<
@@ -2855,7 +2855,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   (__pyx_v_ethai[2]) = 1.0;
 
-  /* "ucvm/src/cython/common.pyx":129
+  /* "ucvm_c_common.pyx":129
  *         ethai[1] = 1.0
  *         ethai[2] = 1.0
  *         ethai[3] = -1.0             # <<<<<<<<<<<<<<
@@ -2864,7 +2864,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   (__pyx_v_ethai[3]) = -1.0;
 
-  /* "ucvm/src/cython/common.pyx":131
+  /* "ucvm_c_common.pyx":131
  *         ethai[3] = -1.0
  * 
  *         j1[0] = 0             # <<<<<<<<<<<<<<
@@ -2873,7 +2873,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   (__pyx_v_j1[0]) = 0.0;
 
-  /* "ucvm/src/cython/common.pyx":132
+  /* "ucvm_c_common.pyx":132
  * 
  *         j1[0] = 0
  *         j1[1] = 0             # <<<<<<<<<<<<<<
@@ -2882,7 +2882,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   (__pyx_v_j1[1]) = 0.0;
 
-  /* "ucvm/src/cython/common.pyx":133
+  /* "ucvm_c_common.pyx":133
  *         j1[0] = 0
  *         j1[1] = 0
  *         j1[2] = 0             # <<<<<<<<<<<<<<
@@ -2891,7 +2891,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   (__pyx_v_j1[2]) = 0.0;
 
-  /* "ucvm/src/cython/common.pyx":134
+  /* "ucvm_c_common.pyx":134
  *         j1[1] = 0
  *         j1[2] = 0
  *         j1[3] = 0             # <<<<<<<<<<<<<<
@@ -2900,7 +2900,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   (__pyx_v_j1[3]) = 0.0;
 
-  /* "ucvm/src/cython/common.pyx":136
+  /* "ucvm_c_common.pyx":136
  *         j1[3] = 0
  * 
  *         for i in range(4):             # <<<<<<<<<<<<<<
@@ -2910,7 +2910,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
   for (__pyx_t_1 = 0; __pyx_t_1 < 4; __pyx_t_1+=1) {
     __pyx_v_i = __pyx_t_1;
 
-    /* "ucvm/src/cython/common.pyx":137
+    /* "ucvm_c_common.pyx":137
  * 
  *         for i in range(4):
  *             j1[0] += corners[i][0] * csii[i]             # <<<<<<<<<<<<<<
@@ -2939,7 +2939,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     (__pyx_v_j1[__pyx_t_2]) = __pyx_t_7;
 
-    /* "ucvm/src/cython/common.pyx":138
+    /* "ucvm_c_common.pyx":138
  *         for i in range(4):
  *             j1[0] += corners[i][0] * csii[i]
  *             j1[1] += corners[i][0] * ethai[i]             # <<<<<<<<<<<<<<
@@ -2968,7 +2968,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     (__pyx_v_j1[__pyx_t_2]) = __pyx_t_7;
 
-    /* "ucvm/src/cython/common.pyx":139
+    /* "ucvm_c_common.pyx":139
  *             j1[0] += corners[i][0] * csii[i]
  *             j1[1] += corners[i][0] * ethai[i]
  *             j1[2] += corners[i][1] * csii[i]             # <<<<<<<<<<<<<<
@@ -2997,7 +2997,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     (__pyx_v_j1[__pyx_t_2]) = __pyx_t_7;
 
-    /* "ucvm/src/cython/common.pyx":140
+    /* "ucvm_c_common.pyx":140
  *             j1[1] += corners[i][0] * ethai[i]
  *             j1[2] += corners[i][1] * csii[i]
  *             j1[3] += corners[i][1] * ethai[i]             # <<<<<<<<<<<<<<
@@ -3026,7 +3026,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     (__pyx_v_j1[__pyx_t_2]) = __pyx_t_7;
 
-    /* "ucvm/src/cython/common.pyx":141
+    /* "ucvm_c_common.pyx":141
  *             j1[2] += corners[i][1] * csii[i]
  *             j1[3] += corners[i][1] * ethai[i]
  *             xce += corners[i][0] * csii[i] * ethai[i]             # <<<<<<<<<<<<<<
@@ -3060,7 +3060,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_xce = __pyx_t_7;
 
-    /* "ucvm/src/cython/common.pyx":142
+    /* "ucvm_c_common.pyx":142
  *             j1[3] += corners[i][1] * ethai[i]
  *             xce += corners[i][0] * csii[i] * ethai[i]
  *             yce += corners[i][1] * csii[i] * ethai[i]             # <<<<<<<<<<<<<<
@@ -3095,7 +3095,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     __pyx_v_yce = __pyx_t_7;
   }
 
-  /* "ucvm/src/cython/common.pyx":144
+  /* "ucvm_c_common.pyx":144
  *             yce += corners[i][1] * csii[i] * ethai[i]
  * 
  *         while res > 0.000000000001 and k <= 10:             # <<<<<<<<<<<<<<
@@ -3114,7 +3114,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     __pyx_L7_bool_binop_done:;
     if (!__pyx_t_8) break;
 
-    /* "ucvm/src/cython/common.pyx":145
+    /* "ucvm_c_common.pyx":145
  * 
  *         while res > 0.000000000001 and k <= 10:
  *             k += 1             # <<<<<<<<<<<<<<
@@ -3123,7 +3123,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     __pyx_v_k = (__pyx_v_k + 1);
 
-    /* "ucvm/src/cython/common.pyx":146
+    /* "ucvm_c_common.pyx":146
  *         while res > 0.000000000001 and k <= 10:
  *             k += 1
  *             j2[0] = y * xce             # <<<<<<<<<<<<<<
@@ -3132,7 +3132,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     (__pyx_v_j2[0]) = (__pyx_v_y * __pyx_v_xce);
 
-    /* "ucvm/src/cython/common.pyx":147
+    /* "ucvm_c_common.pyx":147
  *             k += 1
  *             j2[0] = y * xce
  *             j2[1] = x * xce             # <<<<<<<<<<<<<<
@@ -3141,7 +3141,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     (__pyx_v_j2[1]) = (__pyx_v_x * __pyx_v_xce);
 
-    /* "ucvm/src/cython/common.pyx":148
+    /* "ucvm_c_common.pyx":148
  *             j2[0] = y * xce
  *             j2[1] = x * xce
  *             j2[2] = y * yce             # <<<<<<<<<<<<<<
@@ -3150,7 +3150,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     (__pyx_v_j2[2]) = (__pyx_v_y * __pyx_v_yce);
 
-    /* "ucvm/src/cython/common.pyx":149
+    /* "ucvm_c_common.pyx":149
  *             j2[1] = x * xce
  *             j2[2] = y * yce
  *             j2[3] = x * yce             # <<<<<<<<<<<<<<
@@ -3159,7 +3159,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     (__pyx_v_j2[3]) = (__pyx_v_x * __pyx_v_yce);
 
-    /* "ucvm/src/cython/common.pyx":151
+    /* "ucvm_c_common.pyx":151
  *             j2[3] = x * yce
  * 
  *             j[0] = 0.25 * (j1[0] + j2[0])             # <<<<<<<<<<<<<<
@@ -3168,7 +3168,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     (__pyx_v_j[0]) = (0.25 * ((__pyx_v_j1[0]) + (__pyx_v_j2[0])));
 
-    /* "ucvm/src/cython/common.pyx":152
+    /* "ucvm_c_common.pyx":152
  * 
  *             j[0] = 0.25 * (j1[0] + j2[0])
  *             j[1] = 0.25 * (j1[1] + j2[1])             # <<<<<<<<<<<<<<
@@ -3177,7 +3177,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     (__pyx_v_j[1]) = (0.25 * ((__pyx_v_j1[1]) + (__pyx_v_j2[1])));
 
-    /* "ucvm/src/cython/common.pyx":153
+    /* "ucvm_c_common.pyx":153
  *             j[0] = 0.25 * (j1[0] + j2[0])
  *             j[1] = 0.25 * (j1[1] + j2[1])
  *             j[2] = 0.25 * (j1[2] + j2[2])             # <<<<<<<<<<<<<<
@@ -3186,7 +3186,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     (__pyx_v_j[2]) = (0.25 * ((__pyx_v_j1[2]) + (__pyx_v_j2[2])));
 
-    /* "ucvm/src/cython/common.pyx":154
+    /* "ucvm_c_common.pyx":154
  *             j[1] = 0.25 * (j1[1] + j2[1])
  *             j[2] = 0.25 * (j1[2] + j2[2])
  *             j[3] = 0.25 * (j1[3] + j2[3])             # <<<<<<<<<<<<<<
@@ -3195,7 +3195,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     (__pyx_v_j[3]) = (0.25 * ((__pyx_v_j1[3]) + (__pyx_v_j2[3])));
 
-    /* "ucvm/src/cython/common.pyx":156
+    /* "ucvm_c_common.pyx":156
  *             j[3] = 0.25 * (j1[3] + j2[3])
  * 
  *             d = (j[0] * j[3]) - (j[2] * j[1])             # <<<<<<<<<<<<<<
@@ -3204,7 +3204,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     __pyx_v_d = (((__pyx_v_j[0]) * (__pyx_v_j[3])) - ((__pyx_v_j[2]) * (__pyx_v_j[1])));
 
-    /* "ucvm/src/cython/common.pyx":157
+    /* "ucvm_c_common.pyx":157
  * 
  *             d = (j[0] * j[3]) - (j[2] * j[1])
  *             jinv[0] = j[3] / d             # <<<<<<<<<<<<<<
@@ -3217,7 +3217,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     }
     (__pyx_v_jinv[0]) = ((__pyx_v_j[3]) / __pyx_v_d);
 
-    /* "ucvm/src/cython/common.pyx":158
+    /* "ucvm_c_common.pyx":158
  *             d = (j[0] * j[3]) - (j[2] * j[1])
  *             jinv[0] = j[3] / d
  *             jinv[1] = -j[1] / d             # <<<<<<<<<<<<<<
@@ -3231,7 +3231,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     }
     (__pyx_v_jinv[1]) = (__pyx_t_7 / __pyx_v_d);
 
-    /* "ucvm/src/cython/common.pyx":159
+    /* "ucvm_c_common.pyx":159
  *             jinv[0] = j[3] / d
  *             jinv[1] = -j[1] / d
  *             jinv[2] = -j[2] / d             # <<<<<<<<<<<<<<
@@ -3245,7 +3245,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     }
     (__pyx_v_jinv[2]) = (__pyx_t_7 / __pyx_v_d);
 
-    /* "ucvm/src/cython/common.pyx":160
+    /* "ucvm_c_common.pyx":160
  *             jinv[1] = -j[1] / d
  *             jinv[2] = -j[2] / d
  *             jinv[3] = j[0] / d             # <<<<<<<<<<<<<<
@@ -3258,7 +3258,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     }
     (__pyx_v_jinv[3]) = ((__pyx_v_j[0]) / __pyx_v_d);
 
-    /* "ucvm/src/cython/common.pyx":162
+    /* "ucvm_c_common.pyx":162
  *             jinv[3] = j[0] / d
  * 
  *             x0 = 0             # <<<<<<<<<<<<<<
@@ -3267,7 +3267,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     __pyx_v_x0 = 0.0;
 
-    /* "ucvm/src/cython/common.pyx":163
+    /* "ucvm_c_common.pyx":163
  * 
  *             x0 = 0
  *             y0 = 0             # <<<<<<<<<<<<<<
@@ -3276,7 +3276,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     __pyx_v_y0 = 0.0;
 
-    /* "ucvm/src/cython/common.pyx":165
+    /* "ucvm_c_common.pyx":165
  *             y0 = 0
  * 
  *             for i in range(4):             # <<<<<<<<<<<<<<
@@ -3286,7 +3286,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     for (__pyx_t_1 = 0; __pyx_t_1 < 4; __pyx_t_1+=1) {
       __pyx_v_i = __pyx_t_1;
 
-      /* "ucvm/src/cython/common.pyx":166
+      /* "ucvm_c_common.pyx":166
  * 
  *             for i in range(4):
  *                 x0 += corners[i][0] * (.25 * (1 + (csii[i]  * x)) * (1 + (ethai[i] * y)))             # <<<<<<<<<<<<<<
@@ -3314,7 +3314,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_v_x0 = __pyx_t_7;
 
-      /* "ucvm/src/cython/common.pyx":167
+      /* "ucvm_c_common.pyx":167
  *             for i in range(4):
  *                 x0 += corners[i][0] * (.25 * (1 + (csii[i]  * x)) * (1 + (ethai[i] * y)))
  *                 y0 += corners[i][1] * (.25 * (1 + (csii[i]  * x)) * (1 + (ethai[i] * y)))             # <<<<<<<<<<<<<<
@@ -3343,7 +3343,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
       __pyx_v_y0 = __pyx_t_7;
     }
 
-    /* "ucvm/src/cython/common.pyx":169
+    /* "ucvm_c_common.pyx":169
  *                 y0 += corners[i][1] * (.25 * (1 + (csii[i]  * x)) * (1 + (ethai[i] * y)))
  * 
  *             p = lon - x0             # <<<<<<<<<<<<<<
@@ -3352,7 +3352,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     __pyx_v_p = (__pyx_v_lon - __pyx_v_x0);
 
-    /* "ucvm/src/cython/common.pyx":170
+    /* "ucvm_c_common.pyx":170
  * 
  *             p = lon - x0
  *             q = lat - y0             # <<<<<<<<<<<<<<
@@ -3361,7 +3361,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     __pyx_v_q = (__pyx_v_lat - __pyx_v_y0);
 
-    /* "ucvm/src/cython/common.pyx":172
+    /* "ucvm_c_common.pyx":172
  *             q = lat - y0
  * 
  *             dx = (jinv[0] * p) + (jinv[1] * q)             # <<<<<<<<<<<<<<
@@ -3370,7 +3370,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     __pyx_v_dx = (((__pyx_v_jinv[0]) * __pyx_v_p) + ((__pyx_v_jinv[1]) * __pyx_v_q));
 
-    /* "ucvm/src/cython/common.pyx":173
+    /* "ucvm_c_common.pyx":173
  * 
  *             dx = (jinv[0] * p) + (jinv[1] * q)
  *             dy = (jinv[2] * p) + (jinv[3] * q)             # <<<<<<<<<<<<<<
@@ -3379,7 +3379,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     __pyx_v_dy = (((__pyx_v_jinv[2]) * __pyx_v_p) + ((__pyx_v_jinv[3]) * __pyx_v_q));
 
-    /* "ucvm/src/cython/common.pyx":175
+    /* "ucvm_c_common.pyx":175
  *             dy = (jinv[2] * p) + (jinv[3] * q)
  * 
  *             x += dx             # <<<<<<<<<<<<<<
@@ -3388,7 +3388,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     __pyx_v_x = (__pyx_v_x + __pyx_v_dx);
 
-    /* "ucvm/src/cython/common.pyx":176
+    /* "ucvm_c_common.pyx":176
  * 
  *             x += dx
  *             y += dy             # <<<<<<<<<<<<<<
@@ -3397,7 +3397,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
     __pyx_v_y = (__pyx_v_y + __pyx_v_dy);
 
-    /* "ucvm/src/cython/common.pyx":178
+    /* "ucvm_c_common.pyx":178
  *             y += dy
  * 
  *             res = dx * dx + dy * dy             # <<<<<<<<<<<<<<
@@ -3407,7 +3407,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     __pyx_v_res = ((__pyx_v_dx * __pyx_v_dx) + (__pyx_v_dy * __pyx_v_dy));
   }
 
-  /* "ucvm/src/cython/common.pyx":180
+  /* "ucvm_c_common.pyx":180
  *             res = dx * dx + dy * dy
  * 
  *         if k > 10:             # <<<<<<<<<<<<<<
@@ -3417,7 +3417,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
   __pyx_t_8 = ((__pyx_v_k > 10) != 0);
   if (__pyx_t_8) {
 
-    /* "ucvm/src/cython/common.pyx":181
+    /* "ucvm_c_common.pyx":181
  * 
  *         if k > 10:
  *             raise Exception("Could not convert lon, lat to XY.")             # <<<<<<<<<<<<<<
@@ -3430,7 +3430,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __PYX_ERR(0, 181, __pyx_L1_error)
 
-    /* "ucvm/src/cython/common.pyx":180
+    /* "ucvm_c_common.pyx":180
  *             res = dx * dx + dy * dy
  * 
  *         if k > 10:             # <<<<<<<<<<<<<<
@@ -3439,7 +3439,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
   }
 
-  /* "ucvm/src/cython/common.pyx":183
+  /* "ucvm_c_common.pyx":183
  *             raise Exception("Could not convert lon, lat to XY.")
  * 
  *         x = (x + 1) * dims[0] / 2.0             # <<<<<<<<<<<<<<
@@ -3461,7 +3461,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_x = __pyx_t_7;
 
-  /* "ucvm/src/cython/common.pyx":184
+  /* "ucvm_c_common.pyx":184
  * 
  *         x = (x + 1) * dims[0] / 2.0
  *         y = (y + 1) * dims[1] / 2.0             # <<<<<<<<<<<<<<
@@ -3483,7 +3483,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_y = __pyx_t_7;
 
-  /* "ucvm/src/cython/common.pyx":186
+  /* "ucvm_c_common.pyx":186
  *         y = (y + 1) * dims[1] / 2.0
  * 
  *         return (x, y)             # <<<<<<<<<<<<<<
@@ -3507,7 +3507,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "ucvm/src/cython/common.pyx":108
+  /* "ucvm_c_common.pyx":108
  * 
  *     @staticmethod
  *     def c_etree_bilinear_geo2xy(float lon, float lat, corners: tuple, dims: tuple) -> (float, float):             # <<<<<<<<<<<<<<
@@ -3521,7 +3521,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_bilinear_geo2xy", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_bilinear_geo2xy", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3529,7 +3529,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":189
+/* "ucvm_c_common.pyx":189
  * 
  *     @staticmethod
  *     def c_etree_bilinear_xy2geo(float x, float y, corners: tuple, dims: tuple) -> (float, float):             # <<<<<<<<<<<<<<
@@ -3538,9 +3538,9 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_14c_etree_bil
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_17c_etree_bilinear_xy2geo(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_17c_etree_bilinear_xy2geo = {"c_etree_bilinear_xy2geo", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_17c_etree_bilinear_xy2geo, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_17c_etree_bilinear_xy2geo(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_17c_etree_bilinear_xy2geo(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_17c_etree_bilinear_xy2geo = {"c_etree_bilinear_xy2geo", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_17c_etree_bilinear_xy2geo, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_17c_etree_bilinear_xy2geo(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   float __pyx_v_x;
   float __pyx_v_y;
   PyObject *__pyx_v_corners = 0;
@@ -3603,18 +3603,18 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_17c_etree_bil
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("c_etree_bilinear_xy2geo", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 189, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_bilinear_xy2geo", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_bilinear_xy2geo", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_16c_etree_bilinear_xy2geo(__pyx_self, __pyx_v_x, __pyx_v_y, __pyx_v_corners, __pyx_v_dims);
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_16c_etree_bilinear_xy2geo(__pyx_self, __pyx_v_x, __pyx_v_y, __pyx_v_corners, __pyx_v_dims);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_16c_etree_bilinear_xy2geo(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_x, float __pyx_v_y, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_16c_etree_bilinear_xy2geo(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_x, float __pyx_v_y, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims) {
   PyObject *__pyx_v_x_val = NULL;
   PyObject *__pyx_v_y_val = NULL;
   PyObject *__pyx_r = NULL;
@@ -3634,7 +3634,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_16c_etree_bil
   PyObject *__pyx_t_13 = NULL;
   __Pyx_RefNannySetupContext("c_etree_bilinear_xy2geo", 0);
 
-  /* "ucvm/src/cython/common.pyx":190
+  /* "ucvm_c_common.pyx":190
  *     @staticmethod
  *     def c_etree_bilinear_xy2geo(float x, float y, corners: tuple, dims: tuple) -> (float, float):
  *         x_val = UCVMCCommon.c_etree_bilinear_interpolate(             # <<<<<<<<<<<<<<
@@ -3647,7 +3647,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_16c_etree_bil
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":191
+  /* "ucvm_c_common.pyx":191
  *     def c_etree_bilinear_xy2geo(float x, float y, corners: tuple, dims: tuple) -> (float, float):
  *         x_val = UCVMCCommon.c_etree_bilinear_interpolate(
  *             x, y, 0, 0, dims[0], dims[1], corners[0][1], corners[3][1], corners[1][1], corners[2][1]             # <<<<<<<<<<<<<<
@@ -3736,7 +3736,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_16c_etree_bil
   __pyx_v_x_val = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "ucvm/src/cython/common.pyx":193
+  /* "ucvm_c_common.pyx":193
  *             x, y, 0, 0, dims[0], dims[1], corners[0][1], corners[3][1], corners[1][1], corners[2][1]
  *         )
  *         y_val = UCVMCCommon.c_etree_bilinear_interpolate(             # <<<<<<<<<<<<<<
@@ -3749,7 +3749,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_16c_etree_bil
   __Pyx_GOTREF(__pyx_t_13);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":194
+  /* "ucvm_c_common.pyx":194
  *         )
  *         y_val = UCVMCCommon.c_etree_bilinear_interpolate(
  *             x, y, 0, 0, dims[0], dims[1], corners[0][0], corners[3][0], corners[1][0], corners[2][0]             # <<<<<<<<<<<<<<
@@ -3838,7 +3838,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_16c_etree_bil
   __pyx_v_y_val = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "ucvm/src/cython/common.pyx":196
+  /* "ucvm_c_common.pyx":196
  *             x, y, 0, 0, dims[0], dims[1], corners[0][0], corners[3][0], corners[1][0], corners[2][0]
  *         )
  *         return x_val, y_val             # <<<<<<<<<<<<<<
@@ -3858,7 +3858,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_16c_etree_bil
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ucvm/src/cython/common.pyx":189
+  /* "ucvm_c_common.pyx":189
  * 
  *     @staticmethod
  *     def c_etree_bilinear_xy2geo(float x, float y, corners: tuple, dims: tuple) -> (float, float):             # <<<<<<<<<<<<<<
@@ -3880,7 +3880,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_16c_etree_bil
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_13);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_bilinear_xy2geo", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_bilinear_xy2geo", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_x_val);
@@ -3890,7 +3890,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_16c_etree_bil
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":199
+/* "ucvm_c_common.pyx":199
  * 
  *     @staticmethod
  *     def c_etree_bilinear_interpolate(float x, float y, float x1, float y1, float x2, float y2,             # <<<<<<<<<<<<<<
@@ -3899,9 +3899,9 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_16c_etree_bil
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_19c_etree_bilinear_interpolate(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_19c_etree_bilinear_interpolate = {"c_etree_bilinear_interpolate", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_19c_etree_bilinear_interpolate, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_19c_etree_bilinear_interpolate(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_19c_etree_bilinear_interpolate(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_19c_etree_bilinear_interpolate = {"c_etree_bilinear_interpolate", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_19c_etree_bilinear_interpolate, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_19c_etree_bilinear_interpolate(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   float __pyx_v_x;
   float __pyx_v_y;
   float __pyx_v_x1;
@@ -4018,18 +4018,18 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_19c_etree_bil
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("c_etree_bilinear_interpolate", 1, 10, 10, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 199, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_bilinear_interpolate", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_bilinear_interpolate", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_18c_etree_bilinear_interpolate(__pyx_self, __pyx_v_x, __pyx_v_y, __pyx_v_x1, __pyx_v_y1, __pyx_v_x2, __pyx_v_y2, __pyx_v_q11, __pyx_v_q21, __pyx_v_q12, __pyx_v_q22);
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_18c_etree_bilinear_interpolate(__pyx_self, __pyx_v_x, __pyx_v_y, __pyx_v_x1, __pyx_v_y1, __pyx_v_x2, __pyx_v_y2, __pyx_v_q11, __pyx_v_q21, __pyx_v_q12, __pyx_v_q22);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_18c_etree_bilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_x, float __pyx_v_y, float __pyx_v_x1, float __pyx_v_y1, float __pyx_v_x2, float __pyx_v_y2, float __pyx_v_q11, float __pyx_v_q21, float __pyx_v_q12, float __pyx_v_q22) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_18c_etree_bilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_x, float __pyx_v_y, float __pyx_v_x1, float __pyx_v_y1, float __pyx_v_x2, float __pyx_v_y2, float __pyx_v_q11, float __pyx_v_q21, float __pyx_v_q12, float __pyx_v_q22) {
   float __pyx_v_p;
   float __pyx_v_f1;
   float __pyx_v_f2;
@@ -4040,7 +4040,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_18c_etree_bil
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("c_etree_bilinear_interpolate", 0);
 
-  /* "ucvm/src/cython/common.pyx":201
+  /* "ucvm_c_common.pyx":201
  *     def c_etree_bilinear_interpolate(float x, float y, float x1, float y1, float x2, float y2,
  *                                      float q11, float q21, float q12, float q22) -> float:
  *         cdef float p = (x2 - x1) * (y2 - y1)             # <<<<<<<<<<<<<<
@@ -4049,7 +4049,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_18c_etree_bil
  */
   __pyx_v_p = ((__pyx_v_x2 - __pyx_v_x1) * (__pyx_v_y2 - __pyx_v_y1));
 
-  /* "ucvm/src/cython/common.pyx":202
+  /* "ucvm_c_common.pyx":202
  *                                      float q11, float q21, float q12, float q22) -> float:
  *         cdef float p = (x2 - x1) * (y2 - y1)
  *         cdef float f1 = (q11 / p) * (x2 - x) * (y2 - y)             # <<<<<<<<<<<<<<
@@ -4062,7 +4062,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_18c_etree_bil
   }
   __pyx_v_f1 = (((__pyx_v_q11 / __pyx_v_p) * (__pyx_v_x2 - __pyx_v_x)) * (__pyx_v_y2 - __pyx_v_y));
 
-  /* "ucvm/src/cython/common.pyx":203
+  /* "ucvm_c_common.pyx":203
  *         cdef float p = (x2 - x1) * (y2 - y1)
  *         cdef float f1 = (q11 / p) * (x2 - x) * (y2 - y)
  *         cdef float f2 = (q21 / p) * (x - x1) * (y2 - y)             # <<<<<<<<<<<<<<
@@ -4075,7 +4075,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_18c_etree_bil
   }
   __pyx_v_f2 = (((__pyx_v_q21 / __pyx_v_p) * (__pyx_v_x - __pyx_v_x1)) * (__pyx_v_y2 - __pyx_v_y));
 
-  /* "ucvm/src/cython/common.pyx":204
+  /* "ucvm_c_common.pyx":204
  *         cdef float f1 = (q11 / p) * (x2 - x) * (y2 - y)
  *         cdef float f2 = (q21 / p) * (x - x1) * (y2 - y)
  *         cdef float f3 = (q12 / p) * (x2 - x) * (y - y1)             # <<<<<<<<<<<<<<
@@ -4088,7 +4088,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_18c_etree_bil
   }
   __pyx_v_f3 = (((__pyx_v_q12 / __pyx_v_p) * (__pyx_v_x2 - __pyx_v_x)) * (__pyx_v_y - __pyx_v_y1));
 
-  /* "ucvm/src/cython/common.pyx":205
+  /* "ucvm_c_common.pyx":205
  *         cdef float f2 = (q21 / p) * (x - x1) * (y2 - y)
  *         cdef float f3 = (q12 / p) * (x2 - x) * (y - y1)
  *         cdef float f4 = (q22 / p) * (x - x1) * (y - y1)             # <<<<<<<<<<<<<<
@@ -4101,7 +4101,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_18c_etree_bil
   }
   __pyx_v_f4 = (((__pyx_v_q22 / __pyx_v_p) * (__pyx_v_x - __pyx_v_x1)) * (__pyx_v_y - __pyx_v_y1));
 
-  /* "ucvm/src/cython/common.pyx":206
+  /* "ucvm_c_common.pyx":206
  *         cdef float f3 = (q12 / p) * (x2 - x) * (y - y1)
  *         cdef float f4 = (q22 / p) * (x - x1) * (y - y1)
  *         return f1 + f2 + f3 + f4             # <<<<<<<<<<<<<<
@@ -4115,7 +4115,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_18c_etree_bil
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ucvm/src/cython/common.pyx":199
+  /* "ucvm_c_common.pyx":199
  * 
  *     @staticmethod
  *     def c_etree_bilinear_interpolate(float x, float y, float x1, float y1, float x2, float y2,             # <<<<<<<<<<<<<<
@@ -4126,7 +4126,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_18c_etree_bil
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.c_etree_bilinear_interpolate", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.c_etree_bilinear_interpolate", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4134,24 +4134,24 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_18c_etree_bil
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":209
+/* "ucvm_c_common.pyx":209
  * 
  *     @staticmethod
- *     def calculate_grid_point(float width, float height, float depth, float x_value, float y_value,             # <<<<<<<<<<<<<<
- *                              float z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
+ *     def calculate_grid_point(double width, double height, double depth, double x_value, double y_value,             # <<<<<<<<<<<<<<
+ *                              double z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_21calculate_grid_point(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_21calculate_grid_point = {"calculate_grid_point", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_21calculate_grid_point, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_21calculate_grid_point(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  float __pyx_v_width;
-  float __pyx_v_height;
-  float __pyx_v_depth;
-  float __pyx_v_x_value;
-  float __pyx_v_y_value;
-  float __pyx_v_z_value;
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_21calculate_grid_point(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_21calculate_grid_point = {"calculate_grid_point", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_21calculate_grid_point, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_21calculate_grid_point(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  double __pyx_v_width;
+  double __pyx_v_height;
+  double __pyx_v_depth;
+  double __pyx_v_x_value;
+  double __pyx_v_y_value;
+  double __pyx_v_z_value;
   int __pyx_v_dim_x;
   int __pyx_v_dim_y;
   int __pyx_v_z_interval;
@@ -4239,12 +4239,12 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_21calculate_g
       values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
       values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
     }
-    __pyx_v_width = __pyx_PyFloat_AsFloat(values[0]); if (unlikely((__pyx_v_width == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L3_error)
-    __pyx_v_height = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_height == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L3_error)
-    __pyx_v_depth = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_depth == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L3_error)
-    __pyx_v_x_value = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_x_value == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L3_error)
-    __pyx_v_y_value = __pyx_PyFloat_AsFloat(values[4]); if (unlikely((__pyx_v_y_value == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L3_error)
-    __pyx_v_z_value = __pyx_PyFloat_AsFloat(values[5]); if (unlikely((__pyx_v_z_value == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L3_error)
+    __pyx_v_width = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_width == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L3_error)
+    __pyx_v_height = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_height == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L3_error)
+    __pyx_v_depth = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_depth == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L3_error)
+    __pyx_v_x_value = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_x_value == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L3_error)
+    __pyx_v_y_value = __pyx_PyFloat_AsDouble(values[4]); if (unlikely((__pyx_v_y_value == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L3_error)
+    __pyx_v_z_value = __pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_z_value == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L3_error)
     __pyx_v_dim_x = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_dim_x == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L3_error)
     __pyx_v_dim_y = __Pyx_PyInt_As_int(values[7]); if (unlikely((__pyx_v_dim_y == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L3_error)
     __pyx_v_z_interval = __Pyx_PyInt_As_int(values[8]); if (unlikely((__pyx_v_z_interval == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L3_error)
@@ -4253,35 +4253,36 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_21calculate_g
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("calculate_grid_point", 1, 9, 9, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 209, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.calculate_grid_point", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.calculate_grid_point", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_20calculate_grid_point(__pyx_self, __pyx_v_width, __pyx_v_height, __pyx_v_depth, __pyx_v_x_value, __pyx_v_y_value, __pyx_v_z_value, __pyx_v_dim_x, __pyx_v_dim_y, __pyx_v_z_interval);
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_20calculate_grid_point(__pyx_self, __pyx_v_width, __pyx_v_height, __pyx_v_depth, __pyx_v_x_value, __pyx_v_y_value, __pyx_v_z_value, __pyx_v_dim_x, __pyx_v_dim_y, __pyx_v_z_interval);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_20calculate_grid_point(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_width, float __pyx_v_height, float __pyx_v_depth, float __pyx_v_x_value, float __pyx_v_y_value, float __pyx_v_z_value, int __pyx_v_dim_x, int __pyx_v_dim_y, int __pyx_v_z_interval) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_20calculate_grid_point(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_width, double __pyx_v_height, double __pyx_v_depth, double __pyx_v_x_value, double __pyx_v_y_value, double __pyx_v_z_value, int __pyx_v_dim_x, int __pyx_v_dim_y, int __pyx_v_z_interval) {
   int __pyx_v_x_c;
   int __pyx_v_y_c;
   int __pyx_v_z_c;
-  float __pyx_v_x_p;
-  float __pyx_v_y_p;
-  float __pyx_v_z_p;
+  double __pyx_v_x_p;
+  double __pyx_v_y_p;
+  double __pyx_v_z_p;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   long __pyx_t_1;
   double __pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
+  double __pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("calculate_grid_point", 0);
 
-  /* "ucvm/src/cython/common.pyx":212
- *                              float z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
+  /* "ucvm_c_common.pyx":212
+ *                              double z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
  * 
  *         cdef int x_c = (int)(floor(x_value / width * (dim_x - 1)))             # <<<<<<<<<<<<<<
  *         cdef int y_c = (int)(floor(y_value / height * (dim_y - 1)))
@@ -4293,7 +4294,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_20calculate_g
   }
   __pyx_v_x_c = ((int)floor(((__pyx_v_x_value / __pyx_v_width) * (__pyx_v_dim_x - 1))));
 
-  /* "ucvm/src/cython/common.pyx":213
+  /* "ucvm_c_common.pyx":213
  * 
  *         cdef int x_c = (int)(floor(x_value / width * (dim_x - 1)))
  *         cdef int y_c = (int)(floor(y_value / height * (dim_y - 1)))             # <<<<<<<<<<<<<<
@@ -4306,12 +4307,12 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_20calculate_g
   }
   __pyx_v_y_c = ((int)floor(((__pyx_v_y_value / __pyx_v_height) * (__pyx_v_dim_y - 1))));
 
-  /* "ucvm/src/cython/common.pyx":214
+  /* "ucvm_c_common.pyx":214
  *         cdef int x_c = (int)(floor(x_value / width * (dim_x - 1)))
  *         cdef int y_c = (int)(floor(y_value / height * (dim_y - 1)))
  *         cdef int z_c = (int)(floor(depth / z_interval - 1) - floor(z_value / z_interval))             # <<<<<<<<<<<<<<
  * 
- *         cdef float x_p = fmod(x_value, (width / (dim_x - 1))) / (dim_x - 1)
+ *         cdef double x_p = fmod(x_value, (width / (dim_x - 1))) / (width / (dim_x - 1))
  */
   if (unlikely(__pyx_v_z_interval == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
@@ -4323,12 +4324,12 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_20calculate_g
   }
   __pyx_v_z_c = ((int)(floor(((__pyx_v_depth / __pyx_v_z_interval) - 1.0)) - floor((__pyx_v_z_value / __pyx_v_z_interval))));
 
-  /* "ucvm/src/cython/common.pyx":216
+  /* "ucvm_c_common.pyx":216
  *         cdef int z_c = (int)(floor(depth / z_interval - 1) - floor(z_value / z_interval))
  * 
- *         cdef float x_p = fmod(x_value, (width / (dim_x - 1))) / (dim_x - 1)             # <<<<<<<<<<<<<<
- *         cdef float y_p = fmod(y_value, (height / (dim_y - 1))) / (dim_y - 1)
- *         cdef float z_p = fmod(z_value, z_interval) / z_interval
+ *         cdef double x_p = fmod(x_value, (width / (dim_x - 1))) / (width / (dim_x - 1))             # <<<<<<<<<<<<<<
+ *         cdef double y_p = fmod(y_value, (height / (dim_y - 1))) / (height / (dim_y - 1))
+ *         cdef double z_p = fmod(z_value, z_interval) / z_interval
  */
   __pyx_t_1 = (__pyx_v_dim_x - 1);
   if (unlikely(__pyx_t_1 == 0)) {
@@ -4341,13 +4342,18 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_20calculate_g
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
     __PYX_ERR(0, 216, __pyx_L1_error)
   }
-  __pyx_v_x_p = (__pyx_t_2 / __pyx_t_1);
+  __pyx_t_3 = (__pyx_v_width / __pyx_t_1);
+  if (unlikely(__pyx_t_3 == 0)) {
+    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+    __PYX_ERR(0, 216, __pyx_L1_error)
+  }
+  __pyx_v_x_p = (__pyx_t_2 / __pyx_t_3);
 
-  /* "ucvm/src/cython/common.pyx":217
+  /* "ucvm_c_common.pyx":217
  * 
- *         cdef float x_p = fmod(x_value, (width / (dim_x - 1))) / (dim_x - 1)
- *         cdef float y_p = fmod(y_value, (height / (dim_y - 1))) / (dim_y - 1)             # <<<<<<<<<<<<<<
- *         cdef float z_p = fmod(z_value, z_interval) / z_interval
+ *         cdef double x_p = fmod(x_value, (width / (dim_x - 1))) / (width / (dim_x - 1))
+ *         cdef double y_p = fmod(y_value, (height / (dim_y - 1))) / (height / (dim_y - 1))             # <<<<<<<<<<<<<<
+ *         cdef double z_p = fmod(z_value, z_interval) / z_interval
  * 
  */
   __pyx_t_1 = (__pyx_v_dim_y - 1);
@@ -4355,18 +4361,23 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_20calculate_g
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
     __PYX_ERR(0, 217, __pyx_L1_error)
   }
-  __pyx_t_2 = fmod(__pyx_v_y_value, (__pyx_v_height / __pyx_t_1));
+  __pyx_t_3 = fmod(__pyx_v_y_value, (__pyx_v_height / __pyx_t_1));
   __pyx_t_1 = (__pyx_v_dim_y - 1);
   if (unlikely(__pyx_t_1 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
     __PYX_ERR(0, 217, __pyx_L1_error)
   }
-  __pyx_v_y_p = (__pyx_t_2 / __pyx_t_1);
+  __pyx_t_2 = (__pyx_v_height / __pyx_t_1);
+  if (unlikely(__pyx_t_2 == 0)) {
+    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+    __PYX_ERR(0, 217, __pyx_L1_error)
+  }
+  __pyx_v_y_p = (__pyx_t_3 / __pyx_t_2);
 
-  /* "ucvm/src/cython/common.pyx":218
- *         cdef float x_p = fmod(x_value, (width / (dim_x - 1))) / (dim_x - 1)
- *         cdef float y_p = fmod(y_value, (height / (dim_y - 1))) / (dim_y - 1)
- *         cdef float z_p = fmod(z_value, z_interval) / z_interval             # <<<<<<<<<<<<<<
+  /* "ucvm_c_common.pyx":218
+ *         cdef double x_p = fmod(x_value, (width / (dim_x - 1))) / (width / (dim_x - 1))
+ *         cdef double y_p = fmod(y_value, (height / (dim_y - 1))) / (height / (dim_y - 1))
+ *         cdef double z_p = fmod(z_value, z_interval) / z_interval             # <<<<<<<<<<<<<<
  * 
  *         return {"x": x_c, "y": y_c, "z": z_c}, {"x": x_p, "y": y_p, "z": z_p}
  */
@@ -4377,68 +4388,68 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_20calculate_g
   }
   __pyx_v_z_p = (__pyx_t_2 / __pyx_v_z_interval);
 
-  /* "ucvm/src/cython/common.pyx":220
- *         cdef float z_p = fmod(z_value, z_interval) / z_interval
+  /* "ucvm_c_common.pyx":220
+ *         cdef double z_p = fmod(z_value, z_interval) / z_interval
  * 
  *         return {"x": x_c, "y": y_c, "z": z_c}, {"x": x_p, "y": y_p, "z": z_p}             # <<<<<<<<<<<<<<
  * 
  *     @staticmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 220, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_x_c); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 220, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_x, __pyx_t_4) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_y_c); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 220, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_y, __pyx_t_4) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_z_c); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 220, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_z, __pyx_t_4) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_x_p); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_x_c); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_x, __pyx_t_5) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_y_p); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_y_c); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_y, __pyx_t_5) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_z_p); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_z_c); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_z, __pyx_t_5) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3);
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_x_p); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_x, __pyx_t_6) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_y_p); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_y, __pyx_t_6) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_z_p); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_z, __pyx_t_6) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_4);
-  __pyx_t_3 = 0;
+  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_5);
   __pyx_t_4 = 0;
-  __pyx_r = __pyx_t_5;
   __pyx_t_5 = 0;
+  __pyx_r = __pyx_t_6;
+  __pyx_t_6 = 0;
   goto __pyx_L0;
 
-  /* "ucvm/src/cython/common.pyx":209
+  /* "ucvm_c_common.pyx":209
  * 
  *     @staticmethod
- *     def calculate_grid_point(float width, float height, float depth, float x_value, float y_value,             # <<<<<<<<<<<<<<
- *                              float z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
+ *     def calculate_grid_point(double width, double height, double depth, double x_value, double y_value,             # <<<<<<<<<<<<<<
+ *                              double z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
  * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.calculate_grid_point", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.calculate_grid_point", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4446,7 +4457,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_20calculate_g
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":223
+/* "ucvm_c_common.pyx":223
  * 
  *     @staticmethod
  *     def trilinear_interpolate(float t1, float t2, float t3, float t4, float b1, float b2, float b3,             # <<<<<<<<<<<<<<
@@ -4455,9 +4466,9 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_20calculate_g
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_23trilinear_interpolate(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_23trilinear_interpolate = {"trilinear_interpolate", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_23trilinear_interpolate, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_23trilinear_interpolate(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_23trilinear_interpolate(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_23trilinear_interpolate = {"trilinear_interpolate", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_23trilinear_interpolate, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_23trilinear_interpolate(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   float __pyx_v_t1;
   float __pyx_v_t2;
   float __pyx_v_t3;
@@ -4583,18 +4594,18 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_23trilinear_i
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("trilinear_interpolate", 1, 11, 11, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 223, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.trilinear_interpolate", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.trilinear_interpolate", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_interpolate(__pyx_self, __pyx_v_t1, __pyx_v_t2, __pyx_v_t3, __pyx_v_t4, __pyx_v_b1, __pyx_v_b2, __pyx_v_b3, __pyx_v_b4, __pyx_v_x_percent, __pyx_v_y_percent, __pyx_v_z_percent);
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_22trilinear_interpolate(__pyx_self, __pyx_v_t1, __pyx_v_t2, __pyx_v_t3, __pyx_v_t4, __pyx_v_b1, __pyx_v_b2, __pyx_v_b3, __pyx_v_b4, __pyx_v_x_percent, __pyx_v_y_percent, __pyx_v_z_percent);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_t1, float __pyx_v_t2, float __pyx_v_t3, float __pyx_v_t4, float __pyx_v_b1, float __pyx_v_b2, float __pyx_v_b3, float __pyx_v_b4, float __pyx_v_x_percent, float __pyx_v_y_percent, float __pyx_v_z_percent) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_22trilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_t1, float __pyx_v_t2, float __pyx_v_t3, float __pyx_v_t4, float __pyx_v_b1, float __pyx_v_b2, float __pyx_v_b3, float __pyx_v_b4, float __pyx_v_x_percent, float __pyx_v_y_percent, float __pyx_v_z_percent) {
   float __pyx_v_tx1;
   float __pyx_v_tx2;
   float __pyx_v_bx1;
@@ -4606,7 +4617,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_i
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("trilinear_interpolate", 0);
 
-  /* "ucvm/src/cython/common.pyx":225
+  /* "ucvm_c_common.pyx":225
  *     def trilinear_interpolate(float t1, float t2, float t3, float t4, float b1, float b2, float b3,
  *                               float b4, float x_percent, float y_percent, float z_percent) -> float:
  *         cdef float tx1 = (1 - x_percent) * t1 + x_percent * t2             # <<<<<<<<<<<<<<
@@ -4615,7 +4626,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_i
  */
   __pyx_v_tx1 = (((1.0 - __pyx_v_x_percent) * __pyx_v_t1) + (__pyx_v_x_percent * __pyx_v_t2));
 
-  /* "ucvm/src/cython/common.pyx":226
+  /* "ucvm_c_common.pyx":226
  *                               float b4, float x_percent, float y_percent, float z_percent) -> float:
  *         cdef float tx1 = (1 - x_percent) * t1 + x_percent * t2
  *         cdef float tx2 = (1 - x_percent) * t3 + x_percent * t4             # <<<<<<<<<<<<<<
@@ -4624,7 +4635,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_i
  */
   __pyx_v_tx2 = (((1.0 - __pyx_v_x_percent) * __pyx_v_t3) + (__pyx_v_x_percent * __pyx_v_t4));
 
-  /* "ucvm/src/cython/common.pyx":227
+  /* "ucvm_c_common.pyx":227
  *         cdef float tx1 = (1 - x_percent) * t1 + x_percent * t2
  *         cdef float tx2 = (1 - x_percent) * t3 + x_percent * t4
  *         cdef float bx1 = (1 - x_percent) * b1 + x_percent * b2             # <<<<<<<<<<<<<<
@@ -4633,7 +4644,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_i
  */
   __pyx_v_bx1 = (((1.0 - __pyx_v_x_percent) * __pyx_v_b1) + (__pyx_v_x_percent * __pyx_v_b2));
 
-  /* "ucvm/src/cython/common.pyx":228
+  /* "ucvm_c_common.pyx":228
  *         cdef float tx2 = (1 - x_percent) * t3 + x_percent * t4
  *         cdef float bx1 = (1 - x_percent) * b1 + x_percent * b2
  *         cdef float bx2 = (1 - x_percent) * b3 + x_percent * b4             # <<<<<<<<<<<<<<
@@ -4642,7 +4653,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_i
  */
   __pyx_v_bx2 = (((1.0 - __pyx_v_x_percent) * __pyx_v_b3) + (__pyx_v_x_percent * __pyx_v_b4));
 
-  /* "ucvm/src/cython/common.pyx":230
+  /* "ucvm_c_common.pyx":230
  *         cdef float bx2 = (1 - x_percent) * b3 + x_percent * b4
  * 
  *         cdef float ty = (1 - y_percent) * tx1 + y_percent * tx2             # <<<<<<<<<<<<<<
@@ -4651,7 +4662,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_i
  */
   __pyx_v_ty = (((1.0 - __pyx_v_y_percent) * __pyx_v_tx1) + (__pyx_v_y_percent * __pyx_v_tx2));
 
-  /* "ucvm/src/cython/common.pyx":231
+  /* "ucvm_c_common.pyx":231
  * 
  *         cdef float ty = (1 - y_percent) * tx1 + y_percent * tx2
  *         cdef float by = (1 - y_percent) * bx1 + y_percent * bx2             # <<<<<<<<<<<<<<
@@ -4660,7 +4671,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_i
  */
   __pyx_v_by = (((1.0 - __pyx_v_y_percent) * __pyx_v_bx1) + (__pyx_v_y_percent * __pyx_v_bx2));
 
-  /* "ucvm/src/cython/common.pyx":233
+  /* "ucvm_c_common.pyx":233
  *         cdef float by = (1 - y_percent) * bx1 + y_percent * bx2
  * 
  *         return (1 - z_percent) * ty + z_percent * by             # <<<<<<<<<<<<<<
@@ -4674,7 +4685,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_i
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ucvm/src/cython/common.pyx":223
+  /* "ucvm_c_common.pyx":223
  * 
  *     @staticmethod
  *     def trilinear_interpolate(float t1, float t2, float t3, float t4, float b1, float b2, float b3,             # <<<<<<<<<<<<<<
@@ -4685,7 +4696,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_i
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.trilinear_interpolate", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.trilinear_interpolate", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4693,7 +4704,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_i
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":236
+/* "ucvm_c_common.pyx":236
  * 
  *     @staticmethod
  *     def bilinear_interpolate(float v1, float v2, float v3, float v4, float x_percent,             # <<<<<<<<<<<<<<
@@ -4702,9 +4713,9 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_22trilinear_i
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_25bilinear_interpolate(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_25bilinear_interpolate = {"bilinear_interpolate", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_25bilinear_interpolate, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_25bilinear_interpolate(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_25bilinear_interpolate(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_25bilinear_interpolate = {"bilinear_interpolate", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_25bilinear_interpolate, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_25bilinear_interpolate(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   float __pyx_v_v1;
   float __pyx_v_v2;
   float __pyx_v_v3;
@@ -4785,18 +4796,18 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_25bilinear_in
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("bilinear_interpolate", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 236, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.bilinear_interpolate", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.bilinear_interpolate", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_24bilinear_interpolate(__pyx_self, __pyx_v_v1, __pyx_v_v2, __pyx_v_v3, __pyx_v_v4, __pyx_v_x_percent, __pyx_v_y_percent);
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_24bilinear_interpolate(__pyx_self, __pyx_v_v1, __pyx_v_v2, __pyx_v_v3, __pyx_v_v4, __pyx_v_x_percent, __pyx_v_y_percent);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_24bilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_v1, float __pyx_v_v2, float __pyx_v_v3, float __pyx_v_v4, float __pyx_v_x_percent, float __pyx_v_y_percent) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_24bilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_v1, float __pyx_v_v2, float __pyx_v_v3, float __pyx_v_v4, float __pyx_v_x_percent, float __pyx_v_y_percent) {
   float __pyx_v_vx1;
   float __pyx_v_vx2;
   PyObject *__pyx_r = NULL;
@@ -4804,7 +4815,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_24bilinear_in
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("bilinear_interpolate", 0);
 
-  /* "ucvm/src/cython/common.pyx":238
+  /* "ucvm_c_common.pyx":238
  *     def bilinear_interpolate(float v1, float v2, float v3, float v4, float x_percent,
  *                              float y_percent) -> float:
  *         cdef float vx1 = (1 - x_percent) * v1 + x_percent * v2             # <<<<<<<<<<<<<<
@@ -4813,7 +4824,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_24bilinear_in
  */
   __pyx_v_vx1 = (((1.0 - __pyx_v_x_percent) * __pyx_v_v1) + (__pyx_v_x_percent * __pyx_v_v2));
 
-  /* "ucvm/src/cython/common.pyx":239
+  /* "ucvm_c_common.pyx":239
  *                              float y_percent) -> float:
  *         cdef float vx1 = (1 - x_percent) * v1 + x_percent * v2
  *         cdef float vx2 = (1 - x_percent) * v3 + x_percent * v4             # <<<<<<<<<<<<<<
@@ -4822,7 +4833,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_24bilinear_in
  */
   __pyx_v_vx2 = (((1.0 - __pyx_v_x_percent) * __pyx_v_v3) + (__pyx_v_x_percent * __pyx_v_v4));
 
-  /* "ucvm/src/cython/common.pyx":241
+  /* "ucvm_c_common.pyx":241
  *         cdef float vx2 = (1 - x_percent) * v3 + x_percent * v4
  * 
  *         return (1 - y_percent) * vx1 + y_percent * vx2             # <<<<<<<<<<<<<<
@@ -4836,7 +4847,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_24bilinear_in
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ucvm/src/cython/common.pyx":236
+  /* "ucvm_c_common.pyx":236
  * 
  *     @staticmethod
  *     def bilinear_interpolate(float v1, float v2, float v3, float v4, float x_percent,             # <<<<<<<<<<<<<<
@@ -4847,7 +4858,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_24bilinear_in
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.bilinear_interpolate", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.bilinear_interpolate", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4855,7 +4866,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_24bilinear_in
   return __pyx_r;
 }
 
-/* "ucvm/src/cython/common.pyx":244
+/* "ucvm_c_common.pyx":244
  * 
  *     @staticmethod
  *     def fortran_convert_ll_utm(float longitude, float latitude, int zone) -> (float, float):             # <<<<<<<<<<<<<<
@@ -4864,10 +4875,10 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_24bilinear_in
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_27fortran_convert_ll_utm(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_convert_ll_utm[] = "\n        Converts longitude and latitude to UTM in the same manor as the Fortran code that Po\n        and En-Jui used in their conversions does.\n\n        Args:\n            longitude (float): The longitude in decimal degrees.\n            latitude (float): The latitude in decimal degrees.\n            zone (int): The UTM zone to which the conversions should be done.\n\n        Returns:\n            A tuple containing two floats (easting and northing) in UTM projection.\n        ";
-static PyMethodDef __pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_27fortran_convert_ll_utm = {"fortran_convert_ll_utm", (PyCFunction)__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_27fortran_convert_ll_utm, METH_VARARGS|METH_KEYWORDS, __pyx_doc_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_convert_ll_utm};
-static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_27fortran_convert_ll_utm(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_27fortran_convert_ll_utm(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_13ucvm_c_common_11UCVMCCommon_26fortran_convert_ll_utm[] = "\n        Converts longitude and latitude to UTM in the same manor as the Fortran code that Po\n        and En-Jui used in their conversions does.\n\n        Args:\n            longitude (double): The longitude in decimal degrees.\n            latitude (double): The latitude in decimal degrees.\n            zone (int): The UTM zone to which the conversions should be done.\n\n        Returns:\n            A tuple containing two floats (easting and northing) in UTM projection.\n        ";
+static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_27fortran_convert_ll_utm = {"fortran_convert_ll_utm", (PyCFunction)__pyx_pw_13ucvm_c_common_11UCVMCCommon_27fortran_convert_ll_utm, METH_VARARGS|METH_KEYWORDS, __pyx_doc_13ucvm_c_common_11UCVMCCommon_26fortran_convert_ll_utm};
+static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_27fortran_convert_ll_utm(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   float __pyx_v_longitude;
   float __pyx_v_latitude;
   int __pyx_v_zone;
@@ -4921,40 +4932,40 @@ static PyObject *__pyx_pw_4ucvm_3src_6cython_6common_11UCVMCCommon_27fortran_con
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("fortran_convert_ll_utm", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 244, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.fortran_convert_ll_utm", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.fortran_convert_ll_utm", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_convert_ll_utm(__pyx_self, __pyx_v_longitude, __pyx_v_latitude, __pyx_v_zone);
+  __pyx_r = __pyx_pf_13ucvm_c_common_11UCVMCCommon_26fortran_convert_ll_utm(__pyx_self, __pyx_v_longitude, __pyx_v_latitude, __pyx_v_zone);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_convert_ll_utm(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_longitude, float __pyx_v_latitude, int __pyx_v_zone) {
-  float __pyx_v_semimaj;
-  float __pyx_v_semimin;
-  float __pyx_v_scfa;
-  float __pyx_v_north;
-  float __pyx_v_east;
-  float __pyx_v_pi;
-  float __pyx_v_degrad;
-  float __pyx_v_e2;
-  float __pyx_v_e4;
-  float __pyx_v_e6;
-  float __pyx_v_ep2;
-  float __pyx_v_cm;
-  float __pyx_v_rm;
-  float __pyx_v_rn;
-  float __pyx_v_new_lat;
-  float __pyx_v_delam;
-  float __pyx_v_f1;
-  float __pyx_v_f2;
-  float __pyx_v_f3;
-  float __pyx_v_f4;
-  float __pyx_v_xx;
-  float __pyx_v_yy;
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_26fortran_convert_ll_utm(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_longitude, float __pyx_v_latitude, int __pyx_v_zone) {
+  double __pyx_v_semimaj;
+  double __pyx_v_semimin;
+  double __pyx_v_scfa;
+  double __pyx_v_north;
+  double __pyx_v_east;
+  double __pyx_v_pi;
+  double __pyx_v_degrad;
+  double __pyx_v_e2;
+  double __pyx_v_e4;
+  double __pyx_v_e6;
+  double __pyx_v_ep2;
+  double __pyx_v_cm;
+  double __pyx_v_rm;
+  double __pyx_v_rn;
+  double __pyx_v_new_lat;
+  double __pyx_v_delam;
+  double __pyx_v_f1;
+  double __pyx_v_f2;
+  double __pyx_v_f3;
+  double __pyx_v_f4;
+  double __pyx_v_xx;
+  double __pyx_v_yy;
   double __pyx_v_t;
   double __pyx_v_c;
   double __pyx_v_a;
@@ -4968,71 +4979,71 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("fortran_convert_ll_utm", 0);
 
-  /* "ucvm/src/cython/common.pyx":257
+  /* "ucvm_c_common.pyx":257
  *             A tuple containing two floats (easting and northing) in UTM projection.
  *         """
- *         cdef float semimaj = 6378206.40             # <<<<<<<<<<<<<<
- *         cdef float semimin = 6356583.80
- *         cdef float scfa = 0.9996
+ *         cdef double semimaj = 6378206.40             # <<<<<<<<<<<<<<
+ *         cdef double semimin = 6356583.80
+ *         cdef double scfa = 0.9996
  */
   __pyx_v_semimaj = 6378206.40;
 
-  /* "ucvm/src/cython/common.pyx":258
+  /* "ucvm_c_common.pyx":258
  *         """
- *         cdef float semimaj = 6378206.40
- *         cdef float semimin = 6356583.80             # <<<<<<<<<<<<<<
- *         cdef float scfa = 0.9996
- *         cdef float north = 0.0
+ *         cdef double semimaj = 6378206.40
+ *         cdef double semimin = 6356583.80             # <<<<<<<<<<<<<<
+ *         cdef double scfa = 0.9996
+ *         cdef double north = 0.0
  */
   __pyx_v_semimin = 6356583.80;
 
-  /* "ucvm/src/cython/common.pyx":259
- *         cdef float semimaj = 6378206.40
- *         cdef float semimin = 6356583.80
- *         cdef float scfa = 0.9996             # <<<<<<<<<<<<<<
- *         cdef float north = 0.0
- *         cdef float east = 500000.0
+  /* "ucvm_c_common.pyx":259
+ *         cdef double semimaj = 6378206.40
+ *         cdef double semimin = 6356583.80
+ *         cdef double scfa = 0.9996             # <<<<<<<<<<<<<<
+ *         cdef double north = 0.0
+ *         cdef double east = 500000.0
  */
   __pyx_v_scfa = 0.9996;
 
-  /* "ucvm/src/cython/common.pyx":260
- *         cdef float semimin = 6356583.80
- *         cdef float scfa = 0.9996
- *         cdef float north = 0.0             # <<<<<<<<<<<<<<
- *         cdef float east = 500000.0
+  /* "ucvm_c_common.pyx":260
+ *         cdef double semimin = 6356583.80
+ *         cdef double scfa = 0.9996
+ *         cdef double north = 0.0             # <<<<<<<<<<<<<<
+ *         cdef double east = 500000.0
  * 
  */
   __pyx_v_north = 0.0;
 
-  /* "ucvm/src/cython/common.pyx":261
- *         cdef float scfa = 0.9996
- *         cdef float north = 0.0
- *         cdef float east = 500000.0             # <<<<<<<<<<<<<<
+  /* "ucvm_c_common.pyx":261
+ *         cdef double scfa = 0.9996
+ *         cdef double north = 0.0
+ *         cdef double east = 500000.0             # <<<<<<<<<<<<<<
  * 
- *         cdef float pi = 4.0 * atan(1.0)
+ *         cdef double pi = 4.0 * atan(1.0)
  */
   __pyx_v_east = 500000.0;
 
-  /* "ucvm/src/cython/common.pyx":263
- *         cdef float east = 500000.0
+  /* "ucvm_c_common.pyx":263
+ *         cdef double east = 500000.0
  * 
- *         cdef float pi = 4.0 * atan(1.0)             # <<<<<<<<<<<<<<
- *         cdef float degrad = pi / 180.0
+ *         cdef double pi = 4.0 * atan(1.0)             # <<<<<<<<<<<<<<
+ *         cdef double degrad = pi / 180.0
  * 
  */
   __pyx_v_pi = (4.0 * atan(1.0));
 
-  /* "ucvm/src/cython/common.pyx":264
+  /* "ucvm_c_common.pyx":264
  * 
- *         cdef float pi = 4.0 * atan(1.0)
- *         cdef float degrad = pi / 180.0             # <<<<<<<<<<<<<<
+ *         cdef double pi = 4.0 * atan(1.0)
+ *         cdef double degrad = pi / 180.0             # <<<<<<<<<<<<<<
  * 
- *         cdef float e2, e4, e6, ep2, cm, rm, rn, new_lat, delam
+ *         cdef double e2, e4, e6, ep2, cm, rm, rn, new_lat, delam
  */
   __pyx_v_degrad = (__pyx_v_pi / 180.0);
 
-  /* "ucvm/src/cython/common.pyx":271
- *         cdef float xx, yy
+  /* "ucvm_c_common.pyx":271
+ *         cdef double xx, yy
  * 
  *         e2 = 1.0 - pow((semimin / semimaj), 2)             # <<<<<<<<<<<<<<
  *         e4 = e2 * e2
@@ -5044,7 +5055,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
   }
   __pyx_v_e2 = (1.0 - pow((__pyx_v_semimin / __pyx_v_semimaj), 2.0));
 
-  /* "ucvm/src/cython/common.pyx":272
+  /* "ucvm_c_common.pyx":272
  * 
  *         e2 = 1.0 - pow((semimin / semimaj), 2)
  *         e4 = e2 * e2             # <<<<<<<<<<<<<<
@@ -5053,7 +5064,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_e4 = (__pyx_v_e2 * __pyx_v_e2);
 
-  /* "ucvm/src/cython/common.pyx":273
+  /* "ucvm_c_common.pyx":273
  *         e2 = 1.0 - pow((semimin / semimaj), 2)
  *         e4 = e2 * e2
  *         e6 = e2 * e4             # <<<<<<<<<<<<<<
@@ -5062,7 +5073,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_e6 = (__pyx_v_e2 * __pyx_v_e4);
 
-  /* "ucvm/src/cython/common.pyx":274
+  /* "ucvm_c_common.pyx":274
  *         e4 = e2 * e2
  *         e6 = e2 * e4
  *         ep2 = e2 / (1.0 - e2)             # <<<<<<<<<<<<<<
@@ -5076,7 +5087,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
   }
   __pyx_v_ep2 = (__pyx_v_e2 / __pyx_t_1);
 
-  /* "ucvm/src/cython/common.pyx":276
+  /* "ucvm_c_common.pyx":276
  *         ep2 = e2 / (1.0 - e2)
  * 
  *         cm = zone * 6.0 - 183.0             # <<<<<<<<<<<<<<
@@ -5085,7 +5096,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_cm = ((__pyx_v_zone * 6.0) - 183.0);
 
-  /* "ucvm/src/cython/common.pyx":277
+  /* "ucvm_c_common.pyx":277
  * 
  *         cm = zone * 6.0 - 183.0
  *         new_lat = degrad * latitude             # <<<<<<<<<<<<<<
@@ -5094,7 +5105,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_new_lat = (__pyx_v_degrad * __pyx_v_latitude);
 
-  /* "ucvm/src/cython/common.pyx":279
+  /* "ucvm_c_common.pyx":279
  *         new_lat = degrad * latitude
  * 
  *         delam = longitude - cm             # <<<<<<<<<<<<<<
@@ -5103,7 +5114,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_delam = (__pyx_v_longitude - __pyx_v_cm);
 
-  /* "ucvm/src/cython/common.pyx":280
+  /* "ucvm_c_common.pyx":280
  * 
  *         delam = longitude - cm
  *         if delam < -180:             # <<<<<<<<<<<<<<
@@ -5113,7 +5124,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
   __pyx_t_2 = ((__pyx_v_delam < -180.0) != 0);
   if (__pyx_t_2) {
 
-    /* "ucvm/src/cython/common.pyx":281
+    /* "ucvm_c_common.pyx":281
  *         delam = longitude - cm
  *         if delam < -180:
  *             delam += 360             # <<<<<<<<<<<<<<
@@ -5122,7 +5133,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_delam = (__pyx_v_delam + 360.0);
 
-    /* "ucvm/src/cython/common.pyx":280
+    /* "ucvm_c_common.pyx":280
  * 
  *         delam = longitude - cm
  *         if delam < -180:             # <<<<<<<<<<<<<<
@@ -5132,7 +5143,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
     goto __pyx_L3;
   }
 
-  /* "ucvm/src/cython/common.pyx":282
+  /* "ucvm_c_common.pyx":282
  *         if delam < -180:
  *             delam += 360
  *         elif delam > 180:             # <<<<<<<<<<<<<<
@@ -5142,7 +5153,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
   __pyx_t_2 = ((__pyx_v_delam > 180.0) != 0);
   if (__pyx_t_2) {
 
-    /* "ucvm/src/cython/common.pyx":283
+    /* "ucvm_c_common.pyx":283
  *             delam += 360
  *         elif delam > 180:
  *             delam -= 360             # <<<<<<<<<<<<<<
@@ -5151,7 +5162,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_delam = (__pyx_v_delam - 360.0);
 
-    /* "ucvm/src/cython/common.pyx":282
+    /* "ucvm_c_common.pyx":282
  *         if delam < -180:
  *             delam += 360
  *         elif delam > 180:             # <<<<<<<<<<<<<<
@@ -5161,7 +5172,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
   }
   __pyx_L3:;
 
-  /* "ucvm/src/cython/common.pyx":284
+  /* "ucvm_c_common.pyx":284
  *         elif delam > 180:
  *             delam -= 360
  *         delam *= degrad             # <<<<<<<<<<<<<<
@@ -5170,7 +5181,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_delam = (__pyx_v_delam * __pyx_v_degrad);
 
-  /* "ucvm/src/cython/common.pyx":286
+  /* "ucvm_c_common.pyx":286
  *         delam *= degrad
  * 
  *         f1 = (1.0 - e2 / 4.0 - 3.0 * e4 / 64.0 - 5.0 * e6 / 256.0) * new_lat             # <<<<<<<<<<<<<<
@@ -5179,7 +5190,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_f1 = ((((1.0 - (__pyx_v_e2 / 4.0)) - ((3.0 * __pyx_v_e4) / 64.0)) - ((5.0 * __pyx_v_e6) / 256.0)) * __pyx_v_new_lat);
 
-  /* "ucvm/src/cython/common.pyx":287
+  /* "ucvm_c_common.pyx":287
  * 
  *         f1 = (1.0 - e2 / 4.0 - 3.0 * e4 / 64.0 - 5.0 * e6 / 256.0) * new_lat
  *         f2 = 3.0 * e2 / 8.0 + 3.0 * e4 / 32.0 + 45.0 * e6 / 1024.0             # <<<<<<<<<<<<<<
@@ -5188,7 +5199,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_f2 = ((((3.0 * __pyx_v_e2) / 8.0) + ((3.0 * __pyx_v_e4) / 32.0)) + ((45.0 * __pyx_v_e6) / 1024.0));
 
-  /* "ucvm/src/cython/common.pyx":288
+  /* "ucvm_c_common.pyx":288
  *         f1 = (1.0 - e2 / 4.0 - 3.0 * e4 / 64.0 - 5.0 * e6 / 256.0) * new_lat
  *         f2 = 3.0 * e2 / 8.0 + 3.0 * e4 / 32.0 + 45.0 * e6 / 1024.0
  *         f2 *= sin(2.0 * new_lat)             # <<<<<<<<<<<<<<
@@ -5197,7 +5208,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_f2 = (__pyx_v_f2 * sin((2.0 * __pyx_v_new_lat)));
 
-  /* "ucvm/src/cython/common.pyx":289
+  /* "ucvm_c_common.pyx":289
  *         f2 = 3.0 * e2 / 8.0 + 3.0 * e4 / 32.0 + 45.0 * e6 / 1024.0
  *         f2 *= sin(2.0 * new_lat)
  *         f3 = 15.0 * e4 / 256.0 * 45.0 * e6 / 1024.0             # <<<<<<<<<<<<<<
@@ -5206,7 +5217,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_f3 = (((((15.0 * __pyx_v_e4) / 256.0) * 45.0) * __pyx_v_e6) / 1024.0);
 
-  /* "ucvm/src/cython/common.pyx":290
+  /* "ucvm_c_common.pyx":290
  *         f2 *= sin(2.0 * new_lat)
  *         f3 = 15.0 * e4 / 256.0 * 45.0 * e6 / 1024.0
  *         f3 *= sin(4.0 * new_lat)             # <<<<<<<<<<<<<<
@@ -5215,7 +5226,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_f3 = (__pyx_v_f3 * sin((4.0 * __pyx_v_new_lat)));
 
-  /* "ucvm/src/cython/common.pyx":291
+  /* "ucvm_c_common.pyx":291
  *         f3 = 15.0 * e4 / 256.0 * 45.0 * e6 / 1024.0
  *         f3 *= sin(4.0 * new_lat)
  *         f4 = 35.0 * e6 / 3072.0             # <<<<<<<<<<<<<<
@@ -5224,7 +5235,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_f4 = ((35.0 * __pyx_v_e6) / 3072.0);
 
-  /* "ucvm/src/cython/common.pyx":292
+  /* "ucvm_c_common.pyx":292
  *         f3 *= sin(4.0 * new_lat)
  *         f4 = 35.0 * e6 / 3072.0
  *         f4 *= sin(6.0 * new_lat)             # <<<<<<<<<<<<<<
@@ -5233,7 +5244,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_f4 = (__pyx_v_f4 * sin((6.0 * __pyx_v_new_lat)));
 
-  /* "ucvm/src/cython/common.pyx":293
+  /* "ucvm_c_common.pyx":293
  *         f4 = 35.0 * e6 / 3072.0
  *         f4 *= sin(6.0 * new_lat)
  *         rm = semimaj * (f1 - f2 + f3 - f4)             # <<<<<<<<<<<<<<
@@ -5242,7 +5253,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_rm = (__pyx_v_semimaj * (((__pyx_v_f1 - __pyx_v_f2) + __pyx_v_f3) - __pyx_v_f4));
 
-  /* "ucvm/src/cython/common.pyx":295
+  /* "ucvm_c_common.pyx":295
  *         rm = semimaj * (f1 - f2 + f3 - f4)
  * 
  *         if latitude == 90 or latitude == -90:             # <<<<<<<<<<<<<<
@@ -5260,7 +5271,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
   __pyx_L5_bool_binop_done:;
   if (__pyx_t_2) {
 
-    /* "ucvm/src/cython/common.pyx":296
+    /* "ucvm_c_common.pyx":296
  * 
  *         if latitude == 90 or latitude == -90:
  *             xx = 0.0             # <<<<<<<<<<<<<<
@@ -5269,7 +5280,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_xx = 0.0;
 
-    /* "ucvm/src/cython/common.pyx":297
+    /* "ucvm_c_common.pyx":297
  *         if latitude == 90 or latitude == -90:
  *             xx = 0.0
  *             yy = scfa * rm             # <<<<<<<<<<<<<<
@@ -5278,7 +5289,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_yy = (__pyx_v_scfa * __pyx_v_rm);
 
-    /* "ucvm/src/cython/common.pyx":295
+    /* "ucvm_c_common.pyx":295
  *         rm = semimaj * (f1 - f2 + f3 - f4)
  * 
  *         if latitude == 90 or latitude == -90:             # <<<<<<<<<<<<<<
@@ -5288,7 +5299,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
     goto __pyx_L4;
   }
 
-  /* "ucvm/src/cython/common.pyx":299
+  /* "ucvm_c_common.pyx":299
  *             yy = scfa * rm
  *         else:
  *             rn = semimaj / sqrt(1.0 - e2 * sin(new_lat) ** 2)             # <<<<<<<<<<<<<<
@@ -5303,7 +5314,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
     }
     __pyx_v_rn = (__pyx_v_semimaj / __pyx_t_1);
 
-    /* "ucvm/src/cython/common.pyx":300
+    /* "ucvm_c_common.pyx":300
  *         else:
  *             rn = semimaj / sqrt(1.0 - e2 * sin(new_lat) ** 2)
  *             t = tan(new_lat) ** 2             # <<<<<<<<<<<<<<
@@ -5312,7 +5323,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_t = pow(tan(__pyx_v_new_lat), 2.0);
 
-    /* "ucvm/src/cython/common.pyx":301
+    /* "ucvm_c_common.pyx":301
  *             rn = semimaj / sqrt(1.0 - e2 * sin(new_lat) ** 2)
  *             t = tan(new_lat) ** 2
  *             c = ep2 * cos(new_lat) ** 2             # <<<<<<<<<<<<<<
@@ -5321,7 +5332,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_c = (__pyx_v_ep2 * pow(cos(__pyx_v_new_lat), 2.0));
 
-    /* "ucvm/src/cython/common.pyx":302
+    /* "ucvm_c_common.pyx":302
  *             t = tan(new_lat) ** 2
  *             c = ep2 * cos(new_lat) ** 2
  *             a = cos(new_lat) * delam             # <<<<<<<<<<<<<<
@@ -5330,7 +5341,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_a = (cos(__pyx_v_new_lat) * __pyx_v_delam);
 
-    /* "ucvm/src/cython/common.pyx":304
+    /* "ucvm_c_common.pyx":304
  *             a = cos(new_lat) * delam
  * 
  *             f1 = (1.0 - t + c) * a ** 3 / 6.0             # <<<<<<<<<<<<<<
@@ -5339,7 +5350,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_f1 = ((((1.0 - __pyx_v_t) + __pyx_v_c) * pow(__pyx_v_a, 3.0)) / 6.0);
 
-    /* "ucvm/src/cython/common.pyx":305
+    /* "ucvm_c_common.pyx":305
  * 
  *             f1 = (1.0 - t + c) * a ** 3 / 6.0
  *             f2 = 5.0 - 18.0 * t + t ** 2 + 72.0 * c - 58.0 * ep2             # <<<<<<<<<<<<<<
@@ -5348,7 +5359,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_f2 = ((((5.0 - (18.0 * __pyx_v_t)) + pow(__pyx_v_t, 2.0)) + (72.0 * __pyx_v_c)) - (58.0 * __pyx_v_ep2));
 
-    /* "ucvm/src/cython/common.pyx":306
+    /* "ucvm_c_common.pyx":306
  *             f1 = (1.0 - t + c) * a ** 3 / 6.0
  *             f2 = 5.0 - 18.0 * t + t ** 2 + 72.0 * c - 58.0 * ep2
  *             f2 *= a ** 5 / 120.0             # <<<<<<<<<<<<<<
@@ -5357,7 +5368,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_f2 = (__pyx_v_f2 * (pow(__pyx_v_a, 5.0) / 120.0));
 
-    /* "ucvm/src/cython/common.pyx":307
+    /* "ucvm_c_common.pyx":307
  *             f2 = 5.0 - 18.0 * t + t ** 2 + 72.0 * c - 58.0 * ep2
  *             f2 *= a ** 5 / 120.0
  *             xx = scfa * rn * (a + f1 + f2)             # <<<<<<<<<<<<<<
@@ -5366,7 +5377,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_xx = ((__pyx_v_scfa * __pyx_v_rn) * ((__pyx_v_a + __pyx_v_f1) + __pyx_v_f2));
 
-    /* "ucvm/src/cython/common.pyx":308
+    /* "ucvm_c_common.pyx":308
  *             f2 *= a ** 5 / 120.0
  *             xx = scfa * rn * (a + f1 + f2)
  *             f1 = a ** 2 / 2.0             # <<<<<<<<<<<<<<
@@ -5375,7 +5386,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_f1 = (pow(__pyx_v_a, 2.0) / 2.0);
 
-    /* "ucvm/src/cython/common.pyx":309
+    /* "ucvm_c_common.pyx":309
  *             xx = scfa * rn * (a + f1 + f2)
  *             f1 = a ** 2 / 2.0
  *             f2 = 5.0 - t + 9.0 * c + 4.0 * c ** 2             # <<<<<<<<<<<<<<
@@ -5384,7 +5395,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_f2 = (((5.0 - __pyx_v_t) + (9.0 * __pyx_v_c)) + (4.0 * pow(__pyx_v_c, 2.0)));
 
-    /* "ucvm/src/cython/common.pyx":310
+    /* "ucvm_c_common.pyx":310
  *             f1 = a ** 2 / 2.0
  *             f2 = 5.0 - t + 9.0 * c + 4.0 * c ** 2
  *             f2 *= a ** 4 / 24.0             # <<<<<<<<<<<<<<
@@ -5393,7 +5404,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_f2 = (__pyx_v_f2 * (pow(__pyx_v_a, 4.0) / 24.0));
 
-    /* "ucvm/src/cython/common.pyx":311
+    /* "ucvm_c_common.pyx":311
  *             f2 = 5.0 - t + 9.0 * c + 4.0 * c ** 2
  *             f2 *= a ** 4 / 24.0
  *             f3 = 61.0 - 58.0 * t + t ** 2 + 600.0 * c - 330.0 * ep2             # <<<<<<<<<<<<<<
@@ -5402,7 +5413,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_f3 = ((((61.0 - (58.0 * __pyx_v_t)) + pow(__pyx_v_t, 2.0)) + (600.0 * __pyx_v_c)) - (330.0 * __pyx_v_ep2));
 
-    /* "ucvm/src/cython/common.pyx":312
+    /* "ucvm_c_common.pyx":312
  *             f2 *= a ** 4 / 24.0
  *             f3 = 61.0 - 58.0 * t + t ** 2 + 600.0 * c - 330.0 * ep2
  *             f3 *= a ** 6 / 720.0             # <<<<<<<<<<<<<<
@@ -5411,7 +5422,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
     __pyx_v_f3 = (__pyx_v_f3 * (pow(__pyx_v_a, 6.0) / 720.0));
 
-    /* "ucvm/src/cython/common.pyx":313
+    /* "ucvm_c_common.pyx":313
  *             f3 = 61.0 - 58.0 * t + t ** 2 + 600.0 * c - 330.0 * ep2
  *             f3 *= a ** 6 / 720.0
  *             yy = scfa * (rm + rn * tan(new_lat) * (f1 + f2 + f3))             # <<<<<<<<<<<<<<
@@ -5422,7 +5433,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
   }
   __pyx_L4:;
 
-  /* "ucvm/src/cython/common.pyx":315
+  /* "ucvm_c_common.pyx":315
  *             yy = scfa * (rm + rn * tan(new_lat) * (f1 + f2 + f3))
  * 
  *         xx += east             # <<<<<<<<<<<<<<
@@ -5431,7 +5442,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_xx = (__pyx_v_xx + __pyx_v_east);
 
-  /* "ucvm/src/cython/common.pyx":316
+  /* "ucvm_c_common.pyx":316
  * 
  *         xx += east
  *         yy += north             # <<<<<<<<<<<<<<
@@ -5440,7 +5451,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
  */
   __pyx_v_yy = (__pyx_v_yy + __pyx_v_north);
 
-  /* "ucvm/src/cython/common.pyx":318
+  /* "ucvm_c_common.pyx":318
  *         yy += north
  * 
  *         return xx, yy             # <<<<<<<<<<<<<<
@@ -5462,7 +5473,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
   __pyx_t_6 = 0;
   goto __pyx_L0;
 
-  /* "ucvm/src/cython/common.pyx":244
+  /* "ucvm_c_common.pyx":244
  * 
  *     @staticmethod
  *     def fortran_convert_ll_utm(float longitude, float latitude, int zone) -> (float, float):             # <<<<<<<<<<<<<<
@@ -5475,7 +5486,7 @@ static PyObject *__pyx_pf_4ucvm_3src_6cython_6common_11UCVMCCommon_26fortran_con
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("ucvm.src.cython.common.UCVMCCommon.fortran_convert_ll_utm", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("ucvm_c_common.UCVMCCommon.fortran_convert_ll_utm", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -5494,7 +5505,7 @@ static struct PyModuleDef __pyx_moduledef = {
   #else
     PyModuleDef_HEAD_INIT,
   #endif
-    "common",
+    "ucvm_c_common",
     0, /* m_doc */
     -1, /* m_size */
     __pyx_methods /* m_methods */,
@@ -5640,7 +5651,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_tx1, __pyx_k_tx1, sizeof(__pyx_k_tx1), 0, 0, 1, 1},
   {&__pyx_n_s_tx2, __pyx_k_tx2, sizeof(__pyx_k_tx2), 0, 0, 1, 1},
   {&__pyx_n_s_ty, __pyx_k_ty, sizeof(__pyx_k_ty), 0, 0, 1, 1},
-  {&__pyx_n_s_ucvm_src_cython_common, __pyx_k_ucvm_src_cython_common, sizeof(__pyx_k_ucvm_src_cython_common), 0, 0, 1, 1},
+  {&__pyx_n_s_ucvm_c_common, __pyx_k_ucvm_c_common, sizeof(__pyx_k_ucvm_c_common), 0, 0, 1, 1},
   {&__pyx_n_s_v1, __pyx_k_v1, sizeof(__pyx_k_v1), 0, 0, 1, 1},
   {&__pyx_n_s_v2, __pyx_k_v2, sizeof(__pyx_k_v2), 0, 0, 1, 1},
   {&__pyx_n_s_v3, __pyx_k_v3, sizeof(__pyx_k_v3), 0, 0, 1, 1},
@@ -5697,7 +5708,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "ucvm/src/cython/common.pyx":49
+  /* "ucvm_c_common.pyx":49
  * 
  *         return {
  *             "title": appmeta_dict[0].split(":"),             # <<<<<<<<<<<<<<
@@ -5708,7 +5719,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "ucvm/src/cython/common.pyx":50
+  /* "ucvm_c_common.pyx":50
  *         return {
  *             "title": appmeta_dict[0].split(":"),
  *             "author": appmeta_dict[1].split(":"),             # <<<<<<<<<<<<<<
@@ -5719,7 +5730,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "ucvm/src/cython/common.pyx":51
+  /* "ucvm_c_common.pyx":51
  *             "title": appmeta_dict[0].split(":"),
  *             "author": appmeta_dict[1].split(":"),
  *             "date": appmeta_dict[2].split(":"),             # <<<<<<<<<<<<<<
@@ -5730,7 +5741,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "ucvm/src/cython/common.pyx":53
+  /* "ucvm_c_common.pyx":53
  *             "date": appmeta_dict[2].split(":"),
  *             "numfields": appmeta_dict[3],
  *             "payload": appmeta_dict[4].split(";"),             # <<<<<<<<<<<<<<
@@ -5741,7 +5752,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "ucvm/src/cython/common.pyx":181
+  /* "ucvm_c_common.pyx":181
  * 
  *         if k > 10:
  *             raise Exception("Could not convert lon, lat to XY.")             # <<<<<<<<<<<<<<
@@ -5752,7 +5763,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "ucvm/src/cython/common.pyx":32
+  /* "ucvm_c_common.pyx":32
  * 
  *     @staticmethod
  *     def c_etree_open(char *path, int mode):             # <<<<<<<<<<<<<<
@@ -5764,7 +5775,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__8);
   __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_c_etree_open, 32, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 32, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":40
+  /* "ucvm_c_common.pyx":40
  * 
  *     @staticmethod
  *     def c_etree_setappmeta(uintptr_t opened_etree, char *metadata) -> int:             # <<<<<<<<<<<<<<
@@ -5776,7 +5787,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__10);
   __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_c_etree_setappmeta, 40, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 40, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":44
+  /* "ucvm_c_common.pyx":44
  * 
  *     @staticmethod
  *     def c_etree_getappmeta(uintptr_t opened_etree) -> dict:             # <<<<<<<<<<<<<<
@@ -5788,7 +5799,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__12);
   __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(1, 0, 4, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_c_etree_getappmeta, 44, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 44, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":60
+  /* "ucvm_c_common.pyx":60
  * 
  *     @staticmethod
  *     def c_etree_registerschema(uintptr_t opened_etree, char *defstring) -> int:             # <<<<<<<<<<<<<<
@@ -5800,7 +5811,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__14);
   __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_c_etree_registerschema, 60, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 60, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":64
+  /* "ucvm_c_common.pyx":64
  * 
  *     @staticmethod
  *     def c_etree_close(uintptr_t opened_etree):             # <<<<<<<<<<<<<<
@@ -5812,7 +5823,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__16);
   __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_c_etree_close, 64, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 64, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":68
+  /* "ucvm_c_common.pyx":68
  * 
  *     @staticmethod
  *     def c_etree_insert(uintptr_t opened_etree, long addr_x, long addr_y, long addr_z, int level,             # <<<<<<<<<<<<<<
@@ -5824,7 +5835,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__18);
   __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(8, 0, 10, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_c_etree_insert, 68, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 68, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":85
+  /* "ucvm_c_common.pyx":85
  * 
  *     @staticmethod
  *     def c_etree_query(uintptr_t opened_etree, float lon, float lat, float depth, corners: tuple,             # <<<<<<<<<<<<<<
@@ -5836,7 +5847,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__20);
   __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(7, 0, 13, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_c_etree_query, 85, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 85, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":108
+  /* "ucvm_c_common.pyx":108
  * 
  *     @staticmethod
  *     def c_etree_bilinear_geo2xy(float lon, float lat, corners: tuple, dims: tuple) -> (float, float):             # <<<<<<<<<<<<<<
@@ -5848,7 +5859,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__22);
   __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(4, 0, 24, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_c_etree_bilinear_geo2xy, 108, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 108, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":189
+  /* "ucvm_c_common.pyx":189
  * 
  *     @staticmethod
  *     def c_etree_bilinear_xy2geo(float x, float y, corners: tuple, dims: tuple) -> (float, float):             # <<<<<<<<<<<<<<
@@ -5860,7 +5871,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__24);
   __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(4, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_c_etree_bilinear_xy2geo, 189, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 189, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":199
+  /* "ucvm_c_common.pyx":199
  * 
  *     @staticmethod
  *     def c_etree_bilinear_interpolate(float x, float y, float x1, float y1, float x2, float y2,             # <<<<<<<<<<<<<<
@@ -5872,11 +5883,11 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__26);
   __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(10, 0, 15, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_c_etree_bilinear_interpolate, 199, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 199, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":209
+  /* "ucvm_c_common.pyx":209
  * 
  *     @staticmethod
- *     def calculate_grid_point(float width, float height, float depth, float x_value, float y_value,             # <<<<<<<<<<<<<<
- *                              float z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
+ *     def calculate_grid_point(double width, double height, double depth, double x_value, double y_value,             # <<<<<<<<<<<<<<
+ *                              double z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
  * 
  */
   __pyx_tuple__28 = PyTuple_Pack(15, __pyx_n_s_width, __pyx_n_s_height, __pyx_n_s_depth, __pyx_n_s_x_value, __pyx_n_s_y_value, __pyx_n_s_z_value, __pyx_n_s_dim_x, __pyx_n_s_dim_y, __pyx_n_s_z_interval, __pyx_n_s_x_c, __pyx_n_s_y_c, __pyx_n_s_z_c, __pyx_n_s_x_p, __pyx_n_s_y_p, __pyx_n_s_z_p); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 209, __pyx_L1_error)
@@ -5884,7 +5895,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__28);
   __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(9, 0, 15, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_calculate_grid_point, 209, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 209, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":223
+  /* "ucvm_c_common.pyx":223
  * 
  *     @staticmethod
  *     def trilinear_interpolate(float t1, float t2, float t3, float t4, float b1, float b2, float b3,             # <<<<<<<<<<<<<<
@@ -5896,7 +5907,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__30);
   __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(11, 0, 17, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_trilinear_interpolate, 223, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 223, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":236
+  /* "ucvm_c_common.pyx":236
  * 
  *     @staticmethod
  *     def bilinear_interpolate(float v1, float v2, float v3, float v4, float x_percent,             # <<<<<<<<<<<<<<
@@ -5908,7 +5919,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__32);
   __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(6, 0, 8, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_bilinear_interpolate, 236, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 236, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":244
+  /* "ucvm_c_common.pyx":244
  * 
  *     @staticmethod
  *     def fortran_convert_ll_utm(float longitude, float latitude, int zone) -> (float, float):             # <<<<<<<<<<<<<<
@@ -5936,8 +5947,8 @@ static int __Pyx_InitGlobals(void) {
 }
 
 #if PY_MAJOR_VERSION < 3
-PyMODINIT_FUNC initcommon(void); /*proto*/
-PyMODINIT_FUNC initcommon(void)
+PyMODINIT_FUNC initucvm_c_common(void); /*proto*/
+PyMODINIT_FUNC initucvm_c_common(void)
 #else
 PyMODINIT_FUNC PyInit_ucvm_c_common(void); /*proto*/
 PyMODINIT_FUNC PyInit_ucvm_c_common(void)
@@ -5985,7 +5996,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   #endif
   /*--- Module creation code ---*/
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("common", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("ucvm_c_common", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -6002,14 +6013,14 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_ucvm__src__cython__common) {
+  if (__pyx_module_is_main_ucvm_c_common) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "ucvm.src.cython.common")) {
-      if (unlikely(PyDict_SetItemString(modules, "ucvm.src.cython.common", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "ucvm_c_common")) {
+      if (unlikely(PyDict_SetItemString(modules, "ucvm_c_common", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -6029,27 +6040,27 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "ucvm/src/cython/common.pyx":29
+  /* "ucvm_c_common.pyx":29
  *     int etree_close(etree_t *)
  * 
  * class UCVMCCommon:             # <<<<<<<<<<<<<<
  * 
  *     @staticmethod
  */
-  __pyx_t_1 = __Pyx_Py3MetaclassPrepare((PyObject *) NULL, __pyx_empty_tuple, __pyx_n_s_UCVMCCommon, __pyx_n_s_UCVMCCommon, (PyObject *) NULL, __pyx_n_s_ucvm_src_cython_common, (PyObject *) NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Py3MetaclassPrepare((PyObject *) NULL, __pyx_empty_tuple, __pyx_n_s_UCVMCCommon, __pyx_n_s_UCVMCCommon, (PyObject *) NULL, __pyx_n_s_ucvm_c_common, (PyObject *) NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
 
-  /* "ucvm/src/cython/common.pyx":32
+  /* "ucvm_c_common.pyx":32
  * 
  *     @staticmethod
  *     def c_etree_open(char *path, int mode):             # <<<<<<<<<<<<<<
  *         cdef int32_t imode = mode
  *         cdef int32_t bufsize = 64
  */
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_1c_etree_open, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_open, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_1c_etree_open, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_open, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "ucvm/src/cython/common.pyx":31
+  /* "ucvm_c_common.pyx":31
  * class UCVMCCommon:
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6067,7 +6078,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_c_etree_open, __pyx_t_2) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":40
+  /* "ucvm_c_common.pyx":40
  * 
  *     @staticmethod
  *     def c_etree_setappmeta(uintptr_t opened_etree, char *metadata) -> int:             # <<<<<<<<<<<<<<
@@ -6077,12 +6088,12 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, ((PyObject *)(&PyInt_Type))) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_3c_etree_setappmeta, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_setappmeta, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_3c_etree_setappmeta, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_setappmeta, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":39
+  /* "ucvm_c_common.pyx":39
  *         return <uintptr_t>etree_open(path, imode, bufsize, payloadsize, dimensions)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6100,7 +6111,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_c_etree_setappmeta, __pyx_t_3) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":44
+  /* "ucvm_c_common.pyx":44
  * 
  *     @staticmethod
  *     def c_etree_getappmeta(uintptr_t opened_etree) -> dict:             # <<<<<<<<<<<<<<
@@ -6110,12 +6121,12 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_return, ((PyObject *)(&PyDict_Type))) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_5c_etree_getappmeta, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_getappmeta, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_5c_etree_getappmeta, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_getappmeta, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":43
+  /* "ucvm_c_common.pyx":43
  *         return etree_setappmeta(<etree_t *>opened_etree, metadata)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6133,7 +6144,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_c_etree_getappmeta, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":60
+  /* "ucvm_c_common.pyx":60
  * 
  *     @staticmethod
  *     def c_etree_registerschema(uintptr_t opened_etree, char *defstring) -> int:             # <<<<<<<<<<<<<<
@@ -6143,12 +6154,12 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, ((PyObject *)(&PyInt_Type))) < 0) __PYX_ERR(0, 60, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_7c_etree_registerschema, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_registersche, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_7c_etree_registerschema, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_registersche, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":59
+  /* "ucvm_c_common.pyx":59
  *         }
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6166,17 +6177,17 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_c_etree_registerschema, __pyx_t_3) < 0) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":64
+  /* "ucvm_c_common.pyx":64
  * 
  *     @staticmethod
  *     def c_etree_close(uintptr_t opened_etree):             # <<<<<<<<<<<<<<
  *         etree_close(<etree_t *>opened_etree)
  * 
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_9c_etree_close, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_close, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_9c_etree_close, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_close, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
-  /* "ucvm/src/cython/common.pyx":63
+  /* "ucvm_c_common.pyx":63
  *         return etree_registerschema(<etree_t *>opened_etree, defstring)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6194,17 +6205,17 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_c_etree_close, __pyx_t_3) < 0) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":68
+  /* "ucvm_c_common.pyx":68
  * 
  *     @staticmethod
  *     def c_etree_insert(uintptr_t opened_etree, long addr_x, long addr_y, long addr_z, int level,             # <<<<<<<<<<<<<<
  *                        float vp, float vs, float density):
  *         cdef etree_addr_t addr
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_11c_etree_insert, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_insert, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_11c_etree_insert, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_insert, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
-  /* "ucvm/src/cython/common.pyx":67
+  /* "ucvm_c_common.pyx":67
  *         etree_close(<etree_t *>opened_etree)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6222,7 +6233,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_c_etree_insert, __pyx_t_3) < 0) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":85
+  /* "ucvm_c_common.pyx":85
  * 
  *     @staticmethod
  *     def c_etree_query(uintptr_t opened_etree, float lon, float lat, float depth, corners: tuple,             # <<<<<<<<<<<<<<
@@ -6233,7 +6244,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_corners, ((PyObject *)(&PyTuple_Type))) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":86
+  /* "ucvm_c_common.pyx":86
  *     @staticmethod
  *     def c_etree_query(uintptr_t opened_etree, float lon, float lat, float depth, corners: tuple,
  *                       dims: tuple, ticks: tuple) -> (float, float, float):             # <<<<<<<<<<<<<<
@@ -6256,19 +6267,19 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_return, __pyx_t_2) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":85
+  /* "ucvm_c_common.pyx":85
  * 
  *     @staticmethod
  *     def c_etree_query(uintptr_t opened_etree, float lon, float lat, float depth, corners: tuple,             # <<<<<<<<<<<<<<
  *                       dims: tuple, ticks: tuple) -> (float, float, float):
  *         cdef etree_addr_t addr
  */
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_13c_etree_query, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_query, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_13c_etree_query, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_query, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":84
+  /* "ucvm_c_common.pyx":84
  *         return etree_insert(<etree_t *>opened_etree, addr, &payload)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6286,7 +6297,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_c_etree_query, __pyx_t_2) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":108
+  /* "ucvm_c_common.pyx":108
  * 
  *     @staticmethod
  *     def c_etree_bilinear_geo2xy(float lon, float lat, corners: tuple, dims: tuple) -> (float, float):             # <<<<<<<<<<<<<<
@@ -6307,12 +6318,12 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   PyTuple_SET_ITEM(__pyx_t_3, 1, ((PyObject *)(&PyFloat_Type)));
   if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, __pyx_t_3) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_15c_etree_bilinear_geo2xy, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_bilinear_geo, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_15c_etree_bilinear_geo2xy, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_bilinear_geo, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":107
+  /* "ucvm_c_common.pyx":107
  *             return None
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6330,7 +6341,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_c_etree_bilinear_geo2xy, __pyx_t_3) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":189
+  /* "ucvm_c_common.pyx":189
  * 
  *     @staticmethod
  *     def c_etree_bilinear_xy2geo(float x, float y, corners: tuple, dims: tuple) -> (float, float):             # <<<<<<<<<<<<<<
@@ -6351,12 +6362,12 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   PyTuple_SET_ITEM(__pyx_t_2, 1, ((PyObject *)(&PyFloat_Type)));
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_return, __pyx_t_2) < 0) __PYX_ERR(0, 189, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_17c_etree_bilinear_xy2geo, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_bilinear_xy2, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_17c_etree_bilinear_xy2geo, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_bilinear_xy2, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 189, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":188
+  /* "ucvm_c_common.pyx":188
  *         return (x, y)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6374,7 +6385,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_c_etree_bilinear_xy2geo, __pyx_t_2) < 0) __PYX_ERR(0, 189, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":199
+  /* "ucvm_c_common.pyx":199
  * 
  *     @staticmethod
  *     def c_etree_bilinear_interpolate(float x, float y, float x1, float y1, float x2, float y2,             # <<<<<<<<<<<<<<
@@ -6384,7 +6395,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "ucvm/src/cython/common.pyx":200
+  /* "ucvm_c_common.pyx":200
  *     @staticmethod
  *     def c_etree_bilinear_interpolate(float x, float y, float x1, float y1, float x2, float y2,
  *                                      float q11, float q21, float q12, float q22) -> float:             # <<<<<<<<<<<<<<
@@ -6393,19 +6404,19 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
  */
   if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 199, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":199
+  /* "ucvm_c_common.pyx":199
  * 
  *     @staticmethod
  *     def c_etree_bilinear_interpolate(float x, float y, float x1, float y1, float x2, float y2,             # <<<<<<<<<<<<<<
  *                                      float q11, float q21, float q12, float q22) -> float:
  *         cdef float p = (x2 - x1) * (y2 - y1)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_19c_etree_bilinear_interpolate, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_bilinear_int, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_19c_etree_bilinear_interpolate, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_c_etree_bilinear_int, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":198
+  /* "ucvm_c_common.pyx":198
  *         return x_val, y_val
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6423,20 +6434,20 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_c_etree_bilinear_interpolate, __pyx_t_3) < 0) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":209
+  /* "ucvm_c_common.pyx":209
  * 
  *     @staticmethod
- *     def calculate_grid_point(float width, float height, float depth, float x_value, float y_value,             # <<<<<<<<<<<<<<
- *                              float z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
+ *     def calculate_grid_point(double width, double height, double depth, double x_value, double y_value,             # <<<<<<<<<<<<<<
+ *                              double z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
  * 
  */
   __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
-  /* "ucvm/src/cython/common.pyx":210
+  /* "ucvm_c_common.pyx":210
  *     @staticmethod
- *     def calculate_grid_point(float width, float height, float depth, float x_value, float y_value,
- *                              float z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):             # <<<<<<<<<<<<<<
+ *     def calculate_grid_point(double width, double height, double depth, double x_value, double y_value,
+ *                              double z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):             # <<<<<<<<<<<<<<
  * 
  *         cdef int x_c = (int)(floor(x_value / width * (dim_x - 1)))
  */
@@ -6451,24 +6462,24 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_return, __pyx_t_2) < 0) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":209
+  /* "ucvm_c_common.pyx":209
  * 
  *     @staticmethod
- *     def calculate_grid_point(float width, float height, float depth, float x_value, float y_value,             # <<<<<<<<<<<<<<
- *                              float z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
+ *     def calculate_grid_point(double width, double height, double depth, double x_value, double y_value,             # <<<<<<<<<<<<<<
+ *                              double z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_21calculate_grid_point, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_calculate_grid_point, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_21calculate_grid_point, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_calculate_grid_point, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":208
+  /* "ucvm_c_common.pyx":208
  *         return f1 + f2 + f3 + f4
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
- *     def calculate_grid_point(float width, float height, float depth, float x_value, float y_value,
- *                              float z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
+ *     def calculate_grid_point(double width, double height, double depth, double x_value, double y_value,
+ *                              double z_value, int dim_x, int dim_y, int z_interval) -> (dict, dict):
  */
   __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 208, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -6481,7 +6492,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_calculate_grid_point, __pyx_t_2) < 0) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":223
+  /* "ucvm_c_common.pyx":223
  * 
  *     @staticmethod
  *     def trilinear_interpolate(float t1, float t2, float t3, float t4, float b1, float b2, float b3,             # <<<<<<<<<<<<<<
@@ -6491,7 +6502,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "ucvm/src/cython/common.pyx":224
+  /* "ucvm_c_common.pyx":224
  *     @staticmethod
  *     def trilinear_interpolate(float t1, float t2, float t3, float t4, float b1, float b2, float b3,
  *                               float b4, float x_percent, float y_percent, float z_percent) -> float:             # <<<<<<<<<<<<<<
@@ -6500,19 +6511,19 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
  */
   if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 223, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":223
+  /* "ucvm_c_common.pyx":223
  * 
  *     @staticmethod
  *     def trilinear_interpolate(float t1, float t2, float t3, float t4, float b1, float b2, float b3,             # <<<<<<<<<<<<<<
  *                               float b4, float x_percent, float y_percent, float z_percent) -> float:
  *         cdef float tx1 = (1 - x_percent) * t1 + x_percent * t2
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_23trilinear_interpolate, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_trilinear_interpolat, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__31)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 223, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_23trilinear_interpolate, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_trilinear_interpolat, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__31)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":222
+  /* "ucvm_c_common.pyx":222
  *         return {"x": x_c, "y": y_c, "z": z_c}, {"x": x_p, "y": y_p, "z": z_p}
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6530,7 +6541,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_trilinear_interpolate, __pyx_t_3) < 0) __PYX_ERR(0, 223, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":236
+  /* "ucvm_c_common.pyx":236
  * 
  *     @staticmethod
  *     def bilinear_interpolate(float v1, float v2, float v3, float v4, float x_percent,             # <<<<<<<<<<<<<<
@@ -6540,7 +6551,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 236, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
-  /* "ucvm/src/cython/common.pyx":237
+  /* "ucvm_c_common.pyx":237
  *     @staticmethod
  *     def bilinear_interpolate(float v1, float v2, float v3, float v4, float x_percent,
  *                              float y_percent) -> float:             # <<<<<<<<<<<<<<
@@ -6549,19 +6560,19 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
  */
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_return, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 236, __pyx_L1_error)
 
-  /* "ucvm/src/cython/common.pyx":236
+  /* "ucvm_c_common.pyx":236
  * 
  *     @staticmethod
  *     def bilinear_interpolate(float v1, float v2, float v3, float v4, float x_percent,             # <<<<<<<<<<<<<<
  *                              float y_percent) -> float:
  *         cdef float vx1 = (1 - x_percent) * v1 + x_percent * v2
  */
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_25bilinear_interpolate, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_bilinear_interpolate, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 236, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_25bilinear_interpolate, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_bilinear_interpolate, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 236, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":235
+  /* "ucvm_c_common.pyx":235
  *         return (1 - z_percent) * ty + z_percent * by
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6579,7 +6590,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_bilinear_interpolate, __pyx_t_2) < 0) __PYX_ERR(0, 236, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":244
+  /* "ucvm_c_common.pyx":244
  * 
  *     @staticmethod
  *     def fortran_convert_ll_utm(float longitude, float latitude, int zone) -> (float, float):             # <<<<<<<<<<<<<<
@@ -6598,12 +6609,12 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   PyTuple_SET_ITEM(__pyx_t_3, 1, ((PyObject *)(&PyFloat_Type)));
   if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, __pyx_t_3) < 0) __PYX_ERR(0, 244, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4ucvm_3src_6cython_6common_11UCVMCCommon_27fortran_convert_ll_utm, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_fortran_convert_ll_u, NULL, __pyx_n_s_ucvm_src_cython_common, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_13ucvm_c_common_11UCVMCCommon_27fortran_convert_ll_utm, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_UCVMCCommon_fortran_convert_ll_u, NULL, __pyx_n_s_ucvm_c_common, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ucvm/src/cython/common.pyx":243
+  /* "ucvm_c_common.pyx":243
  *         return (1 - y_percent) * vx1 + y_percent * vx2
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -6621,7 +6632,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_fortran_convert_ll_utm, __pyx_t_3) < 0) __PYX_ERR(0, 244, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ucvm/src/cython/common.pyx":29
+  /* "ucvm_c_common.pyx":29
  *     int etree_close(etree_t *)
  * 
  * class UCVMCCommon:             # <<<<<<<<<<<<<<
@@ -6634,7 +6645,7 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "ucvm/src/cython/common.pyx":1
+  /* "ucvm_c_common.pyx":1
  * from libc.math cimport atan, pow, sin, sqrt, tan, cos, floor, fmod             # <<<<<<<<<<<<<<
  * from libc.stdint cimport uintptr_t, int32_t, uint32_t
  * 
@@ -6653,11 +6664,11 @@ PyMODINIT_FUNC PyInit_ucvm_c_common(void)
   __Pyx_XDECREF(__pyx_t_3);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init ucvm.src.cython.common", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init ucvm_c_common", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init ucvm.src.cython.common");
+    PyErr_SetString(PyExc_ImportError, "init ucvm_c_common");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

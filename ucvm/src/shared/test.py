@@ -67,7 +67,7 @@ def assert_velocity_properties(test_case: unittest.TestCase, data: SeismicData,
                                       getattr(velocity_prop, prop))
 
 
-def run_acceptance_test(test_case: unittest.TestCase, model_id: str) -> bool:
+def run_acceptance_test(test_case: unittest.TestCase, model_id: str, props_to_test: list=None) -> bool:
     """
     Runs the acceptance test for the given model id.
     :param test_case: The unittest case.
@@ -76,7 +76,6 @@ def run_acceptance_test(test_case: unittest.TestCase, model_id: str) -> bool:
     """
     npy_test_file = os.path.join(UCVM_MODELS_DIRECTORY, model_id, "test_" + model_id + ".npy")
     ucvm_model_file = os.path.join(UCVM_MODELS_DIRECTORY, model_id, "ucvm_model.xml")
-    model_type = ""
 
     spacing = 0.05
     depth = 5000
@@ -116,7 +115,11 @@ def run_acceptance_test(test_case: unittest.TestCase, model_id: str) -> bool:
 
     UCVM.query(sd_array, model_id, [model_type])
 
+    if props_to_test is None or len(props_to_test) == 0:
+        props_to_test = ["vp", "vs", "density"]
+
     counter = 0
+    epsilon = 0.0005
     for z in range(nums["z"]):
         for y in range(nums["y"]):
             for x in range(nums["x"]):
@@ -125,12 +128,20 @@ def run_acceptance_test(test_case: unittest.TestCase, model_id: str) -> bool:
                    arr[x][y][z][2] <= 0 and sd_array[counter].velocity_properties.density is None:
                     counter += 1
                     continue
-                test_case.assertAlmostEqual(sd_array[counter].velocity_properties.vp,
-                                            arr[x][y][z][0], 0)
-                test_case.assertAlmostEqual(sd_array[counter].velocity_properties.vs,
-                                            arr[x][y][z][1], 0)
-                test_case.assertAlmostEqual(sd_array[counter].velocity_properties.density,
-                                            arr[x][y][z][2], 0)
+                print(sd_array[counter].original_point.x_value, sd_array[counter].original_point.y_value,
+                      sd_array[counter].original_point.z_value)
+                print(sd_array[counter].velocity_properties)
+                print(arr[x][y][z])
+                if "vp" in props_to_test:
+                    test_case.assertGreater(sd_array[counter].velocity_properties.vp / arr[x][y][z][0], 1 - epsilon)
+                    test_case.assertLess(sd_array[counter].velocity_properties.vp / arr[x][y][z][0], 1 + epsilon)
+                if "vs" in props_to_test:
+                    test_case.assertGreater(sd_array[counter].velocity_properties.vs / arr[x][y][z][1], 1 - epsilon)
+                    test_case.assertLess(sd_array[counter].velocity_properties.vs / arr[x][y][z][1], 1 + epsilon)
+                if "density" in props_to_test:
+                    test_case.assertGreater(sd_array[counter].velocity_properties.density / arr[x][y][z][2],
+                                            1 - epsilon)
+                    test_case.assertLess(sd_array[counter].velocity_properties.density / arr[x][y][z][2], 1 + epsilon)
                 counter += 1
 
     return True

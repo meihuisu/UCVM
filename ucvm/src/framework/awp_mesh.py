@@ -51,7 +51,7 @@ def mesh_extract_mpi(information: dict, start_end: tuple) -> bool:
     rank = comm.Get_rank()
 
     internal_mesh = InternalMesh(information)
-    max_pts = InternalMesh.get_max_points_extract(3)
+    max_pts = 250000
 
     sd_array = [SeismicData() for _ in range(0, max_pts)]
 
@@ -133,7 +133,7 @@ def _mesh_extract_mpi_awp(sd_array: List[SeismicData], information: dict, im: In
                     rank, s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                 ), flush=True)
         s = struct.pack('f' * len(fl_array), *fl_array)
-        fh.Write_at_all((start_end[0] + progress) * 12, s)
+        fh.Write_at_all(progress * 12, s)
 
         progress += count
 
@@ -219,11 +219,11 @@ def _mesh_extract_mpi_rwg(sd_array: List[SeismicData], information: dict, im: In
                     rank, s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                 ), flush=True)
         s = struct.pack('f' * len(vp_array), *vp_array)
-        fh_vp.Write_at_all((start_end[0] + progress) * 4, s)
+        fh_vp.Write_at_all(progress * 4, s)
         s = struct.pack('f' * len(vs_array), *vs_array)
-        fh_vs.Write_at_all((start_end[0] + progress) * 4, s)
+        fh_vs.Write_at_all(progress * 4, s)
         s = struct.pack('f' * len(dn_array), *dn_array)
-        fh_dn.Write_at_all((start_end[0] + progress) * 4, s)
+        fh_dn.Write_at_all(progress * 4, s)
 
         progress += count
 

@@ -3,8 +3,8 @@
 Automated internal tool to create UCVM-compatible digital elevation model.
 
 This file creates a UCVM-compatible digital elevation model from USGS GridFloat data. The data set
-that this script reads from is elevation data sampled at 1/3 arc-second resolution directly from the
-USGS website: nationalmap.gov. In there, one can get various data. This reads data from 1/3
+that this script reads from is elevation data sampled at 1 arc-second resolution directly from the
+USGS website: nationalmap.gov. In there, one can get various data. This reads data from 1
 arc-second DEM (3DEP).
 
 It also encodes the background ETOPO1 map which is the fallback for where there is no detailed
