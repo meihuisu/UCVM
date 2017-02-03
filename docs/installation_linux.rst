@@ -21,8 +21,15 @@ To also add MPI support, the following packages need to be installed.
 
     sudo yum install openmpi openmpi-devel
 
-If you are on CentOS 5.6 then Python 3 is not installable via yum. In order to build Python 3.5 from scratch, do
-the following:
+If you are on a CentOS 6+ or on another distribution that has Python 3.5 installed, then you need
+the following package:
+::
+
+    sudo yum install python3    <-- if you don't have Python 3.5 installed
+    sudo yum install python3-devel
+
+Please note that on some old versions of CentOS, Python 3 is not installable via yum. In order to build Python 3.5 from
+scratch, do the following:
 ::
 
     wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz
@@ -30,12 +37,6 @@ the following:
     cd Python-3.5.2
     ./configure
     make altinstall
-
-If you are on a later version of CentOS or on another distribution that has Python 3.5 installed, then you need
-the following package:
-::
-
-    sudo yum install python3-devel
 
 Verify that you do indeed have a working Python 3.5 installation by running:
 ::
@@ -53,14 +54,14 @@ document explains how to install UCVM without a virtual environment.
 To create and activate your virtual environment, do the following:
 ::
 
-    python3.5 -m venv ~/ucvm-|version|
-    source ~/ucvm-|version|/bin/activate
+    python3.5 -m venv ~/ucvm-17.2.0
+    source ~/ucvm-17.2.0/bin/activate
 
 You should notice that your command line prompt has changed include "ucvm-|version|" in brackets. If you don't see this,
 then the virtual environment has not been activated correctly.
 ::
 
-    (ucvm-|version|) sceccme@bash-3.2$
+    (ucvm-17.2.0) sceccme@bash-3.2$
 
 Now we can clone the UCVM software.
 ::

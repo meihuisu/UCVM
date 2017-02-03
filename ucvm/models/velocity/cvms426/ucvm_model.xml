@@ -37,6 +37,15 @@
             limitations under the License.
         </license>
 
+        <!-- A list of references that describe the model -->
+        <references>
+            <reference>
+                Lee, E.-J., P. Chen, T. H. Jordan, P. J. Maechling, M. A. M. Denolle, and G. C.Beroza (2014),
+                Full 3-D tomography for crustal structure in Southern California based on the scattering-integral and
+                the adjoint-wave?eld methods, J. Geophys. Res. Solid Earth, 119, doi:10.1002/2014JB011346.
+            </reference>
+        </references>
+
         <!-- A broad description and range of the coverage region -->
         <coverage>
             <description>Southern California</description>

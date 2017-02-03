@@ -209,6 +209,34 @@ class UCVM:
         return UCVM.instantiated_models[model]
 
     @classmethod
+    def is_model_installed(cls, model: str) -> bool:
+        """
+        Checks to see if the model string is installed or not. If it is installed, then true is returned. Otherwise,
+        this method returns false.
+
+        Args:
+           model (str): The model string (in id format) to search for.
+
+        Returns:
+            True if the model exists, false otherwise.
+        """
+        if model in UCVM.instantiated_models:
+            return UCVM.instantiated_models[model]
+
+        model_list = UCVM.get_list_of_installed_models()
+        model_list = model_list["velocity"] + model_list["elevation"] + model_list["vs30"] + \
+                     model_list["operator"]
+
+        # Do a quick check just to make sure the model does, indeed, exist.
+        found = False
+        for item in model_list:
+            if item["id"] == model:
+                found = True
+                break
+
+        return found
+
+    @classmethod
     def parse_model_string(cls, string: str) -> dict:
         """
         Parses the model string. Given a model string which can contain one or models, we need

@@ -8,7 +8,7 @@ $ ucvm_query -m cvms4 -a
 
 -118 34 0
 
-X    Y    Z    Vp (m/s)    Vs (m/s)    Density (m/kg^3)    Source    Elevation (m)    Source
+X    Y    Z    Vp (m/s)    Vs (m/s)    Density (kg/m^3)    Source    Elevation (m)    Source
 Vs30 (m/s)    Source
 
 -118 34 0 and the properties depending on the model you provided
@@ -19,10 +19,19 @@ References:
 To query this exact model combination in the future, use:
     cvms4
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   July 6, 2016
-:modified:  July 27, 2016
+Copyright 2017 Southern California Earthquake Center
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
 import sys
 
@@ -31,7 +40,7 @@ from ucvm.src.shared import UCVM_DEFAULT_PROJECTION, UCVM_DEPTH, UCVM_ELEVATION
 from ucvm.src.shared.properties import Point, SeismicData
 from ucvm.src.shared.functions import is_number
 
-HEADER = "X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (m/kg^3) Qp          " \
+HEADER = "X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          " \
          "Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source"
 OUTPUT_FORMAT = "%-12.4%-12.4f%-12.4f%s%s%s%s%s%s%s%s%s%s"
 
@@ -217,9 +226,16 @@ def main() -> int:
             print(generate_output_line(point))
 
     if options["all-meta"] is not None:
-        print("Data was retrieved from:\n")
-        for model in model_list:
-            print(model)
+        print("\nReferences:")
+        model_list = UCVM.get_models_for_query(options["model"], ["velocity", "elevation", "vs30"])
+        for _, value in model_list.items():
+            for key_two, value_two in value.items():
+                model = UCVM.get_model_instance(value_two.split(";-;")[0])
+                if len(model.get_metadata()["references"]) > 0:
+                    print("\n" + model.get_metadata()["name"] + " has " + str(len(model.get_metadata()["references"])) +
+                          " reference" + ("s" if len(model.get_metadata()["references"]) > 1 else "") + ":")
+                    for reference in model.get_metadata()["references"]:
+                        print("\t - " + " ".join(reference.split()))
 
     return 0
 

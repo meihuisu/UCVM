@@ -4,14 +4,23 @@ Defines the setup script. This installs UCVM and downloads all the requested mod
 can be added or deleted after the fact with the ucvm_model_manager utility. This auto-downloads new
 models and can remove existing ones.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   July 21, 2016
-:modified:  October 24, 2016
+Copyright 2017 Southern California Earthquake Center
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
 import os
 import sys
-from subprocess import Popen, PIPE
+from subprocess import Popen
 
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.model import get_list_of_installable_internet_models, get_list_of_installed_models, \
@@ -21,24 +30,19 @@ from ucvm.src.model import get_list_of_installable_internet_models, get_list_of_
 def usage() -> None:
     """
     Displays the help text associated with this utility.
-    :return: Nothing.
+
+    Returns:
+        Nothing
     """
     UCVM.print_with_replacements(
         "\n"
         "ucvm_model_manager - UCVM Version [version]\n"
         "\n"
-        "Add and remove models from UCVM with this program. Models can be downloaded through the\n"
-        "web or they can be added locally. This utility can also be used to list and remove\n"
-        "installed models.\n"
+        "Add and list models from UCVM with this program. Models are downloaded through the\n"
+        "web. This utility can also be used to list the models that you have installed with UCVM.\n"
         "\n"
         "-l, --list:            Lists all models available and states which ones are installed.\n"
         "-a, --add model:       Downloads and installs 'model' and adds it to UCVM.\n"
-        "-d, --directory dir:   Installs a model from a local directory. The directory must have\n"
-        "                       the proper ucvm_model.xml descriptor. If that is not found, UCVM\n"
-        "                       cannot install the model.\n"
-        "-r, --remove model:    Removes 'model' from the UCVM list of models. For models\n"
-        "                       downloaded and installed from the web, or copied locally, this\n"
-        "                       will also delete the model code and data itself.\n"
     )
 
 
@@ -47,6 +51,7 @@ def list_all_models() -> None:
     Displays all the available models, including the ones online, to the user.
     :return: None
     """
+    pass
 
 
 def main() -> int:
@@ -57,10 +62,7 @@ def main() -> int:
     try:
         options = UCVM.parse_options([
             {"short": "l", "long": "list", "value": False, "required": False},
-            {"short": "a", "long": "add", "value": True, "required": False},
-            {"short": "d", "long": "directory", "value": True, "required": False},
-            {"short": "r", "long": "remove", "value": True, "required": False},
-            {"short": "m", "long": "manual", "value": True, "required": False}
+            {"short": "a", "long": "add", "value": True, "required": False}
         ], usage)
     except ValueError as v_err:
         print("[ERROR]: " + str(v_err) + "\n")
@@ -104,7 +106,7 @@ def main() -> int:
         p = Popen([sys.executable] + [os.path.join(os.path.dirname(os.path.abspath(__file__)), "ucvm_run_tests"),
                                       "-m", info["id"]], env=os.environ)
         p.wait()
-    else:
+    elif options["list"] is not None:
         model_list = get_list_of_installable_internet_models()
         installed_list = get_list_of_installed_models()
 

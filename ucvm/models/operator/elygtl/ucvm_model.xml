@@ -26,7 +26,10 @@
 
         <!-- A list of references that describe the model -->
         <references>
-            <reference>A Vs30-derived Near-surface Seismic Velocity Model</reference>
+            <reference>
+                Ely, G., T. H. Jordan, P. Small, P. J. Maechling (2010), A Vs30-derived Near-surface Seismic Velocity
+                Model Abstract S51A-1907, presented at 2010 Fall Meeting, AGU, San Francisco, Calif., 13-17 Dec.
+            </reference>
         </references>
 
         <!-- The license for this velocity model (all SCEC software is Apache version 2.0) -->

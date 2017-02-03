@@ -12,6 +12,7 @@ Developer:
 """
 # Python Imports
 import os
+import sys
 from typing import List
 
 # Package Imports
@@ -31,7 +32,7 @@ class OneDimensionalVelocityModel(VelocityModel):
         super().__init__(**kwargs)
 
     @classmethod
-    def _parse_bbp_model(cls, text_info: str, layers: list) -> None:
+    def _parse_bbp_model(cls, text_info: str, layers: list, interpolated: bool) -> None:
         """
         Parses the BBP model format for material properties to return to UCVM.
 
@@ -39,6 +40,7 @@ class OneDimensionalVelocityModel(VelocityModel):
             text_info (str): The text representation of the BBP model.
             layers (list): The layers list that after running this function will contain the
                            material properties.
+            interpolated (bool): Set to True if this model is interpolated. False if not.
 
         Returns:
             Nothing
@@ -57,9 +59,16 @@ class OneDimensionalVelocityModel(VelocityModel):
                     calculate_scaled_vs(p_velocity, density)
                 qp_attenuation = float(split_str[4]) if len(split_str) > 4 else None
                 qs_attenuation = float(split_str[5]) if len(split_str) > 5 else None
-                layers.append([current_depth, p_velocity, s_velocity, density, qp_attenuation,
-                               qs_attenuation])
+                if interpolated:
+                    layers.append([current_depth + (float(split_str[0]) * 1000), p_velocity, s_velocity, density,
+                                  qp_attenuation, qs_attenuation])
+                else:
+                    layers.append([current_depth, p_velocity, s_velocity, density,
+                                   qp_attenuation, qs_attenuation])
                 current_depth += float(split_str[0]) * 1000
+
+        if interpolated:
+            layers.insert(0, [0, layers[0][1], layers[0][2], layers[0][3], layers[0][4], layers[0][5]])
 
         layers.append(layers[-1])
 
@@ -86,7 +95,14 @@ class OneDimensionalVelocityModel(VelocityModel):
                 "qp": float(layer["qp"]) if "qp" in layer else None,
                 "qs": float(layer["qs"]) if "qs" in layer else None
             }
-        last_depth = 0
+        p_velocity = layer_dict[1]["vp"] * 1000
+        density = layer_dict[1]["density"] * 1000 if layer_dict[1]["density"] is not None \
+            else calculate_scaled_density(p_velocity)
+        s_velocity = layer_dict[1]["vs"] * 1000 if layer_dict[1]["vs"] is not None \
+            else calculate_scaled_vs(p_velocity, density)
+        qp_attenuation = layer_dict[1]["qp"]
+        qs_attenuation = layer_dict[1]["qs"]
+        layers.append([0, p_velocity, s_velocity, density, qp_attenuation, qs_attenuation])
         for i in range(1, len(layer_dict) + 1):
             p_velocity = layer_dict[i]["vp"] * 1000
             density = layer_dict[i]["density"] * 1000 if layer_dict[i]["density"] is not None \
@@ -95,14 +111,13 @@ class OneDimensionalVelocityModel(VelocityModel):
                          else calculate_scaled_vs(p_velocity, density)
             qp_attenuation = layer_dict[i]["qp"]
             qs_attenuation = layer_dict[i]["qs"]
-            layers.append([last_depth, p_velocity, s_velocity, density, qp_attenuation,
+            layers.append([layer_dict[i]["depth"] * 1000, p_velocity, s_velocity, density, qp_attenuation,
                            qs_attenuation])
-            last_depth = layer_dict[i]["depth"] * 1000
 
         layers.append(layers[-1])
 
     @classmethod
-    def _get_velocity_data(cls, depth: float, layers: list, interpolate: bool, name: str) \
+    def _get_velocity_data(cls, depth: float, layers: list, interpolate: bool, name: str, format_str: str) \
             -> VelocityProperties:
         """
         Given a list of layers and depth, this function returns the velocity data for the
@@ -218,7 +233,8 @@ class OneDimensionalVelocityModel(VelocityModel):
         }
 
         if parsed_model["format"] == "bbp":
-            self._parse_bbp_model(str(model_1d["root"]["data"]), parsed_model["layers"])
+            self._parse_bbp_model(str(model_1d["root"]["data"]), parsed_model["layers"],
+                                  parsed_model["interpolation"] == "linear")
         else:
             self._parse_scec_model(model_1d["root"]["data"], parsed_model["layers"])
 
@@ -229,7 +245,7 @@ class OneDimensionalVelocityModel(VelocityModel):
                 data[i].set_velocity_data(
                     self._get_velocity_data(data[i].converted_point.z_value, parsed_model["layers"],
                                             parsed_model["interpolation"] == "linear",
-                                            parsed_model["name"])
+                                            parsed_model["name"], parsed_model["format"])
                 )
 
         return True

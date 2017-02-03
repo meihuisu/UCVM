@@ -12,15 +12,18 @@ import unittest
 try:
     import ucvm.tests.framework as framework
     import ucvm.tests.mesh as mesh
+    import ucvm.tests.commands as commands
 except ImportError:
     framework = __import__("framework")
     mesh = __import__("mesh")
+    commands = __import__("commands")
 
 
 def suite():
     suite2 = unittest.TestSuite()
     suite2.addTest(framework.make_suite())
     suite2.addTest(mesh.make_suite())
+    suite2.addTest(commands.make_suite())
     return suite2
 
 if __name__ == "__main__":

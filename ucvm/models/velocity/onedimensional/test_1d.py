@@ -43,95 +43,49 @@ class OneDimensionalVelocityModelTest(UCVMTestCase):
         Returns:
             Nothing
         """
-        self._test_start("1D BBP format")
+        self._test_start("1D BBP format test")
 
-        UCVM.query(self.data["depth"], "1d[BBP LA Basin]", ["velocity"])
+        UCVM.query(self.data["depth"], "1d[CyberShake_BBP_LA_Basin]", ["velocity"])
 
         assert_velocity_properties(
             self,
             self.data["depth"][0],
             VelocityProperties(1700, 450, 2000, 45.0, 22.5,
-                               "bbp la basin", "bbp la basin",
-                               "bbp la basin", "bbp la basin",
-                               "bbp la basin")
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)")
         )
         assert_velocity_properties(
             self,
             self.data["depth"][1],
+            VelocityProperties(1850, 900, 2100, 90.0, 45,
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)")
+        )
+        assert_velocity_properties(
+            self,
+            self.data["depth"][2],
             VelocityProperties(1900, 950, 2100, 95.0, 47.5,
-                               "bbp la basin", "bbp la basin",
-                               "bbp la basin", "bbp la basin",
-                               "bbp la basin")
-        )
-        assert_velocity_properties(
-            self,
-            self.data["depth"][2],
-            VelocityProperties(2000, 1150, 2200, 115.0, 57.5,
-                               "bbp la basin", "bbp la basin",
-                               "bbp la basin", "bbp la basin",
-                               "bbp la basin")
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)")
         )
         assert_velocity_properties(
             self,
             self.data["depth"][3],
             VelocityProperties(7800, 4500, 3200, 450.0, 225.0,
-                               "bbp la basin", "bbp la basin",
-                               "bbp la basin", "bbp la basin",
-                               "bbp la basin")
-        )
-
-        self._test_end()
-
-    def test_onedimensional_bbp_linear(self) -> None:
-        """
-        Tests the 1D model for basic depth, linear query.
-
-        Returns:
-            Nothing
-        """
-        self._test_start("1D SCEC format")
-
-        UCVM.query(self.data["depth"], "1d[BBP LA Basin,linear]", ["velocity"])
-
-        assert_velocity_properties(
-            self,
-            self.data["depth"][0],
-            VelocityProperties(1700, 450, 2000, 45.0, 22.5,
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)")
-        )
-        assert_velocity_properties(
-            self,
-            self.data["depth"][1],
-            VelocityProperties(1950, 1050, 2150, 105.0, 52.5,
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)")
-        )
-        assert_velocity_properties(
-            self,
-            self.data["depth"][2],
-            VelocityProperties(2000, 1150, 2200, 115.0, 57.5,
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)")
-        )
-        assert_velocity_properties(
-            self,
-            self.data["depth"][3],
-            VelocityProperties(7800, 4500, 3200, 450.0, 225.0,
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)",
-                               "bbp la basin (interpolated)")
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)",
+                               "cybershake la basin linearly interpolated with 1km moho (interpolated)")
         )
 
         self._test_end()

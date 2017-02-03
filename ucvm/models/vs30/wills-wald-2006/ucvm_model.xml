@@ -38,6 +38,17 @@
             limitations under the License.
         </license>
 
+        <references>
+            <reference>
+                Wald, D. J., and T. I. Allen (2007), Topographic slope as a proxy for seismic site conditions and
+                amplification, Bull. Seism. Soc. Am., 97 (5), 1379-1395, doi:10.1785/0120060267.
+            </reference>
+            <reference>
+                Wills, C. J., and K. B. Clahan (2006), Developing a map of geologically defined site-condition
+                categories for California, Bull. Seism. Soc. Am., 96 (4A), 1483-1501, doi:10.1785/0120050179.
+            </reference>
+        </references>
+
         <!-- A brief textual description of the coverage region -->
         <coverage>
             <description>California</description>

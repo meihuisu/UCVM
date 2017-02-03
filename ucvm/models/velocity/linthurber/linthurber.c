@@ -7,7 +7,7 @@
             "/Users/davidgil/PycharmProjects/UCVM/ucvm/models/velocity/linthurber/src/src/cvmlt.h"
         ]
     },
-    "module_name": "linthurber"
+    "module_name": "LinThurberVelocityModel"
 }
 END: Cython Metadata */
 
@@ -277,8 +277,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__linthurber
-#define __PYX_HAVE_API__linthurber
+#define __PYX_HAVE__LinThurberVelocityModel
+#define __PYX_HAVE_API__LinThurberVelocityModel
 #include "src/src/cvmlt.h"
 #ifdef _OPENMP
 #include <omp.h>
@@ -495,32 +495,32 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "linthurber.pyx",
+  "LinThurberVelocityModel.pyx",
 };
 
 /*--- Type declarations ---*/
-struct __pyx_t_10linthurber_cvmlt_point_t;
-struct __pyx_t_10linthurber_cvmlt_data_t;
+struct __pyx_t_23LinThurberVelocityModel_cvmlt_point_t;
+struct __pyx_t_23LinThurberVelocityModel_cvmlt_data_t;
 
-/* "linthurber.pyx":30
+/* "LinThurberVelocityModel.pyx":30
  *     int cvmlt_query(void *pnt, void *data)
  * 
  * cdef struct cvmlt_point_t:             # <<<<<<<<<<<<<<
  *     double coord[3]
  * 
  */
-struct __pyx_t_10linthurber_cvmlt_point_t {
+struct __pyx_t_23LinThurberVelocityModel_cvmlt_point_t {
   double coord[3];
 };
 
-/* "linthurber.pyx":33
+/* "LinThurberVelocityModel.pyx":33
  *     double coord[3]
  * 
  * cdef struct cvmlt_data_t:             # <<<<<<<<<<<<<<
  *     float vp
  *     float vs
  */
-struct __pyx_t_10linthurber_cvmlt_data_t {
+struct __pyx_t_23LinThurberVelocityModel_cvmlt_data_t {
   float vp;
   float vs;
   float rho;
@@ -773,11 +773,11 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'cython' */
 
-/* Module declarations from 'linthurber' */
-#define __Pyx_MODULE_NAME "linthurber"
-int __pyx_module_is_main_linthurber = 0;
+/* Module declarations from 'LinThurberVelocityModel' */
+#define __Pyx_MODULE_NAME "LinThurberVelocityModel"
+int __pyx_module_is_main_LinThurberVelocityModel = 0;
 
-/* Implementation of 'linthurber' */
+/* Implementation of 'LinThurberVelocityModel' */
 static PyObject *__pyx_builtin_super;
 static PyObject *__pyx_builtin_range;
 static const char __pyx_k_i[] = "i";
@@ -813,7 +813,6 @@ static const char __pyx_k_z_value[] = "z_value";
 static const char __pyx_k_id_cvmlt[] = "id_cvmlt";
 static const char __pyx_k_qualname[] = "__qualname__";
 static const char __pyx_k_metaclass[] = "__metaclass__";
-static const char __pyx_k_linthurber[] = "linthurber";
 static const char __pyx_k_model_path[] = "model_path";
 static const char __pyx_k_SeismicData[] = "SeismicData";
 static const char __pyx_k_VelocityModel[] = "VelocityModel";
@@ -829,7 +828,7 @@ static const char __pyx_k_set_velocity_properties_none[] = "_set_velocity_proper
 static const char __pyx_k_LinThurberVelocityModel___del[] = "LinThurberVelocityModel.__del__";
 static const char __pyx_k_LinThurberVelocityModel___init[] = "LinThurberVelocityModel.__init__";
 static const char __pyx_k_LinThurberVelocityModel__query[] = "LinThurberVelocityModel._query";
-static const char __pyx_k_Users_davidgil_PycharmProjects[] = "/Users/davidgil/PycharmProjects/UCVM/ucvm/models/velocity/linthurber/linthurber.pyx";
+static const char __pyx_k_Users_davidgil_PycharmProjects[] = "/Users/davidgil/PycharmProjects/UCVM/ucvm/models/velocity/linthurber/LinThurberVelocityModel.pyx";
 static const char __pyx_k_Defines_the_Lin_Thurber_interfa[] = "\n    Defines the Lin-Thurber interface to UCVM. This class queries the legacy C code to retrieve\n    the material properties and records the data to the new UCVM data structures.\n    ";
 static const char __pyx_k_Lin_Thurber_Velocity_Model_This[] = "\nLin-Thurber Velocity Model\n\nThis code is the Cython interface to the legacy Lin-Thurber model C code. It returns equivalent\nmaterial properties to UCVM.\n\nCopyright:\n    Southern California Earthquake Center\n\nDeveloper:\n    David Gill <davidgil@usc.edu>\n";
 static const char __pyx_k_ucvm_src_model_velocity_velocity[] = "ucvm.src.model.velocity.velocity_model";
@@ -856,7 +855,6 @@ static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_init;
 static PyObject *__pyx_n_s_join;
 static PyObject *__pyx_n_s_kwargs;
-static PyObject *__pyx_n_s_linthurber;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_mdata;
 static PyObject *__pyx_n_s_metaclass;
@@ -885,9 +883,9 @@ static PyObject *__pyx_n_s_ucvm_src_shared_properties;
 static PyObject *__pyx_n_s_x_value;
 static PyObject *__pyx_n_s_y_value;
 static PyObject *__pyx_n_s_z_value;
-static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_kwargs); /* proto */
-static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_points, CYTHON_UNUSED PyObject *__pyx_v_kwargs); /* proto */
-static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_4__del__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_23LinThurberVelocityModel_23LinThurberVelocityModel___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_kwargs); /* proto */
+static PyObject *__pyx_pf_23LinThurberVelocityModel_23LinThurberVelocityModel_2_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_points, CYTHON_UNUSED PyObject *__pyx_v_kwargs); /* proto */
+static PyObject *__pyx_pf_23LinThurberVelocityModel_23LinThurberVelocityModel_4__del__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__4;
@@ -896,7 +894,7 @@ static PyObject *__pyx_codeobj__3;
 static PyObject *__pyx_codeobj__5;
 static PyObject *__pyx_codeobj__7;
 
-/* "linthurber.pyx":44
+/* "LinThurberVelocityModel.pyx":44
  *     """
  * 
  *     def __init__(self, **kwargs):             # <<<<<<<<<<<<<<
@@ -905,9 +903,9 @@ static PyObject *__pyx_codeobj__7;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10linthurber_23LinThurberVelocityModel_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_10linthurber_23LinThurberVelocityModel_1__init__ = {"__init__", (PyCFunction)__pyx_pw_10linthurber_23LinThurberVelocityModel_1__init__, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_10linthurber_23LinThurberVelocityModel_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_23LinThurberVelocityModel_23LinThurberVelocityModel_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_23LinThurberVelocityModel_23LinThurberVelocityModel_1__init__ = {"__init__", (PyCFunction)__pyx_pw_23LinThurberVelocityModel_23LinThurberVelocityModel_1__init__, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_23LinThurberVelocityModel_23LinThurberVelocityModel_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_self = 0;
   PyObject *__pyx_v_kwargs = 0;
   PyObject *__pyx_r = 0;
@@ -947,11 +945,11 @@ static PyObject *__pyx_pw_10linthurber_23LinThurberVelocityModel_1__init__(PyObj
   __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 44, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
-  __Pyx_AddTraceback("linthurber.LinThurberVelocityModel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("LinThurberVelocityModel.LinThurberVelocityModel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_10linthurber_23LinThurberVelocityModel___init__(__pyx_self, __pyx_v_self, __pyx_v_kwargs);
+  __pyx_r = __pyx_pf_23LinThurberVelocityModel_23LinThurberVelocityModel___init__(__pyx_self, __pyx_v_self, __pyx_v_kwargs);
 
   /* function exit code */
   __Pyx_XDECREF(__pyx_v_kwargs);
@@ -959,7 +957,7 @@ static PyObject *__pyx_pw_10linthurber_23LinThurberVelocityModel_1__init__(PyObj
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_kwargs) {
+static PyObject *__pyx_pf_23LinThurberVelocityModel_23LinThurberVelocityModel___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_kwargs) {
   PyObject *__pyx_v_py_model_path = NULL;
   PyObject *__pyx_v_model_path = NULL;
   PyObject *__pyx_r = NULL;
@@ -973,7 +971,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel___init__(CYTHON
   char const *__pyx_t_7;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "linthurber.pyx":45
+  /* "LinThurberVelocityModel.pyx":45
  * 
  *     def __init__(self, **kwargs):
  *         super().__init__(**kwargs)             # <<<<<<<<<<<<<<
@@ -1002,7 +1000,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel___init__(CYTHON
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "linthurber.pyx":47
+  /* "LinThurberVelocityModel.pyx":47
  *         super().__init__(**kwargs)
  * 
  *         py_model_path = os.path.join(self.model_location, "data").encode("ASCII")             # <<<<<<<<<<<<<<
@@ -1055,7 +1053,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel___init__(CYTHON
   __pyx_v_py_model_path = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "linthurber.pyx":48
+  /* "LinThurberVelocityModel.pyx":48
  * 
  *         py_model_path = os.path.join(self.model_location, "data").encode("ASCII")
  *         model_path = py_model_path             # <<<<<<<<<<<<<<
@@ -1065,7 +1063,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel___init__(CYTHON
   __Pyx_INCREF(__pyx_v_py_model_path);
   __pyx_v_model_path = __pyx_v_py_model_path;
 
-  /* "linthurber.pyx":51
+  /* "LinThurberVelocityModel.pyx":51
  * 
  *         # Initialize CVM-LT.
  *         cvmlt_init(model_path)             # <<<<<<<<<<<<<<
@@ -1075,7 +1073,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel___init__(CYTHON
   __pyx_t_7 = __Pyx_PyObject_AsString(__pyx_v_model_path); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 51, __pyx_L1_error)
   cvmlt_init(__pyx_t_7);
 
-  /* "linthurber.pyx":44
+  /* "LinThurberVelocityModel.pyx":44
  *     """
  * 
  *     def __init__(self, **kwargs):             # <<<<<<<<<<<<<<
@@ -1092,7 +1090,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel___init__(CYTHON
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("linthurber.LinThurberVelocityModel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("LinThurberVelocityModel.LinThurberVelocityModel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_py_model_path);
@@ -1102,7 +1100,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel___init__(CYTHON
   return __pyx_r;
 }
 
-/* "linthurber.pyx":53
+/* "LinThurberVelocityModel.pyx":53
  *         cvmlt_init(model_path)
  * 
  *     def _query(self, points: List[SeismicData], **kwargs) -> bool:             # <<<<<<<<<<<<<<
@@ -1111,10 +1109,10 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel___init__(CYTHON
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10linthurber_23LinThurberVelocityModel_3_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_10linthurber_23LinThurberVelocityModel_2_query[] = "\n        This is the method that all models override. It handles querying the velocity model\n        and filling in the SeismicData structures.\n\n        Args:\n            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the\n                points in depth. These are to be populated with :obj:`VelocityProperties`:\n\n        Returns:\n            True on success, false if there is an error.\n        ";
-static PyMethodDef __pyx_mdef_10linthurber_23LinThurberVelocityModel_3_query = {"_query", (PyCFunction)__pyx_pw_10linthurber_23LinThurberVelocityModel_3_query, METH_VARARGS|METH_KEYWORDS, __pyx_doc_10linthurber_23LinThurberVelocityModel_2_query};
-static PyObject *__pyx_pw_10linthurber_23LinThurberVelocityModel_3_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_23LinThurberVelocityModel_23LinThurberVelocityModel_3_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_23LinThurberVelocityModel_23LinThurberVelocityModel_2_query[] = "\n        This is the method that all models override. It handles querying the velocity model\n        and filling in the SeismicData structures.\n\n        Args:\n            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the\n                points in depth. These are to be populated with :obj:`VelocityProperties`:\n\n        Returns:\n            True on success, false if there is an error.\n        ";
+static PyMethodDef __pyx_mdef_23LinThurberVelocityModel_23LinThurberVelocityModel_3_query = {"_query", (PyCFunction)__pyx_pw_23LinThurberVelocityModel_23LinThurberVelocityModel_3_query, METH_VARARGS|METH_KEYWORDS, __pyx_doc_23LinThurberVelocityModel_23LinThurberVelocityModel_2_query};
+static PyObject *__pyx_pw_23LinThurberVelocityModel_23LinThurberVelocityModel_3_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_self = 0;
   PyObject *__pyx_v_points = 0;
   CYTHON_UNUSED PyObject *__pyx_v_kwargs = 0;
@@ -1163,11 +1161,11 @@ static PyObject *__pyx_pw_10linthurber_23LinThurberVelocityModel_3_query(PyObjec
   __Pyx_RaiseArgtupleInvalid("_query", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 53, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
-  __Pyx_AddTraceback("linthurber.LinThurberVelocityModel._query", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("LinThurberVelocityModel.LinThurberVelocityModel._query", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(__pyx_self, __pyx_v_self, __pyx_v_points, __pyx_v_kwargs);
+  __pyx_r = __pyx_pf_23LinThurberVelocityModel_23LinThurberVelocityModel_2_query(__pyx_self, __pyx_v_self, __pyx_v_points, __pyx_v_kwargs);
 
   /* function exit code */
   __Pyx_XDECREF(__pyx_v_kwargs);
@@ -1175,9 +1173,9 @@ static PyObject *__pyx_pw_10linthurber_23LinThurberVelocityModel_3_query(PyObjec
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_points, CYTHON_UNUSED PyObject *__pyx_v_kwargs) {
-  struct __pyx_t_10linthurber_cvmlt_point_t __pyx_v_mpnt;
-  struct __pyx_t_10linthurber_cvmlt_data_t __pyx_v_mdata;
+static PyObject *__pyx_pf_23LinThurberVelocityModel_23LinThurberVelocityModel_2_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_points, CYTHON_UNUSED PyObject *__pyx_v_kwargs) {
+  struct __pyx_t_23LinThurberVelocityModel_cvmlt_point_t __pyx_v_mpnt;
+  struct __pyx_t_23LinThurberVelocityModel_cvmlt_data_t __pyx_v_mdata;
   PyObject *__pyx_v_id_cvmlt = NULL;
   Py_ssize_t __pyx_v_i;
   PyObject *__pyx_r = NULL;
@@ -1199,7 +1197,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
   PyObject *__pyx_t_15 = NULL;
   __Pyx_RefNannySetupContext("_query", 0);
 
-  /* "linthurber.pyx":68
+  /* "LinThurberVelocityModel.pyx":68
  *         cdef cvmlt_data_t mdata
  * 
  *         id_cvmlt = self._public_metadata["id"]             # <<<<<<<<<<<<<<
@@ -1214,7 +1212,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
   __pyx_v_id_cvmlt = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "linthurber.pyx":70
+  /* "LinThurberVelocityModel.pyx":70
  *         id_cvmlt = self._public_metadata["id"]
  * 
  *         for i in range(0, len(points)):             # <<<<<<<<<<<<<<
@@ -1225,7 +1223,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "linthurber.pyx":71
+    /* "LinThurberVelocityModel.pyx":71
  * 
  *         for i in range(0, len(points)):
  *             mpnt.coord[0] = points[i].converted_point.x_value             # <<<<<<<<<<<<<<
@@ -1244,7 +1242,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     (__pyx_v_mpnt.coord[0]) = __pyx_t_5;
 
-    /* "linthurber.pyx":72
+    /* "LinThurberVelocityModel.pyx":72
  *         for i in range(0, len(points)):
  *             mpnt.coord[0] = points[i].converted_point.x_value
  *             mpnt.coord[1] = points[i].converted_point.y_value             # <<<<<<<<<<<<<<
@@ -1263,7 +1261,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     (__pyx_v_mpnt.coord[1]) = __pyx_t_5;
 
-    /* "linthurber.pyx":73
+    /* "LinThurberVelocityModel.pyx":73
  *             mpnt.coord[0] = points[i].converted_point.x_value
  *             mpnt.coord[1] = points[i].converted_point.y_value
  *             mpnt.coord[2] = points[i].converted_point.z_value             # <<<<<<<<<<<<<<
@@ -1282,7 +1280,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     (__pyx_v_mpnt.coord[2]) = __pyx_t_5;
 
-    /* "linthurber.pyx":75
+    /* "LinThurberVelocityModel.pyx":75
  *             mpnt.coord[2] = points[i].converted_point.z_value
  * 
  *             if mpnt.coord[2] < 0:             # <<<<<<<<<<<<<<
@@ -1292,7 +1290,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
     __pyx_t_6 = (((__pyx_v_mpnt.coord[2]) < 0.0) != 0);
     if (__pyx_t_6) {
 
-      /* "linthurber.pyx":76
+      /* "LinThurberVelocityModel.pyx":76
  * 
  *             if mpnt.coord[2] < 0:
  *                 self._set_velocity_properties_none(points[i])             # <<<<<<<<<<<<<<
@@ -1331,7 +1329,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "linthurber.pyx":77
+      /* "LinThurberVelocityModel.pyx":77
  *             if mpnt.coord[2] < 0:
  *                 self._set_velocity_properties_none(points[i])
  *                 continue             # <<<<<<<<<<<<<<
@@ -1340,7 +1338,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
  */
       goto __pyx_L3_continue;
 
-      /* "linthurber.pyx":75
+      /* "LinThurberVelocityModel.pyx":75
  *             mpnt.coord[2] = points[i].converted_point.z_value
  * 
  *             if mpnt.coord[2] < 0:             # <<<<<<<<<<<<<<
@@ -1349,7 +1347,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
  */
     }
 
-    /* "linthurber.pyx":79
+    /* "LinThurberVelocityModel.pyx":79
  *                 continue
  * 
  *             if cvmlt_query(&mpnt, &mdata) == 0 and mdata.vp > 0 and mdata.vs > 0 and mdata.rho > 0:             # <<<<<<<<<<<<<<
@@ -1379,7 +1377,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
     __pyx_L7_bool_binop_done:;
     if (__pyx_t_6) {
 
-      /* "linthurber.pyx":80
+      /* "LinThurberVelocityModel.pyx":80
  * 
  *             if cvmlt_query(&mpnt, &mdata) == 0 and mdata.vp > 0 and mdata.vs > 0 and mdata.rho > 0:
  *                 points[i].set_velocity_data(             # <<<<<<<<<<<<<<
@@ -1392,7 +1390,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "linthurber.pyx":81
+      /* "LinThurberVelocityModel.pyx":81
  *             if cvmlt_query(&mpnt, &mdata) == 0 and mdata.vp > 0 and mdata.vs > 0 and mdata.rho > 0:
  *                 points[i].set_velocity_data(
  *                     VelocityProperties(             # <<<<<<<<<<<<<<
@@ -1402,7 +1400,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
       __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_VelocityProperties); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 81, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "linthurber.pyx":82
+      /* "LinThurberVelocityModel.pyx":82
  *                 points[i].set_velocity_data(
  *                     VelocityProperties(
  *                         mdata.vp, mdata.vs, mdata.rho, None, None,             # <<<<<<<<<<<<<<
@@ -1416,7 +1414,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
       __pyx_t_12 = PyFloat_FromDouble(__pyx_v_mdata.rho); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 82, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
 
-      /* "linthurber.pyx":83
+      /* "LinThurberVelocityModel.pyx":83
  *                     VelocityProperties(
  *                         mdata.vp, mdata.vs, mdata.rho, None, None,
  *                         id_cvmlt, id_cvmlt, id_cvmlt, None, None             # <<<<<<<<<<<<<<
@@ -1502,7 +1500,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "linthurber.pyx":79
+      /* "LinThurberVelocityModel.pyx":79
  *                 continue
  * 
  *             if cvmlt_query(&mpnt, &mdata) == 0 and mdata.vp > 0 and mdata.vs > 0 and mdata.rho > 0:             # <<<<<<<<<<<<<<
@@ -1512,7 +1510,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
       goto __pyx_L6;
     }
 
-    /* "linthurber.pyx":87
+    /* "LinThurberVelocityModel.pyx":87
  *                 )
  *             else:
  *                 self._set_velocity_properties_none(points[i])             # <<<<<<<<<<<<<<
@@ -1556,7 +1554,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
     __pyx_L3_continue:;
   }
 
-  /* "linthurber.pyx":89
+  /* "LinThurberVelocityModel.pyx":89
  *                 self._set_velocity_properties_none(points[i])
  * 
  *         return True             # <<<<<<<<<<<<<<
@@ -1568,7 +1566,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
   __pyx_r = Py_True;
   goto __pyx_L0;
 
-  /* "linthurber.pyx":53
+  /* "LinThurberVelocityModel.pyx":53
  *         cvmlt_init(model_path)
  * 
  *     def _query(self, points: List[SeismicData], **kwargs) -> bool:             # <<<<<<<<<<<<<<
@@ -1587,7 +1585,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
   __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_13);
   __Pyx_XDECREF(__pyx_t_15);
-  __Pyx_AddTraceback("linthurber.LinThurberVelocityModel._query", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("LinThurberVelocityModel.LinThurberVelocityModel._query", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_id_cvmlt);
@@ -1596,7 +1594,7 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
   return __pyx_r;
 }
 
-/* "linthurber.pyx":91
+/* "LinThurberVelocityModel.pyx":91
  *         return True
  * 
  *     def __del__(self):             # <<<<<<<<<<<<<<
@@ -1604,32 +1602,32 @@ static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_2_query(CYTHON_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10linthurber_23LinThurberVelocityModel_5__del__(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
-static PyMethodDef __pyx_mdef_10linthurber_23LinThurberVelocityModel_5__del__ = {"__del__", (PyCFunction)__pyx_pw_10linthurber_23LinThurberVelocityModel_5__del__, METH_O, 0};
-static PyObject *__pyx_pw_10linthurber_23LinThurberVelocityModel_5__del__(PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_23LinThurberVelocityModel_23LinThurberVelocityModel_5__del__(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
+static PyMethodDef __pyx_mdef_23LinThurberVelocityModel_23LinThurberVelocityModel_5__del__ = {"__del__", (PyCFunction)__pyx_pw_23LinThurberVelocityModel_23LinThurberVelocityModel_5__del__, METH_O, 0};
+static PyObject *__pyx_pw_23LinThurberVelocityModel_23LinThurberVelocityModel_5__del__(PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_10linthurber_23LinThurberVelocityModel_4__del__(__pyx_self, ((PyObject *)__pyx_v_self));
+  __pyx_r = __pyx_pf_23LinThurberVelocityModel_23LinThurberVelocityModel_4__del__(__pyx_self, ((PyObject *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10linthurber_23LinThurberVelocityModel_4__del__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
+static PyObject *__pyx_pf_23LinThurberVelocityModel_23LinThurberVelocityModel_4__del__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__del__", 0);
 
-  /* "linthurber.pyx":92
+  /* "LinThurberVelocityModel.pyx":92
  * 
  *     def __del__(self):
  *         cvmlt_finalize()             # <<<<<<<<<<<<<<
  */
   cvmlt_finalize();
 
-  /* "linthurber.pyx":91
+  /* "LinThurberVelocityModel.pyx":91
  *         return True
  * 
  *     def __del__(self):             # <<<<<<<<<<<<<<
@@ -1654,7 +1652,7 @@ static struct PyModuleDef __pyx_moduledef = {
   #else
     PyModuleDef_HEAD_INIT,
   #endif
-    "linthurber",
+    "LinThurberVelocityModel",
     __pyx_k_Lin_Thurber_Velocity_Model_This, /* m_doc */
     -1, /* m_size */
     __pyx_methods /* m_methods */,
@@ -1689,7 +1687,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_init, __pyx_k_init, sizeof(__pyx_k_init), 0, 0, 1, 1},
   {&__pyx_n_s_join, __pyx_k_join, sizeof(__pyx_k_join), 0, 0, 1, 1},
   {&__pyx_n_s_kwargs, __pyx_k_kwargs, sizeof(__pyx_k_kwargs), 0, 0, 1, 1},
-  {&__pyx_n_s_linthurber, __pyx_k_linthurber, sizeof(__pyx_k_linthurber), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_mdata, __pyx_k_mdata, sizeof(__pyx_k_mdata), 0, 0, 1, 1},
   {&__pyx_n_s_metaclass, __pyx_k_metaclass, sizeof(__pyx_k_metaclass), 0, 0, 1, 1},
@@ -1732,7 +1729,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "linthurber.pyx":47
+  /* "LinThurberVelocityModel.pyx":47
  *         super().__init__(**kwargs)
  * 
  *         py_model_path = os.path.join(self.model_location, "data").encode("ASCII")             # <<<<<<<<<<<<<<
@@ -1743,7 +1740,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "linthurber.pyx":44
+  /* "LinThurberVelocityModel.pyx":44
  *     """
  * 
  *     def __init__(self, **kwargs):             # <<<<<<<<<<<<<<
@@ -1755,7 +1752,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__2);
   __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(1, 0, 4, 0, CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__2, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_init, 44, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 44, __pyx_L1_error)
 
-  /* "linthurber.pyx":53
+  /* "LinThurberVelocityModel.pyx":53
  *         cvmlt_init(model_path)
  * 
  *     def _query(self, points: List[SeismicData], **kwargs) -> bool:             # <<<<<<<<<<<<<<
@@ -1767,7 +1764,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__4);
   __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_query, 53, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 53, __pyx_L1_error)
 
-  /* "linthurber.pyx":91
+  /* "LinThurberVelocityModel.pyx":91
  *         return True
  * 
  *     def __del__(self):             # <<<<<<<<<<<<<<
@@ -1792,11 +1789,11 @@ static int __Pyx_InitGlobals(void) {
 }
 
 #if PY_MAJOR_VERSION < 3
-PyMODINIT_FUNC initlinthurber(void); /*proto*/
-PyMODINIT_FUNC initlinthurber(void)
+PyMODINIT_FUNC initLinThurberVelocityModel(void); /*proto*/
+PyMODINIT_FUNC initLinThurberVelocityModel(void)
 #else
-PyMODINIT_FUNC PyInit_linthurber(void); /*proto*/
-PyMODINIT_FUNC PyInit_linthurber(void)
+PyMODINIT_FUNC PyInit_LinThurberVelocityModel(void); /*proto*/
+PyMODINIT_FUNC PyInit_LinThurberVelocityModel(void)
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
@@ -1817,7 +1814,7 @@ PyMODINIT_FUNC PyInit_linthurber(void)
           Py_FatalError("failed to import 'refnanny' module");
   }
   #endif
-  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_linthurber(void)", 0);
+  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_LinThurberVelocityModel(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -1846,7 +1843,7 @@ PyMODINIT_FUNC PyInit_linthurber(void)
   #endif
   /*--- Module creation code ---*/
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("linthurber", __pyx_methods, __pyx_k_Lin_Thurber_Velocity_Model_This, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("LinThurberVelocityModel", __pyx_methods, __pyx_k_Lin_Thurber_Velocity_Model_This, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -1863,14 +1860,14 @@ PyMODINIT_FUNC PyInit_linthurber(void)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_linthurber) {
+  if (__pyx_module_is_main_LinThurberVelocityModel) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "linthurber")) {
-      if (unlikely(PyDict_SetItemString(modules, "linthurber", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "LinThurberVelocityModel")) {
+      if (unlikely(PyDict_SetItemString(modules, "LinThurberVelocityModel", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -1890,7 +1887,7 @@ PyMODINIT_FUNC PyInit_linthurber(void)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "linthurber.pyx":14
+  /* "LinThurberVelocityModel.pyx":14
  * """
  * # Python Imports
  * import os             # <<<<<<<<<<<<<<
@@ -1902,7 +1899,7 @@ PyMODINIT_FUNC PyInit_linthurber(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_os, __pyx_t_1) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "linthurber.pyx":15
+  /* "LinThurberVelocityModel.pyx":15
  * # Python Imports
  * import os
  * from typing import List             # <<<<<<<<<<<<<<
@@ -1923,7 +1920,7 @@ PyMODINIT_FUNC PyInit_linthurber(void)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "linthurber.pyx":21
+  /* "LinThurberVelocityModel.pyx":21
  * 
  * # UCVM Imports
  * from ucvm.src.model.velocity.velocity_model import VelocityModel             # <<<<<<<<<<<<<<
@@ -1944,7 +1941,7 @@ PyMODINIT_FUNC PyInit_linthurber(void)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "linthurber.pyx":22
+  /* "LinThurberVelocityModel.pyx":22
  * # UCVM Imports
  * from ucvm.src.model.velocity.velocity_model import VelocityModel
  * from ucvm.src.shared.properties import SeismicData, VelocityProperties             # <<<<<<<<<<<<<<
@@ -1972,7 +1969,7 @@ PyMODINIT_FUNC PyInit_linthurber(void)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "linthurber.pyx":38
+  /* "LinThurberVelocityModel.pyx":38
  *     float rho
  * 
  * class LinThurberVelocityModel(VelocityModel):             # <<<<<<<<<<<<<<
@@ -1988,19 +1985,19 @@ PyMODINIT_FUNC PyInit_linthurber(void)
   __pyx_t_2 = 0;
   __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_LinThurberVelocityModel, __pyx_n_s_LinThurberVelocityModel, (PyObject *) NULL, __pyx_n_s_linthurber, __pyx_kp_s_Defines_the_Lin_Thurber_interfa); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_LinThurberVelocityModel, __pyx_n_s_LinThurberVelocityModel, (PyObject *) NULL, __pyx_n_s_LinThurberVelocityModel, __pyx_kp_s_Defines_the_Lin_Thurber_interfa); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
 
-  /* "linthurber.pyx":44
+  /* "LinThurberVelocityModel.pyx":44
  *     """
  * 
  *     def __init__(self, **kwargs):             # <<<<<<<<<<<<<<
  *         super().__init__(**kwargs)
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10linthurber_23LinThurberVelocityModel_1__init__, 0, __pyx_n_s_LinThurberVelocityModel___init, NULL, __pyx_n_s_linthurber, __pyx_d, ((PyObject *)__pyx_codeobj__3)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_23LinThurberVelocityModel_23LinThurberVelocityModel_1__init__, 0, __pyx_n_s_LinThurberVelocityModel___init, NULL, __pyx_n_s_LinThurberVelocityModel, __pyx_d, ((PyObject *)__pyx_codeobj__3)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF(__pyx_t_5);
   PyList_Append(__pyx_t_4, __pyx_t_5);
@@ -2008,7 +2005,7 @@ PyMODINIT_FUNC PyInit_linthurber(void)
   if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_init, __pyx_t_5) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "linthurber.pyx":53
+  /* "LinThurberVelocityModel.pyx":53
  *         cvmlt_init(model_path)
  * 
  *     def _query(self, points: List[SeismicData], **kwargs) -> bool:             # <<<<<<<<<<<<<<
@@ -2028,25 +2025,25 @@ PyMODINIT_FUNC PyInit_linthurber(void)
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_points, __pyx_t_8) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_return, ((PyObject*)&PyBool_Type)) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
-  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10linthurber_23LinThurberVelocityModel_3_query, 0, __pyx_n_s_LinThurberVelocityModel__query, NULL, __pyx_n_s_linthurber, __pyx_d, ((PyObject *)__pyx_codeobj__5)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_23LinThurberVelocityModel_23LinThurberVelocityModel_3_query, 0, __pyx_n_s_LinThurberVelocityModel__query, NULL, __pyx_n_s_LinThurberVelocityModel, __pyx_d, ((PyObject *)__pyx_codeobj__5)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_8, __pyx_t_5);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_query, __pyx_t_8) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "linthurber.pyx":91
+  /* "LinThurberVelocityModel.pyx":91
  *         return True
  * 
  *     def __del__(self):             # <<<<<<<<<<<<<<
  *         cvmlt_finalize()
  */
-  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10linthurber_23LinThurberVelocityModel_5__del__, 0, __pyx_n_s_LinThurberVelocityModel___del, NULL, __pyx_n_s_linthurber, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_23LinThurberVelocityModel_23LinThurberVelocityModel_5__del__, 0, __pyx_n_s_LinThurberVelocityModel___del, NULL, __pyx_n_s_LinThurberVelocityModel, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_del, __pyx_t_8) < 0) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "linthurber.pyx":38
+  /* "LinThurberVelocityModel.pyx":38
  *     float rho
  * 
  * class LinThurberVelocityModel(VelocityModel):             # <<<<<<<<<<<<<<
@@ -2063,7 +2060,7 @@ PyMODINIT_FUNC PyInit_linthurber(void)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "linthurber.pyx":1
+  /* "LinThurberVelocityModel.pyx":1
  * """             # <<<<<<<<<<<<<<
  * Lin-Thurber Velocity Model
  * 
@@ -2087,11 +2084,11 @@ PyMODINIT_FUNC PyInit_linthurber(void)
   __Pyx_XDECREF(__pyx_t_8);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init linthurber", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init LinThurberVelocityModel", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init linthurber");
+    PyErr_SetString(PyExc_ImportError, "init LinThurberVelocityModel");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

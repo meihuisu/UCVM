@@ -2,10 +2,19 @@
 """
 Defines the utility that walks the user through plotting a cross section.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   August 17, 2016
-:modified:  August 19, 2016
+Copyright 2017 Southern California Earthquake Center
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
 import sys
 import xmltodict
@@ -65,7 +74,8 @@ def ask_questions() -> dict:
     installed_models = {}
     counter = 1
     for model in UCVM.get_list_of_installed_models()["velocity"]:
-        installed_models[counter] = model["name"]
+        installed_models[counter] = {"name": model["name"], "id": model["id"]}
+        counter += 1
 
     print("\nGenerating a cross-section requires various parameters to be defined (such \n"
           "as the start point, ending point, and so on). The following questions will guide\n"
@@ -138,12 +148,12 @@ def ask_questions() -> dict:
           "can select from one of the predefined ones in the list below.")
 
     for index, name in installed_models.items():
-        print(str(index) + ") " + name)
+        print(str(index) + ") ")
 
     answers["cvm_list"] = ask_and_validate("\nWhich velocity model would you like?")
     try:
         int(answers["cvm_list"])
-        answers["cvm_list"] = installed_models[int(answers["cvm_list"])]
+        answers["cvm_list"] = installed_models[int(answers["cvm_list"])]["id"]
     except TypeError:
         pass
 

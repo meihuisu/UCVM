@@ -2,10 +2,19 @@
 """
 Defines the utility that walks the user through plotting a horizontal slice.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   August 12, 2016
-:modified:  August 15, 2016
+Copyright 2017 Southern California Earthquake Center
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
 import sys
 import xmltodict
@@ -76,8 +85,11 @@ def ask_questions(advanced: bool) -> dict:
     # Get list of installed models.
     installed_models = {}
     counter = 1
+    UCVM.get_list_of_installed_models()
     for model in UCVM.get_list_of_installed_models()["velocity"]:
-        installed_models[counter] = model["name"]
+        if model["id"] == "1d" or model["id"] == "dataproductreader":
+            continue
+        installed_models[counter] = {"name": model["name"], "id": model["id"]}
         counter += 1
 
     print("\nGenerating a horizontal slice requires various parameters to be defined (such \n"
@@ -135,17 +147,17 @@ def ask_questions(advanced: bool) -> dict:
                                " the bottom-left corner)?", is_number, "Answer must a number."))
 
     print("\nYou must select the velocity model(s) from which you would like to retrieve this\n"
-          "data. You can either enter in your model(s) as text (e.g. CVM-S4.usgs-noaa) or you\n"
+          "data. You can either enter in your model(s) as text (e.g. cvms4 or dataproductreader[file]) or you\n"
           "can select from one of the predefined ones in the list below.")
 
     for index, name in installed_models.items():
-        print(str(index) + ") " + name)
+        print(str(index) + ") " + name["name"])
 
     answers["cvm_list"] = ask_and_validate("\nWhich velocity model would you like?")
 
     try:
         int(answers["cvm_list"])
-        answers["cvm_list"] = installed_models[int(answers["cvm_list"])]
+        answers["cvm_list"] = installed_models[int(answers["cvm_list"])]["id"]
     except ValueError:
         pass
 

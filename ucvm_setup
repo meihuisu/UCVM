@@ -73,19 +73,23 @@ elif "hpc-login" in host and "usc.edu" in host:
 else:
     default_dir = os.path.abspath(os.path.expanduser("~/ucvm-17.2.0"))
 
-directory = ""
+if "VIRTUAL_ENV" not in os.environ:
+    directory = ""
 
-while directory == "":
-    directory = input(
-        "The default installation path for UCVM %s.\nHit enter to install UCVM there or type in a different path: " %
-        ("is " + default_dir if default_dir != "" else "cannot be determined")
-    )
-    if directory.strip() == "" and default_dir != "":
-        directory = default_dir
-    elif directory.strip() == "":
-        print("Error: no directory provided.")
-        directory = ""
+    while directory == "":
+        directory = input(
+            "The default installation path for UCVM %s.\nHit enter to install UCVM there or type in a different path: " %
+            ("is " + default_dir if default_dir != "" else "cannot be determined")
+        )
+        if directory.strip() == "" and default_dir != "":
+            directory = default_dir
+        elif directory.strip() == "":
+            print("Error: no directory provided.")
+            directory = ""
 
-print("")
-p = Popen([sys.executable, "setup.py", "install", "--prefix=" + os.path.abspath(directory)])
+    print("")
+    p = Popen([sys.executable, "setup.py", "install", "--prefix=" + os.path.abspath(directory)])
+else:
+    p = Popen([sys.executable, "setup.py", "install"])
+
 p.wait()

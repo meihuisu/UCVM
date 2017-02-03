@@ -83,7 +83,10 @@ class Model:
 
         try:
             for _, value in doc["root"]["information"]["references"].items():
-                self._public_metadata["references"].append(value)
+                if type(value) is list:
+                    self._public_metadata["references"] += value
+                else:
+                    self._public_metadata["references"].append(value)
         except KeyError:
             pass
 

@@ -9,8 +9,8 @@ Developer:
 """
 # UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
-from ucvm.src.shared.properties import SeismicData, Point, VelocityProperties
-from ucvm.src.shared.test import run_acceptance_test, UCVMTestCase, assert_velocity_properties
+from ucvm.src.shared.properties import SeismicData, Point
+from ucvm.src.shared.test import run_acceptance_test, UCVMTestCase
 
 
 class CCA06VelocityModelTest(UCVMTestCase):

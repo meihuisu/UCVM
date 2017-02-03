@@ -23,8 +23,8 @@ import numpy as np
 
 # Globals
 model = "CVM-S4.26"
-dimension_x = 992
-dimension_y = 1536
+dimension_x = 1536
+dimension_y = 992
 dimension_z = 100
 
 
@@ -79,8 +79,8 @@ def main() -> int:
 
     for line in f:
         arr = line.split()
-        x_pos = int(arr[0]) - 1
-        y_pos = int(arr[1]) - 1
+        x_pos = dimension_x - int(arr[1])
+        y_pos = int(arr[0]) - 1
         z_pos = int(arr[2]) - 1
         vp = float(arr[3])
         vs = float(arr[4])

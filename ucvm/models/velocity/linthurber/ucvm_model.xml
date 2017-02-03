@@ -41,6 +41,14 @@
             limitations under the License.
         </license>
 
+        <references>
+            <reference>
+                Lin, G., C. H. Thurber, H. Zhang, E. Hauksson, P. Shearer, F. Waldhauser, T. M. Brocher, and J.
+                Hardebeck (2010), A California statewide three-dimensional seismic velocity model from both absolute
+                and differential Times, Bull. Seism. Soc. Am., 100, in press.
+            </reference>
+        </references>
+
         <!-- A broad description and range of the coverage region -->
         <coverage>
             <description>California</description>

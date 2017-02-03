@@ -7,7 +7,7 @@
             "/Users/davidgil/PycharmProjects/UCVM/ucvm/models/velocity/cvms426m01/src/src/cvmsi.h"
         ]
     },
-    "module_name": "cvms426m01"
+    "module_name": "CVMS426M01VelocityModel"
 }
 END: Cython Metadata */
 
@@ -277,8 +277,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__cvms426m01
-#define __PYX_HAVE_API__cvms426m01
+#define __PYX_HAVE__CVMS426M01VelocityModel
+#define __PYX_HAVE_API__CVMS426M01VelocityModel
 #include "string.h"
 #include "stdlib.h"
 #include "src/src/cvmsi.h"
@@ -497,45 +497,45 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "cvms426m01.pyx",
+  "CVMS426M01VelocityModel.pyx",
 };
 
 /*--- Type declarations ---*/
-struct __pyx_t_10cvms426m01_cvmsi_point_t;
-struct __pyx_t_10cvms426m01_cvmsi_index_t;
-struct __pyx_t_10cvms426m01_cvmsi_prop_t;
-struct __pyx_t_10cvms426m01_cvmsi_data_t;
+struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_point_t;
+struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_index_t;
+struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_prop_t;
+struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_data_t;
 
-/* "cvms426m01.pyx":35
+/* "CVMS426M01VelocityModel.pyx":35
  *     int cvmsi_finalize()
  * 
  * cdef struct cvmsi_point_t:             # <<<<<<<<<<<<<<
  *   double coord[3]
  * 
  */
-struct __pyx_t_10cvms426m01_cvmsi_point_t {
+struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_point_t {
   double coord[3];
 };
 
-/* "cvms426m01.pyx":38
+/* "CVMS426M01VelocityModel.pyx":38
  *   double coord[3]
  * 
  * cdef struct cvmsi_index_t:             # <<<<<<<<<<<<<<
  *   int coord[3]
  * 
  */
-struct __pyx_t_10cvms426m01_cvmsi_index_t {
+struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_index_t {
   int coord[3];
 };
 
-/* "cvms426m01.pyx":41
+/* "CVMS426M01VelocityModel.pyx":41
  *   int coord[3]
  * 
  * cdef struct cvmsi_prop_t:             # <<<<<<<<<<<<<<
  *   float vp
  *   float vs
  */
-struct __pyx_t_10cvms426m01_cvmsi_prop_t {
+struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_prop_t {
   float vp;
   float vs;
   float rho;
@@ -544,16 +544,16 @@ struct __pyx_t_10cvms426m01_cvmsi_prop_t {
   float diff_rho;
 };
 
-/* "cvms426m01.pyx":49
+/* "CVMS426M01VelocityModel.pyx":49
  *   float diff_rho
  * 
  * cdef struct cvmsi_data_t:             # <<<<<<<<<<<<<<
  *   cvmsi_index_t xyz
  *   cvmsi_prop_t prop
  */
-struct __pyx_t_10cvms426m01_cvmsi_data_t {
-  struct __pyx_t_10cvms426m01_cvmsi_index_t xyz;
-  struct __pyx_t_10cvms426m01_cvmsi_prop_t prop;
+struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_data_t {
+  struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_index_t xyz;
+  struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_prop_t prop;
 };
 
 /* --- Runtime support code (head) --- */
@@ -834,11 +834,11 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libc.stdlib' */
 
-/* Module declarations from 'cvms426m01' */
-#define __Pyx_MODULE_NAME "cvms426m01"
-int __pyx_module_is_main_cvms426m01 = 0;
+/* Module declarations from 'CVMS426M01VelocityModel' */
+#define __Pyx_MODULE_NAME "CVMS426M01VelocityModel"
+int __pyx_module_is_main_CVMS426M01VelocityModel = 0;
 
-/* Implementation of 'cvms426m01' */
+/* Implementation of 'CVMS426M01VelocityModel' */
 static PyObject *__pyx_builtin_super;
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_builtin_range;
@@ -875,7 +875,6 @@ static const char __pyx_k_y_value[] = "y_value";
 static const char __pyx_k_z_value[] = "z_value";
 static const char __pyx_k_qualname[] = "__qualname__";
 static const char __pyx_k_metaclass[] = "__metaclass__";
-static const char __pyx_k_cvms426m01[] = "cvms426m01";
 static const char __pyx_k_id_s426m01[] = "id_s426m01";
 static const char __pyx_k_SeismicData[] = "SeismicData";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
@@ -889,13 +888,13 @@ static const char __pyx_k_ucvm_src_shared[] = "ucvm.src.shared";
 static const char __pyx_k_set_velocity_data[] = "set_velocity_data";
 static const char __pyx_k_VelocityProperties[] = "VelocityProperties";
 static const char __pyx_k_CVMS426M01VelocityModel[] = "CVMS426M01VelocityModel";
+static const char __pyx_k_ucvm_src_model_velocity[] = "ucvm.src.model.velocity";
 static const char __pyx_k_ucvm_src_shared_properties[] = "ucvm.src.shared.properties";
 static const char __pyx_k_set_velocity_properties_none[] = "_set_velocity_properties_none";
 static const char __pyx_k_CVMS426M01VelocityModel___del[] = "CVMS426M01VelocityModel.__del__";
 static const char __pyx_k_CVMS426M01VelocityModel___init[] = "CVMS426M01VelocityModel.__init__";
 static const char __pyx_k_CVMS426M01VelocityModel__query[] = "CVMS426M01VelocityModel._query";
-static const char __pyx_k_Users_davidgil_PycharmProjects[] = "/Users/davidgil/PycharmProjects/UCVM/ucvm/models/velocity/cvms426m01/cvms426m01.pyx";
-static const char __pyx_k_ucvm_src_model_velocity_legacy[] = "ucvm.src.model.velocity.legacy";
+static const char __pyx_k_Users_davidgil_PycharmProjects[] = "/Users/davidgil/PycharmProjects/UCVM/ucvm/models/velocity/cvms426m01/CVMS426M01VelocityModel.pyx";
 static const char __pyx_k_CVM_S4_26_M01_Velocity_Model_It[] = "\nCVM-S4.26.M01 Velocity Model\n\nIteration 26 of Po Chen and En-Jui Lee's tomographic inversions of CVM-S4, combined with a sequence\nof rules that are aimed at recovering the GTL from CVM-S4.\n\nThis code is the Cython interface to the legacy CVM-S4.26.M01 model C code. It returns equivalent\nmaterial properties to UCVM.\n\nCopyright:\n    Southern California Earthquake Center\n\nDeveloper:\n    David Gill <davidgil@usc.edu>\n";
 static const char __pyx_k_Defines_the_CVM_S4_26_M01_inter[] = "\n    Defines the CVM-S4.26.M01 interface to UCVM. This class queries the legacy C code to retrieve\n    the material properties and records the data to the new UCVM data structures.\n    ";
 static const char __pyx_k_CVM_S4_26_M01_could_not_be_initi[] = "CVM-S4.26.M01 could not be initialized correctly.";
@@ -913,7 +912,6 @@ static PyObject *__pyx_kp_s_Users_davidgil_PycharmProjects;
 static PyObject *__pyx_n_s_VelocityModel;
 static PyObject *__pyx_n_s_VelocityProperties;
 static PyObject *__pyx_n_s_converted_point;
-static PyObject *__pyx_n_s_cvms426m01;
 static PyObject *__pyx_n_s_data;
 static PyObject *__pyx_n_s_del;
 static PyObject *__pyx_n_s_doc;
@@ -949,15 +947,15 @@ static PyObject *__pyx_n_s_set_velocity_properties_none;
 static PyObject *__pyx_n_s_super;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_typing;
-static PyObject *__pyx_n_s_ucvm_src_model_velocity_legacy;
+static PyObject *__pyx_n_s_ucvm_src_model_velocity;
 static PyObject *__pyx_n_s_ucvm_src_shared;
 static PyObject *__pyx_n_s_ucvm_src_shared_properties;
 static PyObject *__pyx_n_s_x_value;
 static PyObject *__pyx_n_s_y_value;
 static PyObject *__pyx_n_s_z_value;
-static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_kwargs); /* proto */
-static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_points, CYTHON_UNUSED PyObject *__pyx_v_kwargs); /* proto */
-static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_4__del__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_kwargs); /* proto */
+static PyObject *__pyx_pf_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_2_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_points, CYTHON_UNUSED PyObject *__pyx_v_kwargs); /* proto */
+static PyObject *__pyx_pf_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_4__del__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__2;
@@ -968,7 +966,7 @@ static PyObject *__pyx_codeobj__4;
 static PyObject *__pyx_codeobj__6;
 static PyObject *__pyx_codeobj__8;
 
-/* "cvms426m01.pyx":59
+/* "CVMS426M01VelocityModel.pyx":59
  *     """
  * 
  *     def __init__(self, **kwargs):             # <<<<<<<<<<<<<<
@@ -977,9 +975,9 @@ static PyObject *__pyx_codeobj__8;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_10cvms426m01_23CVMS426M01VelocityModel_1__init__ = {"__init__", (PyCFunction)__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_1__init__, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_1__init__ = {"__init__", (PyCFunction)__pyx_pw_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_1__init__, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_self = 0;
   PyObject *__pyx_v_kwargs = 0;
   PyObject *__pyx_r = 0;
@@ -1019,11 +1017,11 @@ static PyObject *__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_1__init__(PyObj
   __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 59, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
-  __Pyx_AddTraceback("cvms426m01.CVMS426M01VelocityModel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("CVMS426M01VelocityModel.CVMS426M01VelocityModel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(__pyx_self, __pyx_v_self, __pyx_v_kwargs);
+  __pyx_r = __pyx_pf_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel___init__(__pyx_self, __pyx_v_self, __pyx_v_kwargs);
 
   /* function exit code */
   __Pyx_XDECREF(__pyx_v_kwargs);
@@ -1031,7 +1029,7 @@ static PyObject *__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_1__init__(PyObj
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_kwargs) {
+static PyObject *__pyx_pf_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_kwargs) {
   char *__pyx_v_model_data_path;
   PyObject *__pyx_v_model_py_path = NULL;
   PyObject *__pyx_r = NULL;
@@ -1046,7 +1044,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(CYTHON
   int __pyx_t_8;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "cvms426m01.pyx":60
+  /* "CVMS426M01VelocityModel.pyx":60
  * 
  *     def __init__(self, **kwargs):
  *         super().__init__(**kwargs)             # <<<<<<<<<<<<<<
@@ -1075,7 +1073,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(CYTHON
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cvms426m01.pyx":64
+  /* "CVMS426M01VelocityModel.pyx":64
  *         cdef char *model_data_path
  * 
  *         model_py_path = os.path.join(self.model_location, "data", "i26").encode("ASCII")             # <<<<<<<<<<<<<<
@@ -1131,7 +1129,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(CYTHON
   __pyx_v_model_py_path = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "cvms426m01.pyx":65
+  /* "CVMS426M01VelocityModel.pyx":65
  * 
  *         model_py_path = os.path.join(self.model_location, "data", "i26").encode("ASCII")
  *         model_data_path = model_py_path             # <<<<<<<<<<<<<<
@@ -1141,7 +1139,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(CYTHON
   __pyx_t_7 = __Pyx_PyObject_AsString(__pyx_v_model_py_path); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L1_error)
   __pyx_v_model_data_path = __pyx_t_7;
 
-  /* "cvms426m01.pyx":66
+  /* "CVMS426M01VelocityModel.pyx":66
  *         model_py_path = os.path.join(self.model_location, "data", "i26").encode("ASCII")
  *         model_data_path = model_py_path
  *         if cvmsi_init(model_data_path) != 0:             # <<<<<<<<<<<<<<
@@ -1151,7 +1149,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(CYTHON
   __pyx_t_8 = ((cvmsi_init(__pyx_v_model_data_path) != 0) != 0);
   if (__pyx_t_8) {
 
-    /* "cvms426m01.pyx":67
+    /* "CVMS426M01VelocityModel.pyx":67
  *         model_data_path = model_py_path
  *         if cvmsi_init(model_data_path) != 0:
  *             raise RuntimeError("CVM-S4.26.M01 could not be initialized correctly.")             # <<<<<<<<<<<<<<
@@ -1164,7 +1162,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(CYTHON
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __PYX_ERR(0, 67, __pyx_L1_error)
 
-    /* "cvms426m01.pyx":66
+    /* "CVMS426M01VelocityModel.pyx":66
  *         model_py_path = os.path.join(self.model_location, "data", "i26").encode("ASCII")
  *         model_data_path = model_py_path
  *         if cvmsi_init(model_data_path) != 0:             # <<<<<<<<<<<<<<
@@ -1173,7 +1171,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(CYTHON
  */
   }
 
-  /* "cvms426m01.pyx":59
+  /* "CVMS426M01VelocityModel.pyx":59
  *     """
  * 
  *     def __init__(self, **kwargs):             # <<<<<<<<<<<<<<
@@ -1190,7 +1188,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(CYTHON
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("cvms426m01.CVMS426M01VelocityModel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("CVMS426M01VelocityModel.CVMS426M01VelocityModel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_model_py_path);
@@ -1199,7 +1197,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(CYTHON
   return __pyx_r;
 }
 
-/* "cvms426m01.pyx":69
+/* "CVMS426M01VelocityModel.pyx":69
  *             raise RuntimeError("CVM-S4.26.M01 could not be initialized correctly.")
  * 
  *     def _query(self, points: List[SeismicData], **kwargs) -> bool:             # <<<<<<<<<<<<<<
@@ -1208,10 +1206,10 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel___init__(CYTHON
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_3_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_10cvms426m01_23CVMS426M01VelocityModel_2_query[] = "\n        This is the method that all models override. It handles querying the velocity model\n        and filling in the SeismicData structures.\n\n        Args:\n            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the\n                points in depth. These are to be populated with :obj:`VelocityProperties`:\n\n        Returns:\n            True on success, false if there is an error.\n        ";
-static PyMethodDef __pyx_mdef_10cvms426m01_23CVMS426M01VelocityModel_3_query = {"_query", (PyCFunction)__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_3_query, METH_VARARGS|METH_KEYWORDS, __pyx_doc_10cvms426m01_23CVMS426M01VelocityModel_2_query};
-static PyObject *__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_3_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_3_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_2_query[] = "\n        This is the method that all models override. It handles querying the velocity model\n        and filling in the SeismicData structures.\n\n        Args:\n            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the\n                points in depth. These are to be populated with :obj:`VelocityProperties`:\n\n        Returns:\n            True on success, false if there is an error.\n        ";
+static PyMethodDef __pyx_mdef_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_3_query = {"_query", (PyCFunction)__pyx_pw_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_3_query, METH_VARARGS|METH_KEYWORDS, __pyx_doc_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_2_query};
+static PyObject *__pyx_pw_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_3_query(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_self = 0;
   PyObject *__pyx_v_points = 0;
   CYTHON_UNUSED PyObject *__pyx_v_kwargs = 0;
@@ -1260,11 +1258,11 @@ static PyObject *__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_3_query(PyObjec
   __Pyx_RaiseArgtupleInvalid("_query", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 69, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
-  __Pyx_AddTraceback("cvms426m01.CVMS426M01VelocityModel._query", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("CVMS426M01VelocityModel.CVMS426M01VelocityModel._query", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(__pyx_self, __pyx_v_self, __pyx_v_points, __pyx_v_kwargs);
+  __pyx_r = __pyx_pf_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_2_query(__pyx_self, __pyx_v_self, __pyx_v_points, __pyx_v_kwargs);
 
   /* function exit code */
   __Pyx_XDECREF(__pyx_v_kwargs);
@@ -1272,10 +1270,10 @@ static PyObject *__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_3_query(PyObjec
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_points, CYTHON_UNUSED PyObject *__pyx_v_kwargs) {
+static PyObject *__pyx_pf_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_2_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_points, CYTHON_UNUSED PyObject *__pyx_v_kwargs) {
   int __pyx_v_num_pts;
-  struct __pyx_t_10cvms426m01_cvmsi_point_t *__pyx_v_pts;
-  struct __pyx_t_10cvms426m01_cvmsi_data_t *__pyx_v_data;
+  struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_point_t *__pyx_v_pts;
+  struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_data_t *__pyx_v_data;
   Py_ssize_t __pyx_v_i;
   PyObject *__pyx_v_id_s426m01 = NULL;
   PyObject *__pyx_r = NULL;
@@ -1296,7 +1294,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
   PyObject *__pyx_t_14 = NULL;
   __Pyx_RefNannySetupContext("_query", 0);
 
-  /* "cvms426m01.pyx":85
+  /* "CVMS426M01VelocityModel.pyx":85
  *         cdef cvmsi_data_t *data
  * 
  *         num_pts = len(points)             # <<<<<<<<<<<<<<
@@ -1306,25 +1304,25 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
   __pyx_t_1 = PyObject_Length(__pyx_v_points); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 85, __pyx_L1_error)
   __pyx_v_num_pts = __pyx_t_1;
 
-  /* "cvms426m01.pyx":87
+  /* "CVMS426M01VelocityModel.pyx":87
  *         num_pts = len(points)
  * 
  *         pts = <cvmsi_point_t *> malloc(num_pts*cython.sizeof(cvmsi_point_t))             # <<<<<<<<<<<<<<
  *         data = <cvmsi_data_t *> malloc(num_pts*cython.sizeof(cvmsi_data_t))
  * 
  */
-  __pyx_v_pts = ((struct __pyx_t_10cvms426m01_cvmsi_point_t *)malloc((__pyx_v_num_pts * (sizeof(struct __pyx_t_10cvms426m01_cvmsi_point_t)))));
+  __pyx_v_pts = ((struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_point_t *)malloc((__pyx_v_num_pts * (sizeof(struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_point_t)))));
 
-  /* "cvms426m01.pyx":88
+  /* "CVMS426M01VelocityModel.pyx":88
  * 
  *         pts = <cvmsi_point_t *> malloc(num_pts*cython.sizeof(cvmsi_point_t))
  *         data = <cvmsi_data_t *> malloc(num_pts*cython.sizeof(cvmsi_data_t))             # <<<<<<<<<<<<<<
  * 
  *         for i in range(len(points)):
  */
-  __pyx_v_data = ((struct __pyx_t_10cvms426m01_cvmsi_data_t *)malloc((__pyx_v_num_pts * (sizeof(struct __pyx_t_10cvms426m01_cvmsi_data_t)))));
+  __pyx_v_data = ((struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_data_t *)malloc((__pyx_v_num_pts * (sizeof(struct __pyx_t_23CVMS426M01VelocityModel_cvmsi_data_t)))));
 
-  /* "cvms426m01.pyx":90
+  /* "CVMS426M01VelocityModel.pyx":90
  *         data = <cvmsi_data_t *> malloc(num_pts*cython.sizeof(cvmsi_data_t))
  * 
  *         for i in range(len(points)):             # <<<<<<<<<<<<<<
@@ -1335,7 +1333,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_i = __pyx_t_2;
 
-    /* "cvms426m01.pyx":91
+    /* "CVMS426M01VelocityModel.pyx":91
  * 
  *         for i in range(len(points)):
  *             pts[i].coord[0] = points[i].converted_point.x_value             # <<<<<<<<<<<<<<
@@ -1354,7 +1352,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     ((__pyx_v_pts[__pyx_v_i]).coord[0]) = __pyx_t_5;
 
-    /* "cvms426m01.pyx":92
+    /* "CVMS426M01VelocityModel.pyx":92
  *         for i in range(len(points)):
  *             pts[i].coord[0] = points[i].converted_point.x_value
  *             pts[i].coord[1] = points[i].converted_point.y_value             # <<<<<<<<<<<<<<
@@ -1373,7 +1371,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     ((__pyx_v_pts[__pyx_v_i]).coord[1]) = __pyx_t_5;
 
-    /* "cvms426m01.pyx":93
+    /* "CVMS426M01VelocityModel.pyx":93
  *             pts[i].coord[0] = points[i].converted_point.x_value
  *             pts[i].coord[1] = points[i].converted_point.y_value
  *             pts[i].coord[2] = points[i].converted_point.z_value             # <<<<<<<<<<<<<<
@@ -1393,7 +1391,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
     ((__pyx_v_pts[__pyx_v_i]).coord[2]) = __pyx_t_5;
   }
 
-  /* "cvms426m01.pyx":95
+  /* "CVMS426M01VelocityModel.pyx":95
  *             pts[i].coord[2] = points[i].converted_point.z_value
  * 
  *         cvmsi_query(pts, data, num_pts)             # <<<<<<<<<<<<<<
@@ -1402,7 +1400,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
  */
   cvmsi_query(__pyx_v_pts, __pyx_v_data, __pyx_v_num_pts);
 
-  /* "cvms426m01.pyx":97
+  /* "CVMS426M01VelocityModel.pyx":97
  *         cvmsi_query(pts, data, num_pts)
  * 
  *         id_s426m01 = self._public_metadata["id"]             # <<<<<<<<<<<<<<
@@ -1417,7 +1415,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
   __pyx_v_id_s426m01 = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "cvms426m01.pyx":99
+  /* "CVMS426M01VelocityModel.pyx":99
  *         id_s426m01 = self._public_metadata["id"]
  * 
  *         for i in range(0, len(points)):             # <<<<<<<<<<<<<<
@@ -1428,7 +1426,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_i = __pyx_t_2;
 
-    /* "cvms426m01.pyx":100
+    /* "CVMS426M01VelocityModel.pyx":100
  * 
  *         for i in range(0, len(points)):
  *             if points[i].converted_point.z_value >= 0:             # <<<<<<<<<<<<<<
@@ -1449,7 +1447,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_6) {
 
-      /* "cvms426m01.pyx":101
+      /* "CVMS426M01VelocityModel.pyx":101
  *         for i in range(0, len(points)):
  *             if points[i].converted_point.z_value >= 0:
  *                 points[i].set_velocity_data(             # <<<<<<<<<<<<<<
@@ -1462,7 +1460,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-      /* "cvms426m01.pyx":102
+      /* "CVMS426M01VelocityModel.pyx":102
  *             if points[i].converted_point.z_value >= 0:
  *                 points[i].set_velocity_data(
  *                     VelocityProperties(             # <<<<<<<<<<<<<<
@@ -1472,7 +1470,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
       __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_VelocityProperties); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 102, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
 
-      /* "cvms426m01.pyx":103
+      /* "CVMS426M01VelocityModel.pyx":103
  *                 points[i].set_velocity_data(
  *                     VelocityProperties(
  *                         data[i].prop.vp, data[i].prop.vs, data[i].prop.rho,  # From CVM-S4.26.M01             # <<<<<<<<<<<<<<
@@ -1486,7 +1484,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
       __pyx_t_11 = PyFloat_FromDouble((__pyx_v_data[__pyx_v_i]).prop.rho); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 103, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
 
-      /* "cvms426m01.pyx":106
+      /* "CVMS426M01VelocityModel.pyx":106
  *                         None, None,  # No Qp or Qs defined
  *                         id_s426m01, id_s426m01, id_s426m01,  # All data comes from CVM-S4.26.M01
  *                         None, None  # No Qp or Qs defined             # <<<<<<<<<<<<<<
@@ -1572,7 +1570,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "cvms426m01.pyx":100
+      /* "CVMS426M01VelocityModel.pyx":100
  * 
  *         for i in range(0, len(points)):
  *             if points[i].converted_point.z_value >= 0:             # <<<<<<<<<<<<<<
@@ -1582,7 +1580,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
       goto __pyx_L7;
     }
 
-    /* "cvms426m01.pyx":111
+    /* "CVMS426M01VelocityModel.pyx":111
  *             else:
  *                 # CVM-S4.26.M01 has no information on negative depth points.
  *                 self._set_velocity_properties_none(points[i])             # <<<<<<<<<<<<<<
@@ -1625,7 +1623,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
     __pyx_L7:;
   }
 
-  /* "cvms426m01.pyx":113
+  /* "CVMS426M01VelocityModel.pyx":113
  *                 self._set_velocity_properties_none(points[i])
  * 
  *         free(pts)             # <<<<<<<<<<<<<<
@@ -1634,7 +1632,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
  */
   free(__pyx_v_pts);
 
-  /* "cvms426m01.pyx":114
+  /* "CVMS426M01VelocityModel.pyx":114
  * 
  *         free(pts)
  *         free(data)             # <<<<<<<<<<<<<<
@@ -1643,7 +1641,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
  */
   free(__pyx_v_data);
 
-  /* "cvms426m01.pyx":116
+  /* "CVMS426M01VelocityModel.pyx":116
  *         free(data)
  * 
  *         return True             # <<<<<<<<<<<<<<
@@ -1655,7 +1653,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
   __pyx_r = Py_True;
   goto __pyx_L0;
 
-  /* "cvms426m01.pyx":69
+  /* "CVMS426M01VelocityModel.pyx":69
  *             raise RuntimeError("CVM-S4.26.M01 could not be initialized correctly.")
  * 
  *     def _query(self, points: List[SeismicData], **kwargs) -> bool:             # <<<<<<<<<<<<<<
@@ -1674,7 +1672,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_14);
-  __Pyx_AddTraceback("cvms426m01.CVMS426M01VelocityModel._query", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("CVMS426M01VelocityModel.CVMS426M01VelocityModel._query", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_id_s426m01);
@@ -1683,7 +1681,7 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
   return __pyx_r;
 }
 
-/* "cvms426m01.pyx":118
+/* "CVMS426M01VelocityModel.pyx":118
  *         return True
  * 
  *     def __del__(self):             # <<<<<<<<<<<<<<
@@ -1691,32 +1689,32 @@ static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_2_query(CYTHON_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_5__del__(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
-static PyMethodDef __pyx_mdef_10cvms426m01_23CVMS426M01VelocityModel_5__del__ = {"__del__", (PyCFunction)__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_5__del__, METH_O, 0};
-static PyObject *__pyx_pw_10cvms426m01_23CVMS426M01VelocityModel_5__del__(PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_5__del__(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
+static PyMethodDef __pyx_mdef_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_5__del__ = {"__del__", (PyCFunction)__pyx_pw_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_5__del__, METH_O, 0};
+static PyObject *__pyx_pw_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_5__del__(PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_4__del__(__pyx_self, ((PyObject *)__pyx_v_self));
+  __pyx_r = __pyx_pf_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_4__del__(__pyx_self, ((PyObject *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10cvms426m01_23CVMS426M01VelocityModel_4__del__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
+static PyObject *__pyx_pf_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_4__del__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__del__", 0);
 
-  /* "cvms426m01.pyx":119
+  /* "CVMS426M01VelocityModel.pyx":119
  * 
  *     def __del__(self):
  *         cvmsi_finalize()             # <<<<<<<<<<<<<<
  */
   cvmsi_finalize();
 
-  /* "cvms426m01.pyx":118
+  /* "CVMS426M01VelocityModel.pyx":118
  *         return True
  * 
  *     def __del__(self):             # <<<<<<<<<<<<<<
@@ -1741,7 +1739,7 @@ static struct PyModuleDef __pyx_moduledef = {
   #else
     PyModuleDef_HEAD_INIT,
   #endif
-    "cvms426m01",
+    "CVMS426M01VelocityModel",
     __pyx_k_CVM_S4_26_M01_Velocity_Model_It, /* m_doc */
     -1, /* m_size */
     __pyx_methods /* m_methods */,
@@ -1767,7 +1765,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_VelocityModel, __pyx_k_VelocityModel, sizeof(__pyx_k_VelocityModel), 0, 0, 1, 1},
   {&__pyx_n_s_VelocityProperties, __pyx_k_VelocityProperties, sizeof(__pyx_k_VelocityProperties), 0, 0, 1, 1},
   {&__pyx_n_s_converted_point, __pyx_k_converted_point, sizeof(__pyx_k_converted_point), 0, 0, 1, 1},
-  {&__pyx_n_s_cvms426m01, __pyx_k_cvms426m01, sizeof(__pyx_k_cvms426m01), 0, 0, 1, 1},
   {&__pyx_n_s_data, __pyx_k_data, sizeof(__pyx_k_data), 0, 0, 1, 1},
   {&__pyx_n_s_del, __pyx_k_del, sizeof(__pyx_k_del), 0, 0, 1, 1},
   {&__pyx_n_s_doc, __pyx_k_doc, sizeof(__pyx_k_doc), 0, 0, 1, 1},
@@ -1803,7 +1800,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_super, __pyx_k_super, sizeof(__pyx_k_super), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_typing, __pyx_k_typing, sizeof(__pyx_k_typing), 0, 0, 1, 1},
-  {&__pyx_n_s_ucvm_src_model_velocity_legacy, __pyx_k_ucvm_src_model_velocity_legacy, sizeof(__pyx_k_ucvm_src_model_velocity_legacy), 0, 0, 1, 1},
+  {&__pyx_n_s_ucvm_src_model_velocity, __pyx_k_ucvm_src_model_velocity, sizeof(__pyx_k_ucvm_src_model_velocity), 0, 0, 1, 1},
   {&__pyx_n_s_ucvm_src_shared, __pyx_k_ucvm_src_shared, sizeof(__pyx_k_ucvm_src_shared), 0, 0, 1, 1},
   {&__pyx_n_s_ucvm_src_shared_properties, __pyx_k_ucvm_src_shared_properties, sizeof(__pyx_k_ucvm_src_shared_properties), 0, 0, 1, 1},
   {&__pyx_n_s_x_value, __pyx_k_x_value, sizeof(__pyx_k_x_value), 0, 0, 1, 1},
@@ -1824,7 +1821,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "cvms426m01.pyx":64
+  /* "CVMS426M01VelocityModel.pyx":64
  *         cdef char *model_data_path
  * 
  *         model_py_path = os.path.join(self.model_location, "data", "i26").encode("ASCII")             # <<<<<<<<<<<<<<
@@ -1835,7 +1832,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "cvms426m01.pyx":67
+  /* "CVMS426M01VelocityModel.pyx":67
  *         model_data_path = model_py_path
  *         if cvmsi_init(model_data_path) != 0:
  *             raise RuntimeError("CVM-S4.26.M01 could not be initialized correctly.")             # <<<<<<<<<<<<<<
@@ -1846,7 +1843,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "cvms426m01.pyx":59
+  /* "CVMS426M01VelocityModel.pyx":59
  *     """
  * 
  *     def __init__(self, **kwargs):             # <<<<<<<<<<<<<<
@@ -1858,7 +1855,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__3);
   __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 4, 0, CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_init, 59, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 59, __pyx_L1_error)
 
-  /* "cvms426m01.pyx":69
+  /* "CVMS426M01VelocityModel.pyx":69
  *             raise RuntimeError("CVM-S4.26.M01 could not be initialized correctly.")
  * 
  *     def _query(self, points: List[SeismicData], **kwargs) -> bool:             # <<<<<<<<<<<<<<
@@ -1870,7 +1867,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__5);
   __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(2, 0, 8, 0, CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_davidgil_PycharmProjects, __pyx_n_s_query, 69, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 69, __pyx_L1_error)
 
-  /* "cvms426m01.pyx":118
+  /* "CVMS426M01VelocityModel.pyx":118
  *         return True
  * 
  *     def __del__(self):             # <<<<<<<<<<<<<<
@@ -1896,11 +1893,11 @@ static int __Pyx_InitGlobals(void) {
 }
 
 #if PY_MAJOR_VERSION < 3
-PyMODINIT_FUNC initcvms426m01(void); /*proto*/
-PyMODINIT_FUNC initcvms426m01(void)
+PyMODINIT_FUNC initCVMS426M01VelocityModel(void); /*proto*/
+PyMODINIT_FUNC initCVMS426M01VelocityModel(void)
 #else
-PyMODINIT_FUNC PyInit_cvms426m01(void); /*proto*/
-PyMODINIT_FUNC PyInit_cvms426m01(void)
+PyMODINIT_FUNC PyInit_CVMS426M01VelocityModel(void); /*proto*/
+PyMODINIT_FUNC PyInit_CVMS426M01VelocityModel(void)
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
@@ -1921,7 +1918,7 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
           Py_FatalError("failed to import 'refnanny' module");
   }
   #endif
-  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_cvms426m01(void)", 0);
+  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_CVMS426M01VelocityModel(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -1950,7 +1947,7 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   #endif
   /*--- Module creation code ---*/
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("cvms426m01", __pyx_methods, __pyx_k_CVM_S4_26_M01_Velocity_Model_It, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("CVMS426M01VelocityModel", __pyx_methods, __pyx_k_CVM_S4_26_M01_Velocity_Model_It, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -1967,14 +1964,14 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_cvms426m01) {
+  if (__pyx_module_is_main_CVMS426M01VelocityModel) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "cvms426m01")) {
-      if (unlikely(PyDict_SetItemString(modules, "cvms426m01", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "CVMS426M01VelocityModel")) {
+      if (unlikely(PyDict_SetItemString(modules, "CVMS426M01VelocityModel", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -1994,7 +1991,7 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "cvms426m01.pyx":17
+  /* "CVMS426M01VelocityModel.pyx":17
  * """
  * # Python Imports
  * import os             # <<<<<<<<<<<<<<
@@ -2006,7 +2003,7 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_os, __pyx_t_1) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cvms426m01.pyx":18
+  /* "CVMS426M01VelocityModel.pyx":18
  * # Python Imports
  * import os
  * from typing import List             # <<<<<<<<<<<<<<
@@ -2027,10 +2024,10 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cvms426m01.pyx":25
+  /* "CVMS426M01VelocityModel.pyx":25
  * 
  * # UCVM Imports
- * from ucvm.src.model.velocity.legacy import VelocityModel             # <<<<<<<<<<<<<<
+ * from ucvm.src.model.velocity import VelocityModel             # <<<<<<<<<<<<<<
  * from ucvm.src.shared import VelocityProperties
  * from ucvm.src.shared.properties import SeismicData
  */
@@ -2039,7 +2036,7 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   __Pyx_INCREF(__pyx_n_s_VelocityModel);
   __Pyx_GIVEREF(__pyx_n_s_VelocityModel);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_VelocityModel);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_ucvm_src_model_velocity_legacy, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_ucvm_src_model_velocity, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_VelocityModel); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
@@ -2048,9 +2045,9 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cvms426m01.pyx":26
+  /* "CVMS426M01VelocityModel.pyx":26
  * # UCVM Imports
- * from ucvm.src.model.velocity.legacy import VelocityModel
+ * from ucvm.src.model.velocity import VelocityModel
  * from ucvm.src.shared import VelocityProperties             # <<<<<<<<<<<<<<
  * from ucvm.src.shared.properties import SeismicData
  * 
@@ -2069,8 +2066,8 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cvms426m01.pyx":27
- * from ucvm.src.model.velocity.legacy import VelocityModel
+  /* "CVMS426M01VelocityModel.pyx":27
+ * from ucvm.src.model.velocity import VelocityModel
  * from ucvm.src.shared import VelocityProperties
  * from ucvm.src.shared.properties import SeismicData             # <<<<<<<<<<<<<<
  * 
@@ -2090,7 +2087,7 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cvms426m01.pyx":53
+  /* "CVMS426M01VelocityModel.pyx":53
  *   cvmsi_prop_t prop
  * 
  * class CVMS426M01VelocityModel(VelocityModel):             # <<<<<<<<<<<<<<
@@ -2106,19 +2103,19 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_CVMS426M01VelocityModel, __pyx_n_s_CVMS426M01VelocityModel, (PyObject *) NULL, __pyx_n_s_cvms426m01, __pyx_kp_s_Defines_the_CVM_S4_26_M01_inter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_CVMS426M01VelocityModel, __pyx_n_s_CVMS426M01VelocityModel, (PyObject *) NULL, __pyx_n_s_CVMS426M01VelocityModel, __pyx_kp_s_Defines_the_CVM_S4_26_M01_inter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
 
-  /* "cvms426m01.pyx":59
+  /* "CVMS426M01VelocityModel.pyx":59
  *     """
  * 
  *     def __init__(self, **kwargs):             # <<<<<<<<<<<<<<
  *         super().__init__(**kwargs)
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10cvms426m01_23CVMS426M01VelocityModel_1__init__, 0, __pyx_n_s_CVMS426M01VelocityModel___init, NULL, __pyx_n_s_cvms426m01, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_NewEx(&__pyx_mdef_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_1__init__, 0, __pyx_n_s_CVMS426M01VelocityModel___init, NULL, __pyx_n_s_CVMS426M01VelocityModel, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF(__pyx_t_5);
   PyList_Append(__pyx_t_4, __pyx_t_5);
@@ -2126,7 +2123,7 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_init, __pyx_t_5) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "cvms426m01.pyx":69
+  /* "CVMS426M01VelocityModel.pyx":69
  *             raise RuntimeError("CVM-S4.26.M01 could not be initialized correctly.")
  * 
  *     def _query(self, points: List[SeismicData], **kwargs) -> bool:             # <<<<<<<<<<<<<<
@@ -2146,25 +2143,25 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_points, __pyx_t_8) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_return, ((PyObject*)&PyBool_Type)) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
-  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10cvms426m01_23CVMS426M01VelocityModel_3_query, 0, __pyx_n_s_CVMS426M01VelocityModel__query, NULL, __pyx_n_s_cvms426m01, __pyx_d, ((PyObject *)__pyx_codeobj__6)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_3_query, 0, __pyx_n_s_CVMS426M01VelocityModel__query, NULL, __pyx_n_s_CVMS426M01VelocityModel, __pyx_d, ((PyObject *)__pyx_codeobj__6)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_8, __pyx_t_5);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_query, __pyx_t_8) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "cvms426m01.pyx":118
+  /* "CVMS426M01VelocityModel.pyx":118
  *         return True
  * 
  *     def __del__(self):             # <<<<<<<<<<<<<<
  *         cvmsi_finalize()
  */
-  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_10cvms426m01_23CVMS426M01VelocityModel_5__del__, 0, __pyx_n_s_CVMS426M01VelocityModel___del, NULL, __pyx_n_s_cvms426m01, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_CyFunction_NewEx(&__pyx_mdef_23CVMS426M01VelocityModel_23CVMS426M01VelocityModel_5__del__, 0, __pyx_n_s_CVMS426M01VelocityModel___del, NULL, __pyx_n_s_CVMS426M01VelocityModel, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   if (PyObject_SetItem(__pyx_t_3, __pyx_n_s_del, __pyx_t_8) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "cvms426m01.pyx":53
+  /* "CVMS426M01VelocityModel.pyx":53
  *   cvmsi_prop_t prop
  * 
  * class CVMS426M01VelocityModel(VelocityModel):             # <<<<<<<<<<<<<<
@@ -2181,7 +2178,7 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cvms426m01.pyx":1
+  /* "CVMS426M01VelocityModel.pyx":1
  * """             # <<<<<<<<<<<<<<
  * CVM-S4.26.M01 Velocity Model
  * 
@@ -2205,11 +2202,11 @@ PyMODINIT_FUNC PyInit_cvms426m01(void)
   __Pyx_XDECREF(__pyx_t_8);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init cvms426m01", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init CVMS426M01VelocityModel", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init cvms426m01");
+    PyErr_SetString(PyExc_ImportError, "init CVMS426M01VelocityModel");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

@@ -130,7 +130,7 @@ def get_list_of_installable_internet_models() -> dict:
         inner_item = {
             "id": str(model_item.getElementsByTagName("file")[0].firstChild.data).split(".")[0],
             "description": "\n".join([x.strip() for x in str(
-                model_item.getElementsByTagName("description")[0].firstChild.data
+                model_item.getElementsByTagName("description")[1].firstChild.data
             ).split("\n")]),
             "name": str(model_item.getElementsByTagName("name")[0].firstChild.data),
             "coverage": str(model_item.getElementsByTagName("coverage")[0].
@@ -250,19 +250,21 @@ setup(name=UCVM_INFORMATION["short_name"],
                     'ucvm.tests.data': ['ucvm/tests/data/simple_mesh_ijk12_rotated.xml',
                                         'ucvm/tests/data/simple_mesh_ijk12_unrotated.xml',
                                         'ucvm/tests/data/simple_mesh_rwg_unrotated.xml',
-                                        'ucvm/tests/data/simple_utm_mesh_ijk12_rotated.xml']},
+                                        'ucvm/tests/data/simple_utm_mesh_ijk12_rotated.xml',
+                                        'ucvm/tests/data/commands.db']},
       data_files=[("ucvm/models", ["ucvm/models/installed.xml"]),
                   ("ucvm/libraries", ["ucvm/libraries/installed.xml"]),
                   ('ucvm/tests/data', ['ucvm/tests/data/simple_utm_mesh_ijk12_rotated.xml',
                                        'ucvm/tests/data/simple_mesh_ijk12_unrotated.xml',
                                        'ucvm/tests/data/simple_mesh_rwg_unrotated.xml',
-                                       'ucvm/tests/data/simple_mesh_ijk12_rotated.xml'])],
+                                       'ucvm/tests/data/simple_mesh_ijk12_rotated.xml',
+                                       'ucvm/tests/data/commands.db'])],
       install_requires=INSTALL_REQUIRES,
       scripts=['ucvm/bin/ucvm_etree_create', 'ucvm/bin/ucvm_etree_create_mpi', 'ucvm/bin/ucvm_help',
                'ucvm/bin/ucvm_mesh_create', 'ucvm/bin/ucvm_mesh_create_mpi', 'ucvm/bin/ucvm_model_manager',
                'ucvm/bin/ucvm_plot_comparison', 'ucvm/bin/ucvm_plot_cross_section',
                'ucvm/bin/ucvm_plot_depth_profile', 'ucvm/bin/ucvm_plot_horizontal_slice', 'ucvm/bin/ucvm_query',
-               'ucvm/bin/ucvm_run_tests', 'ucvm/bin/ucvm_start_web'],
+               'ucvm/bin/ucvm_run_tests'],
       zip_safe=False
       )
 sys.stdout = s_out
