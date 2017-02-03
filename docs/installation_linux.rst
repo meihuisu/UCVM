@@ -74,3 +74,10 @@ that the installation looks like it can proceed successfully.
 
     ./ucvm_setup
 
+The UCVM setup script will ask a series of questions about which models you would like to install. Enter "y" to install
+a model or "n" to not install it.
+
+At the end of the setup script, you should see a series of tests being run. When these tests are completed, UCVM will
+notify you that the installation has completed successfully. That that point, you can begin to use UCVM!
+
+After installation, we highly recommend that you check out our tutorial and the command line reference.
