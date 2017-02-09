@@ -1,30 +1,42 @@
 """
 Handles generating a horizontal slice for UCVM.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   August 12, 2016
-:modified:  September 8, 2016
+Copyright 2017 Southern California Earthquake Center
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
+# Python Imports
 import os
 import xmltodict
 import numpy as np
 
 from collections import namedtuple
 
+# UCVM Imports
+from ucvm.src.shared.errors import display_and_raise_error
+from ucvm.src.framework.ucvm import UCVM
+from ucvm.src.visualization.plot import Plot
+from ucvm.src.shared.constants import UCVM_DEFAULT_PROJECTION
+from ucvm.src.shared.properties import Point
+from ucvm.src.framework.mesh_common import InternalMesh, AWPInternalMeshIterator
+
+# Matplotlib Import
 try:
     import matplotlib as mpl
     import matplotlib.pyplot as plt
 except ImportError:
     display_and_raise_error(8)
     plt = None                      # Make PyCharm happy.
-
-from ucvm.src.framework.ucvm import UCVM
-from ucvm.src.visualization.plot import Plot
-from ucvm.src.shared.constants import UCVM_DEFAULT_PROJECTION
-from ucvm.src.shared.properties import Point
-from ucvm.src.shared.errors import display_and_raise_error
-from ucvm.src.framework.mesh_common import InternalMesh, AWPInternalMeshIterator
 
 SliceProperties = namedtuple("SliceProperties", "num_x num_y spacing rotation")
 

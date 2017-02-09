@@ -1,28 +1,40 @@
 Linux
 =====
 
+UCVM works with many distributions of Linux. It has been tested and confirmed to work on CentOS 6.8. This is the
+distribution that the VirtualBox uses.
+
+Supported Capabilities
+----------------------
+
++-----------------------------+-----------------------------+
+| Query Velocity Models       | ✓ Yes                       |
++-----------------------------+-----------------------------+
+| Generate Material Models    | ✓ Yes                       |
++-----------------------------+-----------------------------+
+| Visualization               | ✓ Yes                       |
++-----------------------------+-----------------------------+
+
 CentOS 6.8+
 -----------
 
 Prerequisites
 ~~~~~~~~~~~~~
 
-UCVM has been tested and confirmed to work with CentOS. The VirtualBox version of UCVM uses CentOS 6.8. In order to
-install UCVM on this distribution of Linux, a few required packages must be installed first.
+In order to install UCVM on this distribution of Linux, a few required packages must be installed first.
 ::
 
     sudo yum install epel-release
     sudo yum install git
-    sudo yum install freetype-devel make automake gcc gcc-c++ gcc-gfortran
-        redhat-rpm-config subverison hdf5 hdf5-devel openssl-devel libpng-devel
+    sudo yum install freetype-devel make automake gcc gcc-c++ gcc-gfortran redhat-rpm-config subverison
+        hdf5 hdf5-devel openssl-devel libpng-devel
 
 To also add MPI support, the following packages need to be installed.
 ::
 
     sudo yum install openmpi openmpi-devel
 
-If you are on a CentOS 6+ or on another distribution that has Python 3.5 installed, then you need
-the following package:
+If you are on a distribution that allows for Python 3.5 to be installed via yum, then you need the following packages:
 ::
 
     sudo yum install python3    <-- if you don't have Python 3.5 installed
@@ -80,4 +92,5 @@ a model or "n" to not install it.
 At the end of the setup script, you should see a series of tests being run. When these tests are completed, UCVM will
 notify you that the installation has completed successfully. That that point, you can begin to use UCVM!
 
-After installation, we highly recommend that you check out our tutorial and the command line reference.
+After installation, we highly recommend that you check out our :ref:`Tutorial` and
+the :ref:`CommandReference` section. These will enable you to become more familiar with the UCVM platform.

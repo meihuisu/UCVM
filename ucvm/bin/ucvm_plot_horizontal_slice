@@ -45,7 +45,7 @@ def usage() -> None:
     )
 
 
-def ask_questions(advanced: bool) -> dict:
+def ask_questions(advanced: bool, test: bool) -> dict:
     """
     Asks the necessary questions to generate the XML configuration file.
     :param advanced: If set to true, advanced questions will be asked.
@@ -92,7 +92,7 @@ def ask_questions(advanced: bool) -> dict:
         installed_models[counter] = {"name": model["name"], "id": model["id"]}
         counter += 1
 
-    print("\nGenerating a horizontal slice requires various parameters to be defined (such \n"
+    print("Generating a horizontal slice requires various parameters to be defined (such \n"
           "as the origin of the slice, the length of the slice, and so on). The following\n"
           "questions will guide you through the definition of those parameters.")
 
@@ -150,8 +150,9 @@ def ask_questions(advanced: bool) -> dict:
           "data. You can either enter in your model(s) as text (e.g. cvms4 or dataproductreader[file]) or you\n"
           "can select from one of the predefined ones in the list below.")
 
-    for index, name in installed_models.items():
-        print(str(index) + ") " + name["name"])
+    if not test:
+        for index, name in installed_models.items():
+            print(str(index) + ") " + name["name"])
 
     answers["cvm_list"] = ask_and_validate("\nWhich velocity model would you like?")
 
@@ -244,7 +245,8 @@ def main() -> int:
     try:
         options = UCVM.parse_options([
             {"short": "f", "long": "file", "value": True, "required": False},
-            {"short": "a", "long": "advanced", "value": False, "required": False}
+            {"short": "a", "long": "advanced", "value": False, "required": False},
+            {"short": "t", "long": "test", "value": False, "required": False}   # Hidden flag for testing.
         ], usage)
     except ValueError as v_err:
         print("[ERROR]: " + str(v_err) + "\n")
@@ -258,12 +260,18 @@ def main() -> int:
         with open(options["file"], "r") as fd:
             slice_info = xmltodict.parse(fd.read())["root"]
     else:
-        slice_info = ask_questions(advanced)
+        slice_info = ask_questions(advanced, options["test"] is not None)
         with open("plot_" + str(slice_info["data"]["save"]).replace(".data", "") + ".xml", "w") \
                 as fd:
             fd.write(xmltodict.unparse({"root": slice_info}, pretty=True))
 
-    HorizontalSlice.from_dictionary(slice_info).plot()
+    if options["test"] is None:
+        HorizontalSlice.from_dictionary(slice_info).plot()
+    else:
+        hs = HorizontalSlice.from_dictionary(slice_info)
+        hs.extract()
+        for num in hs.extracted_data:
+            print("%f " % num)
 
     return 0
 

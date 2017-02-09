@@ -95,15 +95,9 @@ def ask_questions() -> dict:
         "save": "n"
     }
     print(
-        "\nGenerating a comparison between models requires various parameters to be defined (such as the start point,\n"
+        "Generating a comparison between models requires various parameters to be defined (such as the start point,\n"
         "ending point, and so on). The following questions will guide you through the definition of those parameters."
     )
-
-    #cross_or_slice = ask_and_validate(
-    #    "\nWould you like to generate a horizontal slice comparison or a cross-section?\n"
-    #    "Type 'h' for horizontal slice, 'c' for cross-section:", is_acceptable_value, "Answer must be either h or c.",
-    #    allowed=["h", "c"]
-    #)
 
     cross_or_slice = "h"
 
@@ -215,7 +209,8 @@ def main() -> int:
     """
     try:
         options = UCVM.parse_options([
-            {"short": "f", "long": "file", "value": True, "required": False}
+            {"short": "f", "long": "file", "value": True, "required": False},
+            {"short": "t", "long": "test", "value": False, "required": False}
         ], usage)
     except ValueError as v_err:
         print("[ERROR]: " + str(v_err) + "\n")
@@ -226,6 +221,60 @@ def main() -> int:
             answers = xmltodict.parse(fd.read())["root"]
     else:
             answers = ask_questions()
+
+    if options["test"] is not None:
+        h1 = HorizontalSlice.from_dictionary(
+            {
+                "bottom_left_point": {
+                    "x": answers["start_point"]["x"],
+                    "y": answers["start_point"]["y"],
+                    "z": answers["start_point"]["z"],
+                    "depth_elev": answers["start_point"]["depth_elev"],
+                    "projection": answers["start_point"]["projection"]
+                },
+                "properties": {
+                    "rotation": 0,
+                    "spacing": answers["properties"]["spacing"]["width"],
+                    "num_x": int((float(answers["end_point"]["x"]) - float(answers["start_point"]["x"])) /
+                                 float(answers["properties"]["spacing"]["width"])),
+                    "num_y": int((float(answers["end_point"]["y"]) - float(answers["start_point"]["y"])) /
+                                 float(answers["properties"]["spacing"]["width"]))
+                },
+                "cvm_list": answers["cvms"]["cvm1"],
+                "plot": {
+                    "property": answers["properties"]["property"]
+                }
+            }
+        )
+        h1.extract()
+        h2 = HorizontalSlice.from_dictionary(
+            {
+                "bottom_left_point": {
+                    "x": answers["start_point"]["x"],
+                    "y": answers["start_point"]["y"],
+                    "z": answers["start_point"]["z"],
+                    "depth_elev": answers["start_point"]["depth_elev"],
+                    "projection": answers["start_point"]["projection"]
+                },
+                "properties": {
+                    "rotation": 0,
+                    "spacing": answers["properties"]["spacing"]["width"],
+                    "num_x": int((float(answers["end_point"]["x"]) - float(answers["start_point"]["x"])) /
+                                 float(answers["properties"]["spacing"]["width"])),
+                    "num_y": int((float(answers["end_point"]["y"]) - float(answers["start_point"]["y"])) /
+                                 float(answers["properties"]["spacing"]["width"]))
+                },
+                "cvm_list": answers["cvms"]["cvm2"],
+                "plot": {
+                    "property": answers["properties"]["property"]
+                }
+            }
+        )
+        h2.extract()
+        d = Difference.between_two_horizontal_slices(h1, h2)
+        for i in d.extracted_data:
+            print(str(i))
+        return 0
 
     fig = plt.figure(figsize=(16, 5), dpi=100)
 
@@ -260,7 +309,7 @@ def main() -> int:
     )
     # Extract the data but don't actually show the plot.
     t = h1.plot(basic=True)
-    cax = plt.axes([0.01, 0.15, 0.20, 0.03])
+    cax = plt.axes([0.011, 0.15, 0.20, 0.03])
     cbar = fig.colorbar(t, cax=cax, orientation="horizontal")
     tick_locator = ticker.LinearLocator(3)
     cbar.locator = tick_locator
@@ -298,7 +347,7 @@ def main() -> int:
     )
     # Extract the data but don't actually show the plot.
     h2.plot(basic=True)
-    cax = plt.axes([0.26, 0.15, 0.20, 0.03])
+    cax = plt.axes([0.267, 0.15, 0.2025, 0.03])
     cbar = fig.colorbar(t, cax=cax, orientation="horizontal")
     tick_locator = ticker.LinearLocator(3)
     cbar.locator = tick_locator
@@ -310,7 +359,7 @@ def main() -> int:
     ax.set_title("Difference")
     d = Difference.between_two_horizontal_slices(h1, h2)
     t = d.plot(prop=answers["properties"]["property"], basic=True)
-    cax = plt.axes([0.52, 0.15, 0.20, 0.03])
+    cax = plt.axes([0.525, 0.15, 0.20, 0.03])
     cbar = fig.colorbar(t, cax=cax, orientation="horizontal")
     tick_locator = ticker.LinearLocator(3)
     cbar.locator = tick_locator

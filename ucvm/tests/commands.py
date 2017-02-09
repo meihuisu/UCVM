@@ -70,7 +70,7 @@ class UCVMCommandsTest(unittest.TestCase):
             streams = p.communicate()
             str_out = streams[0].decode("utf-8")
             str_err = streams[1].decode("utf-8")
-            self.assertEqual(str_out, case_data["stdout"])
+            self.assertTrue(str(case_data["stdout"]) == str(str_out))
             if case_data["stderr"] != "":
                 self.assertIn(case_data["stderr"], str_err)
             else:
@@ -80,10 +80,26 @@ class UCVMCommandsTest(unittest.TestCase):
         print("", file=sys.stderr)
         self._run_and_verify_commands("ucvm_query", self._find_tests_for("ucvm_query"))
 
+    def test_ucvm_plot_horizontal_slice(self):
+        print("", file=sys.stderr)
+        self._run_and_verify_commands("ucvm_plot_horizontal_slice", self._find_tests_for("ucvm_plot_horizontal_slice"))
+
+    def test_ucvm_plot_cross_section(self):
+        print("", file=sys.stderr)
+        self._run_and_verify_commands("ucvm_plot_cross_section", self._find_tests_for("ucvm_plot_cross_section"))
+
+    def test_ucvm_plot_depth_profile(self):
+        print("", file=sys.stderr)
+        self._run_and_verify_commands("ucvm_plot_depth_profile", self._find_tests_for("ucvm_plot_depth_profile"))
+
+    def test_ucvm_plot_comparison(self):
+        print("", file=sys.stderr)
+        self._run_and_verify_commands("ucvm_plot_comparison", self._find_tests_for("ucvm_plot_comparison"))
+
 
 def make_suite() -> unittest.TestSuite:
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(UCVMCommandsTest, "test_"))
+    suite.addTest(unittest.makeSuite(UCVMCommandsTest, "test"))
     return suite
 
 if __name__ == "__main__":

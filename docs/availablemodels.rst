@@ -1,3 +1,5 @@
+.. _AvailableModels:
+
 Available Models
 ================
 
@@ -27,10 +29,6 @@ tomographic inversions of the central California region. The inversions were don
 the trilinearly interpolation allows this model to be queried at arbitrary precision.
 
 To call this model within UCVM, use the model code "*cca06*".
-
-Citation:
-
-?
 
 **CVM-H 15.1.0**: The CVM-H is a velocity model of crust and upper mantle structure in southern California developed by the
 SCEC community for use in fault systems analysis, strong ground motion prediction, and earthquake hazards assessment.
@@ -86,10 +84,6 @@ and negative perturbations.
 
 To call this model within UCVM, use the model code "*cvms426m01*".
 
-Citation:
-
-?
-
 **USGS Bay Area Model**: The USGS 3-D Geologic and Seismic Velocity Models of the San Francisco Bay region provide a
 three-dimensional view of the geologic structure and physical properties of the region down to a depth of 45 km
 (28 miles). The 3-D models combine 100 years of surface geologic mapping by the USGS, the California Geological Survey,
@@ -102,10 +96,6 @@ Livermore Valley, and Santa Rosa Plain. The soft sediments in these basins trap 
 shaking levels relative to surrounding regions.
 
 To call this model within UCVM, use the model code "*bayarea*".
-
-Citation:
-
-?
 
 **Lin-Thurber Model**: The Lin-Thurber model is a seismic velocity model of the California crust and uppermost
 mantle using a regional-scale double-difference tomography algorithm. The model is the first 3D seismic velocity

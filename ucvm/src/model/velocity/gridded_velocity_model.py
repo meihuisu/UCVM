@@ -157,8 +157,30 @@ class GriddedVelocityModel(VelocityModel):
                 self.config_dict["dimensions"]["z_interval"]
             )
 
+            if coords["z"] == 0 and percentages["z"] == 0:
+                for prop_given in self.model_has:
+                    # Interpolate
+                    v[prop_given] = UCVMCCommon.bilinear_interpolate(
+                        self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"]],
+                        self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"]],
+                        self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"] + 1],
+                        self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"] + 1],
+                        percentages["x"], percentages["y"]
+                    )
+                    v[str(prop_given) + "_source"] = self.get_metadata()["id"]
+
+                if v["density"] is None and v["vp"] is not None:
+                    v["density"] = calculate_nafe_drake_density(float(v["vp"]))
+
+                sd_object.set_velocity_data(VelocityProperties(
+                    vp=v["vp"], vp_source=v["vp_source"], vs=v["vs"], vs_source=v["vs_source"],
+                    density=v["density"], density_source=v["density_source"], qp=v["qp"],
+                    qp_source=v["qp_source"], qs=v["qs"], qs_source=v["qs_source"]
+                ))
+                continue
+
             # Check to see if we are outside of the model boundaries.
-            if coords["x"] < 0 or coords["y"] < 0 or coords["z"] < 0 or \
+            if coords["x"] < 0 or coords["y"] < 0 or coords["z"] < 1 or \
                coords["x"] > self.config_dict["dimensions"]["x"] - 2 or \
                coords["y"] > self.config_dict["dimensions"]["y"] - 2 or \
                coords["z"] > self.config_dict["dimensions"]["z"] - 1:

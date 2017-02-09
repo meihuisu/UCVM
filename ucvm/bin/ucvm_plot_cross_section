@@ -41,7 +41,7 @@ def usage() -> None:
     )
 
 
-def ask_questions() -> dict:
+def ask_questions(test: bool) -> dict:
     """
     Asks the necessary questions.
     :return: The compiled question dictionary if successful, None if not.
@@ -74,10 +74,12 @@ def ask_questions() -> dict:
     installed_models = {}
     counter = 1
     for model in UCVM.get_list_of_installed_models()["velocity"]:
+        if model["id"] == "1d" or model["id"] == "dataproductreader":
+            continue
         installed_models[counter] = {"name": model["name"], "id": model["id"]}
         counter += 1
 
-    print("\nGenerating a cross-section requires various parameters to be defined (such \n"
+    print("Generating a cross-section requires various parameters to be defined (such \n"
           "as the start point, ending point, and so on). The following questions will guide\n"
           "you through the definition of those parameters.")
 
@@ -124,13 +126,11 @@ def ask_questions() -> dict:
         projection = UCVM_DEFAULT_PROJECTION
 
     answers["start_point"]["z"] = top_depth_or_elev
-    answers["end_point"]["z"] = top_depth_or_elev
+    answers["end_point"]["z"] = bottom_depth_or_elev
     answers["start_point"]["depth_elev"] = depth_elev
     answers["end_point"]["depth_elev"] = depth_elev
     answers["start_point"]["projection"] = projection
     answers["end_point"]["projection"] = projection
-
-    answers["cross_section_properties"]["end"] = bottom_depth_or_elev
 
     answers["cross_section_properties"]["width_spacing"] = \
         ask_and_validate("\nWhat horizontal spacing be, in meters, for each extracted point?",
@@ -144,17 +144,18 @@ def ask_questions() -> dict:
                          "Acceptable answers include Vp, Vs, density, Qp, or Qs:")
 
     print("\nYou must select the velocity model(s) from which you would like to retrieve this\n"
-          "data. You can either enter in your model(s) as text (e.g. CVM-S4.usgs-noaa) or you\n"
+          "data. You can either enter in your model(s) as text (e.g. cvms4.usgs-noaa) or you\n"
           "can select from one of the predefined ones in the list below.")
 
-    for index, name in installed_models.items():
-        print(str(index) + ") ")
+    if not test:
+        for index, name in installed_models.items():
+            print(str(index) + ") ")
 
     answers["cvm_list"] = ask_and_validate("\nWhich velocity model would you like?")
     try:
         int(answers["cvm_list"])
         answers["cvm_list"] = installed_models[int(answers["cvm_list"])]["id"]
-    except TypeError:
+    except ValueError:
         pass
 
     return answers
@@ -167,7 +168,8 @@ def main() -> int:
     """
     try:
         options = UCVM.parse_options([
-            {"short": "f", "long": "file", "value": True, "required": False}
+            {"short": "f", "long": "file", "value": True, "required": False},
+            {"short": "t", "long": "test", "value": False, "required": False}
         ], usage)
     except ValueError as v_err:
         print("[ERROR]: " + str(v_err) + "\n")
@@ -177,11 +179,18 @@ def main() -> int:
         with open(options["file"], "r") as fd:
             section_info = xmltodict.parse(fd.read())["root"]
     else:
-        section_info = ask_questions()
+        section_info = ask_questions(options["test"] is not None)
         with open("cross_section.xml", "w") as fd:
             fd.write(xmltodict.unparse({"root": section_info}, pretty=True))
 
-    CrossSection.from_dictionary(section_info).plot()
+    if options["test"] is None:
+        CrossSection.from_dictionary(section_info).plot()
+    else:
+        cs = CrossSection.from_dictionary(section_info)
+        cs.extract()
+        for y_row in cs.extracted_data:
+            for x in y_row:
+                print(str(x))
 
     return 0
 

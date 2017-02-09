@@ -154,8 +154,10 @@ class Difference(Plot):
                     not_zero_counter += 1
 
         plt.hist(np.clip(data, -100, 100),
-                 bins=[-100, -100, -90, -80, -70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60,
-                       70, 80, 90, 100, 100], facecolor="green")
+                 bins=[-110, -100, -90, -80, -70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60,
+                       70, 80, 90, 100, 110], facecolor="green")
         plt.grid(True)
+        plt.xticks([-100, -50, 0, 50, 100], ["< -100", "-50", "0", "50", "100 >"])
+        plt.xlim([-110, 110])
 
         return not_zero_counter, self.dataset1.slice_properties.num_x * self.dataset1.slice_properties.num_y

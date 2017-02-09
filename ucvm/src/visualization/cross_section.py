@@ -126,8 +126,6 @@ class CrossSection(Plot):
         num_y = int(math.ceil(self.end_point.z_value - self.start_point.z_value) /
                     self.cross_section_properties.height_spacing)
 
-        print(num_x, num_y)
-
         self.extracted_data = np.arange(num_x * num_y * 6, dtype=float).reshape(num_y, num_x * 6)
 
         for y in range(int(num_y)):

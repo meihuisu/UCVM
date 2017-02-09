@@ -1,5 +1,7 @@
-Commands
-========
+.. _CommandReference:
+
+Command Reference
+=================
 
 UCVM allows users to interact with multiple 3D seismic velocity models. Broadly, UCVM lets users query models, generate
 material models for use with 3D wave propagation simulation codes, and visualize those models. Each command comes

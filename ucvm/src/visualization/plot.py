@@ -47,7 +47,9 @@ class Plot:
             if not hasattr(self, key):
                 setattr(self, key, value)
 
-        #self.figure = plt.figure(figsize=(self.plot_width / 100, self.plot_height / 100), dpi=100)
+        if plt.gcf().get_figwidth() == 640:
+            print("HERE")
+            self.figure = plt.figure(figsize=(self.plot_width / 100, self.plot_height / 100), dpi=100)
 
     def show_profile(self, properties: dict, **kwargs) -> bool:
         """
@@ -112,6 +114,9 @@ class Plot:
         if map_plot:
             colormap.set_bad("gray", 1)
 
+            if not basic:
+                plt.axes([0.1, 0.145, 0.8, 0.8])
+
             # Check to see if we have pickled this particular basemap instance.
             m = basemap.Basemap(projection='cyl',
                                 llcrnrlat=ranges["min_lat"],
@@ -122,10 +127,12 @@ class Plot:
                                 anchor='C')
 
             if not basic:
-                lat_ticks = np.arange(ranges["min_lat"], ranges["max_lat"] + 0.01,
+                lat_ticks = np.arange(ranges["min_lat"], ranges["max_lat"],
                                       (ranges["max_lat"] - ranges["min_lat"]) / 2)
-                lon_ticks = np.arange(ranges["min_lon"], ranges["max_lon"] + 0.01,
+                lat_ticks = np.append(lat_ticks, [ranges["max_lat"]])
+                lon_ticks = np.arange(ranges["min_lon"], ranges["max_lon"],
                                       (ranges["max_lon"] - ranges["min_lon"]) / 2)
+                lon_ticks = np.append(lon_ticks, [ranges["max_lon"]])
 
                 m.drawparallels(lat_ticks, linewidth=1.0, labels=[1, 0, 0, 0])
                 m.drawmeridians(lon_ticks, linewidth=1.0, labels=[0, 0, 0, 1])
@@ -213,7 +220,7 @@ class Plot:
                 plt.plot(x, kwargs["topography"], "k-", linewidth=1)
 
         if not basic:
-            cax = plt.axes([0.125, 0.05, 0.775, 0.02])
+            cax = plt.axes([0.1, 0.065, 0.8, 0.02])
             cbar = plt.colorbar(t, cax=cax, orientation='horizontal', ticks=self.ticks)
 
             cbar.set_label(self.plot_cbar_label if isinstance(self.plot_cbar_label, str) else "")
