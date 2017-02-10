@@ -14,6 +14,8 @@ Author:
 from setuptools import setup
 from distutils.command.install import install
 import urllib.request
+import urllib.error
+import socket
 import xml.dom.minidom
 import os
 from io import StringIO
@@ -200,11 +202,16 @@ total_model_size = 0
 
 print("You have selected to install the following models: ")
 for item in models_to_download:
-    model_file = urllib.request.urlopen(_HYPOCENTER_BASE + "/models/" + item[0] + ".ucv")
-    model_size = int(model_file.headers["Content-Length"])
-    total_model_size += model_size
-    print("   - " + (item[1][:42] + "..." if len(item[1]) > 45 else item[1]).ljust(55) +
-          (" (" + item[0] + ")").ljust(20) + sizeof_fmt(model_size).rjust(10))
+    try:
+        model_file = urllib.request.urlopen(_HYPOCENTER_BASE + "/models/" + item[0] + ".ucv", timeout=3)
+        model_size = int(model_file.headers["Content-Length"])
+        total_model_size += model_size
+        print("   - " + (item[1][:42] + "..." if len(item[1]) > 45 else item[1]).ljust(55) +
+              (" (" + item[0] + ")").ljust(20) + sizeof_fmt(model_size).rjust(10))
+    except urllib.error.URLError:
+        models_to_download.append(item)
+    except socket.timeout:
+        models_to_download.append(item)
 
 print("\nYour total download size will be: " + sizeof_fmt(total_model_size))
 

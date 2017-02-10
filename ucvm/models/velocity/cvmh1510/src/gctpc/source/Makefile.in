@@ -198,7 +198,7 @@ top_srcdir = @top_srcdir@
 lib_LIBRARIES = libgeo.a
 
 # Set compiler/linker flags
-AM_CFLAGS = -D_GNU_SOURCE -fno-builtin
+AM_CFLAGS = -D_GNU_SOURCE -fno-builtin -fPIC
 AM_LDFLAGS = $(LDFLAGS)
 
 # Dist sources
@@ -584,7 +584,7 @@ uninstall-am: uninstall-libLIBRARIES
 	uninstall-am uninstall-libLIBRARIES
 
 
-all: $(lib_LIBRARIES)
+all: $(lib_LIBRARIES) libgeo.so
 
 ############################################
 # Executables
@@ -592,6 +592,9 @@ all: $(lib_LIBRARIES)
 
 libgeo.a: $(LIB_OBJECTS)
 	$(AR) rcs $@ $^
+
+libgeo.so: $(LIB_OBJECTS)
+	$(CC) -shared -o $@ $^
 
 ############################################
 # Special build targets

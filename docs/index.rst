@@ -19,4 +19,5 @@ If you have any questions regarding UCVM, please email
    availablemodels
    commands
    configurationfiles
+   testing
    api

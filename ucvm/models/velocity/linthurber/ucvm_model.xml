@@ -10,7 +10,7 @@
         <identifier>Lin-Thurber</identifier>
 
         <!-- A machine-friendly identifier (lowercase alpha-numeric only) -->
-        <id>lin-thurber</id>
+        <id>linthurber</id>
 
         <!-- Describes the type of model (velocity, elevation, or vs30) -->
         <type>velocity</type>

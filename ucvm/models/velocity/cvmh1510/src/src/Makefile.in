@@ -208,12 +208,12 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-lib_LIBRARIES = libvxapi.a
+lib_LIBRARIES = libvxapi.a libvxapi.so
 include_HEADERS = vx_sub.h
 
 # General compiler/linker flags
 AM_CFLAGS = -Wall -O3 -std=c99 -D_LARGEFILE_SOURCE \
-	-D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+	-D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -fPIC
 
 AM_LDFLAGS = ${LDFLAGS} -L../gctpc/source -lgeo
 
@@ -584,14 +584,14 @@ uninstall-am: uninstall-binPROGRAMS uninstall-includeHEADERS \
 	uninstall-libLIBRARIES
 
 
-all: $(lib_LIBRARIES) $(bin_PROGRAMS)
+all: $(lib_LIBRARIES) $(bin_PROGRAMS) libvxapi.so
 
 ############################################
 # Executables
 ############################################
 
-libucvm.a: version.h vx_sub.o scec1d.o vs30_gtl.o vx_io.o utils.o
-	$(AR) rcs $@ $^
+libvxapi.so: vx_sub.o scec1d.o vs30_gtl.o vx_io.o utils.o
+	$(CC) -shared -o $@ $^
 
 vx: vx.o
 	$(CC) -o $@ $^ $(AM_LDFLAGS)

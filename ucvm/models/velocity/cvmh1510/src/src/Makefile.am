@@ -12,7 +12,7 @@ endif
 
 # General compiler/linker flags
 AM_CFLAGS = -Wall -O3 -std=c99 -D_LARGEFILE_SOURCE \
-	-D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+	-D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -fPIC
 AM_LDFLAGS = ${LDFLAGS} -L../gctpc/source -lgeo
 
 
@@ -28,15 +28,15 @@ if VX_ENABLE_GTS
 cvmdst_SOURCES = cvm_dst.c
 endif
 
-all: $(lib_LIBRARIES) $(bin_PROGRAMS)
+all: $(lib_LIBRARIES) $(bin_PROGRAMS) libvxapi.so
 
 
 ############################################
 # Executables
 ############################################
 
-libucvm.a: version.h vx_sub.o scec1d.o vs30_gtl.o vx_io.o utils.o
-	$(AR) rcs $@ $^
+libvxapi.so: vx_sub.o scec1d.o vs30_gtl.o vx_io.o utils.o
+	$(CC) -shared -o $@ $^
 
 vx: vx.o
 	$(CC) -o $@ $^ $(AM_LDFLAGS)

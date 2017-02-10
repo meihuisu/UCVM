@@ -3,7 +3,7 @@
 lib_LIBRARIES = libgeo.a
 
 # Set compiler/linker flags
-AM_CFLAGS = -D_GNU_SOURCE -fno-builtin
+AM_CFLAGS = -D_GNU_SOURCE -fno-builtin -fPIC
 AM_LDFLAGS = $(LDFLAGS)
 
 
@@ -36,7 +36,7 @@ LIB_OBJECTS = gctp.o alberfor.o alberinv.o alconfor.o alconinv.o azimfor.o \
 	  br_gctp.o
 
 
-all: $(lib_LIBRARIES)
+all: $(lib_LIBRARIES) libgeo.so
 
 
 ############################################
@@ -46,6 +46,8 @@ all: $(lib_LIBRARIES)
 libgeo.a: $(LIB_OBJECTS)
 	$(AR) rcs $@ $^
 
+libgeo.so: $(LIB_OBJECTS)
+	$(CC) -shared -o $@ $^
 
 ############################################
 # Special build targets

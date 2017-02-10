@@ -9,7 +9,7 @@ Developer:
 """
 # UCVM Imports
 from ucvm.models.elygtl.elygtl import ElyGTLOperator
-from ucvm.src.shared.properties import SeismicData, Vs30Properties, VelocityProperties
+from ucvm.src.shared.properties import SeismicData, Vs30Properties, VelocityProperties, Point
 from ucvm.src.shared.test import UCVMTestCase
 
 
@@ -35,6 +35,9 @@ class ElyGTLOperatorTest(UCVMTestCase):
                                                                vp_source="test",
                                                                density_source="test",
                                                                qp_source=None, qs_source=None)
+        test_property.converted_point = Point(-118, 34, 0)
+        test_property.original_point = Point(-118, 34, 0)
+
         e = ElyGTLOperator()
         e._query([test_property])
 

@@ -5,6 +5,7 @@ import shutil
 import copy
 import ucvm.models
 import urllib.request
+import urllib.error
 import socket
 
 from subprocess import Popen, PIPE, STDOUT
@@ -90,7 +91,11 @@ def install_internet_ucvm_model(model_ucvm_name: str, long_name: str) -> bool:
                 HYPOCENTER_PREFIX + "/models/" + model_ucvm_name + ".ucv",
                 os.path.join(UCVM_MODELS_DIRECTORY, "temp", model_ucvm_name + ".ucv")
             )
+        except urllib.error.URLError:
+            print("\tDownload errored out. Retrying...")
+            continue
         except socket.error:
+            print("\tDownload errored out. Retrying...")
             continue
         error_raised = False
 
