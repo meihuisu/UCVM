@@ -36,7 +36,7 @@ We want to check out the master branch from GitHub. This contains all the code n
 
 .. code-block:: bash
 
-   cd <ucvm install dir>
+   cd <base path for UCVM>
    git clone https://github.com/SCECcode/UCVM.git
 
 3. Install Software
@@ -50,12 +50,19 @@ below:
    source /usr/usc/python/3.5.2/setup.csh
    source /usr/usc/openmpi/default/setup.csh
 
+We want to create a Python virtual environment for UCVM.
+
+.. code-block:: bash
+
+   pyvenv-3.5 <install ucvm path>/ucvm-17.2.0
+
 We can now proceed with the installation. It is strongly recommended that you install UCVM to your **staging**
 directory.
 
 .. code-block:: bash
 
    cd UCVM
+   source <install ucvm path>/ucvm-17.2.0/bin/activate.csh
    ./ucvm_setup
 
 UCVM will detect that you are running on USC HPC (look for the last line below in your terminal output).
@@ -91,8 +98,6 @@ Eventually UCVM will begin installing the models and running the tests, like so:
        [2 tests]
        [001] Running 1D BBP format...
              PASSED
-       [002] Running 1D SCEC format...
-             PASSED
 
 Please be patient as this process can take a substantial amount of time (on the order of 20 minutes or longer).
 
@@ -106,36 +111,8 @@ the end of the installation:
    test_generate_simple_mesh_ijk12_unrotated (ucvm.tests.mesh.UCVMMeshTest) ... ok
    test_generate_simple_utm_mesh_ijk12_rotated (ucvm.tests.mesh.UCVMMeshTest) ... ok
 
-Finally, UCVM will recommend that you add something like the following to your .bashrc or .tcshrc file (the paths below
-will be your actual paths when you run the setup script):
-
-.. code-block:: text
-
-   For Tcsh Users:
-
-   Thank you for installing UCVM. You must now update your PYTHONPATH and PATH variables for the
-   new software. Please modify your ~/.cshrc file to include the following:
-
-   if (! $?PATH) then
-      setenv PATH "/path/to/ucvm-16.12.0/bin"
-   else
-      setenv PATH "/path/to/ucvm-16.12.0/bin:$PATH"
-   endif
-
-   if (! $?PYTHONPATH) then
-      setenv PYTHONPATH "/path/to/ucvm-16.12.0/lib/python3.5/site-packages"
-   else
-      setenv PYTHONPATH "/path/to/ucvm-16.12.0/lib/python3.5/site-packages:$PYTHONPATH"
-   endif
-
-   For Bash Users:
-
-   PYTHONPATH="/path/to/ucvm-16.12.0/lib/directory:$PYTHONPATH"
-   PATH="/path/to/ucvm-16.12.0/bin:$PATH"
-   export PYTHONPATH
-   export PATH
-
-**You must add the lines above to your respective shell source files or UCVM will not work correctly.**
+After the tests are run, UCVM is installed. Please note that you will have to source UCVM or add the source UCVM
+virtual environment command to your
 
 In order to use the updated variables, we must re-source our ~/.*rc file.
 

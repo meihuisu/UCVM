@@ -174,10 +174,9 @@ analyze what the surface velocities look like in the LA basin around these point
 in the Vs velocities at 0m depth.
 
 To accomplish this task, we need the horizontal slice plotting utility.
-
 ::
 
-    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_plot_horizontal_slice -m cvms426
+    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_plot_horizontal_slice
 
 This utility will ask a series of questions. Please answer the questions as follows.
 ::
@@ -202,9 +201,15 @@ This utility will ask a series of questions. Please answer the questions as foll
     You must select the velocity model(s) from which you would like to retrieve this
     data. You can either enter in your model(s) as text (e.g. cvms4 or dataproductreader[file]) or you
     can select from one of the predefined ones in the list below.
-    1) CVM-S4.26
+    1) USGS Bay Area
+    2) CCA
+    3) CVM-H 15.1.0
+    4) CVM-S4
+    5) CVM-S4.26
+    6) CVM-S4.26.M01
+    7) Lin-Thurber
 
-    Which velocity model would you like? 1
+    Which velocity model would you like? 5
 
     Which property should be plotted?
     Acceptable answers include Vp, Vs, density, Qp, or Qs: vs
@@ -212,9 +217,76 @@ This utility will ask a series of questions. Please answer the questions as foll
 You will see a plot appear on your screen that looks like this:
 
 
+We can also analyze cross-sections through the earth as well. Suppose we wanted to get a better idea of the material
+properties from depth 0m to depth 10km between the Garden Grove CE13884 station and the Santa Monica CE24048 station.
+We can visualize this by using the cross-section plotting utility.
+::
+
+    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_plot_cross_section
+
+Like the previous utility, this will ask a series of questions. Please answer the questions as follows.
+::
+
+    Questions
+
+You will see a plot appear on your screen that looks like this:
+
+Finally, we can also plot depth profiles to get a better sense of the material properties at each station. If we wished
+to analyze the material properties below the Santa Monica station, we could do so using the depth profile plotting
+utility.
+::
+
+    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_plot_depth_profile
+
+This utility also asks a series of questions. Please answer them as follows.
+::
+
+    Questions
+
+You will see a plot appear on your screen that looks like this:
 
 Meshing
 ~~~~~~~
+
+Creating meshes for earthquake simulations is a key component of UCVM. Suppose we were performing a very small simulation
+of the region in the LA Basin. We are going to use the AWP-ODC code, so we need a cartesian mesh, not an octree mesh.
+Further suppose that we are going to start this mesh from -118.50, 33.5 and make it a 50km by 50km by 50km mesh. We
+are going to choose 500m grid spacing for 1,000,000 total grid points. This will result in a 12MB mesh which is easy
+for a single core to extract.
+
+We need to use the cartesian mesh generation utility to extract this mesh.
+::
+
+    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_mesh_create -m cvms426
+
+This utility will ask a series of questions. Please answer them as follows.
+::
+
+    Questions
+
+In order to check if the mesh was extract successfully, we need to compare it against the original model to make sure
+that the differences are small. To do this, we can use the DataProductReader "model". This model takes as a parameter
+the XML file that was generated during the mesh extraction and the data, and makes it into its own model within UCVM.
+
+We can then use the ucvm_plot_comparison utility to visualize and see differences between the two meshes.
+::
+
+    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_plot_comparison
+
+This utility also asks a series of questions. Please answer them as follows.
+::
+
+    Questions
+
+You will see a plot appear on your screen that looks like this:
+
+
+Notice how the differences are very small!
+
+Congratulations! You have now explored the material properties surrounding some stations within the LA basin and you
+have also learned how to use some of the key capabilities within UCVM.
+
+Please contact software@scec.org if you have any further questions and we will respond as soon as possible!
 
 .. toctree::
     :maxdepth: 2

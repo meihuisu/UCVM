@@ -37,7 +37,7 @@ class UCVMFrameworkTest(unittest.TestCase):
         Test that the model strings can be parsed correctly.
         """
         self.assertEqual(UCVM.parse_model_string(""), {})
-        self.assertEqual(UCVM.parse_model_string("cvms4"), {0: {"cvms4"}})
+        self.assertEqual(UCVM.parse_model_string("cvms4"), {0: {0: "cvms4"}})
 
     def test_ucvm_load_models(self):
         """

@@ -1,7 +1,7 @@
 Linux
 =====
 
-UCVM works with many distributions of Linux. It has been tested and confirmed to work on CentOS 6.8. This is the
+UCVM works with many distributions of Linux. It has been tested and confirmed to work on Ubuntu 16.04.1 LTS. This is the
 distribution that the VirtualBox uses.
 
 Supported Capabilities
@@ -15,8 +15,8 @@ Supported Capabilities
 | Visualization               | ✓ Yes                       |
 +-----------------------------+-----------------------------+
 
-CentOS 6.8+
------------
+Ubuntu 16.04.1 LTS
+------------------
 
 Prerequisites
 ~~~~~~~~~~~~~
@@ -89,8 +89,23 @@ that the installation looks like it can proceed successfully.
 The UCVM setup script will ask a series of questions about which models you would like to install. Enter "y" to install
 a model or "n" to not install it.
 
+If you are looking to use UCVM for visualization, you will need to install basemap. Basemap requires geos to
+be installed.
+::
+
+    sudo yum install geos geos-devel
+
+Now we can download basemap. The source code to basemap is available from
+https://downloads.sourceforge.net/project/matplotlib/matplotlib-toolkits/basemap-1.0.7/basemap-1.0.7.tar.gz. Download
+this file and then execute the following:
+::
+
+    tar zxvf basemap-1.0.7.tar.gz
+    basemap
+    export GEOS_DIR=/usr/
+
 At the end of the setup script, you should see a series of tests being run. When these tests are completed, UCVM will
-notify you that the installation has completed successfully. That that point, you can begin to use UCVM!
+notify you that the installation has completed successfully. At that point, you can begin to use UCVM!
 
 After installation, we highly recommend that you check out our :ref:`Tutorial` and
 the :ref:`CommandReference` section. These will enable you to become more familiar with the UCVM platform.
