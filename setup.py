@@ -223,8 +223,6 @@ if not download_everything:
 
 print("\nInstalling UCVM...")
 
-s_out = sys.stdout
-sys.stdout = StringIO()
 setup(name=UCVM_INFORMATION["short_name"],
       version=UCVM_INFORMATION["version"],
       description=UCVM_INFORMATION["long_name"],
@@ -274,7 +272,6 @@ setup(name=UCVM_INFORMATION["short_name"],
                'ucvm/bin/ucvm_run_tests'],
       zip_safe=False
       )
-sys.stdout = s_out
 
 print("Installing C components of UCVM...")
 

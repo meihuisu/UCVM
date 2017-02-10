@@ -24,36 +24,12 @@ Prerequisites
 In order to install UCVM on this distribution of Linux, a few required packages must be installed first.
 ::
 
-    sudo yum install epel-release
-    sudo yum install git
-    sudo yum install freetype-devel make automake gcc gcc-c++ gcc-gfortran redhat-rpm-config subverison
-        hdf5 hdf5-devel openssl-devel libpng-devel
+    sudo apt install git python3-venv libfreetype6 libfreetype6-dev python3-dev libhdf5-serial-dev gfortran
 
 To also add MPI support, the following packages need to be installed.
 ::
 
-    sudo yum install openmpi openmpi-devel
-
-If you are on a distribution that allows for Python 3.5 to be installed via yum, then you need the following packages:
-::
-
-    sudo yum install python3    <-- if you don't have Python 3.5 installed
-    sudo yum install python3-devel
-
-Please note that on some old versions of CentOS, Python 3 is not installable via yum. In order to build Python 3.5 from
-scratch, do the following:
-::
-
-    wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz
-    tar zxvf Python-3.5.2.tgz
-    cd Python-3.5.2
-    ./configure
-    make altinstall
-
-Verify that you do indeed have a working Python 3.5 installation by running:
-::
-
-    python3.5 -v
+    sudo apt install openmpi openmpi-devel
 
 Installing UCVM
 ~~~~~~~~~~~~~~~
@@ -66,7 +42,7 @@ document explains how to install UCVM without a virtual environment.
 To create and activate your virtual environment, do the following:
 ::
 
-    python3.5 -m venv ~/ucvm-17.2.0
+    pyvenv-3.5 ~/ucvm-17.2.0
     source ~/ucvm-17.2.0/bin/activate
 
 You should notice that your command line prompt has changed include "ucvm-|version|" in brackets. If you don't see this,

@@ -112,26 +112,32 @@ the end of the installation:
    test_generate_simple_utm_mesh_ijk12_rotated (ucvm.tests.mesh.UCVMMeshTest) ... ok
 
 After the tests are run, UCVM is installed. Please note that you will have to source UCVM or add the source UCVM
-virtual environment command to your
+virtual environment command to your ~/.cshrc or .bashrc file.
 
-In order to use the updated variables, we must re-source our ~/.*rc file.
+.. code-block:: text
 
-.. code-block:: bash
+   For bash the command to add to your .bashrc or .bash_profile is:
+   source <install ucvm path>/ucvm-17.2.0/bin/activate
 
-   source .
+   For csh the command to add to your .cshrc
 
 That's it! UCVM should now be installed and operational on your USC HPC account!
 
 4. Running Your Installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-UCVM is now fully installed. Try running an example query
+UCVM is now fully installed. Try running an example query as follows:
+
+.. code-block:: bash
+
+   ucvm_query -m 1d[SCEC]
+
 
 Examples
 --------
 
-Please note that the following examples assume that **CVM-S4 is installed**. If it is not then you will need to modify
-the xml files in your GitHub UCVM/examples directory. Change the <cvm_list>cvms4</cvm_list> tag to read <cvm_list>
+Please note that the following examples assume that **CVM-S4.26 is installed**. If it is not then you will need to modify
+the xml files in your GitHub UCVM/examples directory. Change the <cvm_list>cvms426</cvm_list> tag to read <cvm_list>
 your desired models</cvm_list>.
 
 1. Create The Example Meshes and E-trees
