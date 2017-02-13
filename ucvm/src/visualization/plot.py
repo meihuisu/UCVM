@@ -14,6 +14,7 @@ from ucvm.src.model.fault import Fault
 
 try:
     import matplotlib as mpl
+    mpl.use("qt5agg")
     import matplotlib.pyplot as plt
     import matplotlib.colors as mcolors
     import matplotlib.cm as cm

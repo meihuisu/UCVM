@@ -69,7 +69,7 @@ If you are looking to use UCVM for visualization, you will need to install basem
 be installed.
 ::
 
-    sudo yum install geos geos-devel
+    sudo apt install libgeos-3.5.0 libgeos-dev
 
 Now we can download basemap. The source code to basemap is available from
 https://downloads.sourceforge.net/project/matplotlib/matplotlib-toolkits/basemap-1.0.7/basemap-1.0.7.tar.gz. Download
@@ -77,8 +77,8 @@ this file and then execute the following:
 ::
 
     tar zxvf basemap-1.0.7.tar.gz
-    basemap
-    export GEOS_DIR=/usr/
+    cd basemap-1.0.7
+    python3 setup.py install
 
 At the end of the setup script, you should see a series of tests being run. When these tests are completed, UCVM will
 notify you that the installation has completed successfully. At that point, you can begin to use UCVM!

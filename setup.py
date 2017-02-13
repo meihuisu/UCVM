@@ -73,7 +73,7 @@ if "ucvm_setup_bootstrapped" not in os.environ:
 _HYPOCENTER_BASE = "http://hypocenter.usc.edu/research/ucvm/" + UCVM_INFORMATION["version"]
 _HYPOCENTER_MODEL_LIST = _HYPOCENTER_BASE + "/model_list.xml"
 
-INSTALL_REQUIRES = ["h5py", "xmltodict", "humanize", "pyproj", "psutil", "matplotlib"]
+INSTALL_REQUIRES = ["h5py", "xmltodict", "humanize", "pyproj", "psutil", "matplotlib", "pyqt5"]
 
 
 def execute(cmd, **kwargs):
