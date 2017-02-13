@@ -267,8 +267,7 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
                 prefix = ["--prefix=" + str(build["install"][0]["#text"]).replace("[MODEL_DIR]",
                                                                                   new_path)]
 
-            p = Popen([os.path.join(".", "configure")] + prefix, stdout=PIPE, stderr=PIPE,
-                      env=new_env)
+            p = Popen([os.path.join(".", "configure")] + prefix, env=new_env)
             p.wait()
 
             os.chdir(revert_dir)
@@ -280,11 +279,11 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
                                          os.path.dirname(makefile["#text"]))
             revert_dir = os.getcwd()
             os.chdir(makefile_path)
-            p = Popen(["make"], stdout=PIPE, stderr=PIPE)
+            p = Popen(["make"])
             p.wait()
 
             # If install is set, run make install.
-            p = Popen(["make", "install"], stdout=PIPE, stderr=PIPE)
+            p = Popen(["make", "install"])
             p.wait()
 
             os.chdir(revert_dir)
