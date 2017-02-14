@@ -20,6 +20,8 @@ try:
     host = socket.gethostbyaddr(socket.gethostname())[0]
 except socket.herror:
     host = socket.gethostname()
+except socket.gaierror:
+    host = socket.gethostname()
 
 if find_executable("python3"):
     if "python3" not in sys.executable:

@@ -29,59 +29,86 @@ In order to install UCVM on this distribution of Linux, a few required packages 
 To also add MPI support, the following packages need to be installed.
 ::
 
-    sudo apt install openmpi openmpi-devel
+    sudo apt install openmpi-bin libopenmpi-dev
 
 Installing UCVM
 ~~~~~~~~~~~~~~~
 
 It is strongly recommended that users of UCVM use Python virtual environments to install UCVM. Python virtual
 environments allow all the UCVM components to be installed in one folder and independently of other Python packages.
-This guide will detail how to install UCVM using a virtual environment first. The Advanced section at the end of this
-document explains how to install UCVM without a virtual environment.
+This guide will detail how to install UCVM using a virtual environment first. The Advanced section explains how to
+install UCVM without a virtual environment.
 
 To create and activate your virtual environment, do the following:
 ::
 
-    pyvenv-3.5 ~/ucvm-17.2.0
-    source ~/ucvm-17.2.0/bin/activate
+    scec@scec-VirtualBox:~$ pyvenv-3.5 ~/ucvm-17.2.0
+    scec@scec-VirtualBox:~$ source ~/ucvm-17.2.0/bin/activate
 
 You should notice that your command line prompt has changed include "ucvm-|version|" in brackets. If you don't see this,
 then the virtual environment has not been activated correctly.
 ::
 
-    (ucvm-17.2.0) sceccme@bash-3.2$
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$
 
 Now we can clone the UCVM software.
 ::
 
-    git clone https://github.com/SCECcode/UCVM
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$ git clone https://github.com/SCECcode/UCVM
 
 Run the ucvm_setup script. This script does some basic sanity checks of the installation environment and makes sure
 that the installation looks like it can proceed successfully.
 ::
 
-    ./ucvm_setup
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$ cd UCVM
+    (ucvm-17.2.0) scec@scec-VirtualBox:~/UCVM$ ./ucvm_setup
 
 The UCVM setup script will ask a series of questions about which models you would like to install. Enter "y" to install
 a model or "n" to not install it.
 
-If you are looking to use UCVM for visualization, you will need to install basemap. Basemap requires geos to
+At the end of the setup script, you should see a series of tests being run. When these tests are completed, UCVM will
+notify you that the installation has completed successfully.
+::
+
+    test_ucvm_load_models... ok
+    test_ucvm_parse_model_string... ok
+    and so on
+
+At this point, you can begin to use any text-based component of UCVM.
+
+If you are looking to *use UCVM for visualization*, you will need to install basemap. Basemap requires geos to
 be installed.
 ::
 
-    sudo apt install libgeos-3.5.0 libgeos-dev
+    (ucvm-17.2.0) scec@scec-VirtualBox:~/UCVM$ sudo apt install libgeos-3.5.0 libgeos-dev
+    (ucvm-17.2.0) scec@scec-VirtualBox:~/UCVM$ sudo ln -s /usr/lib/x86_64-linux-gnu/libgeos_c.so /usr/lib/x86_64-linux-gnu/libgeos.so
 
 Now we can download basemap. The source code to basemap is available from
 https://downloads.sourceforge.net/project/matplotlib/matplotlib-toolkits/basemap-1.0.7/basemap-1.0.7.tar.gz. Download
 this file and then execute the following:
 ::
 
-    tar zxvf basemap-1.0.7.tar.gz
-    cd basemap-1.0.7
-    python3 setup.py install
-
-At the end of the setup script, you should see a series of tests being run. When these tests are completed, UCVM will
-notify you that the installation has completed successfully. At that point, you can begin to use UCVM!
+    (ucvm-17.2.0) scec@scec-VirtualBox:~/Downloads$ tar zxvf basemap-1.0.7.tar.gz
+    (ucvm-17.2.0) scec@scec-VirtualBox:~/Downloads/basemap-1.0.7$ cd basemap-1.0.7
+    (ucvm-17.2.0) scec@scec-VirtualBox:~/Downloads/basemap-1.0.7$ python3 setup.py install
 
 After installation, we highly recommend that you check out our :ref:`Tutorial` and
 the :ref:`CommandReference` section. These will enable you to become more familiar with the UCVM platform.
+
+Quick Test
+~~~~~~~~~~
+
+To quickly test if UCVM is installed correctly, type the following:
+::
+
+    (ucvm-17.2.0) scec@scec-VirtualBox:~/UCVM$ ucvm_query -m 1d[SCEC]
+    Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
+    all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
+    -118 34 0
+
+    Retrieving material properties...
+    X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
+    -118.0000   34.0000     0.0000      5000.0000   2886.7513   2654.5000   N/A         N/A         scec 1d (interpolat 287.9969    usgs-noaa   2886.7513   vs30-calc
+
+The above command queries the 1D SCEC model at point (-118, 34, 0) for material properties. If you do not see the above,
+please email software@scec.org.

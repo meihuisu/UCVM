@@ -48,8 +48,7 @@ class Plot:
             if not hasattr(self, key):
                 setattr(self, key, value)
 
-        if plt.gcf().get_figwidth() == 640:
-            print("HERE")
+        if plt.gcf().get_figwidth() == 640 or plt.gcf().get_figwidth() == 6.4:
             self.figure = plt.figure(figsize=(self.plot_width / 100, self.plot_height / 100), dpi=100)
 
     def show_profile(self, properties: dict, **kwargs) -> bool:

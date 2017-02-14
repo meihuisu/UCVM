@@ -28,7 +28,7 @@ visit the :ref:`AvailableModels` page). This tutorial assumes that you want thes
 which is the latest Southern California full 3D tomographic improvement model. The command to run ucvm_query is:
 ::
 
-    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_query -m cvms426
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426
 
 UCVM will then ask you to input your desired query points.
 ::
@@ -82,7 +82,7 @@ site, but rather from the model itself. That is, you want to calculate Vs30 dire
 combine multiple data sources together using dots. To accomplish this, do the following:
 ::
 
-    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_query -m cvms426.vs30-calc
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc
     Enter points to query. The X, Y, and Z components should be separated by spaces. When you have
     entered all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
     -118.28631  34.01919  0
@@ -102,7 +102,7 @@ query the SCEC 1D model to have some material properties for our equations. Runn
 will return no material properties.
 ::
 
-    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_query -m cvms426.vs30-calc
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc
     Enter points to query. The X, Y, and Z components should be separated by spaces. When you have
     entered all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
     -121.91088  37.38332  0
@@ -115,7 +115,7 @@ Tiling is done by sequencing models using semi-colons. So if we want to query cv
 do the following:
 ::
 
-    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_query -m cvms426.vs30-calc;1d[SCEC]
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc;1d[SCEC]
     Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
     all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
     -118.28631  34.01919  0
@@ -135,7 +135,7 @@ be helpful when writing a paper or when attempting to better understand the scie
 citations are also given on the :ref:`AvailableModels` page.
 ::
 
-    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_query -m cvms426.vs30-calc;1d[SCEC] -a
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc;1d[SCEC] -a
     Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
     all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
     -118.28631  34.01919  0
@@ -176,7 +176,7 @@ in the Vs velocities at 0m depth.
 To accomplish this task, we need the horizontal slice plotting utility.
 ::
 
-    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_plot_horizontal_slice
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_plot_horizontal_slice
 
 This utility will ask a series of questions. Please answer the questions as follows.
 ::
@@ -214,36 +214,113 @@ This utility will ask a series of questions. Please answer the questions as foll
     Which property should be plotted?
     Acceptable answers include Vp, Vs, density, Qp, or Qs: vs
 
-You will see a plot appear on your screen that looks like this:
+After a minute or so, you will see a plot appear on your screen that looks like this:
 
+.. image:: _static/tutorial1.png
+    :width: 500px
 
 We can also analyze cross-sections through the earth as well. Suppose we wanted to get a better idea of the material
 properties from depth 0m to depth 10km between the Garden Grove CE13884 station and the Santa Monica CE24048 station.
 We can visualize this by using the cross-section plotting utility.
 ::
 
-    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_plot_cross_section
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_plot_cross_section
 
 Like the previous utility, this will ask a series of questions. Please answer the questions as follows.
 ::
 
-    Questions
+    Generating a cross-section requires various parameters to be defined (such
+    as the start point, ending point, and so on). The following questions will guide
+    you through the definition of those parameters.
+
+    What is the X or longitudinal coordinate of the start point? -117.91780
+    What is the Y or latitudinal coordinate of the start point? 33.76670
+
+    What is the X or longitudinal coordinate of the end point? -118.48240
+    What is the Y or latitudinal coordinate of the end point? 34.02890
+
+    What is the top depth or elevation for your cross-section? 0
+    What is the bottom depth or elevation for your cross-section? 10000
+
+    Are your top and bottom numbers depth (by default) or elevation?
+    Type 'd' or enter for depth, 'e' for elevation: d
+
+    In which projection are your points specified?
+    The default for UCVM is WGS84 latitude and longitude. To accept
+    the default projection, simply hit enter:
+
+    What horizontal spacing be, in meters, for each extracted point? 1000
+    What vertical spacing be, in meters, for each extracted point? 500
+
+    Which property or properties (comma-separated) should be plotted?
+    Acceptable answers include Vp, Vs, density, Qp, or Qs: vs
+
+    You must select the velocity model(s) from which you would like to retrieve this
+    data. You can either enter in your model(s) as text (e.g. cvms4.usgs-noaa) or you
+    can select from one of the predefined ones in the list below.
+    1) USGS Bay Area
+    2) CCA
+    3) CVM-H 15.1.0
+    4) CVM-S4
+    5) CVM-S4.26
+    6) CVM-S4.26.M01
+    7) Lin-Thurber
+
+    Which velocity model would you like? 5
 
 You will see a plot appear on your screen that looks like this:
+
+.. image:: _static/tutorial2.png
+    :width: 500px
 
 Finally, we can also plot depth profiles to get a better sense of the material properties at each station. If we wished
 to analyze the material properties below the Santa Monica station, we could do so using the depth profile plotting
 utility.
 ::
 
-    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_plot_depth_profile
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_plot_depth_profile
 
 This utility also asks a series of questions. Please answer them as follows.
 ::
 
-    Questions
+    Generating a depth profile requires various parameters to be defined (such
+    as the profile point, the spacing, and so on). The following questions will guide
+    you through the definition of those parameters.
+
+    What is the X or longitudinal coordinate of the profile point? -118.48240
+    What is the Y or latitudinal coordinate of the profile point? 34.02890
+    What is the Z or depth/elevation coordinate of the profile point? 0
+
+    Is your Z coordinate specified as depth (default) or elevation?
+    Type 'd' or enter for depth, 'e' for elevation: d
+
+    In which projection is your point specified?
+    The default for UCVM is WGS84 latitude and longitude. To accept
+    the default projection, simply hit enter:
+
+    What should the spacing between each layer be? 20
+    What should the last depth or elevation be? 40000
+
+    Which property or properties (comma-separated) should be plotted?
+    Acceptable answers include Vp, Vs, density, Qp, or Qs: vp,vs,density
+
+    You must select the velocity model(s) from which you would like to retrieve this
+    data. You can either enter in your model(s) as text (e.g. cvms4.usgs-noaa) or you
+    can select from one of the predefined ones in the list below.
+    1) USGS Bay Area
+    2) CCA
+    3) CVM-H 15.1.0
+    4) CVM-S4
+    5) CVM-S4.26
+    6) CVM-S4.26.M01
+    7) Lin-Thurber
+
+    Which velocity model would you like? 5
 
 You will see a plot appear on your screen that looks like this:
+
+.. image:: _static/tutorial3.png
+    :width: 500px
 
 Meshing
 ~~~~~~~
@@ -257,36 +334,112 @@ for a single core to extract.
 We need to use the cartesian mesh generation utility to extract this mesh.
 ::
 
-    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_mesh_create -m cvms426
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_mesh_create
 
 This utility will ask a series of questions. Please answer them as follows.
 ::
 
-    Questions
+    Generating a mesh requires the definition of various parameters to be defined (such
+    as the origin of the mesh, the length of the mesh, and so on). The following questions
+    will guide you through the definition of those parameters. At the end, you will be
+    asked if you want to just generate the configuration file to make the mesh at a later
+    time or if you want to generate the mesh immediately.
+
+    From which velocity model(s) should this mesh be generated: cvms426
+
+    Meshes are constructed by specifying a bottom-left origin point, a rotation for the
+    rectangular region, and then a width, height, and depth for the box.
+
+    To start, in which projection is your starting point specified? The default for UCVM
+    is WGS84 latitude and longitude. To accept that projection, simply hit enter:
+
+    What is the X or longitudinal coordinate of your bottom-left starting point? -118.5
+    What is the Y or latitudinal coordinate of your bottom-left starting point? 33.5
+    What is the Z or depth/elevation coordinate of your bottom-left starting point? 0
+
+    Is your Z coordinate specified as depth (default) or elevation? Type 'd' or enter for depth,
+    'e' for elevation: d
+
+    By default, UCVM queries the center of each grid point to get the material properties
+    (so it is an average of the cell). UCVM can query at each vertex instead. Type 'c' or
+    hit enter to accept the center grid type, or type 'v' or 'vertex' for a point at each
+    corner:
+
+    What should your mesh projection be? The default is UTM WGS84 Zone 11.
+    Hit enter to accept this projection or specify your own, as a Proj.4 string:
+
+    What is the rotation angle, in degrees, of this box (relative to the bottom-left corner)? 0
+    In your projection's co-ordinate system, what should the spacing between each grid
+    point be? 500
+
+    How many grid points should there be in the X or longitudinal direction? 100
+    How many grid points should there be in the Y or latitudinal direction? 100
+    How many grid points should there be in the Z or depth/elevation direction? 100
+
+    What should the minimum Vs, in meters, be? The default is 0:  0
+    What should the minimum Vp, in meters, be? The default is 0:  0
+
+    In which format would you like this mesh? Type 'awp' for AWP-ODC, 'rwg' for a Graves'
+    format mesh: awp
+    To which directory should the mesh and metadata be saved? ./
+    Please provide a name for this mesh: test_mesh_la_basin
 
 In order to check if the mesh was extract successfully, we need to compare it against the original model to make sure
-that the differences are small. To do this, we can use the DataProductReader "model". This model takes as a parameter
-the XML file that was generated during the mesh extraction and the data, and makes it into its own model within UCVM.
+that the differences are small or virtually non-existant. To do this, we can use the DataProductReader "model". This
+model takes as a parameter the XML file that was generated during the mesh extraction and the data, and makes it into
+its own model within UCVM.
 
 We can then use the ucvm_plot_comparison utility to visualize and see differences between the two meshes.
 ::
 
-    (ucvm-17.2.0) sceccme@bash-3.2$ ucvm_plot_comparison
+    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_plot_comparison
 
 This utility also asks a series of questions. Please answer them as follows.
 ::
 
-    Questions
+    Generating a comparison between models requires various parameters to be defined (such as the start point,
+    ending point, and so on). The following questions will guide you through the definition of those parameters.
+
+    What is the X or longitudinal coordinate of the bottom-left corner? -118.5
+    What is the Y or latitudinal coordinate of the bottom-left corner? 33.5
+
+    What is the X or longitudinal coordinate of the top-right corner? -118
+    What is the Y or latitudinal coordinate of the top-right corner? 33.9
+
+    In which projection are your points specified? Hit enter to accept the default WGS84 latitude, longitude projection:
+
+    Should this slice be generated at depth or elevation? Type 'd' for depth, 'e' for elevation: d
+    At which depth should this horizontal slice be generated? 0
+
+    What should the horizontal slice sampling spacing be (in the projection specified earlier)? 0.01
+
+    Which material property would you like this comparison to be for?
+    Possibilities include vp, vs, and density: vs
+
+    Enter the name of the first velocity model for the comparison. Extracted data products can be used with
+    the dataproductreader[xml location] syntax: dataproductreader[test_mesh_la_basin]
+    Enter the name of the second velocity model for the comparison. Extracted data products can be used with
+    the dataproductreader[xml location] syntax: cvms426
+
+    Would you like the comparison saved to disk? Type 'y' for yes, 'n' for no: n
+
+    Would you like to save this configuration file for future use? Type 'y' for yes, 'n' for no: n
+
+    The configuration is now complete. The comparison will start now.
 
 You will see a plot appear on your screen that looks like this:
 
+.. image:: _static/tutorial4.png
+    :width: 500px
 
-Notice how the differences are very small!
+Notice how the differences are very, very small. There will be some differences due to trilinear interpolation and
+rotation angles, but the vast majority of differences are in the "white" part of the scale which is around +/- 1%.
 
 Congratulations! You have now explored the material properties surrounding some stations within the LA basin and you
 have also learned how to use some of the key capabilities within UCVM.
 
-Please contact software@scec.org if you have any further questions and we will respond as soon as possible!
+Please contact software@scec.org if you have any further questions or if anything in this tutorial did not work and
+we will respond as soon as possible!
 
 .. toctree::
     :maxdepth: 2

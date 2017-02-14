@@ -149,7 +149,7 @@ def ask_questions(test: bool) -> dict:
 
     if not test:
         for index, name in installed_models.items():
-            print(str(index) + ") ")
+            print(str(index) + ") " + name["name"])
 
     answers["cvm_list"] = ask_and_validate("\nWhich velocity model would you like?")
     try:

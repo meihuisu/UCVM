@@ -95,7 +95,9 @@ class CrossSection(Plot):
         )
         cvm_list = dictionary["cvm_list"]
 
-        return CrossSection(start_point, end_point, cross_section_properties, cvm_list)
+        plot_properties = dictionary["plot"]
+
+        return CrossSection(start_point, end_point, cross_section_properties, cvm_list, plot=plot_properties)
 
     def extract(self):
         proj = pyproj.Proj(proj='utm', zone=11, ellps='WGS84')

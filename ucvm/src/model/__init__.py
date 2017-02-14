@@ -279,7 +279,8 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
                                          os.path.dirname(makefile["#text"]))
             revert_dir = os.getcwd()
             os.chdir(makefile_path)
-            p = Popen(["make"])
+            new_env["CFLAGS"] = "-Wno-return-type"      # Fix issue with CVM-H build.
+            p = Popen(["make"], env=new_env)
             p.wait()
 
             # If install is set, run make install.
