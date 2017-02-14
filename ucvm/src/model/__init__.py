@@ -279,12 +279,17 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
                                          os.path.dirname(makefile["#text"]))
             revert_dir = os.getcwd()
             os.chdir(makefile_path)
-            new_env["CFLAGS"] = "-Wno-return-type"      # Fix issue with CVM-H build.
+            try:
+                new_env["CFLAGS"] = "-Wno-return-type"       # Fix issue with CVM-H build.
+            except UnboundLocalError:
+                new_env = {
+                    "CFLAGS": "-Wno-return-type"
+                }
             p = Popen(["make"], env=new_env)
             p.wait()
 
             # If install is set, run make install.
-            p = Popen(["make", "install"])
+            p = Popen(["make", "install"], env=new_env)  # Fix issue with CVM-H build.
             p.wait()
 
             os.chdir(revert_dir)
