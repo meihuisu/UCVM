@@ -67,6 +67,12 @@ def ask_questions(test: bool) -> dict:
             "property": "",
             "end": 0
         },
+        "plot": {
+            "features": {
+                "scale": "",
+                "colormap": ""
+            }
+        },
         "cvm_list": ""
     }
 
@@ -157,6 +163,9 @@ def ask_questions(test: bool) -> dict:
         answers["cvm_list"] = installed_models[int(answers["cvm_list"])]["id"]
     except ValueError:
         pass
+
+    answers["plot"]["features"]["scale"] = "discrete"
+    answers["plot"]["features"]["colormap"] = "RdBu"
 
     return answers
 
