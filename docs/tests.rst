@@ -1,5 +1,5 @@
-Testing
-=======
+Tests
+=====
 
 UCVM is bundled with various tests to ensure scientific integrity within the models and also to ensure that the
 platform itself is performing as expected on various computers. Each of these tests is detailed in this section.

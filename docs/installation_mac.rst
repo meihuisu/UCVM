@@ -1,5 +1,5 @@
-Mac OS X Sierra
-===============
+Mac OS X
+========
 
 UCVM works with Mac OS X. It has been tested and confirmed to work on Mac OS X Sierra.
 

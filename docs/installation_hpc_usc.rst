@@ -169,11 +169,5 @@ Then you can run the examples using the following commands.
    qsub extract_test_mesh_mpi_awp.usc
    qsub extract_test_etree_mpi_her.usc
 
-Further Reading
----------------
-
-To learn more about UCVM, please visit our UCVM overview page which discusses how UCVM works, what data products
-it can produce, and more about the commands included with the platform.
-
 .. toctree::
    :maxdepth: 2
