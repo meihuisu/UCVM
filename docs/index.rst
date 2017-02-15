@@ -20,4 +20,3 @@ If you have any questions regarding UCVM, please email
    commands
    configurationfiles
    testing
-   api

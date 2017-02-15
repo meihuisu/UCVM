@@ -8,7 +8,7 @@ that are in the terabytes. In addition to the old capabilities of UCVM, this ver
 **Ability to extract partial meshes**: Instead of running one large job for many hours, it is now possible to break-up
 the mesh extraction and extract part of a mesh. For example, suppose you have a mesh that has 500 slices. The mesh
 extraction can now be split into 100 slice increments. This helps ensure that progress can always be made on a mesh or
-e-tree without requiring a full restart of the job if it fails. More details can be found in our meshing guide.
+e-tree without requiring a full restart of the job if it fails.
 
 **Added mesh format**: The RWG mesh format is now a supported output for UCVM. This helps for comparison studies between
 multiple forward wave propagation simulation codes.

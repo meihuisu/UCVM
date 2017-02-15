@@ -1,22 +1,16 @@
-# UCVM
-The Unified Community Velocity Model (UCVM) software framework is a collection of software tools 
-designed to provide standardized access to multiple, alternative, 3D velocity models. 3D velocity models
-are used in several types of computational geoscience research including high resolution 3D wave propagation simulations.
+#UCVM
 
-To install this prototype, check out from GitHub and run:
+UCVM 17.2.0 includes key capabilities that are critical for scientists’ ability to run large-scale 3D wave propagation simulations. UCVM has been re-designed from scratch to support the needs of scientists who require meshes that are in the terabytes. In addition to the old capabilities of UCVM, this version supports the following:
 
-python3 setup.py install --user
+Ability to extract partial meshes: Instead of running one large job for many hours, it is now possible to break-up the mesh extraction and extract part of a mesh. For example, suppose you have a mesh that has 500 slices. The mesh extraction can now be split into 100 slice increments. This helps ensure that progress can always be made on a mesh or e-tree without requiring a full restart of the job if it fails.
 
-Requires Python 3.5 at least.
+Added mesh format: The RWG mesh format is now a supported output for UCVM. This helps for comparison studies between multiple forward wave propagation simulation codes.
 
-ucvm_run_tests runs all the currently defined tests.
+Validation: UCVM has been tested and checked to ensure scientific accuracy. Any known issues or inconsistencies with the software have been addressed in this version.
 
-Full command list:
+Reproducible: Most utilities within UCVM generate XML configuration files which can be archived and re-run to ensure reproducible results.
 
-- ucvm_query
-- ucvm_run_tests
-- ucvm_plot_horizontal_slice
-- ucvm_plot_depth_profile
-- ucvm_plot_cross_section
-- ucvm_model_manager
-- ucvm_mesh_create
+Improved installation process: Taking advantage of some of the most recent Python enhancements has meant simplified installation on a wide variety of platforms - from Mac OS X to Linux to major supercomputers.
+
+#Installing UCVM
+
