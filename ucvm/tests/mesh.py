@@ -59,6 +59,10 @@ class UCVMMeshTest(unittest.TestCase):
         self.im_3_iterator_2 = AWPInternalMeshIterator(self.im_3, 0, 101505, 101505, self.sd3)
 
     def test_internal_mesh_basics(self):
+        """
+        Tests that basic mesh parameters work (e.g. that rotation works and returns the expected point and that the
+        number of mesh points is correct).
+        """
         self.assertEqual(self.im_1.rotation, 0)
         self.assertEqual(self.im_1.spacing, 0.01)
         self.assertEqual(self.im_1.format, "awp")
@@ -82,6 +86,9 @@ class UCVMMeshTest(unittest.TestCase):
         self.assertAlmostEqual(self.im_3.origin.y_value, 3762606.6598763773, 4)
 
     def test_internal_mesh_iterator(self):
+        """
+        Tests that the UCVM mesh iterators work.
+        """
         next(self.im_1_iterator_1)
         self.assertAlmostEqual(self.sd[0].original_point.x_value, -118)
         self.assertAlmostEqual(self.sd[0].original_point.y_value, 34)
@@ -124,6 +131,9 @@ class UCVMMeshTest(unittest.TestCase):
             next(self.im_3_iterator_2)
 
     def test_awp_rwg_equivalent(self):
+        """
+        Quick verification that the AWP and RWG formats are equivalent (i.e. same material properties).
+        """
         sd_awp = [SeismicData(Point(-118, 34, 0)) for _ in range(0, 101505)]
         sd_rwg = [SeismicData(Point(-119, 35, 0)) for _ in range(0, 101505)]
         awp_im = InternalMesh.from_xml_file(
@@ -162,6 +172,9 @@ class UCVMMeshTest(unittest.TestCase):
         self.assertTrue(True)
 
     def test_generate_simple_mesh_ijk12_unrotated(self):
+        """
+        Generates a simple IJK-12 Cartesian mesh, unrotated, and makes sure that the material properties are correct.
+        """
         UCVM.instantiated_models["testvelocitymodel"] = test_model.TestVelocityModel()
         with open(os.path.join(self.dir, "data", "simple_mesh_ijk12_unrotated.xml")) as fd:
             simple_mesh_ijk12_xml = xmltodict.parse(fd.read())
@@ -192,6 +205,9 @@ class UCVMMeshTest(unittest.TestCase):
                                                (start_point[0] + x_val * spacing)) / 2, places=4)
 
     def test_generate_simple_mesh_ijk12_rotated(self):
+        """
+        Generates a simple IJK-12 Cartesian mesh, rotated, and makes sure that the material properties are correct.
+        """
         UCVM.instantiated_models["testvelocitymodel"] = test_model.TestVelocityModel()
         with open(os.path.join(self.dir, "data", "simple_mesh_ijk12_rotated.xml")) as fd:
             simple_mesh_ijk12_xml = xmltodict.parse(fd.read())
@@ -222,6 +238,9 @@ class UCVMMeshTest(unittest.TestCase):
                                                (y_prop + x_prop) / 2, places=4)
 
     def test_generate_simple_utm_mesh_ijk12_rotated(self):
+        """
+        Generates a simple IJK-12 Cartesian mesh, rotated, UTM, and makes sure that the material properties are correct.
+        """
         UCVM.instantiated_models["testvelocitymodel"] = test_model.TestVelocityModel()
         UCVM.instantiated_models["testvelocitymodel"]._private_metadata["projection"] = \
             "+proj=utm +zone=11 +datum=WGS84"
@@ -256,6 +275,9 @@ class UCVMMeshTest(unittest.TestCase):
                                                (y_prop + x_prop) / 2, places=0)
 
     def test_generate_simple_utm_mesh_rwg_rotated(self):
+        """
+        Generates a simple RWG mesh, rotated, UTM, and makes sure that the material properties are correct.
+        """
         UCVM.instantiated_models["testvelocitymodel"] = test_model.TestVelocityModel()
         UCVM.instantiated_models["testvelocitymodel"]._private_metadata["projection"] = \
             "+proj=utm +zone=11 +datum=WGS84"

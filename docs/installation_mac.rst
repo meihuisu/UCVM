@@ -53,10 +53,26 @@ correctly.
     SCECs-MacBook-Pro:~ scec$ sudo mkdir -p /usr/local/lib
     SCECs-MacBook-Pro:~ scec$ sudo ln -s /usr/X11/lib/libfreetype.dylib /usr/local/lib/libfreetype.dylib
 
-Finally, if you are planning on installing the Bay Area, CVM-S4, or CVM-S4.26.M01 velocity models, you will need
+If you are planning on installing the Bay Area, CVM-S4, or CVM-S4.26.M01 velocity models, you will need
 GFortran installed. Download and install the following DMG to satisfy this requirement.
 
 http://coudert.name/software/gfortran-6.3-Sierra.dmg
+
+Finally, if you are looking to use UCVM for visualization, you will need to download Basemap and install it on your
+computer.  The source code to basemap is available from
+https://downloads.sourceforge.net/project/matplotlib/matplotlib-toolkits/basemap-1.0.7/basemap-1.0.7.tar.gz. Download
+this file and then execute the following:
+::
+
+    SCECs-MacBook-Pro:~ scec$ tar zxvf basemap-1.0.7.tar.gz
+    SCECs-MacBook-Pro:~ scec$ cd basemap-1.0.7
+    SCECs-MacBook-Pro:~/basemap-1.0.7 scec$ cd geos-3.3.3
+    SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ export GEOS_DIR=/usr/local/geos
+    SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ ./configure --prefix=$GEOS_DIR
+    SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ make
+    SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ sudo make install
+    SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ cd ..
+    SCECs-MacBook-Pro:~/basemap-1.0.7 scec$ python3 setup.py install
 
 Now you are ready to download and install UCVM!
 
@@ -98,4 +114,29 @@ a model or "n" to not install it.
 
 At the end of the setup script, you should see a series of tests being run. When these tests are completed, UCVM will
 notify you that the installation has completed successfully.
+::
 
+    test_ucvm_load_models... ok
+    test_ucvm_parse_model_string... ok
+    and so on
+
+After installation, we highly recommend that you check out our :ref:`Tutorial` and
+the :ref:`CommandReference` section. These will enable you to become more familiar with the UCVM platform.
+
+Quick Test
+~~~~~~~~~~
+
+To quickly test if UCVM is installed correctly, type the following:
+::
+
+    (ucvm-17.2.0) SCECs-MacBook-Pro:UCVM scec$ ucvm_query -m 1d[SCEC]
+    Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
+    all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
+    -118 34 0
+
+    Retrieving material properties...
+    X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
+    -118.0000   34.0000     0.0000      5000.0000   2886.7513   2654.5000   N/A         N/A         scec 1d (interpolat 287.9969    usgs-noaa   2886.7513   vs30-calc
+
+The above command queries the 1D SCEC model at point (-118, 34, 0) for material properties. If you do not see the above,
+please email software@scec.org.

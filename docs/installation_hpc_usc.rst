@@ -130,8 +130,14 @@ UCVM is now fully installed. Try running an example query as follows:
 
 .. code-block:: bash
 
-   ucvm_query -m 1d[SCEC]
+    ucvm_query -m 1d[SCEC]
+    Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
+    all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
+    -118 34 0
 
+    Retrieving material properties...
+    X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
+    -118.0000   34.0000     0.0000      5000.0000   2886.7513   2654.5000   N/A         N/A         scec 1d (interpolat 287.9969    usgs-noaa   2886.7513   vs30-calc
 
 Examples
 --------
@@ -140,9 +146,6 @@ Please note that the following examples assume that **CVM-S4.26 is installed**. 
 the xml files in your GitHub UCVM/examples directory. Change the <cvm_list>cvms426</cvm_list> tag to read <cvm_list>
 your desired models</cvm_list>.
 
-1. Create The Example Meshes and E-trees
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 UCVM includes multiple execution examples for a variety of platforms. Two examples are included in your GitHub
 UCVM/examples directory:
 
@@ -150,7 +153,13 @@ UCVM/examples directory:
 * extract_test_tree_mpi_her.usc
 
 These extract a test AWP cartesian mesh and a test E-tree for Hercules. To use this examples you will need to open
-the extract_test files and change the following parameters:
+the extract_test files and change the following line:
+
+.. code-block:: text
+
+   PATH_TO_UCVM=/staging/path/to/your/ucvm-venv
+
+To reflect your UCVM virtual environment path.
 
 Then you can run the examples using the following commands.
 
@@ -159,11 +168,6 @@ Then you can run the examples using the following commands.
    cd <github UCVM directory>/examples
    qsub extract_test_mesh_mpi_awp.usc
    qsub extract_test_etree_mpi_her.usc
-
-2. Verify Extracted Model Correctness
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-UCVM also includes utilities that enable you to compare models and ensure they are correct.
 
 Further Reading
 ---------------

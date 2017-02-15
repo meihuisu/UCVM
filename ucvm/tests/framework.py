@@ -73,7 +73,6 @@ class UCVMFrameworkTest(unittest.TestCase):
         """
         Test that UCVM can parse the model strings correctly. This just tests the actual parsing
         for the syntax (i.e. brackets, semi-colons, parameters, etc.)
-        :return: None
         """
         self.assertEqual(
             UCVM.parse_model_string("velocity"),
