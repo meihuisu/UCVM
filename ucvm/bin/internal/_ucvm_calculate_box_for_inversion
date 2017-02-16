@@ -229,11 +229,19 @@ def main() -> int:
     end_angle_2 = 90 - math.degrees(
         math.atan2(coords["br"]["y"] - coords["bl"]["y"], coords["br"]["x"] - coords["bl"]["x"])
     )
+    end_angle_3 = 180 - math.degrees(
+        math.atan2(coords["tr"]["y"] - coords["br"]["y"], coords["tr"]["x"] - coords["br"]["x"])
+    )
+    end_angle_4 = 90 - math.degrees(
+        math.atan2(coords["tr"]["y"] - coords["tl"]["y"], coords["tr"]["x"] - coords["tl"]["x"])
+    )
     print("\nRotation angles:")
     print("\tBEFORE box expansion: %.10f" % start_angle)
     print("\tAFTER box expansion: ")
     print("\t    Angle for TL, BL: %.10f" % end_angle)
+    print("\t    Angle for TR, BR: %.10f" % end_angle_3)
     print("\t    Angle for BR, BL: %.10f" % end_angle_2)
+    print("\t    Angle for TR, TL: %.10f" % end_angle_4)
     print("Angles match!" if start_angle == end_angle else "Angles do not match! ERROR!")
 
     return 0
