@@ -1,0 +1,95 @@
+#!/usr/bin/env python
+"""
+Outputs all the points, as UCVM believes they are, for a gridded velocity model both textually and in plot format.
+
+Given a gridded velocity model such as CVM-S4.26 or CCA06, output the points for that velocity model as text output
+and also as a plot.
+
+Copyright 2017 Southern California Earthquake Center
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+# Python Imports
+import sys
+import math
+
+# Package Imports
+import pyproj
+
+# UCVM Imports
+from ucvm.src.framework.ucvm import UCVM
+
+
+def usage() -> None:
+    """
+    Displays the help text associated with this utility.
+
+    Returns:
+        None
+    """
+    UCVM.print_with_replacements(
+        "\n"
+        "_ucvm_output_grid_points - UCVM Version [version]\n"
+        "\n"
+        "Outputs the underlying grid for a gridded velocity model. The output is both a text file containing the\n"
+        "grid point as well as a plot.\n"
+        "\n"
+        "-m, --model m:     Specifies the model for which the points should be calculated.\n"
+    )
+
+
+def main() -> int:
+    """
+    The main grid plotting and calculation utility.
+
+    Returns:
+         0 if successful. Raises an error code otherwise, if not.
+    """
+    try:
+        options = UCVM.parse_options([
+            {"short": "m", "long": "model", "value": True, "required": True}
+        ], usage)
+    except ValueError as v_err:
+        print("[ERROR]: " + str(v_err) + "\n")
+        sys.exit(-1)
+
+    print("Calculating array of grid points...")
+
+    start_point = (-116, 30.4499999999999993)
+    end_point = (-122.299999999999997, 34.7834999999999965)
+
+    latlon_proj = pyproj.Proj("+proj=latlong +datum=WGS84")
+    utm_proj = pyproj.Proj("+proj=utm +ellps=clrk66 +datum=NAD27 +zone=11")
+
+    start_point_utm = pyproj.transform(latlon_proj, utm_proj, start_point[0], start_point[1])
+    end_point_utm = pyproj.transform(latlon_proj, utm_proj, end_point[0], end_point[1])
+
+    print("\tStart point in UTM X %f, Y %f" % (start_point_utm[0], start_point_utm[1]))
+    print("\tEnd point in UTM X %f, Y %f" % (end_point_utm[0], end_point_utm[1]))
+
+    point_distance = math.sqrt(
+        math.pow(end_point_utm[0] - start_point_utm[0], 2) + math.pow(end_point_utm[1] - start_point_utm[1], 2)
+    )
+
+    print("\tDistance between points in meters: %f" % point_distance)
+
+    print("Writing file.")
+
+    print("Generating plot...")
+
+    print("Done!")
+
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())

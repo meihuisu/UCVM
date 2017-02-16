@@ -1,0 +1,242 @@
+#!/usr/bin/env python
+"""
+Calculates the four coordinates for an inversion box.
+
+Using the correct projection scheme, this script takes the input format that Po and En-Jui use for the box
+and calculates the four corners in both UTM and lat, long. This also outputs, as a text file, the actual coordinates
+(again in both projections) for each grid point.
+
+Copyright 2017 Southern California Earthquake Center
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+# Python Imports
+import sys
+import math
+
+# Package Imports
+import pyproj
+
+# UCVM Imports
+from ucvm.src.framework.ucvm import UCVM
+
+
+def usage() -> None:
+    """
+    Displays the help text associated with this utility.
+
+    Returns:
+        None
+    """
+    UCVM.print_with_replacements(
+        "\n"
+        "_ucvm_calculate_box_for_inversion - UCVM Version [version]\n"
+        "\n"
+        "Using the correct projection scheme, this script takes the input format that Po and En-Jui use for the box\n"
+        "and calculates the four corners in both UTM and lat, long. This also outputs, as a text file, the actual\n"
+        "coordinates (again in both projections) for each grid point.\n"
+        "\n"
+        "-f, --file f:     Specifies the input file that is used to specify the grid dimensions.\n"
+    )
+
+
+def main() -> int:
+    """
+    The main box generation routine.
+
+    Returns:
+         0 if successful. Raises an error code otherwise, if not.
+    """
+    try:
+        options = UCVM.parse_options([
+            {"short": "f", "long": "file", "value": True, "required": True}
+        ], usage)
+    except ValueError as v_err:
+        print("[ERROR]: " + str(v_err) + "\n")
+        sys.exit(-1)
+
+    input_dict = {
+        "zone": -1,
+        "start": {
+            "x": -100,
+            "y": 30
+        },
+        "end": {
+            "x": -50,
+            "y": 50
+        },
+        "width": 100,
+        "depth": 100,
+        "spacing": 500,
+        "hs": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+        }
+    }
+
+    with open(options["file"], "r") as fd:
+        fd.readline()
+        input_dict["zone"] = int(fd.readline())
+        startpt = fd.readline().split()
+        input_dict["start"]["x"] = float(startpt[0])
+        input_dict["start"]["y"] = float(startpt[1])
+        endpt = fd.readline().split()
+        input_dict["end"]["x"] = float(endpt[0])
+        input_dict["end"]["y"] = float(endpt[1])
+        input_dict["width"] = float(fd.readline())
+        input_dict["depth"] = float(fd.readline())
+        input_dict["spacing"] = float(fd.readline())
+        hsin = fd.readline().split()
+        input_dict["hs"]["x"] = int(hsin[0])
+        input_dict["hs"]["y"] = int(hsin[1])
+        input_dict["hs"]["z"] = int(hsin[2])
+
+    latlon_proj = pyproj.Proj("+proj=latlong +datum=WGS84")
+    utm_proj = pyproj.Proj("+proj=utm +ellps=clrk66 +datum=NAD27 +zone=11")
+
+    start_point_utm = pyproj.transform(latlon_proj, utm_proj, input_dict["start"]["x"], input_dict["start"]["y"])
+    end_point_utm = pyproj.transform(latlon_proj, utm_proj, input_dict["end"]["x"], input_dict["end"]["y"])
+    start_angle = 180 - math.degrees(
+        math.atan2(end_point_utm[1] - start_point_utm[1], end_point_utm[0] - start_point_utm[0])
+    )
+
+    print("Start point in UTM coordinates   X %15f  Y %15f" % (start_point_utm[0], start_point_utm[1]))
+    print("End point in UTM coordinates     X %15f  Y %15f" % (end_point_utm[0], end_point_utm[1]))
+
+    point_distance = math.sqrt(
+        math.pow(end_point_utm[0] - start_point_utm[0], 2) + math.pow(end_point_utm[1] - start_point_utm[1], 2)
+    )
+
+    print("\nDistance = sqrt((end point x - start point x) ^ 2 + (end point y - start point y) ^ 2) = %f" %
+          point_distance)
+
+    nx = int(input_dict["width"] / input_dict["spacing"]) + 1
+    ny = int(point_distance / input_dict["spacing"]) + 1
+    nz = int(input_dict["depth"] / input_dict["spacing"]) + 1
+
+    print("\n# of grid points:")
+    print("\tX points: %d" % nx)
+    print("\tY points: %d" % ny)
+    print("\tZ points: %d" % nz)
+
+    nx = nx - math.fmod(nx, input_dict["hs"]["x"]) + input_dict["hs"]["x"]
+    ny = ny - math.fmod(ny, input_dict["hs"]["y"]) + input_dict["hs"]["y"]
+    nz = nz - math.fmod(nz, input_dict["hs"]["z"]) + input_dict["hs"]["z"]
+
+    print("\n# of grid points adjusted for half-space:")
+    print("\tX points: %d" % nx)
+    print("\tY points: %d" % ny)
+    print("\tZ points: %d" % nz)
+
+    nxt = nx / input_dict["hs"]["x"]
+    nyt = ny / input_dict["hs"]["y"]
+    nzt = nz / input_dict["hs"]["z"]
+
+    print("\n# of half-spaces:")
+    print("\tX points: %d" % nxt)
+    print("\tY points: %d" % nyt)
+    print("\tZ points: %d" % nzt)
+
+    lx = (nx - 1) * input_dict["spacing"]
+    ly = (ny - 1) * input_dict["spacing"]
+
+    print("\nNEW lengths:")
+    print("\tX = number of grid points (%d) * grid spacing (%.1f) = %.4fm" %
+          (nx - 1, input_dict["spacing"], lx))
+    print("\tY = number of grid points (%d) * grid spacing (%.1f) = %.4fm" %
+          (ny - 1, input_dict["spacing"], ly))
+
+    # Calculate new UTM coords.
+    coords = {
+        "bl": {
+            "x": -1,
+            "y": -1
+        },
+        "tl": {
+            "x": -1,
+            "y": -1
+        },
+        "tr": {
+            "x": -1,
+            "y": -1
+        },
+        "br": {
+            "x": -1,
+            "y": -1
+        }
+    }
+    coords["bl"]["x"] = start_point_utm[0]
+    coords["bl"]["y"] = start_point_utm[1]
+    coords["tl"]["x"] = (end_point_utm[0] - start_point_utm[0]) * ly / math.sqrt(
+        math.pow(end_point_utm[0] - start_point_utm[0], 2) + math.pow(end_point_utm[1] - start_point_utm[1], 2)
+    ) + start_point_utm[0]
+    coords["tl"]["y"] = (end_point_utm[1] - start_point_utm[1]) * ly / math.sqrt(
+        math.pow(end_point_utm[0] - start_point_utm[0], 2) + math.pow(end_point_utm[1] - start_point_utm[1], 2)
+    ) + start_point_utm[1]
+    coords["br"]["x"] = (coords["tl"]["y"] - coords["bl"]["y"]) * lx / ly + coords["bl"]["x"]
+    coords["br"]["y"] = (coords["bl"]["x"] - coords["tl"]["x"]) * lx / ly + coords["bl"]["y"]
+    coords["tr"]["x"] = (coords["tl"]["y"] - coords["bl"]["y"]) * lx / ly + coords["tl"]["x"]
+    coords["tr"]["y"] = (coords["bl"]["x"] - coords["tl"]["x"]) * lx / ly + coords["tl"]["y"]
+
+    print("\nNEW corners in UTM")
+    print("\tBottom left corner:   X %15f  Y %15f" % (coords["bl"]["x"], coords["bl"]["y"]))
+    print("\tTop left corner:      X %15f  Y %15f" % (coords["tl"]["x"], coords["tl"]["y"]))
+    print("\tTop right corner:     X %15f  Y %15f" % (coords["tr"]["x"], coords["tr"]["y"]))
+    print("\tBottom right corner:  X %15f  Y %15f" % (coords["br"]["x"], coords["br"]["y"]))
+
+    # Recalculate distances as a check.
+    distances = {
+        "tlbl": math.sqrt(
+            math.pow(coords["tl"]["x"] - coords["bl"]["x"], 2) + math.pow(coords["tl"]["y"] - coords["bl"]["y"], 2)
+        ),
+        "trbr": math.sqrt(
+            math.pow(coords["tr"]["x"] - coords["br"]["x"], 2) + math.pow(coords["tr"]["y"] - coords["br"]["y"], 2)
+        ),
+        "trtl": math.sqrt(
+            math.pow(coords["tr"]["x"] - coords["tl"]["x"], 2) + math.pow(coords["tr"]["y"] - coords["tl"]["y"], 2)
+        ),
+        "brbl": math.sqrt(
+            math.pow(coords["br"]["x"] - coords["bl"]["x"], 2) + math.pow(coords["br"]["y"] - coords["bl"]["y"], 2)
+        )
+    }
+
+    print("\nNEW distance calculations:")
+    print("\tTL - BL Distance %15.10fm" % distances["tlbl"])
+    print("\tTR - BR Distance %15.10fm" % distances["trbr"])
+    print("\tTR - TL Distance %15.10fm" % distances["trtl"])
+    print("\tBR - BL Distance %15.10fm" % distances["brbl"])
+
+    print(
+        "Distances match!" if distances["tlbl"] == distances["trbr"] and distances["trtl"] == distances["brbl"] else
+        "Distances do not match! ERROR!"
+    )
+
+    # Calculate rotation angle (and make sure it was preserved).
+    end_angle = 180 - math.degrees(
+        math.atan2(coords["tl"]["y"] - coords["bl"]["y"], coords["tl"]["x"] - coords["bl"]["x"])
+    )
+    end_angle_2 = 90 - math.degrees(
+        math.atan2(coords["br"]["y"] - coords["bl"]["y"], coords["br"]["x"] - coords["bl"]["x"])
+    )
+    print("\nRotation angles:")
+    print("\tBEFORE box expansion: %.10f" % start_angle)
+    print("\tAFTER box expansion: ")
+    print("\t    Angle for TL, BL: %.10f" % end_angle)
+    print("\t    Angle for BR, BL: %.10f" % end_angle_2)
+    print("Angles match!" if start_angle == end_angle else "Angles do not match! ERROR!")
+
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())

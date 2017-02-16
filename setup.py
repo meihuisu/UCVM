@@ -279,6 +279,9 @@ p.wait()
 p = Popen(["pip", "install", "h5py"])
 p.wait()
 
+p = Popen(["pip", "install", "Pillow"])
+p.wait()
+
 print("Installing C components of UCVM...")
 
 _LOCAL_LIBRARY_PATH, _LOCAL_SCRIPT_PATH = get_setuptools_script_dir()
