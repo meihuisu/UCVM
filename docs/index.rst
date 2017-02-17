@@ -14,6 +14,7 @@ If you have any questions regarding UCVM, please email
    :maxdepth: 2
 
    newfeatures
+   capabilities
    installation
    tutorial
    availablemodels

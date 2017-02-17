@@ -17,6 +17,7 @@ from typing import List
 
 # Package Imports
 import xmltodict
+import pyproj
 import h5py
 
 # UCVM Imports
@@ -54,7 +55,6 @@ class GriddedVelocityModel(VelocityModel):
              float(self.config_dict["corners"]["bottom_left"]["n"]))
         )
 
-        self.config_dict["zone"] = int(self.config_dict["zone"])
         self.config_dict["dimensions"]["depth"] = float(self.config_dict["dimensions"]["depth"])
         self.config_dict["dimensions"]["x"] = int(self.config_dict["dimensions"]["x"])
         self.config_dict["dimensions"]["y"] = int(self.config_dict["dimensions"]["y"])
@@ -99,6 +99,9 @@ class GriddedVelocityModel(VelocityModel):
             os.path.join(self.get_model_dir(), "data", self._public_metadata["id"] + ".dat"), "r"
         )
 
+        self.in_proj = pyproj.Proj(UCVM_DEFAULT_PROJECTION)
+        self.out_proj = pyproj.Proj(self.config_dict["proj"])
+
         self.model_has = []
         if "vp" in self._opened_file:
             self.model_has.append("vp")
@@ -126,16 +129,18 @@ class GriddedVelocityModel(VelocityModel):
         Returns:
             True on success, false if there is an error.
         """
+        temp_proj = {}
 
         for sd_object in points:
-
-            x_value = sd_object.converted_point.x_value
-            y_value = sd_object.converted_point.y_value
-            if sd_object.converted_point.projection == UCVM_DEFAULT_PROJECTION:
-                # If we are given this in not UTM, that's the sign to use the Fortran code.
-                x_value, y_value = UCVMCCommon.fortran_convert_ll_utm(sd_object.converted_point.x_value,
-                                                                      sd_object.converted_point.y_value,
-                                                                      self.config_dict["zone"])
+            if sd_object.original_point.projection == UCVM_DEFAULT_PROJECTION:
+                x_value, y_value = pyproj.transform(self.in_proj, self.out_proj, sd_object.original_point.x_value,
+                                                    sd_object.original_point.y_value)
+            else:
+                if len(temp_proj) == 0 or temp_proj["string"] != sd_object.original_point.projection:
+                    temp_proj["object"] = pyproj.Proj(sd_object.original_point.projection)
+                    temp_proj["string"] = sd_object.original_point.projection
+                x_value, y_value = pyproj.transform(temp_proj, self.out_proj, sd_object.original_point.x_value,
+                                                    sd_object.original_point.y_value)
 
             temp_utm_e = x_value - self.model_properties["origin"]["e"]
             temp_utm_n = y_value - self.model_properties["origin"]["n"]

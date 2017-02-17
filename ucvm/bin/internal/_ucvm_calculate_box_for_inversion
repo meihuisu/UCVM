@@ -190,10 +190,20 @@ def main() -> int:
     coords["tr"]["y"] = (coords["bl"]["x"] - coords["tl"]["x"]) * lx / ly + coords["tl"]["y"]
 
     print("\nNEW corners in UTM")
-    print("\tBottom left corner:   X %15f  Y %15f" % (coords["bl"]["x"], coords["bl"]["y"]))
-    print("\tTop left corner:      X %15f  Y %15f" % (coords["tl"]["x"], coords["tl"]["y"]))
-    print("\tTop right corner:     X %15f  Y %15f" % (coords["tr"]["x"], coords["tr"]["y"]))
-    print("\tBottom right corner:  X %15f  Y %15f" % (coords["br"]["x"], coords["br"]["y"]))
+    print("\tBottom left corner:   X %20.10f  Y %20.10f" % (coords["bl"]["x"], coords["bl"]["y"]))
+    print("\tTop left corner:      X %20.10f  Y %20.10f" % (coords["tl"]["x"], coords["tl"]["y"]))
+    print("\tTop right corner:     X %20.10f  Y %20.10f" % (coords["tr"]["x"], coords["tr"]["y"]))
+    print("\tBottom right corner:  X %20.10f  Y %20.10f" % (coords["br"]["x"], coords["br"]["y"]))
+
+    print("\nNEW corners in lat, lon:")
+    print("\tBottom left corner:   X %20.10f  Y %20.10f" %
+          pyproj.transform(utm_proj, latlon_proj, coords["bl"]["x"], coords["bl"]["y"]))
+    print("\tTop left corner:      X %20.10f  Y %20.10f" %
+          pyproj.transform(utm_proj, latlon_proj, coords["tl"]["x"], coords["tl"]["y"]))
+    print("\tTop right corner:     X %20.10f  Y %20.10f" %
+          pyproj.transform(utm_proj, latlon_proj, coords["tr"]["x"], coords["tr"]["y"]))
+    print("\tBottom right corner:  X %20.10f  Y %20.10f" %
+          pyproj.transform(utm_proj, latlon_proj, coords["br"]["x"], coords["br"]["y"]))
 
     # Recalculate distances as a check.
     distances = {

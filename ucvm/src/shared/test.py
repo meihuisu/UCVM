@@ -119,7 +119,7 @@ def run_acceptance_test(test_case: unittest.TestCase, model_id: str, props_to_te
         props_to_test = ["vp", "vs", "density"]
 
     counter = 0
-    epsilon = 0.001
+    epsilon = 0.006
     for z in range(nums["z"]):
         for y in range(nums["y"]):
             for x in range(nums["x"]):
