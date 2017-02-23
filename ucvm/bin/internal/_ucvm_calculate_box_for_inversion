@@ -65,6 +65,8 @@ def main() -> int:
         print("[ERROR]: " + str(v_err) + "\n")
         sys.exit(-1)
 
+    print("Calculating Grid For Velocity Model\n")
+
     input_dict = {
         "zone": -1,
         "start": {
@@ -103,7 +105,7 @@ def main() -> int:
         input_dict["hs"]["z"] = int(hsin[2])
 
     latlon_proj = pyproj.Proj("+proj=latlong +datum=WGS84")
-    utm_proj = pyproj.Proj("+proj=utm +ellps=clrk66 +datum=NAD27 +zone=11")
+    utm_proj = pyproj.Proj("+proj=utm +ellps=clrk66 +datum=NAD27 +zone=" + str(input_dict["zone"]))
 
     start_point_utm = pyproj.transform(latlon_proj, utm_proj, input_dict["start"]["x"], input_dict["start"]["y"])
     end_point_utm = pyproj.transform(latlon_proj, utm_proj, input_dict["end"]["x"], input_dict["end"]["y"])
@@ -118,21 +120,21 @@ def main() -> int:
         math.pow(end_point_utm[0] - start_point_utm[0], 2) + math.pow(end_point_utm[1] - start_point_utm[1], 2)
     )
 
-    print("\nDistance = sqrt((end point x - start point x) ^ 2 + (end point y - start point y) ^ 2) = %f" %
+    print("\nDistance = sqrt((end point x - start point x) ^ 2 + (end point y - start point y) ^ 2) = %.2fm" %
           point_distance)
 
     nx = int(input_dict["width"] / input_dict["spacing"]) + 1
     ny = int(point_distance / input_dict["spacing"]) + 1
     nz = int(input_dict["depth"] / input_dict["spacing"]) + 1
 
-    print("\n# of grid points:")
+    print("\n# of grid points with the given two corners:")
     print("\tX points: %d" % nx)
     print("\tY points: %d" % ny)
     print("\tZ points: %d" % nz)
 
-    nx = nx - math.fmod(nx, input_dict["hs"]["x"]) + input_dict["hs"]["x"]
-    ny = ny - math.fmod(ny, input_dict["hs"]["y"]) + input_dict["hs"]["y"]
-    nz = nz - math.fmod(nz, input_dict["hs"]["z"]) + input_dict["hs"]["z"]
+    nx = int(nx - math.fmod(nx, input_dict["hs"]["x"]) + input_dict["hs"]["x"])
+    ny = int(ny - math.fmod(ny, input_dict["hs"]["y"]) + input_dict["hs"]["y"])
+    nz = int(nz - math.fmod(nz, input_dict["hs"]["z"]) + input_dict["hs"]["z"])
 
     print("\n# of grid points adjusted for half-space:")
     print("\tX points: %d" % nx)
@@ -152,9 +154,9 @@ def main() -> int:
     ly = (ny - 1) * input_dict["spacing"]
 
     print("\nNEW lengths:")
-    print("\tX = number of grid points (%d) * grid spacing (%.1f) = %.4fm" %
+    print("\tX = number of grid points - 1 (%d) * grid spacing (%.1fm) = %.2fm" %
           (nx - 1, input_dict["spacing"], lx))
-    print("\tY = number of grid points (%d) * grid spacing (%.1f) = %.4fm" %
+    print("\tY = number of grid points - 1 (%d) * grid spacing (%.1fm) = %.2fm" %
           (ny - 1, input_dict["spacing"], ly))
 
     # Calculate new UTM coords.
@@ -222,14 +224,14 @@ def main() -> int:
     }
 
     print("\nNEW distance calculations:")
-    print("\tTL - BL Distance %15.10fm" % distances["tlbl"])
-    print("\tTR - BR Distance %15.10fm" % distances["trbr"])
-    print("\tTR - TL Distance %15.10fm" % distances["trtl"])
-    print("\tBR - BL Distance %15.10fm" % distances["brbl"])
+    print("\tTL - BL Distance %15.5fm" % distances["tlbl"])
+    print("\tTR - BR Distance %15.5fm" % distances["trbr"])
+    print("\tTR - TL Distance %15.5fm" % distances["trtl"])
+    print("\tBR - BL Distance %15.5fm" % distances["brbl"])
 
     print(
-        "Distances match!" if distances["tlbl"] == distances["trbr"] and distances["trtl"] == distances["brbl"] else
-        "Distances do not match! ERROR!"
+        "Distances match!" if math.isclose(distances["tlbl"], distances["trbr"]) and
+        math.isclose(distances["trtl"], distances["brbl"]) else "Distances do not match! ERROR!"
     )
 
     # Calculate rotation angle (and make sure it was preserved).
@@ -252,7 +254,63 @@ def main() -> int:
     print("\t    Angle for TR, BR: %.10f" % end_angle_3)
     print("\t    Angle for BR, BL: %.10f" % end_angle_2)
     print("\t    Angle for TR, TL: %.10f" % end_angle_4)
-    print("Angles match!" if start_angle == end_angle else "Angles do not match! ERROR!")
+    # TR, TL angle is off very slightly. To twelve decimal places. Realistically speaking, they are the same.
+    print("Angles match!" if start_angle == end_angle and math.isclose(start_angle, end_angle_4, rel_tol=1e-10) else
+          "Angles do not match! ERROR!")
+
+    print("\nGenerating grid!")
+
+    # We have the four corners. We've verified they are right. Now we need to iterate through the grid points and
+    # print them out.
+    end_angle *= -1     # Need to rotate downwards (since we are printing using TL as origin).
+    out_text = "X                   Y                   UTM X               UTM Y               LON X               " \
+               "LON Y\n"
+    verification_checks = [0, 0, 0, 0]
+    for x in range(ny):
+        for y in range(nx):
+            # Rotate grid for printing purposes.
+            out_text += "%-20d%-20d" % (x + 1, y + 1)
+            new_coord = [x * input_dict["spacing"], y * input_dict["spacing"]]
+            # Rotate the point.
+            new_coord = [
+                new_coord[0] * math.cos(math.radians(end_angle)) - new_coord[1] * math.sin(math.radians(end_angle)),
+                new_coord[1] * math.cos(math.radians(end_angle)) + new_coord[0] * math.sin(math.radians(end_angle))
+            ]
+            new_coord = [new_coord[0] + coords["tl"]["x"], new_coord[1] + coords["tl"]["y"]]
+
+            out_text += "%-20.6f%-20.6f" % (new_coord[0], new_coord[1])
+
+            # Print out the long, lat version.
+            (lon, lat) = pyproj.transform(utm_proj, latlon_proj, new_coord[0], new_coord[1])
+            out_text += "%-20.10f%-20.10f" % (lon, lat)
+
+            out_text += "\n"
+
+            if x == 0 and y == 0:
+                verification_checks[0] = new_coord
+            elif x == ny - 1 and y == 0:
+                verification_checks[1] = new_coord
+            elif x == 0 and y == nx - 1:
+                verification_checks[2] = new_coord
+            elif x == ny - 1 and y == nx - 1:
+                verification_checks[3] = new_coord
+
+    with open("generated_grid.txt", "w") as fd:
+        fd.write(out_text)
+
+    # Perform verification checks. Remember that we are flipping X and Y for output. Verification checks 0 (0, 0) should
+    # be equal to TL, 1 (1535, 0) equal to BL, 2 (0, 991) is the TR point, and 3 (1535, 991) is the BR point.
+    if math.isclose(verification_checks[0][0], coords["tl"]["x"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[0][1], coords["tl"]["y"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[1][0], coords["bl"]["x"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[1][1], coords["bl"]["y"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[2][0], coords["tr"]["x"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[2][1], coords["tr"]["y"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[3][0], coords["br"]["x"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[3][1], coords["br"]["y"], rel_tol=1e-10):
+        print("\nFinal grid checks passed.")
+    else:
+        print("\nERROR: Final grid checks failed!")
 
     return 0
 
