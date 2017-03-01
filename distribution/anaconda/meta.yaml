@@ -1,0 +1,32 @@
+package:
+  name: ucvm
+  version: 17.3.0
+
+source:
+  git_url: https://github.com/SCECcode/UCVM.git
+
+requirements:
+  build:
+    - python==3.6
+    - setuptools
+    - basemap==1.0.7
+    - PyQt5
+    - h5py
+    - Pillow
+    - xmltodict
+    - humanize
+    - pyproj
+    - psutil
+    - matplotlib
+
+  run:
+    - python
+
+test:
+  imports:
+    -
+
+about:
+  home: https://github.com/SCECcode/UCVM
+  license: Apache 2.0
+  license_file: LICENSE

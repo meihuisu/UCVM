@@ -1,3 +1,5 @@
+.. _Mac OS X:
+
 Mac OS X
 ========
 
@@ -58,26 +60,18 @@ GFortran installed. Download and install the following DMG to satisfy this requi
 
 http://coudert.name/software/gfortran-6.3-Sierra.dmg
 
-Finally, if you are looking to use UCVM for visualization, you will need to download Basemap and install it on your
-computer.  The source code to basemap is available from
-https://downloads.sourceforge.net/project/matplotlib/matplotlib-toolkits/basemap-1.0.7/basemap-1.0.7.tar.gz. Download
-this file and then execute the following:
-::
+Now you are ready to download and install UCVM.
 
-    SCECs-MacBook-Pro:~ scec$ tar zxvf basemap-1.0.7.tar.gz
-    SCECs-MacBook-Pro:~ scec$ cd basemap-1.0.7
-    SCECs-MacBook-Pro:~/basemap-1.0.7 scec$ cd geos-3.3.3
-    SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ export GEOS_DIR=/usr/local/geos
-    SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ ./configure --prefix=$GEOS_DIR
-    SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ make
-    SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ sudo make install
-    SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ cd ..
-    SCECs-MacBook-Pro:~/basemap-1.0.7 scec$ python3 setup.py install
+Anaconda (Easy Method)
+~~~~~~~~~~~~~~~~~~~~~~
 
-Now you are ready to download and install UCVM!
+Using Anaconda for your UCVM installation makes the process easier and is supported on Mac OS X. We have tested UCVM
+against Anaconda version 4.3.0.
 
-Installing UCVM
-~~~~~~~~~~~~~~~
+If you have :ref:`Anaconda` installed, please visit our :ref:`Anaconda` guide now.
+
+Installing UCVM (Advanced Method)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It is strongly recommended that users of UCVM use Python virtual environments to install UCVM. Python virtual
 environments allow all the UCVM components to be installed in one folder and independently of other Python packages.
@@ -119,6 +113,22 @@ notify you that the installation has completed successfully.
     test_ucvm_load_models... ok
     test_ucvm_parse_model_string... ok
     and so on
+
+If you are looking to use UCVM for visualization, you will need to download Basemap and install it on your
+computer.  The source code to basemap is available from
+https://downloads.sourceforge.net/project/matplotlib/matplotlib-toolkits/basemap-1.0.7/basemap-1.0.7.tar.gz. Download
+this file and then execute the following:
+::
+
+    (ucvm-17.2.0) SCECs-MacBook-Pro:~ scec$ tar zxvf basemap-1.0.7.tar.gz
+    (ucvm-17.2.0) SCECs-MacBook-Pro:~ scec$ cd basemap-1.0.7
+    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7 scec$ cd geos-3.3.3
+    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ export GEOS_DIR=/usr/local/geos
+    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ ./configure --prefix=$GEOS_DIR
+    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ make
+    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ sudo make install
+    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ cd ..
+    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7 scec$ python3 setup.py install
 
 After installation, we highly recommend that you check out our :ref:`Tutorial` and
 the :ref:`CommandReference` section. These will enable you to become more familiar with the UCVM platform.
