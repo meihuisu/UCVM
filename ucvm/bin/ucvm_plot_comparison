@@ -42,7 +42,9 @@ try:
     from matplotlib import ticker
 except ImportError:
     display_and_raise_error(8)
+    mpl = None                      # Make PyCharm happy.
     plt = None                      # Make PyCharm happy.
+    ticker = None                   # Make PyCharm happy.
 
 
 def usage() -> None:
@@ -65,6 +67,12 @@ def usage() -> None:
 
 
 def ask_questions() -> dict:
+    """
+    Asks the questions necessary to generate the comparison plot.
+
+    Returns:
+        A dictionary containing the answers to those questions.
+    """
     answers = {
         "type": "horizontal",
         "start_point": {

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """
 Defines the basic ucvm_query utility. This command line program is used to extract material
 properties from the models and return them in text-based format. The usage of this utility is
@@ -33,8 +33,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+# Python Imports
 import sys
 
+# UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.shared import UCVM_DEFAULT_PROJECTION, UCVM_DEPTH, UCVM_ELEVATION
 from ucvm.src.shared.properties import Point, SeismicData
@@ -48,7 +50,9 @@ OUTPUT_FORMAT = "%-12.4%-12.4f%-12.4f%s%s%s%s%s%s%s%s%s%s"
 def usage() -> None:
     """
     Displays the help text associated with this utility.
-    :return: Nothing.
+
+    Returns:
+        Nothing
     """
     UCVM.print_with_replacements(
         "\n"
@@ -81,10 +85,14 @@ def parse_line(line: str, depth_elev: int=UCVM_DEPTH,
     """
     Given an inputted line and a depth setting (if applicable) and a projection (if applicable),
     return the SeismicData class constructed with the data in the UCVM default projection.
-    :param str line: The input line as a string.
-    :param int depth_elev: UCVM.DEPTH or UCVM.ELEVATION depending on the query type.
-    :param str projection: The projection as a Proj.4 string if not the default one.
-    :return: A SeismicData object containing the necessary information for the query.
+
+    Args:
+        line (str): The input line as a string.
+        depth_elev (int): UCVM.DEPTH or UCVM.ELEVATION depending on the query type.
+        projection (str): The projection as a Proj.4 string if not the default one.
+
+    Returns:
+        A SeismicData object containing the necessary information for the query.
     """
     components = line.split()
 
@@ -110,8 +118,12 @@ def parse_line(line: str, depth_elev: int=UCVM_DEPTH,
 def generate_output_line(seismicdata: SeismicData) -> str:
     """
     Given a SeismicData object, we need to output the material properties as a string.
-    :param SeismicData seismicdata: The SeismicData object from which the line should be generated.
-    :return: The line containing all the material property information outputted correctly.
+
+    Args:
+        seismicdata (SeismicData): The SeismicData object from which the line should be generated.
+
+    Returns:
+        The line containing all the material property information outputted correctly.
     """
     if seismicdata.velocity_properties is not None:
         vp_out = "%-12.4f" % seismicdata.velocity_properties.vp \
@@ -164,7 +176,9 @@ def generate_output_line(seismicdata: SeismicData) -> str:
 def main() -> int:
     """
     The main UCVM query function.
-    :return: 0 if successful. Raises an error code otherwise, if not.
+
+    Returns:
+        0 if successful. Raises an error code otherwise, if not.
     """
     try:
         options = UCVM.parse_options([

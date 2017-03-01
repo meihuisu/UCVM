@@ -16,9 +16,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+# Python Imports
 import sys
+
+# Package Imports
 import xmltodict
 
+# UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.shared.functions import ask_and_validate, is_number, is_acceptable_value, \
     is_valid_proj4_string
@@ -29,7 +33,9 @@ from ucvm.src.visualization.cross_section import CrossSection
 def usage() -> None:
     """
     Displays the help text associated with this utility.
-    :return: Nothing.
+
+    Returns:
+        Nothing
     """
     UCVM.print_with_replacements(
         "\n"
@@ -43,8 +49,10 @@ def usage() -> None:
 
 def ask_questions(test: bool) -> dict:
     """
-    Asks the necessary questions.
-    :return: The compiled question dictionary if successful, None if not.
+    Asks the necessary questions to generate the cross-section plot.
+
+    Returns:
+        The filled-in question dictionary if successful and None if not.
     """
     answers = {
         "start_point": {
@@ -172,8 +180,10 @@ def ask_questions(test: bool) -> dict:
 
 def main() -> int:
     """
-    The main UCVM depth profile function.
-    :return: 0 if successful. Raises an error code otherwise, if not.
+    The main UCVM cross-section generation function.
+
+    Returns:
+        0 if successful. Raises an error code otherwise, if not.
     """
     try:
         options = UCVM.parse_options([

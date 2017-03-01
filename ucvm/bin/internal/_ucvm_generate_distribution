@@ -23,8 +23,10 @@ limitations under the License.
 # Python Imports
 import sys
 import os
-import xmltodict
 from subprocess import call, check_call
+
+# Package Imports
+import xmltodict
 
 # UCVM Imports
 from ucvm.src.framework.ucvm import UCVM

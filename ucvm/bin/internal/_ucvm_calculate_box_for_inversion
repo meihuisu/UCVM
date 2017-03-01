@@ -22,9 +22,11 @@ limitations under the License.
 """
 # Python Imports
 import sys
+import os
 import math
 
 # Package Imports
+import numpy as np
 import pyproj
 
 # UCVM Imports
@@ -59,7 +61,8 @@ def main() -> int:
     """
     try:
         options = UCVM.parse_options([
-            {"short": "f", "long": "file", "value": True, "required": True}
+            {"short": "f", "long": "file", "value": True, "required": True},
+            {"short": "d", "long": "data", "value": True, "required": True}
         ], usage)
     except ValueError as v_err:
         print("[ERROR]: " + str(v_err) + "\n")
@@ -258,59 +261,98 @@ def main() -> int:
     print("Angles match!" if start_angle == end_angle and math.isclose(start_angle, end_angle_4, rel_tol=1e-10) else
           "Angles do not match! ERROR!")
 
+    print("\nReading in data files.")
+
+    vp_arr = np.empty((nx, ny, nz))
+    vs_arr = np.empty((nx, ny, nz))
+    dn_arr = np.empty((nx, ny, nz))
+    for i in range(1, nz + 1):
+        with open(os.path.join(options["data"], "CVM4SI26_slice_%03d" % i)) as fd:
+            for line in fd:
+                components = line.split()
+                vp_arr[int(components[0]) - 1, int(components[1]) - 1, nz - i] = float(components[5])
+                vs_arr[int(components[0]) - 1, int(components[1]) - 1, nz - i] = float(components[6])
+                dn_arr[int(components[0]) - 1, int(components[1]) - 1, nz - i] = float(components[7])
+
     print("\nGenerating grid!")
+
+    coords_arr = np.empty((nx, ny, 4))
 
     # We have the four corners. We've verified they are right. Now we need to iterate through the grid points and
     # print them out.
-    end_angle *= -1     # Need to rotate downwards (since we are printing using TL as origin).
-    out_text = "X                   Y                   UTM X               UTM Y               LON X               " \
-               "LON Y\n"
+    end_angle = 90 - end_angle     # Need to rotate downwards (since we are printing using TL as origin).
     verification_checks = [0, 0, 0, 0]
-    for x in range(ny):
-        for y in range(nx):
+    for y in range(ny):
+        for x in range(nx):
             # Rotate grid for printing purposes.
-            out_text += "%-20d%-20d" % (x + 1, y + 1)
             new_coord = [x * input_dict["spacing"], y * input_dict["spacing"]]
             # Rotate the point.
             new_coord = [
                 new_coord[0] * math.cos(math.radians(end_angle)) - new_coord[1] * math.sin(math.radians(end_angle)),
                 new_coord[1] * math.cos(math.radians(end_angle)) + new_coord[0] * math.sin(math.radians(end_angle))
             ]
-            new_coord = [new_coord[0] + coords["tl"]["x"], new_coord[1] + coords["tl"]["y"]]
-
-            out_text += "%-20.6f%-20.6f" % (new_coord[0], new_coord[1])
+            new_coord = [new_coord[0] + coords["bl"]["x"], new_coord[1] + coords["bl"]["y"]]
 
             # Print out the long, lat version.
             (lon, lat) = pyproj.transform(utm_proj, latlon_proj, new_coord[0], new_coord[1])
-            out_text += "%-20.10f%-20.10f" % (lon, lat)
 
-            out_text += "\n"
+            coords_arr[x][y][0] = new_coord[0]
+            coords_arr[x][y][1] = new_coord[1]
+            coords_arr[x][y][2] = lon
+            coords_arr[x][y][3] = lat
 
             if x == 0 and y == 0:
                 verification_checks[0] = new_coord
-            elif x == ny - 1 and y == 0:
+            elif x == 0 and y == ny - 1:
                 verification_checks[1] = new_coord
-            elif x == 0 and y == nx - 1:
+            elif x == nx - 1 and y == 0:
                 verification_checks[2] = new_coord
-            elif x == ny - 1 and y == nx - 1:
+            elif x == nx - 1 and y == ny - 1:
                 verification_checks[3] = new_coord
-
-    with open("generated_grid.txt", "w") as fd:
-        fd.write(out_text)
 
     # Perform verification checks. Remember that we are flipping X and Y for output. Verification checks 0 (0, 0) should
     # be equal to TL, 1 (1535, 0) equal to BL, 2 (0, 991) is the TR point, and 3 (1535, 991) is the BR point.
-    if math.isclose(verification_checks[0][0], coords["tl"]["x"], rel_tol=1e-10) and \
-       math.isclose(verification_checks[0][1], coords["tl"]["y"], rel_tol=1e-10) and \
-       math.isclose(verification_checks[1][0], coords["bl"]["x"], rel_tol=1e-10) and \
-       math.isclose(verification_checks[1][1], coords["bl"]["y"], rel_tol=1e-10) and \
-       math.isclose(verification_checks[2][0], coords["tr"]["x"], rel_tol=1e-10) and \
-       math.isclose(verification_checks[2][1], coords["tr"]["y"], rel_tol=1e-10) and \
-       math.isclose(verification_checks[3][0], coords["br"]["x"], rel_tol=1e-10) and \
-       math.isclose(verification_checks[3][1], coords["br"]["y"], rel_tol=1e-10):
+    if math.isclose(verification_checks[0][0], coords["bl"]["x"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[0][1], coords["bl"]["y"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[1][0], coords["tl"]["x"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[1][1], coords["tl"]["y"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[2][0], coords["br"]["x"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[2][1], coords["br"]["y"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[3][0], coords["tr"]["x"], rel_tol=1e-10) and \
+       math.isclose(verification_checks[3][1], coords["tr"]["y"], rel_tol=1e-10):
         print("\nFinal grid checks passed.")
     else:
         print("\nERROR: Final grid checks failed!")
+        print(verification_checks)
+        print(coords)
+
+    print("\nWriting out generated grid text file.")
+
+    out_text = "X                   "
+    out_text += "Y                   "
+    out_text += "Z                   "
+    out_text += "UTM X               "
+    out_text += "UTM Y               "
+    out_text += "LON X               "
+    out_text += "LON Y               "
+    out_text += "DEPTH               "
+    out_text += "VP                  "
+    out_text += "VS                  "
+    out_text += "DENSITY\n"
+
+    with open(os.path.join(options["data"], "generated_grid.txt"), "w") as fd:
+        fd.write(out_text)
+
+        for z in range(nz):
+            for y in range(ny):
+                for x in range(nx):
+                    fd.write("%-20d%-20d%-20d" % (x + 1, y + 1, z + 1))
+                    fd.write("%-20.6f%-20.6f" % (coords_arr[x][y][0], coords_arr[x][y][1]))
+                    fd.write("%-20.10f%-20.10f" % (coords_arr[x][y][2], coords_arr[x][y][3]))
+                    fd.write("%-20d" % (z * input_dict["spacing"]))
+                    fd.write("%-20.3f%-20.3f%-20.3f\n" % (vp_arr[x][y][z], vs_arr[x][y][z], dn_arr[x][y][z]))
+
+    print("All done!")
 
     return 0
 

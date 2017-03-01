@@ -2,10 +2,8 @@
 """
 Single-core E-tree generation.
 
-Generates an e-tree from a given model string. This utility can read in legacy UCVM
-15.10.0 and below configuration files as well as use the new XML configuration format. If no
-file-format is specified, then this utility will ask a series of prompts before generating the
-mesh.
+Generates an e-tree from a given model string. This utility can read new XML configuration format.
+If no file is specified, then this utility will ask a series of prompts before generating the mesh.
 
 Copyright 2017 Southern California Earthquake Center
 
@@ -65,7 +63,9 @@ def usage() -> None:
 def main() -> int:
     """
     The main UCVM e-tree create function.
-    :return: 0 if successful. Raises an error code otherwise, if not.
+
+    Returns:
+        0 if successful. Raises an error code otherwise, if not.
     """
     start_time = time.time()
 

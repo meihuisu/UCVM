@@ -25,9 +25,11 @@ limitations under the License.
 import sys
 import os
 import math
+from subprocess import Popen, PIPE, STDOUT
+
+# Package Imports
 import xmltodict
 import numpy as np
-from subprocess import Popen, PIPE, STDOUT
 
 SPACING = 0.05
 DEPTH = 5000
