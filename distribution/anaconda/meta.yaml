@@ -7,20 +7,29 @@ source:
 
 requirements:
   build:
-    - python==3.6
+    - python ==3.5
     - setuptools
-    - basemap==1.0.7
-    - PyQt5
+    - basemap ==1.0.7
     - h5py
-    - Pillow
     - xmltodict
     - humanize
     - pyproj
     - psutil
     - matplotlib
+    - mpi4py
 
   run:
     - python
+    - python ==3.5
+    - setuptools
+    - basemap ==1.0.7
+    - h5py
+    - xmltodict
+    - humanize
+    - pyproj
+    - psutil
+    - matplotlib
+    - mpi4py
 
 test:
   imports:

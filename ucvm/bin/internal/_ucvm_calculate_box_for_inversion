@@ -144,6 +144,10 @@ def main() -> int:
     print("\tY points: %d" % ny)
     print("\tZ points: %d" % nz)
 
+    # We always have 100 layers to these models.
+    if nz != 100:
+        nz = 100
+
     nxt = nx / input_dict["hs"]["x"]
     nyt = ny / input_dict["hs"]["y"]
     nzt = nz / input_dict["hs"]["z"]
@@ -267,7 +271,7 @@ def main() -> int:
     vs_arr = np.empty((nx, ny, nz))
     dn_arr = np.empty((nx, ny, nz))
     for i in range(1, nz + 1):
-        with open(os.path.join(options["data"], "CVM4SI26_slice_%03d" % i)) as fd:
+        with open(os.path.join(options["data"], "CCA06_slice_%03d" % i)) as fd:
             for line in fd:
                 components = line.split()
                 vp_arr[int(components[0]) - 1, int(components[1]) - 1, nz - i] = float(components[5])
@@ -352,7 +356,7 @@ def main() -> int:
                     fd.write("%-20d" % (z * input_dict["spacing"]))
                     fd.write("%-20.3f%-20.3f%-20.3f\n" % (vp_arr[x][y][z], vs_arr[x][y][z], dn_arr[x][y][z]))
 
-    print("All done!")
+    print("\nAll done!")
 
     return 0
 

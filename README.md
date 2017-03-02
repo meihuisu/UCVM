@@ -1,13 +1,13 @@
 # UCVM
 
-UCVM 17.2.0 represents the fifth major release of the Unified Community Velocity Model (UCVM) framework. UCVM is a
+UCVM 17.3.0 represents the fifth major release of the Unified Community Velocity Model (UCVM) framework. UCVM is a
 collection of software utilities that are designed to make querying velocity models, building meshes, and visualizing
 velocity models easier to do through a uniform software interface. UCVM has been used extensively to generate meshes
 and e-trees that are then used for 3D wave propagation simulations within California.
 
 ## Features
 
-UCVM 17.2.0 includes key capabilities that are critical for scientists’ ability to run large-scale 3D wave propagation
+UCVM 17.3.0 includes key capabilities that are critical for scientists’ ability to run large-scale 3D wave propagation
 simulations. UCVM has been re-designed from scratch to support the needs of scientists who require meshes that are in
 the terabytes. In addition to the old capabilities of UCVM, this version supports the following:
 

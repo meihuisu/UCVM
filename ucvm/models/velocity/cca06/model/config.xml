@@ -25,24 +25,24 @@
     <!-- etc. that are specified in the UTM projection string within ucvm_model.xml. -->
     <corners>
         <bottom_left>
-            <e>779032.90147686121</e>
-            <n>3699450.9834490498</n>
+            <e>779122.0633698935</e>
+            <n>3699463.7144915615</n>
         </bottom_left>
         <top_left>
-            <e>503240.52312058664</e>
-            <n>4051863.8294700049</n>
+            <e>503336.2703077224</e>
+            <n>4051881.7139539463</n>
         </top_left>
         <top_right>
-            <e>906054.31248308625</e>
-            <n>4367099.1401498578</n>
+            <e>906155.9501401465</e>
+            <n>4367109.4975322718</n>
         </top_right>
         <bottom_right>
-            <e>1181846.6908393607</e>
-            <n>4014686.2941289032</n>
+            <e>1181941.7432023175</e>
+            <n>4014691.4980698866</n>
         </bottom_right>
     </corners>
 
-    <!-- Defines the UTM zone. -->
-    <zone>10</zone>
+    <!-- Defines the projection information. -->
+    <proj>+proj=utm +ellps=clrk66 +datum=NAD27 +zone=10</proj>
 
 </root>
