@@ -42,26 +42,26 @@ install UCVM without a virtual environment.
 To create and activate your virtual environment, do the following:
 ::
 
-    scec@scec-VirtualBox:~$ pyvenv-3.5 ~/ucvm-17.2.0
-    scec@scec-VirtualBox:~$ source ~/ucvm-17.2.0/bin/activate
+    scec@scec-VirtualBox:~$ pyvenv-3.5 ~/ucvm-17.3.0
+    scec@scec-VirtualBox:~$ source ~/ucvm-17.3.0/bin/activate
 
 You should notice that your command line prompt has changed include "ucvm-|version|" in brackets. If you don't see this,
 then the virtual environment has not been activated correctly.
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$
 
 Now we can clone the UCVM software.
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$ git clone https://github.com/SCECcode/UCVM
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$ git clone https://github.com/SCECcode/UCVM
 
 Run the ucvm_setup script. This script does some basic sanity checks of the installation environment and makes sure
 that the installation looks like it can proceed successfully.
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$ cd UCVM
-    (ucvm-17.2.0) scec@scec-VirtualBox:~/UCVM$ ./ucvm_setup
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$ cd UCVM
+    (ucvm-17.3.0) scec@scec-VirtualBox:~/UCVM$ ./ucvm_setup
 
 The UCVM setup script will ask a series of questions about which models you would like to install. Enter "y" to install
 a model or "n" to not install it.
@@ -80,17 +80,17 @@ If you are looking to *use UCVM for visualization*, you will need to install bas
 be installed.
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~/UCVM$ sudo apt install libgeos-3.5.0 libgeos-dev
-    (ucvm-17.2.0) scec@scec-VirtualBox:~/UCVM$ sudo ln -s /usr/lib/x86_64-linux-gnu/libgeos_c.so /usr/lib/x86_64-linux-gnu/libgeos.so
+    (ucvm-17.3.0) scec@scec-VirtualBox:~/UCVM$ sudo apt install libgeos-3.5.0 libgeos-dev
+    (ucvm-17.3.0) scec@scec-VirtualBox:~/UCVM$ sudo ln -s /usr/lib/x86_64-linux-gnu/libgeos_c.so /usr/lib/x86_64-linux-gnu/libgeos.so
 
 Now we can download basemap. The source code to basemap is available from
 https://downloads.sourceforge.net/project/matplotlib/matplotlib-toolkits/basemap-1.0.7/basemap-1.0.7.tar.gz. Download
 this file and then execute the following:
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~/Downloads$ tar zxvf basemap-1.0.7.tar.gz
-    (ucvm-17.2.0) scec@scec-VirtualBox:~/Downloads/basemap-1.0.7$ cd basemap-1.0.7
-    (ucvm-17.2.0) scec@scec-VirtualBox:~/Downloads/basemap-1.0.7$ python3 setup.py install
+    (ucvm-17.3.0) scec@scec-VirtualBox:~/Downloads$ tar zxvf basemap-1.0.7.tar.gz
+    (ucvm-17.3.0) scec@scec-VirtualBox:~/Downloads/basemap-1.0.7$ cd basemap-1.0.7
+    (ucvm-17.3.0) scec@scec-VirtualBox:~/Downloads/basemap-1.0.7$ python3 setup.py install
 
 After installation, we highly recommend that you check out our :ref:`Tutorial` and
 the :ref:`CommandReference` section. These will enable you to become more familiar with the UCVM platform.
@@ -101,7 +101,7 @@ Quick Test
 To quickly test if UCVM is installed correctly, type the following:
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~/UCVM$ ucvm_query -m 1d[SCEC]
+    (ucvm-17.3.0) scec@scec-VirtualBox:~/UCVM$ ucvm_query -m 1d[SCEC]
     Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
     all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
     -118 34 0

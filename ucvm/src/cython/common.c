@@ -1185,7 +1185,7 @@ static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_12c_etree_query(CYTHON_U
 static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_14c_etree_bilinear_geo2xy(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_lon, float __pyx_v_lat, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims); /* proto */
 static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_16c_etree_bilinear_xy2geo(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_x, float __pyx_v_y, PyObject *__pyx_v_corners, PyObject *__pyx_v_dims); /* proto */
 static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_18c_etree_bilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_x, float __pyx_v_y, float __pyx_v_x1, float __pyx_v_y1, float __pyx_v_x2, float __pyx_v_y2, float __pyx_v_q11, float __pyx_v_q21, float __pyx_v_q12, float __pyx_v_q22); /* proto */
-static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_20calculate_grid_point(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_width, double __pyx_v_height, double __pyx_v_depth, double __pyx_v_x_value, double __pyx_v_y_value, double __pyx_v_z_value, int __pyx_v_dim_x, int __pyx_v_dim_y, int __pyx_v_z_interval); /* proto */
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_20calculate_grid_point(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_width, double __pyx_v_height, CYTHON_UNUSED double __pyx_v_depth, double __pyx_v_x_value, double __pyx_v_y_value, double __pyx_v_z_value, int __pyx_v_dim_x, int __pyx_v_dim_y, int __pyx_v_z_interval); /* proto */
 static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_22trilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_t1, float __pyx_v_t2, float __pyx_v_t3, float __pyx_v_t4, float __pyx_v_b1, float __pyx_v_b2, float __pyx_v_b3, float __pyx_v_b4, float __pyx_v_x_percent, float __pyx_v_y_percent, float __pyx_v_z_percent); /* proto */
 static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_24bilinear_interpolate(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_v1, float __pyx_v_v2, float __pyx_v_v3, float __pyx_v_v4, float __pyx_v_x_percent, float __pyx_v_y_percent); /* proto */
 static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_26fortran_convert_ll_utm(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_longitude, float __pyx_v_latitude, int __pyx_v_zone); /* proto */
@@ -4148,7 +4148,7 @@ static PyMethodDef __pyx_mdef_13ucvm_c_common_11UCVMCCommon_21calculate_grid_poi
 static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_21calculate_grid_point(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   double __pyx_v_width;
   double __pyx_v_height;
-  double __pyx_v_depth;
+  CYTHON_UNUSED double __pyx_v_depth;
   double __pyx_v_x_value;
   double __pyx_v_y_value;
   double __pyx_v_z_value;
@@ -4264,7 +4264,7 @@ static PyObject *__pyx_pw_13ucvm_c_common_11UCVMCCommon_21calculate_grid_point(P
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_20calculate_grid_point(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_width, double __pyx_v_height, double __pyx_v_depth, double __pyx_v_x_value, double __pyx_v_y_value, double __pyx_v_z_value, int __pyx_v_dim_x, int __pyx_v_dim_y, int __pyx_v_z_interval) {
+static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_20calculate_grid_point(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_width, double __pyx_v_height, CYTHON_UNUSED double __pyx_v_depth, double __pyx_v_x_value, double __pyx_v_y_value, double __pyx_v_z_value, int __pyx_v_dim_x, int __pyx_v_dim_y, int __pyx_v_z_interval) {
   int __pyx_v_x_c;
   int __pyx_v_y_c;
   int __pyx_v_z_c;
@@ -4286,7 +4286,7 @@ static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_20calculate_grid_point(C
  * 
  *         cdef int x_c = (int)(floor(x_value / width * (dim_x - 1)))             # <<<<<<<<<<<<<<
  *         cdef int y_c = (int)(floor(y_value / height * (dim_y - 1)))
- *         cdef int z_c = (int)(floor(depth / z_interval - 1) - floor(z_value / z_interval))
+ *         cdef int z_c = (int)(floor(z_value / z_interval))
  */
   if (unlikely(__pyx_v_width == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
@@ -4298,7 +4298,7 @@ static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_20calculate_grid_point(C
  * 
  *         cdef int x_c = (int)(floor(x_value / width * (dim_x - 1)))
  *         cdef int y_c = (int)(floor(y_value / height * (dim_y - 1)))             # <<<<<<<<<<<<<<
- *         cdef int z_c = (int)(floor(depth / z_interval - 1) - floor(z_value / z_interval))
+ *         cdef int z_c = (int)(floor(z_value / z_interval))
  * 
  */
   if (unlikely(__pyx_v_height == 0)) {
@@ -4310,7 +4310,7 @@ static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_20calculate_grid_point(C
   /* "ucvm_c_common.pyx":214
  *         cdef int x_c = (int)(floor(x_value / width * (dim_x - 1)))
  *         cdef int y_c = (int)(floor(y_value / height * (dim_y - 1)))
- *         cdef int z_c = (int)(floor(depth / z_interval - 1) - floor(z_value / z_interval))             # <<<<<<<<<<<<<<
+ *         cdef int z_c = (int)(floor(z_value / z_interval))             # <<<<<<<<<<<<<<
  * 
  *         cdef double x_p = fmod(x_value, (width / (dim_x - 1))) / (width / (dim_x - 1))
  */
@@ -4318,14 +4318,10 @@ static PyObject *__pyx_pf_13ucvm_c_common_11UCVMCCommon_20calculate_grid_point(C
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
     __PYX_ERR(0, 214, __pyx_L1_error)
   }
-  if (unlikely(__pyx_v_z_interval == 0)) {
-    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 214, __pyx_L1_error)
-  }
-  __pyx_v_z_c = ((int)(floor(((__pyx_v_depth / __pyx_v_z_interval) - 1.0)) - floor((__pyx_v_z_value / __pyx_v_z_interval))));
+  __pyx_v_z_c = ((int)floor((__pyx_v_z_value / __pyx_v_z_interval)));
 
   /* "ucvm_c_common.pyx":216
- *         cdef int z_c = (int)(floor(depth / z_interval - 1) - floor(z_value / z_interval))
+ *         cdef int z_c = (int)(floor(z_value / z_interval))
  * 
  *         cdef double x_p = fmod(x_value, (width / (dim_x - 1))) / (width / (dim_x - 1))             # <<<<<<<<<<<<<<
  *         cdef double y_p = fmod(y_value, (height / (dim_y - 1))) / (height / (dim_y - 1))

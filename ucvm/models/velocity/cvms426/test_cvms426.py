@@ -7,10 +7,11 @@ Copyright:
 Developer:
     David Gill <davidgil@usc.edu>
 """
+
 # UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.shared.properties import SeismicData, Point
-from ucvm.src.shared.test import run_acceptance_test, UCVMTestCase
+from ucvm.src.shared.test import UCVMTestCase
 
 
 class CVMS426VelocityModelTest(UCVMTestCase):
@@ -18,19 +19,6 @@ class CVMS426VelocityModelTest(UCVMTestCase):
     Defines the CVM-S4.26 test cases.
     """
     description = "CVM-S4.26"
-
-    def test_cvms426_acceptance(self):
-        """
-        Runs the built-in acceptance test for CVM-S4.26. This compares a known grid of lat, lon
-        material properties - queried at depth - to what this installation of CVM-S4.26 returns
-        on the user's computer.
-
-        Returns:
-            None
-        """
-        self._test_start("CVM-S4.26 acceptance test")
-        #self.assertTrue(run_acceptance_test(self, "cvms426", ["vp", "vs"]))
-        self._test_end()
 
     def test_cvms426_random_points(self):
         """
@@ -68,10 +56,12 @@ class CVMS426VelocityModelTest(UCVMTestCase):
 
         points = []
         for point in test_data.split("\n"):
+            if point.strip() == "":
+                continue
             point = point.split()
             points.append(
-                (float(point[3]), float(points[4]), int(points[2]) * 500, float(points[5]), float(points[6]),
-                 float(points[7]))
+                (float(point[3]), float(point[4]), (int(point[2]) - 1) * 500, float(point[5]), float(point[6]),
+                 float(point[7]))
             )
 
         sd_test = [SeismicData(Point(p[0], p[1], p[2])) for p in points]

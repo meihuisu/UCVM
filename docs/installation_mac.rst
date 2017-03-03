@@ -81,27 +81,27 @@ install UCVM without a virtual environment.
 To create and activate your virtual environment, do the following:
 ::
 
-    SCECs-MacBook-Pro:~ scec$ pyvenv-3.5 ~/ucvm-17.2.0
-    SCECs-MacBook-Pro:~ scec$ source ~/ucvm-17.2.0/bin/activate
+    SCECs-MacBook-Pro:~ scec$ pyvenv-3.5 ~/ucvm-17.3.0
+    SCECs-MacBook-Pro:~ scec$ source ~/ucvm-17.3.0/bin/activate
 
 You should notice that your command line prompt has changed include "ucvm-|version|" in brackets. If you don't see this,
 then the virtual environment has not been activated correctly.
 ::
 
-    (ucvm-17.2.0) SCECs-MacBook-Pro:~ scec$
+    (ucvm-17.3.0) SCECs-MacBook-Pro:~ scec$
 
 Now we can clone the UCVM software.
 ::
 
-    (ucvm-17.2.0) SCECs-MacBook-Pro:~ scec$ git clone https://github.com/SCECcode/UCVM
+    (ucvm-17.3.0) SCECs-MacBook-Pro:~ scec$ git clone https://github.com/SCECcode/UCVM
 
 Run the ucvm_setup script. This script does some basic sanity checks of the installation environment and makes sure
 that the installation looks like it can proceed successfully.
 ::
 ::
 
-    (ucvm-17.2.0) SCECs-MacBook-Pro:~ scec$ cd UCVM
-    (ucvm-17.2.0) SCECs-MacBook-Pro:UCVM scec$ ./ucvm_setup
+    (ucvm-17.3.0) SCECs-MacBook-Pro:~ scec$ cd UCVM
+    (ucvm-17.3.0) SCECs-MacBook-Pro:UCVM scec$ ./ucvm_setup
 
 The UCVM setup script will ask a series of questions about which models you would like to install. Enter "y" to install
 a model or "n" to not install it.
@@ -120,15 +120,15 @@ https://downloads.sourceforge.net/project/matplotlib/matplotlib-toolkits/basemap
 this file and then execute the following:
 ::
 
-    (ucvm-17.2.0) SCECs-MacBook-Pro:~ scec$ tar zxvf basemap-1.0.7.tar.gz
-    (ucvm-17.2.0) SCECs-MacBook-Pro:~ scec$ cd basemap-1.0.7
-    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7 scec$ cd geos-3.3.3
-    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ export GEOS_DIR=/usr/local/geos
-    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ ./configure --prefix=$GEOS_DIR
-    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ make
-    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ sudo make install
-    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ cd ..
-    (ucvm-17.2.0) SCECs-MacBook-Pro:~/basemap-1.0.7 scec$ python3 setup.py install
+    (ucvm-17.3.0) SCECs-MacBook-Pro:~ scec$ tar zxvf basemap-1.0.7.tar.gz
+    (ucvm-17.3.0) SCECs-MacBook-Pro:~ scec$ cd basemap-1.0.7
+    (ucvm-17.3.0) SCECs-MacBook-Pro:~/basemap-1.0.7 scec$ cd geos-3.3.3
+    (ucvm-17.3.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ export GEOS_DIR=/usr/local/geos
+    (ucvm-17.3.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ ./configure --prefix=$GEOS_DIR
+    (ucvm-17.3.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ make
+    (ucvm-17.3.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ sudo make install
+    (ucvm-17.3.0) SCECs-MacBook-Pro:~/basemap-1.0.7/geos-3.3.3 scec$ cd ..
+    (ucvm-17.3.0) SCECs-MacBook-Pro:~/basemap-1.0.7 scec$ python3 setup.py install
 
 After installation, we highly recommend that you check out our :ref:`Tutorial` and
 the :ref:`CommandReference` section. These will enable you to become more familiar with the UCVM platform.
@@ -139,7 +139,7 @@ Quick Test
 To quickly test if UCVM is installed correctly, type the following:
 ::
 
-    (ucvm-17.2.0) SCECs-MacBook-Pro:UCVM scec$ ucvm_query -m 1d[SCEC]
+    (ucvm-17.3.0) SCECs-MacBook-Pro:UCVM scec$ ucvm_query -m 1d[SCEC]
     Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
     all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
     -118 34 0

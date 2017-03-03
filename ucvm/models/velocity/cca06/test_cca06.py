@@ -10,7 +10,7 @@ Developer:
 # UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.shared.properties import SeismicData, Point
-from ucvm.src.shared.test import run_acceptance_test, UCVMTestCase
+from ucvm.src.shared.test import UCVMTestCase
 
 
 class CCA06VelocityModelTest(UCVMTestCase):
@@ -18,19 +18,6 @@ class CCA06VelocityModelTest(UCVMTestCase):
     Defines the test cases for the CCA06 velocity model. It just runs an acceptance test.
     """
     description = "CCA06"
-
-    def test_cca06_acceptance(self):
-        """
-        Runs the built-in acceptance test for the CCA06 velocity model. This compares a known
-        grid of lat, lon material properties - queried at depth - to what this installation of the
-        CCA06 velocity model returns on the user's computer.
-
-        Returns:
-            None
-        """
-        self._test_start("CCA06 acceptance test")
-        #self.assertTrue(run_acceptance_test(self, "cca06"))
-        self._test_end()
 
     def test_cca06_random_points(self):
         """
@@ -68,10 +55,12 @@ class CCA06VelocityModelTest(UCVMTestCase):
 
         points = []
         for point in test_data.split("\n"):
+            if point.strip() == "":
+                continue
             point = point.split()
             points.append(
-                (float(point[3]), float(points[4]), int(points[2]) * 500, float(points[5]), float(points[6]),
-                 float(points[7]))
+                (float(point[3]), float(point[4]), (int(point[2]) - 1) * 500, float(point[5]), float(point[6]),
+                 float(point[7]))
             )
 
         sd_test = [SeismicData(Point(p[0], p[1], p[2])) for p in points]

@@ -14,8 +14,8 @@
     <!-- the last layer down to depth (that is layer z - 1 goes from (z-1) * z_interval -->
     <!-- to depth). -->
     <dimensions>
-        <x>1536</x>
-        <y>992</y>
+        <x>992</x>
+        <y>1536</y>
         <z>100</z>
         <z_interval>500</z_interval>
         <depth>50000</depth>
@@ -25,20 +25,20 @@
     <!-- etc. that are specified in the UTM projection string within ucvm_model.xml. -->
     <corners>
         <bottom_left>
-            <e>10703.269419</e>
-            <n>3865247.838150</n>
+            <e>596089.9822294062</e>
+            <n>3368882.4017375312</n>
         </bottom_left>
         <bottom_right>
-            <e>596089.982229</e>
-            <n>3368882.401738</n>
+            <e>916544.8014376826</e>
+            <n>3746809.5889656940</n>
         </bottom_right>
         <top_left>
-            <e>331158.088627</e>
-            <n>4243175.025378</n>
+            <e>10703.2694188816</e>
+            <n>3865247.8381499471</n>
         </top_left>
         <top_right>
-            <e>916544.801438</e>
-            <n>3746809.588966</n>
+            <e>331158.0886271580</e>
+            <n>4243175.0253781099</n>
         </top_right>
     </corners>
 

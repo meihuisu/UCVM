@@ -97,34 +97,6 @@ def main() -> int:
 
     out_file.close()
 
-    # Create acceptance tests.
-    print("Creating acceptance test and point data test.")
-
-    division_factor = 4
-    test_array = np.zeros(
-        (int(dimension_z / division_factor) - 1, int(dimension_y / division_factor) - 1,
-         int(dimension_x / division_factor) - 1, 3)
-    )
-    for z in range(int(dimension_z / division_factor) - 1):
-        for y in range(int(dimension_y / division_factor) - 1):
-            for x in range(int(dimension_x / division_factor) - 1):
-                zt = z * division_factor
-                yt = y * division_factor
-                xt = x * division_factor
-                test_array[z][y][x][0] = \
-                    (vp_arr[zt][yt][xt] + vp_arr[zt][yt][xt + 1] + vp_arr[zt][yt + 1][xt] + vp_arr[zt][yt + 1][xt + 1] +
-                     vp_arr[zt + 1][yt][xt] + vp_arr[zt + 1][yt][xt + 1] + vp_arr[zt + 1][yt + 1][xt] +
-                     vp_arr[zt + 1][y + 1][x + 1]) / 8
-                test_array[z][y][x][1] = \
-                    (vs_arr[zt][yt][xt] + vs_arr[zt][yt][xt + 1] + vs_arr[zt][yt + 1][xt] + vs_arr[zt][yt + 1][xt + 1] +
-                     vs_arr[zt + 1][yt][xt] + vs_arr[zt + 1][yt][xt + 1] + vs_arr[zt + 1][yt + 1][xt] +
-                     vs_arr[zt + 1][yt + 1][xt + 1]) / 8
-                test_array[z][y][x][2] = \
-                    (dn_arr[zt][yt][xt] + dn_arr[zt][yt][xt + 1] + dn_arr[zt][yt + 1][xt] + dn_arr[zt][yt + 1][xt + 1] +
-                     dn_arr[zt + 1][yt][xt] + dn_arr[zt + 1][yt][xt + 1] + dn_arr[zt + 1][yt + 1][xt] +
-                     dn_arr[zt + 1][yt + 1][xt + 1]) / 8
-    np.save("test_cvms426", test_array)
-
     print("\nPoints for testing:")
     for point in point_data:
         print("%-8d%-8d%-8d%-14.6f%-12.6f%-10.3f%-10.3f%-10.3f" % point)

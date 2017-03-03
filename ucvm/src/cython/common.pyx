@@ -211,7 +211,7 @@ class UCVMCCommon:
 
         cdef int x_c = (int)(floor(x_value / width * (dim_x - 1)))
         cdef int y_c = (int)(floor(y_value / height * (dim_y - 1)))
-        cdef int z_c = (int)(floor(depth / z_interval - 1) - floor(z_value / z_interval))
+        cdef int z_c = (int)(floor(z_value / z_interval))
 
         cdef double x_p = fmod(x_value, (width / (dim_x - 1))) / (width / (dim_x - 1))
         cdef double y_p = fmod(y_value, (height / (dim_y - 1))) / (height / (dim_y - 1))
