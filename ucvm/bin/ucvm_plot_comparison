@@ -284,7 +284,7 @@ def main() -> int:
             print(str(i))
         return 0
 
-    fig = plt.figure(figsize=(16, 5), dpi=100)
+    fig = plt.figure(figsize=(20, 5), dpi=100)
 
     print("Plotting data from first model.")
     ax = fig.add_subplot(1, 4, 1)
