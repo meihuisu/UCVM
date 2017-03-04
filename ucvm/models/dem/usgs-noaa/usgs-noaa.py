@@ -122,8 +122,11 @@ class USGSNOAAElevationModel(ElevationModel):
             self._opened_file["dem_etopo1"]["metadata"][0][0]
         )
 
+        if not hasattr(self, "etopo1_data"):
+            self.etopo1_data = self._opened_file["dem_etopo1"]["data"][:,:]
+
         datum.set_elevation_data(ElevationProperties(
-            calculate_bilinear_value(bilinear_point, rect, self._opened_file["dem_etopo1"]["data"]),
+            calculate_bilinear_value(bilinear_point, rect, self.etopo1_data),
             self._public_metadata["id"]
         ))
 

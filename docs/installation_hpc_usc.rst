@@ -54,7 +54,7 @@ We want to create a Python virtual environment for UCVM.
 
 .. code-block:: bash
 
-   pyvenv-3.5 <install ucvm path>/ucvm-17.2.0
+   pyvenv-3.5 <install ucvm path>/ucvm-17.3.0
 
 We can now proceed with the installation. It is strongly recommended that you install UCVM to your **staging**
 directory.
@@ -62,7 +62,7 @@ directory.
 .. code-block:: bash
 
    cd UCVM
-   source <install ucvm path>/ucvm-17.2.0/bin/activate.csh
+   source <install ucvm path>/ucvm-17.3.0/bin/activate.csh
    ./ucvm_setup
 
 UCVM will detect that you are running on USC HPC (look for the last line below in your terminal output).
@@ -117,7 +117,7 @@ virtual environment command to your ~/.cshrc or .bashrc file.
 .. code-block:: text
 
    For bash the command to add to your .bashrc or .bash_profile is:
-   source <install ucvm path>/ucvm-17.2.0/bin/activate
+   source <install ucvm path>/ucvm-17.3.0/bin/activate
 
    For csh the command to add to your .cshrc
 

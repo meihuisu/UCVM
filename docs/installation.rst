@@ -13,4 +13,5 @@ For installation steps that do not involve the Python virtual environment system
    installation_mac
    installation_hpc_bluewaters
    installation_hpc_usc
+   installation_anaconda
    installation_advanced

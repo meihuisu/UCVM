@@ -16,10 +16,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+# Python Imports
 import os
 import sys
 import unittest
 
+# UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.tests.model import UCVMModelAcceptanceTest, add_acceptance_test_methods
 from ucvm.src.shared.constants import UCVM_MODELS_DIRECTORY
@@ -29,7 +31,9 @@ from ucvm.tests.all import suite
 def usage() -> None:
     """
     Displays the help text associated with this utility.
-    :return: Nothing.
+
+    Returns:
+        Nothing
     """
     UCVM.print_with_replacements(
         "\n"
@@ -47,7 +51,9 @@ def usage() -> None:
 def main() -> int:
     """
     The main UCVM run test function.
-    :return: 0 if successful. Raises an error code otherwise, if not.
+
+    Returns:
+        0 if successful. Raises an error code otherwise, if not.
     """
     try:
         options = UCVM.parse_options([

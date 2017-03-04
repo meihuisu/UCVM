@@ -18,15 +18,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+# Python Imports
 import sys
-import xmltodict
 import time
 import os
 
 os.environ["ucvm_has_bootstrapped"] = "Yes"
 
+# Package Imports
+import xmltodict
 from mpi4py import MPI
 
+# UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.framework.etree import ask_questions, etree_extract_mpi
 

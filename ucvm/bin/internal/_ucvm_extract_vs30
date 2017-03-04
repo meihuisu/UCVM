@@ -1,9 +1,30 @@
 #!/usr/bin/env python3
+"""
+Automated internal tool to extract the Vs30 data from the old UCVM.
 
+This is a simple utility that extracts the Vs30 data from the old UCVM 15.10.0 to be bilinearly interpolated.
+Eventually this data will be replaced by the Wills-Wald 2015 dataset.
+
+Copyright 2017 Southern California Earthquake Center
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+# Python Imports
 import sys
 import os
 from subprocess import Popen, PIPE, STDOUT
 
+# Package Imports
 import numpy as np
 
 SPACING = 0.01
@@ -20,12 +41,29 @@ CORNERS = {
 
 
 def frange(x, y, jump):
+    """
+    Float range function. This will let you go from, say, 0 to 1 in 0.01 increments.
+
+    Args:
+        x (float): The starting floating point number, inclusive.
+        y (float): The ending floating point number, also inclusive (so the interval is [x, y]).
+        jump (float): The increment to add to x at each step until we reach y.
+
+    Returns:
+        Nothing, although we yield the new number at each step.
+    """
     while float(x) <= float(y):
         yield float(x)
         x += jump
 
 
 def main() -> int:
+    """
+    The main function which extracts the Vs30.
+
+    Returns:
+        0 if successful. Raises an error code otherwise, if not.
+    """
     ucvm_out = ""
     for j in frange(CORNERS["bl"]["n"], CORNERS["ur"]["n"], SPACING):
         for i in frange(CORNERS["bl"]["e"], CORNERS["ur"]["e"] + SPACING, SPACING):

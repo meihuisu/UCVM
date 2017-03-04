@@ -52,7 +52,8 @@ class DepthProfile(Plot):
             dictionary["profile_point"]["x"],
             dictionary["profile_point"]["y"],
             dictionary["profile_point"]["z"],
-            UCVM_DEPTH if dictionary["profile_point"]["depth_elev"] == "0" else UCVM_ELEVATION,
+            UCVM_DEPTH if dictionary["profile_point"]["depth_elev"] == 0 or
+            dictionary["profile_point"]["depth_elev"] == "0" else UCVM_ELEVATION,
             {},
             dictionary["profile_point"]["projection"]
         )

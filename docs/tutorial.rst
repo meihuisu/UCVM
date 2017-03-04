@@ -28,7 +28,7 @@ visit the :ref:`AvailableModels` page). This tutorial assumes that you want thes
 which is the latest Southern California full 3D tomographic improvement model. The command to run ucvm_query is:
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426
 
 UCVM will then ask you to input your desired query points.
 ::
@@ -82,7 +82,7 @@ site, but rather from the model itself. That is, you want to calculate Vs30 dire
 combine multiple data sources together using dots. To accomplish this, do the following:
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc
     Enter points to query. The X, Y, and Z components should be separated by spaces. When you have
     entered all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
     -118.28631  34.01919  0
@@ -102,7 +102,7 @@ query the SCEC 1D model to have some material properties for our equations. Runn
 will return no material properties.
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc
     Enter points to query. The X, Y, and Z components should be separated by spaces. When you have
     entered all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
     -121.91088  37.38332  0
@@ -115,7 +115,7 @@ Tiling is done by sequencing models using semi-colons. So if we want to query cv
 do the following:
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc;1d[SCEC]
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc;1d[SCEC]
     Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
     all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
     -118.28631  34.01919  0
@@ -135,7 +135,7 @@ be helpful when writing a paper or when attempting to better understand the scie
 citations are also given on the :ref:`AvailableModels` page.
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc;1d[SCEC] -a
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc;1d[SCEC] -a
     Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
     all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
     -118.28631  34.01919  0
@@ -176,7 +176,7 @@ in the Vs velocities at 0m depth.
 To accomplish this task, we need the horizontal slice plotting utility.
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_plot_horizontal_slice
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_plot_horizontal_slice
 
 This utility will ask a series of questions. Please answer the questions as follows.
 ::
@@ -224,7 +224,7 @@ properties from depth 0m to depth 10km between the Garden Grove CE13884 station 
 We can visualize this by using the cross-section plotting utility.
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_plot_cross_section
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_plot_cross_section
 
 Like the previous utility, this will ask a series of questions. Please answer the questions as follows.
 ::
@@ -278,7 +278,7 @@ to analyze the material properties below the Santa Monica station, we could do s
 utility.
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_plot_depth_profile
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_plot_depth_profile
 
 This utility also asks a series of questions. Please answer them as follows.
 ::
@@ -334,7 +334,7 @@ for a single core to extract.
 We need to use the cartesian mesh generation utility to extract this mesh.
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_mesh_create
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_mesh_create
 
 This utility will ask a series of questions. Please answer them as follows.
 ::
@@ -392,7 +392,7 @@ its own model within UCVM.
 We can then use the ucvm_plot_comparison utility to visualize and see differences between the two meshes.
 ::
 
-    (ucvm-17.2.0) scec@scec-VirtualBox:~$ ucvm_plot_comparison
+    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_plot_comparison
 
 This utility also asks a series of questions. Please answer them as follows.
 ::

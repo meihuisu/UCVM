@@ -49,6 +49,7 @@ class Plot:
                 setattr(self, key, value)
 
         if plt.gcf().get_figwidth() == 640 or plt.gcf().get_figwidth() == 6.4:
+            plt.close(plt.gcf())
             self.figure = plt.figure(figsize=(self.plot_width / 100, self.plot_height / 100), dpi=100)
 
     def show_profile(self, properties: dict, **kwargs) -> bool:
@@ -57,10 +58,10 @@ class Plot:
         :param properties: The properties as a dictionary.
         :return: True if profile shown, false if error.
         """
-        fig = self.figure.add_subplot(1, 1, 1)
+        plt.axes([0.2, 0.125, 0.70, 0.80])
         for key, item in properties.items():
-            fig.plot(item["x_values"], item["y_values"], "-",
-                     color=item["info"]["color"], label=item["info"]["label"])
+            plt.gca().plot(item["x_values"], item["y_values"], "-",
+                           color=item["info"]["color"], label=item["info"]["label"])
 
         plt.gca().invert_yaxis()
         plt.xlabel(self.plot_xlabel if isinstance(self.plot_xlabel, str) else "", fontsize=14)
@@ -115,7 +116,7 @@ class Plot:
             colormap.set_bad("gray", 1)
 
             if not basic:
-                plt.axes([0.1, 0.145, 0.8, 0.8])
+                plt.axes([0.15, 0.2, 0.70, 0.70])
 
             # Check to see if we have pickled this particular basemap instance.
             m = basemap.Basemap(projection='cyl',
@@ -133,6 +134,9 @@ class Plot:
                 lon_ticks = np.arange(ranges["min_lon"], ranges["max_lon"],
                                       (ranges["max_lon"] - ranges["min_lon"]) / 2)
                 lon_ticks = np.append(lon_ticks, [ranges["max_lon"]])
+
+                lat_ticks = [round(x, 2) for x in lat_ticks]
+                lon_ticks = [round(x, 2) for x in lon_ticks]
 
                 m.drawparallels(lat_ticks, linewidth=1.0, labels=[1, 0, 0, 0])
                 m.drawmeridians(lon_ticks, linewidth=1.0, labels=[0, 0, 0, 1])
@@ -220,7 +224,7 @@ class Plot:
                 plt.plot(x, kwargs["topography"], "k-", linewidth=1)
 
         if not basic:
-            cax = plt.axes([0.1, 0.065, 0.8, 0.02])
+            cax = plt.axes([0.05, 0.1, 0.90, 0.02])
             cbar = plt.colorbar(t, cax=cax, orientation='horizontal', ticks=self.ticks)
 
             cbar.set_label(self.plot_cbar_label if isinstance(self.plot_cbar_label, str) else "")

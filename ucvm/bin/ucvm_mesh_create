@@ -64,7 +64,9 @@ def usage() -> None:
 def main() -> int:
     """
     The main UCVM mesh create function.
-    :return: 0 if successful. Raises an error code otherwise, if not.
+
+    Returns:
+        0 if successful. Raises an error code otherwise, if not.
     """
     start_time = time.time()
 

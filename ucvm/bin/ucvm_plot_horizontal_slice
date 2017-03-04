@@ -16,10 +16,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+# Python Imports
 import sys
-import xmltodict
 import hashlib
 
+# Package Imports
+import xmltodict
+
+# UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.shared.functions import ask_and_validate, is_number, is_valid_proj4_string, \
                                       is_acceptable_value
@@ -30,7 +34,9 @@ from ucvm.src.visualization.horizontal_slice import HorizontalSlice
 def usage() -> None:
     """
     Displays the help text associated with this utility.
-    :return: Nothing.
+
+    Returns:
+        Nothing
     """
     UCVM.print_with_replacements(
         "\n"
@@ -48,8 +54,13 @@ def usage() -> None:
 def ask_questions(advanced: bool, test: bool) -> dict:
     """
     Asks the necessary questions to generate the XML configuration file.
-    :param advanced: If set to true, advanced questions will be asked.
-    :return: The compiled question dictionary if successful, None if not.
+
+    Args:
+        advanced (bool): If set to true, advanced questions will be asked.
+        test (bool): If set to true, then we are running this from the testing framework.
+
+    Returns:
+        The compiled question dictionary if successful or None if not.
     """
     answers = {
         "bottom_left_point": {
@@ -240,7 +251,9 @@ def ask_questions(advanced: bool, test: bool) -> dict:
 def main() -> int:
     """
     The main UCVM extract horizontal slice function.
-    :return: 0 if successful. Raises an error code otherwise, if not.
+
+    Returns:
+        0 if successful. Raises an error code otherwise, if not.
     """
     try:
         options = UCVM.parse_options([

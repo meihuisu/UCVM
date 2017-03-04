@@ -162,14 +162,27 @@ class GriddedVelocityModel(VelocityModel):
                 self.config_dict["dimensions"]["z_interval"]
             )
 
-            if coords["z"] == 0 and percentages["z"] == 0:
+            # Check to see if we are outside of the model boundaries.
+            if coords["x"] < 0 or coords["y"] < 0 or \
+               (coords["z"] > 98 and not (coords["z"] == 99 and percentages["z"] == 0)) or \
+               coords["x"] > self.config_dict["dimensions"]["x"] - 2 or \
+               coords["y"] > self.config_dict["dimensions"]["y"] - 2 or \
+               coords["z"] < 0:
+                self._set_velocity_properties_none(sd_object)
+                continue
+
+            v = {"vp": None, "vp_source": None, "vs": None, "vs_source": None,
+                 "density": None, "density_source": None, "qp": None, "qp_source": None,
+                 "qs": None, "qs_source": None}
+
+            if coords["z"] == 99 and percentages["z"] == 0:
                 for prop_given in self.model_has:
                     # Interpolate
                     v[prop_given] = UCVMCCommon.bilinear_interpolate(
-                        self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"]],
-                        self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"]],
-                        self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"] + 1],
-                        self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"] + 1],
+                        self.mesh[prop_given][coords["z"]][coords["y"]][coords["x"]],
+                        self.mesh[prop_given][coords["z"]][coords["y"]][coords["x"] + 1],
+                        self.mesh[prop_given][coords["z"]][coords["y"] + 1][coords["x"]],
+                        self.mesh[prop_given][coords["z"]][coords["y"] + 1][coords["x"] + 1],
                         percentages["x"], percentages["y"]
                     )
                     v[str(prop_given) + "_source"] = self.get_metadata()["id"]
@@ -184,29 +197,17 @@ class GriddedVelocityModel(VelocityModel):
                 ))
                 continue
 
-            # Check to see if we are outside of the model boundaries.
-            if coords["x"] < 0 or coords["y"] < 0 or coords["z"] < 1 or \
-               coords["x"] > self.config_dict["dimensions"]["x"] - 2 or \
-               coords["y"] > self.config_dict["dimensions"]["y"] - 2 or \
-               coords["z"] > self.config_dict["dimensions"]["z"] - 1:
-                self._set_velocity_properties_none(sd_object)
-                continue
-
-            v = {"vp": None, "vp_source": None, "vs": None, "vs_source": None,
-                 "density": None, "density_source": None, "qp": None, "qp_source": None,
-                 "qs": None, "qs_source": None}
-
             for prop_given in self.model_has:
                 # Interpolate
                 v[prop_given] = UCVMCCommon.trilinear_interpolate(
-                    self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"]],
-                    self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"]],
-                    self.mesh[prop_given][coords["z"]][coords["x"]][coords["y"] + 1],
-                    self.mesh[prop_given][coords["z"]][coords["x"] + 1][coords["y"] + 1],
-                    self.mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"]],
-                    self.mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"]],
-                    self.mesh[prop_given][coords["z"] - 1][coords["x"]][coords["y"] + 1],
-                    self.mesh[prop_given][coords["z"] - 1][coords["x"] + 1][coords["y"] + 1],
+                    self.mesh[prop_given][coords["z"]][coords["y"]][coords["x"]],
+                    self.mesh[prop_given][coords["z"]][coords["y"]][coords["x"] + 1],
+                    self.mesh[prop_given][coords["z"]][coords["y"] + 1][coords["x"]],
+                    self.mesh[prop_given][coords["z"]][coords["y"] + 1][coords["x"] + 1],
+                    self.mesh[prop_given][coords["z"] + 1][coords["y"]][coords["x"]],
+                    self.mesh[prop_given][coords["z"] + 1][coords["y"]][coords["x"] + 1],
+                    self.mesh[prop_given][coords["z"] + 1][coords["y"] + 1][coords["x"]],
+                    self.mesh[prop_given][coords["z"] + 1][coords["y"] + 1][coords["x"] + 1],
                     percentages["x"], percentages["y"], percentages["z"]
                 )
                 v[str(prop_given) + "_source"] = self.get_metadata()["id"]

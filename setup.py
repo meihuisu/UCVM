@@ -27,7 +27,7 @@ from collections import OrderedDict
 
 UCVM_INFORMATION = {
     "short_name": "ucvm",
-    "version": "17.2.0",
+    "version": "17.3.0",
     "long_name": "Unified Community Velocity Model Framework",
     "author": "Southern California Earthquake Center",
     "email": "software@scec.org",
@@ -145,9 +145,13 @@ def get_list_of_installable_internet_models() -> dict:
     return installable_models
 
 download_everything = False
+download_minimum = False
 if "--everything" in sys.argv:
     download_everything = True
     sys.argv.remove("--everything")
+if "--minimum" in sys.argv:
+    download_minimum = True
+    sys.argv.remove("--minimum")
 
 models_to_download = [
     ("onedimensional", "1D"),
@@ -190,6 +194,8 @@ for key, models in model_list.items():
         print(item["description"])
         if download_everything:
             models_to_download.append((item["id"], item["name"]))
+        elif download_minimum:
+            continue
         else:
             if str(input("Would you like to install " +
                          item["name"] + "?\nType yes or y to install, no or n to pass: ")).\

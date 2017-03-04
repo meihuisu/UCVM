@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 """
-Generate Data File for CCA Model
+Generate Data File for CVM-S4.26 Model
 
-Gets the source data files for the CCA model from intensity.usc.edu and generates the HDF5 files
-using the source ASCII data.
+Given one of the new format CVM-S4.26 files (i.e. the one generated from _ucvm_calculate_box_for_inversion), read in
+this file and generate the data files for the gridded velocity model. This also generates the acceptance test data
+which consists of calculating the center of each gridded cell and outputting the interpolated material properties.
 
 Copyright:
     Southern California Earthquake Center
@@ -12,30 +13,17 @@ Developer:
     David Gill <davidgil@usc.edu>
 """
 # Python Imports
-import getopt
 import sys
-import os
-import subprocess
+from random import randint
 
 # Package Imports
 import h5py
 import numpy as np
 
 # Globals
-model = "CVM-S4.26"
-dimension_x = 1536
-dimension_y = 992
+dimension_x = 992
+dimension_y = 1536
 dimension_z = 100
-
-
-def usage() -> None:
-    """
-    Lets users know how to run this script.
-    Returns:
-         Nothing - this code just prints the help information.
-    """
-    print("\n./make_data_files.py -i [iteration number]\n\n")
-    print("-i - The iteration number to retrieve from intensity.\n\n")
 
 
 def main() -> int:
@@ -47,52 +35,48 @@ def main() -> int:
     """
 
     # Set our variable defaults.
-    username = ""
-    path = "/home/scec-01/enjuilee/work/CVM4SI26_ascii"
+    data_file = "./cvms426_final_model.txt"
 
-    # Get the iteration number.
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "u:", ["user="])
-    except getopt.GetoptError as err:
-        print(str(err))
-        usage()
-        sys.exit(1)
+    print("Creating arrays.")
+    vp_arr = np.zeros((dimension_z, dimension_y, dimension_x), dtype="<f4")
+    vs_arr = np.zeros((dimension_z, dimension_y, dimension_x), dtype="<f4")
+    dn_arr = np.zeros((dimension_z, dimension_y, dimension_x), dtype="<f4")
 
-    for o, a in opts:
-        if o in ("-u", "--user"):
-            username = str(a) + "@"
+    # For point data test.
+    points = []
+    point_data = []
+    for i in range(0, 20):
+        x = randint(0, dimension_x - 1)
+        y = randint(0, dimension_y - 1)
+        z = randint(0, dimension_z - 1)
 
-    print("\nDownloading model file\n")
+        points.append((x, y, z))
 
-    subprocess.check_call(
-        ["scp", username + "intensity.usc.edu:" + path + "/CVM4SI26_model", "."]
-    )
+    # Read in the velocity model information.
+    print("Reading velocity model data.")
+    with open(data_file, "r") as f:
+        f.readline()
+        for line in f:
+            arr = line.split()
+            x_pos = int(arr[0]) - 1
+            y_pos = int(arr[1]) - 1
+            z_pos = int(arr[2]) - 1
+            vp = float(arr[8])
+            vs = float(arr[9])
+            dn = float(arr[10])
 
-    # Now we need to go through the data files and put them in the correct
-    # format for CCA (i.e. the tables format).
-    print("\nWriting out CVM-S4.26 data file\n")
-    f = open("./CVM4SI26_model")
+            vp_arr[z_pos][y_pos][x_pos] = vp
+            vs_arr[z_pos][y_pos][x_pos] = vs
+            dn_arr[z_pos][y_pos][x_pos] = dn
 
-    vp_arr = np.zeros((dimension_z, dimension_x, dimension_y), dtype="<f4")
-    vs_arr = np.zeros((dimension_z, dimension_x, dimension_y), dtype="<f4")
-    density_arr = np.zeros((dimension_z, dimension_x, dimension_y), dtype="<f4")
-
-    for line in f:
-        arr = line.split()
-        x_pos = dimension_x - int(arr[1])
-        y_pos = int(arr[0]) - 1
-        z_pos = int(arr[2]) - 1
-        vp = float(arr[3])
-        vs = float(arr[4])
-        density = float(arr[5])
-
-        vp_arr[z_pos][x_pos][y_pos] = vp
-        vs_arr[z_pos][x_pos][y_pos] = vs
-        density_arr[z_pos][x_pos][y_pos] = density
+            for point in points:
+                if point[0] == x_pos and point[1] == y_pos and point[2] == z_pos:
+                    point_data.append((x_pos + 1, y_pos + 1, z_pos + 1, float(arr[5]), float(arr[6]), vp, vs, dn))
 
     f.close()
 
     # Save the data.
+    print("Saving to HDF5 format.")
     out_file = h5py.File("cvms426.dat", mode="w")
     grp_vp = out_file.create_group("vp")
     grp_vs = out_file.create_group("vs")
@@ -107,13 +91,15 @@ def main() -> int:
         compression="lzf"
     )
     grp_dn.create_dataset(
-        "data", (density_arr.shape[0], density_arr.shape[1], density_arr.shape[2]), density_arr.dtype, chunks=True,
-        data=density_arr, compression="lzf"
+        "data", (dn_arr.shape[0], dn_arr.shape[1], dn_arr.shape[2]), dn_arr.dtype, chunks=True, data=dn_arr,
+        compression="lzf"
     )
 
     out_file.close()
 
-    os.remove("./CVM4SI26_model")
+    print("\nPoints for testing:")
+    for point in point_data:
+        print("%-8d%-8d%-8d%-14.6f%-12.6f%-10.3f%-10.3f%-10.3f" % point)
 
     print("\nDone!")
 
