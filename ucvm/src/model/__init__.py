@@ -7,6 +7,7 @@ import ucvm.models
 import urllib.request
 import urllib.error
 import socket
+import sys
 
 from subprocess import Popen, PIPE, STDOUT
 
@@ -299,8 +300,10 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
         print("    Executing build script for legacy model code...")
         revert_dir = os.getcwd()
         os.chdir(os.path.dirname(xml_file))
-        p = Popen(["python3", "setup.py", "install", "--prefix=" + os.path.abspath("../../../../../../../../")],
-                  stdout=PIPE, stderr=PIPE)
+        if "anaconda" in sys.version.lower() or "continuum" in sys.version.lower():
+            p = Popen(["python3", "setup.py", "install"], env=os.environ)
+        else:
+            p = Popen(["python3", "setup.py", "install", "--prefix=" + os.path.abspath("../../../../../../../../")])
         p.wait()
         os.chdir(revert_dir)
 
