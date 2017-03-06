@@ -19,7 +19,6 @@ requirements:
     - mpi4py
 
   run:
-    - python
     - python ==3.5
     - setuptools
     - basemap ==1.0.7

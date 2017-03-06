@@ -34,6 +34,21 @@ UCVM_INFORMATION = {
     "url": "http://www.scec.org/projects/ucvm"
 }
 
+if "ucvm_download" not in os.environ:
+    os.environ["ucvm_download"] = "normal"
+if "ucvm_no_pip" not in os.environ:
+    os.environ["ucvm_no_pip"] = "false"
+
+if "--everything" in sys.argv:
+    os.environ["ucvm_download"] = "everything"
+    sys.argv.remove("--everything")
+if "--minimum" in sys.argv:
+    os.environ["ucvm_download"] = "minimum"
+    sys.argv.remove("--minimum")
+if "--no-pip" in sys.argv:
+    os.environ["ucvm_no_pip"] = "true"   # Needed for Anaconda build.
+    sys.argv.remove("--no-pip")
+
 
 class OnlyGetScriptPath(install):
     def run(self):
@@ -75,6 +90,11 @@ _HYPOCENTER_MODEL_LIST = _HYPOCENTER_BASE + "/model_list.xml"
 
 INSTALL_REQUIRES = ["xmltodict", "humanize", "pyproj", "psutil", "matplotlib"]
 
+download_everything = os.environ["ucvm_download"] == "everything"
+download_minimum = os.environ["ucvm_download"] == "minimum"
+no_pip = os.environ["ucvm_no_pip"] == "true"
+
+print(os.environ["ucvm_download"])
 
 def execute(cmd, **kwargs):
     env = os.environ
@@ -143,15 +163,6 @@ def get_list_of_installable_internet_models() -> dict:
         installable_models[inner_item["type"]].append(inner_item)
 
     return installable_models
-
-download_everything = False
-download_minimum = False
-if "--everything" in sys.argv:
-    download_everything = True
-    sys.argv.remove("--everything")
-if "--minimum" in sys.argv:
-    download_minimum = True
-    sys.argv.remove("--minimum")
 
 models_to_download = [
     ("onedimensional", "1D"),
@@ -279,14 +290,13 @@ setup(name=UCVM_INFORMATION["short_name"],
       zip_safe=False
       )
 
-p = Popen(["pip", "install", "PyQt5"])
-p.wait()
-
-p = Popen(["pip", "install", "h5py"])
-p.wait()
-
-p = Popen(["pip", "install", "Pillow"])
-p.wait()
+if not no_pip:
+    p = Popen(["pip", "install", "PyQt5"])
+    p.wait()
+    p = Popen(["pip", "install", "h5py"])
+    p.wait()
+    p = Popen(["pip", "install", "Pillow"])
+    p.wait()
 
 print("Installing C components of UCVM...")
 
