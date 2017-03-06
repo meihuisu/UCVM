@@ -4,6 +4,7 @@ package:
 
 source:
   git_url: https://github.com/SCECcode/UCVM.git
+  git_rev: dev
 
 requirements:
   build:
