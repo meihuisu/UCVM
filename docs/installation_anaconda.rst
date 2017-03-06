@@ -98,3 +98,12 @@ To quickly test if UCVM is installed correctly, type the following:
 
 The above command queries the 1D SCEC model at point (-118, 34, 0) for material properties. If you do not see the above,
 please email software@scec.org.
+
+Full Test
+~~~~~~~~~
+
+To run the test suite and ensure that UCVM was installed properly do:
+::
+
+    ucvm_run_tests -t
+
