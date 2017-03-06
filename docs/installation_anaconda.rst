@@ -1,7 +1,7 @@
 .. _Anaconda:
 
-Anaconda
-========
+Anaconda (Linux & Mac)
+======================
 
 Using Anaconda can make installation of UCVM simpler on both Linux and OS X platforms. This guide assumes you have
 Anaconda 4.3.0 (or a later version) installed. If you do not have at least 4.3 installed, please upgrade to at least
@@ -33,6 +33,7 @@ You will also need to install the Xcode command line tools.
 ::
 
     xcode-select --install
+    sudo xcodebuild -license accept
 
 Finally, you will need the X11 server as UCVM depends on Matplotlib which requires X11 to be installed. Please visit the
 following link to download and install the latest X11 version.
@@ -52,18 +53,12 @@ Installation
 First of all, if you have not downloaded Anaconda yet, please do so from https://www.continuum.io/downloads. You only
 need the free version of the software to begin using UCVM.
 
-On the Mac, you will need the Xcode tools installed, GFortran, and Xquartz installed. If you do not have all three of
-those installed, please refer to the :ref:`Mac OS X` installation guide.
-
-We need to first create and activate our environments.
+We need to first create and activate our environment, and add a dependency.
 ::
 
     conda create --name ucvm-17.3.0 python=3.5
     source activate ucvm-17.3.0
     conda config --add channels conda-forge
-
-This activates our |version| environment and adds the conda-forge channel which is necessary for some of the
-dependencies for UCVM.
 
 Now we can install UCVM with one command:
 ::

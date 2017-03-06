@@ -31,8 +31,16 @@ To also add MPI support, the following packages need to be installed.
 
     sudo apt install openmpi-bin libopenmpi-dev
 
-Installing UCVM
-~~~~~~~~~~~~~~~
+Anaconda (Easy Method)
+~~~~~~~~~~~~~~~~~~~~~~
+
+Using Anaconda for your UCVM installation makes the process easier and is supported on Linux. We have tested UCVM
+against Anaconda version 4.3.0.
+
+If you have :ref:`Anaconda` installed, please visit our :ref:`Anaconda` guide now.
+
+Installing UCVM (Advanced)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It is strongly recommended that users of UCVM use Python virtual environments to install UCVM. Python virtual
 environments allow all the UCVM components to be installed in one folder and independently of other Python packages.

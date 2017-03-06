@@ -10,6 +10,7 @@ requirements:
     - python ==3.5
     - setuptools
     - basemap ==1.0.7
+    - pyqt ==5.6
     - h5py
     - xmltodict
     - humanize
@@ -22,6 +23,7 @@ requirements:
     - python ==3.5
     - setuptools
     - basemap ==1.0.7
+    - pyqt ==5.6
     - h5py
     - xmltodict
     - humanize
@@ -29,10 +31,6 @@ requirements:
     - psutil
     - matplotlib
     - mpi4py
-
-test:
-  imports:
-    -
 
 about:
   home: https://github.com/SCECcode/UCVM
