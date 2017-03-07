@@ -20,7 +20,7 @@ _ERROR_LIST = {
        "doesn't work,",
     7: "The horizontal slice properties are not specified correctly. Please try again. If that "
        "doesn't work,",
-    8: "NumPy and Matplotlib must be installed on your system in order to generate these plots. "
+    8: "NumPy, Matplotlib, and Basemap must be installed on your system in order to generate these plots. "
        "Please try installing these package. If that doesn't work,",
     9: "The point provided must be an instance of the UCVMPoint namedtuple. Please revise your "
        "code and try again. If that doesn't work,",
