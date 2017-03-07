@@ -9,9 +9,9 @@ For installation steps that do not involve the Python virtual environment system
 .. toctree::
    :maxdepth: 1
 
+   installation_anaconda
+   installation_hpc_bluewaters
    installation_linux
    installation_mac
-   installation_hpc_bluewaters
    installation_hpc_usc
-   installation_anaconda
    installation_advanced

@@ -26,7 +26,7 @@ from collections import namedtuple
 from ucvm.src.shared.errors import display_and_raise_error
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.visualization.plot import Plot
-from ucvm.src.shared.constants import UCVM_DEFAULT_PROJECTION
+from ucvm.src.shared.constants import UCVM_DEFAULT_PROJECTION, UCVM_ELEVATION
 from ucvm.src.shared.properties import Point
 from ucvm.src.framework.mesh_common import InternalMesh, AWPInternalMeshIterator
 
@@ -119,6 +119,9 @@ class HorizontalSlice(Plot):
         )
 
         cvm_list = parsed_dictionary["cvm_list"]
+
+        if int(parsed_dictionary["bottom_left_point"]["depth_elev"]) == UCVM_ELEVATION and ".depth" not in cvm_list:
+            cvm_list += ".elevation"
 
         plot_properties = parsed_dictionary["plot"]
         try:

@@ -12,7 +12,7 @@ import numpy as np
 
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.visualization.plot import Plot
-from ucvm.src.shared.properties import Point, SeismicData, UCVM_DEPTH, UCVM_DEFAULT_PROJECTION
+from ucvm.src.shared.properties import Point, SeismicData, UCVM_DEPTH, UCVM_DEFAULT_PROJECTION, UCVM_ELEVATION
 
 from collections import namedtuple
 
@@ -94,6 +94,9 @@ class CrossSection(Plot):
             dictionary["cross_section_properties"]["property"]
         )
         cvm_list = dictionary["cvm_list"]
+
+        if int(dictionary["end_point"]["depth_elev"]) == UCVM_ELEVATION and ".depth" not in cvm_list:
+            cvm_list += ".elevation"
 
         plot_properties = dictionary["plot"]
 

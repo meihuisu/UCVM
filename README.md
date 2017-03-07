@@ -30,7 +30,7 @@ installation on a wide variety of platforms - from Mac OS X to Linux to major su
 
 ## Installing UCVM
 
-UCVM support Linux, Mac OS X, and two supercomputers. Details on how to install UCVM are available in our
+UCVM supports Linux, Mac OS X, and two supercomputers. Details on how to install UCVM are available in our
 [installation guide](https://github.com/SCECcode/UCVM/wiki/Installation).
 
 

@@ -81,7 +81,8 @@ def install_internet_ucvm_model(model_ucvm_name: str, long_name: str) -> bool:
     try:
         os.mkdir(os.path.join(UCVM_MODELS_DIRECTORY, "temp"))
     except FileExistsError:
-        pass
+        shutil.rmtree(os.path.join(UCVM_MODELS_DIRECTORY, "temp"))
+        os.mkdir(os.path.join(UCVM_MODELS_DIRECTORY, "temp"))
 
     print("Downloading " + long_name + "...")
 
@@ -150,7 +151,8 @@ def download_and_install_library(library_name: str) -> bool:
     try:
         os.mkdir(os.path.join(UCVM_LIBRARIES_DIRECTORY, "temp"))
     except FileExistsError:
-        pass
+        shutil.rmtree(os.path.join(UCVM_LIBRARIES_DIRECTORY, "temp"))
+        os.mkdir(os.path.join(UCVM_LIBRARIES_DIRECTORY, "temp"))
 
     print("        Downloading library " + library_name + "...")
 

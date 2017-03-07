@@ -31,6 +31,7 @@ You will also need to install the Xcode command line tools.
 ::
 
     SCECs-MacBook-Pro:~ scec$ xcode-select --install
+    SCECs-MacBook-Pro:~ scec$ sudo xcodebuild -license accept
 
 You will need Python 3.5 to install UCVM.
 ::
