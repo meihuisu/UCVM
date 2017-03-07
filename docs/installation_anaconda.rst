@@ -12,15 +12,10 @@ Pre-requisites
 
 **Linux (Ubuntu)**
 
-In order to install UCVM on this distribution of Linux, a few required packages must be installed first.
+In order to install UCVM on this distribution of Linux, a couple required packages must be installed first.
 ::
 
-    sudo apt install git python3-venv libfreetype6 libfreetype6-dev python3-dev libhdf5-serial-dev gfortran
-
-To also add MPI support, the following packages need to be installed.
-::
-
-    sudo apt install openmpi-bin libopenmpi-dev
+    sudo apt install git gfortran
 
 **Mac OS X Sierra**
 
