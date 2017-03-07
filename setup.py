@@ -352,7 +352,7 @@ print("")
 
 # Now that UCVM is installed, we can go through the requested models and install them.
 for model in models_to_download:
-    execute([os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_model_manager"), "-a", model[0]])
+    execute(["python3", os.path.join(_LOCAL_SCRIPT_PATH, "ucvm_model_manager"), "-a", model[0]])
     print("")
 
 # Now run the tests, through the command line so that the library paths are correct!
