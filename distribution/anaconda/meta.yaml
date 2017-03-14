@@ -18,7 +18,6 @@ requirements:
     - psutil
     - matplotlib
     - mpi4py
-    - icu ==58.*
     - pillow
 
   run:
@@ -33,7 +32,6 @@ requirements:
     - psutil
     - matplotlib
     - mpi4py
-    - icu == 58.*
     - pillow
 
 about:

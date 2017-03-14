@@ -207,7 +207,7 @@ class CrossSection(Plot):
             topography = None
 
         yticks = [
-            [0, num_y / 2, num_y - 1],
+            [-0.5, (num_y - 1) / 2, num_y - 0.5],
             [
                 self.start_point.z_value / 1000,
                 (self.end_point.z_value + self.start_point.z_value) / 2000,
@@ -215,7 +215,7 @@ class CrossSection(Plot):
             ]
         ]
         xticks = [
-            [0, num_x / 2, num_x - 1],
+            [0, (num_x - 1) / 2, num_x - 1],
             [0, num_x / 2 * self.cross_section_properties.width_spacing / 1000,
              num_x * self.cross_section_properties.width_spacing / 1000]
         ]
