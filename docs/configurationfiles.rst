@@ -185,6 +185,12 @@ Depth Profile
 	    	<z>0.0</z>                      <-- starting depth or elevation for profile -->
 	    	<depth_elev>0</depth_elev>      <-- 0 means point is depth, 1 for elev -->
 	    </profile_point>
+	    <plot>
+            <features>
+                    <scale>discrete</scale>    <!-- colormap scale: discrete or smooth -->
+                    <colormap>RdBu</colormap>  <!-- colormap color: RdBu means Red-Blue -->
+            </features>
+        </plot>
     </root>
 
 Horizontal Slice

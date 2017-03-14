@@ -18,6 +18,7 @@ requirements:
     - psutil
     - matplotlib
     - mpi4py
+    - pillow
 
   run:
     - python ==3.5
@@ -31,6 +32,7 @@ requirements:
     - psutil
     - matplotlib
     - mpi4py
+    - pillow
 
 about:
   home: https://github.com/SCECcode/UCVM

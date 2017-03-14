@@ -50,15 +50,10 @@ To call this model within UCVM, use the model "*cvmh1510*".
 
 Citations:
 
-Suess, M. P., and J. H. Shaw, 2003, P-wave seismic velocity structure derived from sonic logs and industry
-reflection data in the Los Angeles basin, California, Journal of Geophysical Research, 108/B3.
-
-Plesch, A., C. Tape, JR. Graves, P. Small, G. Ely and J. H. Shaw, 2011, Updates for the CVM-H including new
-representations of the offshore Santa Maria and San Bernardino basin and a new Moho surface, in 2011 Southern
-California Earthquake Center Annual Meeting, Proceedings and Abstracts, vol. 21.
-
-Tape, C., Q. Liu, A. Maggi, and J. Tromp, 2009, Adjoint tomography of the southern California crust, Science, v. 325,
-p. 988-992.
+Shaw, J. H., A. Plesch, C. Tape, M. P. Suess, T. H. Jordan, G. Ely, E. Hauksson, J. Tromp, T. Tanimoto, R. Graves,
+K. Olsen, C. Nicholson, P. J. Maechling, C. Rivero, P. Lovely, C. M. Brankman, J. Munster (2015). Unified Structural
+Representation of the southern California crust and upper mantle. Earth and Planetary Science Letters. 415 1. ; DOI:
+10.1016/j.epsl.2015.01.016
 
 **CVM-S4**: CVM-SCEC version 4 (CVM-S4), also known as SCEC CVM-4, is a 3D seismic velocity model.The current
 version is CVM-S4 was released in 2006 and was originally posted for download from the SCEC Data Center SCEC 3D

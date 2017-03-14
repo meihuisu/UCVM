@@ -1,11 +1,19 @@
 """
-Defines a bare-bones plot. Every specific plot type (e.g. HorizontalSlice) derives from this
-Plot class.
+Defines a bare-bones plot. Every specific plot type (e.g. HorizontalSlice) derives from this Plot class.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   August 12, 2016
-:modified:  August 16, 2016
+Copyright 2017 Southern California Earthquake Center
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
 import numpy as np
 
@@ -27,6 +35,7 @@ except ImportError:
 
 try:
     from mpl_toolkits import basemap
+    from mpl_toolkits.basemap import cm as basemapcm
 except ImportError:
     display_and_raise_error(8)
     basemap = None                  # Make PyCharm happy.
@@ -100,9 +109,14 @@ class Plot:
             if "plot" in self.extras:
                 if "features" in self.extras["plot"]:
                     if "colormap" in self.extras["plot"]["features"]:
-                        colormap = getattr(
-                            cm, self.extras["plot"]["features"]["colormap"]
-                        )
+                        try:
+                            colormap = getattr(
+                                cm, self.extras["plot"]["features"]["colormap"]
+                            )
+                        except AttributeError:
+                            colormap = getattr(
+                                basemapcm, self.extras["plot"]["features"]["colormap"]
+                            )
                     if "scale" in self.extras["plot"]["features"]:
                         if str(self.extras["plot"]["features"]["scale"]).lower().strip() \
                                 == "discrete":
@@ -175,7 +189,7 @@ class Plot:
                 plt.ylabel(self.plot_ylabel if isinstance(self.plot_ylabel, str) else "", fontsize=14)
                 plt.title(self.plot_title if isinstance(self.plot_title, str) else "")
         else:
-            colormap.set_bad("w", 1)
+            colormap.set_bad("gray", 1)
             data_cpy = np.ma.masked_invalid(data)
             data_cpy = np.ma.masked_less_equal(data_cpy, 0)
 
@@ -185,7 +199,7 @@ class Plot:
                      kwargs["boundaries"]["ep"][1] else kwargs["boundaries"]["ep"][1]
             ll_lon = kwargs["boundaries"]["sp"][0] if kwargs["boundaries"]["sp"][0] < \
                      kwargs["boundaries"]["ep"][0] else kwargs["boundaries"]["ep"][0]
-            ur_lat = kwargs["boundaries"]["sp"][1] if kwargs["boundaries"]["sp"][1] > \
+            ur_lat = kwargs["bo undaries"]["sp"][1] if kwargs["boundaries"]["sp"][1] > \
                      kwargs["boundaries"]["ep"][1] else kwargs["boundaries"]["ep"][1]
             ur_lon = kwargs["boundaries"]["sp"][0] if kwargs["boundaries"]["sp"][0] > \
                      kwargs["boundaries"]["ep"][0] else kwargs["boundaries"]["ep"][0]
@@ -203,11 +217,17 @@ class Plot:
                    [kwargs["boundaries"]["sp"][1], kwargs["boundaries"]["ep"][1]],
                    color="k", linewidth=2)
 
-            plt.axes([0.10, 0.18, 0.8, 0.4])
-            plt.xlabel(self.plot_xlabel if isinstance(self.plot_xlabel, str) else "", fontsize=14)
-            plt.ylabel(self.plot_ylabel if isinstance(self.plot_ylabel, str) else "", fontsize=14)
+            plt.axes([0.15, 0.25, 0.7, 0.35])
+            plt.xlabel(self.plot_xlabel if isinstance(self.plot_xlabel, str) else "", fontsize=12)
+            plt.ylabel(self.plot_ylabel if isinstance(self.plot_ylabel, str) else "", fontsize=12)
             plt.title(self.plot_title if isinstance(self.plot_title, str) else "")
-            t = plt.imshow(data_cpy, cmap=colormap, norm=norm)
+
+            # If the aspect ratio is too extreme, set it to auto.
+            if kwargs["yticks"][0][2] / kwargs["xticks"][0][2] < 1/8 or \
+               kwargs["yticks"][0][2] / kwargs["xticks"][0][2] > 8/1:
+                t = plt.imshow(data_cpy, cmap=colormap, norm=norm, aspect="auto")
+            else:
+                t = plt.imshow(data_cpy, cmap=colormap, norm=norm)
 
             if "yticks" in kwargs:
                 plt.yticks(kwargs["yticks"][0], kwargs["yticks"][1])
@@ -221,7 +241,8 @@ class Plot:
 
             if "topography" in kwargs and kwargs["topography"] is not None:
                 x = [y for y in range(len(kwargs["topography"]))]
-                plt.plot(x, kwargs["topography"], "k-", linewidth=1)
+                plt.gca().set_ylim(kwargs["yticks"][0][2], kwargs["yticks"][0][0])
+                plt.plot(x, kwargs["topography"], "k-", linewidth=0.75)
 
         if not basic:
             cax = plt.axes([0.05, 0.1, 0.90, 0.02])
