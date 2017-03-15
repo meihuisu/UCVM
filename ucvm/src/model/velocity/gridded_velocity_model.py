@@ -224,4 +224,7 @@ class GriddedVelocityModel(VelocityModel):
         return True
 
     def __del__(self):
-        self._opened_file.close()
+        try:
+            self._opened_file.close()
+        except SystemError:
+            pass
