@@ -21,3 +21,4 @@ If you have any questions regarding UCVM, please email
    commands
    configurationfiles
    tests
+   developers
