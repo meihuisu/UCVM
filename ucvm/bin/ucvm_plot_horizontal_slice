@@ -228,10 +228,10 @@ def ask_questions(advanced: bool, test: bool) -> dict:
 
         answers["plot"]["property"] = ask_and_validate("\nWhich property should be plotted?\n"
                                                        "Acceptable answers include Vp, Vs, "
-                                                       "density, Qp, or Qs:",
+                                                       "density, Qp, Qs, Vs30, or Elevation:",
                                                        is_acceptable_value,
                                                        allowed=["vp", "vs", "density",
-                                                                "qp", "qs"], lower=True)
+                                                                "qp", "qs", "vs30", "elevation"], lower=True)
         answers["plot"]["title"] = "%s Slice From (%.2f, %.2f)" % (
             answers["cvm_list"],
             answers["bottom_left_point"]["x"],

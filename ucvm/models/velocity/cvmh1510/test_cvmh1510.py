@@ -1,11 +1,19 @@
 """
 Defines the tests for the CVM-H 15.1.0 model within UCVM.
 
-Copyright:
-    Southern California Earthquake Center
+Copyright 2017 Southern California Earthquake Center
 
-Developer:
-    David Gill <davidgil@usc.edu>
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
 # UCVM Imports
 from ucvm.src.shared.properties import SeismicData, Point, VelocityProperties
@@ -16,9 +24,8 @@ from ucvm.src.shared.test import run_acceptance_test, UCVMTestCase, assert_veloc
 
 class CVMH1510VelocityModelTest(UCVMTestCase):
     """
-    Defines the test cases for the CVM-H velocity model. Four tests are done: an acceptance
-    test, a test query by elevation, a test query with and without GTL, and a test query with
-    and without the 1D background model.
+    Defines the test cases for the CVM-H velocity model. Four tests are done: an acceptance test, a test query by
+    elevation, a test query with and without GTL, and a test query with and without the 1D background model.
     """
     description = "CVM-H 15.1.0"
 

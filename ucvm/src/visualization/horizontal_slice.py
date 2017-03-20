@@ -174,7 +174,7 @@ class HorizontalSlice(Plot):
                     self.extracted_data[counter] = sd_prop.elevation_properties.elevation
                     counter += 1
             elif self.extras["plot"]["property"] == "vs30":
-                UCVM.query(init_array, self.cvms, ["vs30"])
+                UCVM.query(init_array, self.cvms, ["vs30", "elevation", "velocity"])
                 for sd_prop in init_array[0:num_queried]:
                     self.extracted_data[counter] = sd_prop.vs30_properties.vs30
                     counter += 1

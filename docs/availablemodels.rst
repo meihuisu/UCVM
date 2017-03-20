@@ -106,6 +106,26 @@ Lin, G., C. H. Thurber, H. Zhang, E. Hauksson, P. Shearer, F. Waldhauser, T. M. 
 California statewide three-dimensional seismic velocity model from both absolute and differential Times, Bull. Seism.
 Soc. Am., 100, in press.
 
+**SCEC 1D Model**: This is the 1D velocity model that is used as the background model in CVM-S4. It is a modified
+version of the Hadley-Kanamori model.
+
+To call this model within UCVM, use the model code "*1d[SCEC]*".
+
+**Broadband LA Basin 1D Model**: This model was defined by R. Graves using average Vp, Vs values for a number of
+sites in the LA Basin region. It is not interpolated.
+
+To call this model within UCVM, use the model code "*1d[BBP_LA_Basin]*".
+
+Citation:
+
+Bulletin of the Seismological Society of America, Vol. 100, No. 5A, pp. 2095–2123, October 2010, doi:
+10.1785/0120100057 Broadband Ground-Motion Simulation Using a Hybrid Approach by Robert W. Graves* and Arben Pitarka
+
+**CyberShake Study 15.4 Linearly-Interpolated BBP Model With Moho**: This is the 1D model that was agreed upon for the
+CyberShake 15.4 study. It is a linearly-interpolated version of the 1D Broadband LA Basin model with a moho added in.
+
+To call this model within UCVM, use the model code "*1d[CyberShake_BBP_LA_Basin]*".
+
 Elevation
 ~~~~~~~~~
 
@@ -142,3 +162,27 @@ California, Bull. Seism. Soc. Am., 96 (4A), 1483-1501, doi:10.1785/0120050179.
 and calculates the average of its slowness.
 
 To call this model within UCVM, use the model code "*vs30-calc*".
+
+Operators
+~~~~~~~~~
+
+There are currently two operators within UCVM. Operators can be used to combine models in some meaningful way. For
+example, the Ely GTL operator implements Ely's GTL mechanism for any model.
+
+**Ely GTL**: This is a method to supplement crustal velocity models, in the upper few hundred meters, with a model
+derived from available maps of 𝑉𝑆30 (the average S-wave velocity down to 30 meters). The method is universally
+applicable to regions without direct measures of 𝑉 by using 𝑉 estimates from topographic slope.
+
+To call this model within UCVM, use the model code "*elygtl*".
+
+Citation:
+
+Ely, G., T. H. Jordan, P. Small, P. J. Maechling (2010), A Vs30-derived Near-surface Seismic Velocity Model Abstract
+S51A-1907, presented at 2010 Fall Meeting, AGU, San Francisco, Calif., 13-17 Dec.
+
+**Trilinear Interpolation**: This operator implements trilinear interpolation at model boundaries/interfaces. It
+queries the eight points, forming a box, surrounding the desired point and checks their model codes. If any of the
+points come from a different model than the desired point, the returned material properties are trilinearly
+interpolated from the eight surrounding points. This creates a smoothing effect at the edges.
+
+To call this model within UCVM, use the model code "*trilinear*".

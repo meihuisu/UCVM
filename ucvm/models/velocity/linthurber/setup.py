@@ -4,11 +4,19 @@ Setup.py Script
 The Lin-Thurber model setup.py script. This is fairly basic and generic, specifying how the
 velocity model is supposed to be installed.
 
-Copyright:
-    Southern California Earthquake Center
+Copyright 2017 Southern California Earthquake Center
 
-Developer:
-    David Gill <davidgil@usc.edu>
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
 from distutils.core import setup
 from distutils.extension import Extension
