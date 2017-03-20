@@ -89,7 +89,7 @@ def main() -> int:
     # Write everything to CSV.
     with open('cybershake_15.4_site_data_cvms426m01.csv', 'w') as csvfile:
         cwriter = csv.writer(csvfile)
-        cwriter.writerow(["Site ID", "Site Name", "Longitude", "Latitude", "Vs30 (Wills)", "Vs30 (Model)",
+        cwriter.writerow(["Site ID", "Longitude", "Latitude", "Vs30 (Wills)", "Vs30 (Model)",
                           "Difference (Model - Wills)", "Z1.0", "Z2.5"])
         for site in cs_sites:
             cwriter.writerow([site.cybershake_site_id, site.original_point.x_value, site.original_point.y_value,
