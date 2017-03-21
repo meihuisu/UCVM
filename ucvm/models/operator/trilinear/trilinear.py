@@ -5,11 +5,19 @@ This operator queries the four points surrounding the queried point(s) and if th
 properties come from a different model, in one of the points, then we do trilinear interpolation
 between the model boundaries.
 
-Copyright:
-    Southern California Earthquake Center
+Copyright 2017 Southern California Earthquake Center
 
-Developer:
-    David Gill <davidgil@usc.edu>
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
 # Python Imports
 from typing import List
@@ -26,12 +34,14 @@ from ucvm.src.shared.constants import UCVM_DEFAULT_PROJECTION
 
 from ucvm_c_common import UCVMCCommon
 
+
 class TrilinearOperator(OperatorModel):
     """
     Defines the Trilinear operator for UCVM.
     """
 
-    def _interpolate_properties(self, data: List[SeismicData], x_percent: float, y_percent: float,
+    @classmethod
+    def _interpolate_properties(cls, data: List[SeismicData], x_percent: float, y_percent: float,
                                 z_percent: float) -> VelocityProperties:
         """
         Interpolates the points and sets the new material properties.
@@ -88,7 +98,6 @@ class TrilinearOperator(OperatorModel):
                         z_percent
                     ))
                     setattr(vel_return, matprop + "_source", "interpolated")
-
 
     def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """

@@ -40,7 +40,9 @@ _ERROR_LIST = {
     20: "Two or more of the same model type were provided in the same model string (e.g. "
         "cvms4.cvms426 which combines two velocity models). Please fix and try again.",
     21: "No file was specified as a parameter to the data product reader model. Please call the "
-        "model like this: dataproductreader[xml file name]. If that doesn't work,"
+        "model like this: dataproductreader[xml file name]. If that doesn't work,",
+    22: "Could not load model. Please try reinstalling the model by running ucvm_model_manager -a %s. "
+        "If that doesn't work,"
 }
 
 

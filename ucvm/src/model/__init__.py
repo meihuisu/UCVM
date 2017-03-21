@@ -348,6 +348,11 @@ def install_ucvm_model_xml(xml_file: str) -> dict:
             "@class": xml_info["class"]
         }]
 
+    # Fix for Anaconda hard-link issue. We need to first delete the file and create a new one to ensure that
+    # we're just not writing the hard link.
+    os.remove(UCVM_MODEL_LIST_FILE)
+
+    # Now we can write the XML.
     with open(UCVM_MODEL_LIST_FILE, "w") as fd:
         fd.write(xmltodict.unparse(model_xml, pretty=True))
 

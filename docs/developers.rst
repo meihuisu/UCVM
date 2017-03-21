@@ -26,10 +26,8 @@ A very simple script to query "cvms426" at point -118, 34, 0 and print out the m
     point = Point(-118, 34, 0)
     # Create a new SeismicData object to hold the material properties at that point.
     data = SeismicData(point)
-    # Bootstrap UCVM.
-    u = UCVM()
     # Query the point for cvms426. Note, query expects a list of SeismicData objects.
-    u.query([data], "cvms426")
+    UCVM.query([data], "cvms426")
     # Print the result.
     print(data)
 

@@ -33,6 +33,9 @@ ElevationProperties = namedtuple("ElevationProperties", "elevation elevation_sou
 Vs30Properties = namedtuple("Vs30Properties", "vs30 vs30_source")
 #: namedtuple Vs30Properties: Defines the Vs30 properties (just Vs30 value and source).
 
+ZProperties = namedtuple("ZProperties", "z10 z25")
+#: namedtuple ZProperties: Defines the Z properties (either 1.0 or 2.5).
+
 SimplePoint = namedtuple("SimplePoint", "x y z")
 #: namedtuple SimplePoint: Defines a very simple point structure (x, y, and z).
 
@@ -160,6 +163,7 @@ class SeismicData:
         self.elevation_properties = None          #: ElevationProperties: Elevation property data.
         self.velocity_properties = None           #: VelocityProperties: Material property data.
         self.vs30_properties = None               #: Vs30Properties: Vs30 property data.
+        self.z_properties = None                  #: ZProperties: Z property data.
         self.model_string = None                  #: str: The string from which the data came.
 
         if extras is not None:
@@ -204,6 +208,13 @@ class SeismicData:
                             "Vs30Properties.")
 
         self.vs30_properties = vs30_properties
+        return True
+
+    def set_z_data(self, z_properties: ZProperties) -> bool:
+        if not isinstance(z_properties, ZProperties):
+            raise TypeError("Z properties must be a namedtuple of type ZProperties.")
+
+        self.z_properties = z_properties
         return True
 
     def set_model_string(self, model_string: dict) -> bool:

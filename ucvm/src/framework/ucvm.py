@@ -6,11 +6,21 @@ This script will automatically bootstrap UCVM immediately as it may need to adju
 LD_LIBRARY_PATH. *If* it does, then it *will* relaunch the process. Therefore, load this module
 at the top of your files!
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   July 6, 2016
-:modified:  October 17, 2016
+Copyright 2017 Southern California Earthquake Center
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
+# Python Imports
 import sys
 import os
 import xmltodict
@@ -22,14 +32,15 @@ import math
 import psutil
 import copy
 
+# Package Imports
 from typing import List
 
+# UCVM Imports
 from ucvm.src.shared.constants import UCVM_MODEL_LIST_FILE, UCVM_MODELS_DIRECTORY, UCVM_LIBRARIES_DIRECTORY, \
                                       UCVM_DEFAULT_DEM, UCVM_DEFAULT_VS30, UCVM_DEFAULT_VELOCITY, \
-                                      INTERNAL_DATA_DIRECTORY, UCVM_DEPTH, UCVM_ELEVATION, \
-                                      UCVM_ELEV_ANY
+                                      UCVM_DEPTH, UCVM_ELEVATION, UCVM_ELEV_ANY
 from ucvm.src.shared.properties import SeismicData
-from ucvm.src.shared import display_and_raise_error, parse_xmltodict_one_or_many, is_number
+from ucvm.src.shared import display_and_raise_error, is_number
 from ucvm.src.model.model import Model
 
 
@@ -43,7 +54,9 @@ class UCVM:
         Bootstraps UCVM. This automatically checks to see what models we have and where the
         libraries are. It also reloads the process if need be with the new LD_LIBRARY_PATH. As such,
         this needs to be called *right away* in any utilities and command-line tools.
-        :return: True, if UCVM was bootstrapped successfully. False if not.
+
+        Returns:
+            True, if UCVM was bootstrapped successfully. False if not.
         """
         if "ucvm_has_bootstrapped" in os.environ:
             return False
@@ -95,8 +108,8 @@ class UCVM:
     def query(cls, points: List[SeismicData], model_string: str,
               desired_properties: List[str]=None, custom_model_query: dict=None, add_params: str="") -> bool:
         """
-        Given a list of SeismicData objects, each one containing a valid Point object, and a
-        model_string to parse, this function will get the velocity, elevation, and Vs30 data.
+        Given a list of SeismicData objects, each one containing a valid Point object, and a model_string to parse,
+        this function will get the velocity, elevation, and Vs30 data.
         :param points:
         :param model_string:
         :param desired_properties:
@@ -196,15 +209,18 @@ class UCVM:
             display_and_raise_error(5, (model,))
 
         # The model exists. Let's load it either from the .py file or from the library.
-        if ".py" in found["file"]:
-            new_class = __import__("ucvm.models." + found["id"] + "." +
-                                   ".".join(found["file"].split(".")[:-1]), fromlist=found["class"])
-            UCVM.instantiated_models[model] = getattr(new_class, found["class"])()
-        else:
-            new_class = __import__(found["class"], fromlist=found["class"])
-            UCVM.instantiated_models[model] = \
-                getattr(new_class, found["class"])(model_location=
-                                                   os.path.join(UCVM_MODELS_DIRECTORY, found["id"]))
+        try:
+            if ".py" in found["file"]:
+                new_class = __import__("ucvm.models." + found["id"] + "." +
+                                       ".".join(found["file"].split(".")[:-1]), fromlist=found["class"])
+                UCVM.instantiated_models[model] = getattr(new_class, found["class"])()
+            else:
+                new_class = __import__(found["class"], fromlist=found["class"])
+                UCVM.instantiated_models[model] = \
+                    getattr(new_class, found["class"])(model_location=
+                                                       os.path.join(UCVM_MODELS_DIRECTORY, found["id"]))
+        except ImportError:
+            display_and_raise_error(22, (model,))
 
         return UCVM.instantiated_models[model]
 
