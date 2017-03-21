@@ -33,15 +33,9 @@ You will also need to install the Xcode command line tools.
     SCECs-MacBook-Pro:~ scec$ xcode-select --install
     SCECs-MacBook-Pro:~ scec$ sudo xcodebuild -license accept
 
-You will need Python 3.5 to install UCVM.
-::
-
-    SCECs-MacBook-Pro:~ scec$ curl -o python.pkg https://www.python.org/ftp/python/3.5.0/python-3.5.0-macosx10.6.pkg
-    SCECs-MacBook-Pro:~ scec$ open python.pkg
-
 The installer will guide you through the installation process.
 
-Finally, you will need the X11 server as UCVM depends on Matplotlib which requires X11 to be installed. Please visit the
+You will need the X11 server as UCVM depends on Matplotlib which requires X11 to be installed. Please visit the
 following link to download and install the latest X11 version.
 
 http://www.xquartz.org
@@ -78,6 +72,12 @@ It is strongly recommended that users of UCVM use Python virtual environments to
 environments allow all the UCVM components to be installed in one folder and independently of other Python packages.
 This guide will detail how to install UCVM using a virtual environment first. The Advanced section explains how to
 install UCVM without a virtual environment.
+
+First, you will need Python 3.5:
+::
+
+    SCECs-MacBook-Pro:~ scec$ curl -o python.pkg https://www.python.org/ftp/python/3.5.0/python-3.5.0-macosx10.6.pkg
+    SCECs-MacBook-Pro:~ scec$ open python.pkg
 
 To create and activate your virtual environment, do the following:
 ::

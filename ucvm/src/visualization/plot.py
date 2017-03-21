@@ -15,6 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import subprocess
 import numpy as np
 
 from ucvm.src.shared.errors import display_and_raise_error
@@ -22,7 +23,20 @@ from ucvm.src.model.fault import Fault
 
 try:
     import matplotlib as mpl
-    mpl.use("qt5agg")
+    import matplotlib as mpl
+    proc = subprocess.Popen(
+        ["python3", "-c", "import matplotlib as mpl;mpl.use(\'qt4agg\');import matplotlib.pyplot as plt"],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    if proc.communicate()[1].decode("UTF-8") == "":
+        mpl.use("qt4agg")
+    else:
+        proc = subprocess.Popen(
+            ["python3", "-c", "import matplotlib as mpl;mpl.use(\'qt5agg\');import matplotlib.pyplot as plt"],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        if proc.communicate()[1].decode("UTF-8") == "":
+            mpl.use("qt5agg")
     import matplotlib.pyplot as plt
     import matplotlib.colors as mcolors
     import matplotlib.cm as cm
