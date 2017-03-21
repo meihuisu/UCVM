@@ -25,14 +25,15 @@ try:
     import matplotlib as mpl
     import matplotlib as mpl
     proc = subprocess.Popen(
-        ["python3", "-c", "import matplotlib as mpl;mpl.use(\'qt4agg\');import matplotlib.pyplot as plt"],
+        ["python3", "-c", "import matplotlib as mpl;mpl.use(\'qt4agg\');import matplotlib.pyplot as plt;plt.figure()"],
         stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
     if proc.communicate()[1].decode("UTF-8") == "":
         mpl.use("qt4agg")
     else:
         proc = subprocess.Popen(
-            ["python3", "-c", "import matplotlib as mpl;mpl.use(\'qt5agg\');import matplotlib.pyplot as plt"],
+            ["python3", "-c",
+             "import matplotlib as mpl;mpl.use(\'qt5agg\');import matplotlib.pyplot as plt;plt.figure()"],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
         if proc.communicate()[1].decode("UTF-8") == "":
