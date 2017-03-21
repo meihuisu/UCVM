@@ -209,15 +209,18 @@ class UCVM:
             display_and_raise_error(5, (model,))
 
         # The model exists. Let's load it either from the .py file or from the library.
-        if ".py" in found["file"]:
-            new_class = __import__("ucvm.models." + found["id"] + "." +
-                                   ".".join(found["file"].split(".")[:-1]), fromlist=found["class"])
-            UCVM.instantiated_models[model] = getattr(new_class, found["class"])()
-        else:
-            new_class = __import__(found["class"], fromlist=found["class"])
-            UCVM.instantiated_models[model] = \
-                getattr(new_class, found["class"])(model_location=
-                                                   os.path.join(UCVM_MODELS_DIRECTORY, found["id"]))
+        try:
+            if ".py" in found["file"]:
+                new_class = __import__("ucvm.models." + found["id"] + "." +
+                                       ".".join(found["file"].split(".")[:-1]), fromlist=found["class"])
+                UCVM.instantiated_models[model] = getattr(new_class, found["class"])()
+            else:
+                new_class = __import__(found["class"], fromlist=found["class"])
+                UCVM.instantiated_models[model] = \
+                    getattr(new_class, found["class"])(model_location=
+                                                       os.path.join(UCVM_MODELS_DIRECTORY, found["id"]))
+        except ImportError:
+            display_and_raise_error(22, (model,))
 
         return UCVM.instantiated_models[model]
 
