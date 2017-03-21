@@ -1,4 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<operator file="z-calc.py" id="z-calc" name="Z1.0 and Z2.5 Calculator" class="ZOperator"></operator>
 </root>
