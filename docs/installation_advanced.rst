@@ -41,3 +41,15 @@ If this happens, then the version of Python that you have was a version that was
     source /path/to/ucvm-17.3.0/bin/activate
 
 This will get the Python virtual environment set up with a working version of pip!
+
+fPIC Command Not Found
+~~~~~~~~~~~~~~~~~~~~~~
+
+When installing a model such as CVM-S4.26.M01 you may find that you get an error like this:
+::
+
+   /bin/bash: fPIC: command not found
+
+This error occurs because you do not have GFortran installed. To install GFortran on Ubuntu do sudo apt install
+gfortran. For Mac OS X users, please get the version that
+`corresponds to your OS here <http://coudert.name/software.html>`_.
