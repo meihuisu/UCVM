@@ -53,12 +53,22 @@ class CVMH1510VelocityModelTest(UCVMTestCase):
 
         self.assertTrue(UCVM.query(sd_test, "cvmh1510[gtl]"))
 
-        # No 1D means None for everything.
+        # Query by depth.
         assert_velocity_properties(
             self,
             sd_test[0],
             VelocityProperties(824.177, 195, 1084.062, None, None,
                                "cvmh1510", "cvmh1510", "cvmh1510", None, None)
+        )
+
+        # Check to see that "air" returns nothing (there's a bug in vx that will return 1000 for density in air).
+        sd_test = [SeismicData(Point(-118, 34, 1000, UCVM_ELEVATION))]
+
+        self.assertTrue(UCVM.query(sd_test, "cvmh1510.elevation"))
+        assert_velocity_properties(
+            self,
+            sd_test[0],
+            VelocityProperties(None, None, None, None, None, None, None, None, None, None)
         )
 
         self._test_end()

@@ -25,6 +25,7 @@ import unittest
 # UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.shared.properties import SeismicData, Point
+from ucvm.src.shared.constants import UCVM_ELEVATION
 from ucvm.src.shared.errors import UCVMError
 
 try:
@@ -161,6 +162,20 @@ class UCVMFrameworkTest(unittest.TestCase):
             UCVM.query(data_1, "cvms426 vs30-calc")
         sys.stdout = stdout
 
+    def test_ucvm_raises_error_on_negative_depth(self):
+        """
+        Tests that you cannot pass a negative depth to UCVM. We test this two ways. First, you cannot pass a negative
+        depth to a newly-constructed SeismicData object set to be depth. Second, if we modify the z_value after, we
+        should get an error on query complaining about negative depth.
+        """
+        with self.assertRaises(ValueError):
+            SeismicData(Point(-118, 34, -500))
+
+        s = SeismicData(Point(-118, 34, 0))
+        s.original_point.z_value = -500
+        with self.assertRaises(ValueError):
+            UCVM.query([s], "1d[SCEC]")
+
     def test_ucvm_select_right_models_for_query(self):
         """
         Tests that given a desired set of properties, UCVM picks the correct models to query (for example if we are
@@ -237,6 +252,23 @@ class UCVMFrameworkTest(unittest.TestCase):
         self.assertIn("17.3.0", out)
         self.assertIn("2017", out)
         self.assertIn("LICENSE", out)
+
+    def test_ucvm_same_points_depth_or_elevation(self):
+        """
+        Tests that querying by elevation using the UCVM built-in DEM works. Model-specific DEMs are compared within
+        their respective model test codes.
+        """
+        # The elevation at -118, 34 is 288.997m. We use that for the elevation test.
+        s = SeismicData(Point(-118, 34, 0))
+        UCVM.query([s], "1d[SCEC]")
+        velocity_properties_by_depth = s.velocity_properties
+        s = SeismicData(Point(-118, 34, 288.99689, UCVM_ELEVATION))
+        UCVM.query([s], "1d[SCEC]")
+        velocity_properties_by_elevation = s.velocity_properties
+
+        self.assertEqual(velocity_properties_by_depth.vs, velocity_properties_by_elevation.vs)
+        self.assertEqual(velocity_properties_by_depth.vp, velocity_properties_by_elevation.vp)
+        self.assertEqual(velocity_properties_by_depth.density, velocity_properties_by_elevation.density)
 
 
 def make_suite() -> unittest.TestSuite:

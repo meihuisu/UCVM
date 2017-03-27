@@ -84,3 +84,30 @@ class CCA06VelocityModelTest(UCVMTestCase):
             self.assertLess(sd_test[i].velocity_properties.density / points[i][5], 1 + epsilon)
 
         self._test_end()
+
+    def test_cca06_add_1d_model(self):
+        """
+        Tests that we can add a 1D background model to CCA06 using tiling. This is a generic verification just to ensure
+        that tiling works on the user's computer as we expect them to use it with this model.
+
+        Returns:
+            None
+        """
+        self._test_start("CCA06 tiling with 1D model works")
+
+        sd_test = [
+            SeismicData(Point(-120.65, 35.64, 0)),
+            SeismicData(Point(-125, 40, 0))
+        ]
+        self.assertTrue(UCVM.query(sd_test, "cca06;1d[SCEC]", ["velocity"]))
+
+        self.assertAlmostEqual(sd_test[0].velocity_properties.vp, 5076.7466, 4)
+        self.assertAlmostEqual(sd_test[0].velocity_properties.vs, 2838.2566, 4)
+        self.assertAlmostEqual(sd_test[0].velocity_properties.density, 2493.9988, 4)
+        self.assertEqual(sd_test[0].velocity_properties.vp_source, "cca06")
+        self.assertAlmostEqual(sd_test[1].velocity_properties.vp, 5000, 4)
+        self.assertAlmostEqual(sd_test[1].velocity_properties.vs, 2886.7513, 4)
+        self.assertAlmostEqual(sd_test[1].velocity_properties.density, 2654.5000, 4)
+        self.assertEqual(sd_test[1].velocity_properties.vp_source, "scec 1d (interpolated)")
+
+        self._test_end()
