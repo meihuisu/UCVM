@@ -1,6 +1,6 @@
 """
-Defines all the tests for the UCVM framework. This tests basic aspects like model loading as well
-as more complex aspects like proper model parsing, and so on.
+Defines all the tests for the UCVM framework. This tests basic aspects like model loading as well as more complex
+aspects like proper model parsing, and so on.
 
 Copyright 2017 Southern California Earthquake Center
 
@@ -16,10 +16,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+# Python Imports
+from contextlib import redirect_stdout
+from io import StringIO
+import sys
 import unittest
 
+# UCVM Imports
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.shared.properties import SeismicData, Point
+from ucvm.src.shared.errors import UCVMError
 
 try:
     import ucvm.tests.test_model as test_model
@@ -28,16 +34,81 @@ except ImportError:
 
 
 class UCVMFrameworkTest(unittest.TestCase):
-
-    def setUp(self):
-        pass
+    """
+    Tests that the core capabilities of the UCVM framework work. Example core capabilities include that the model
+    strings can be parsed correctly, that query works and returns proper values, and so on. This makes use of the
+    TestVelocityModel which allows us to verify returned values.
+    """
 
     def test_ucvm_parse_model_string(self):
         """
-        Test that the model strings can be parsed correctly.
+        Test that UCVM can parse the model strings correctly. This just tests the actual parsing for the syntax (i.e.
+        brackets, semi-colons, parameters, etc.)
         """
-        self.assertEqual(UCVM.parse_model_string(""), {})
-        self.assertEqual(UCVM.parse_model_string("cvms4"), {0: {0: "cvms4"}})
+        # Test that one model parses correctly.
+        self.assertEqual(
+            UCVM.parse_model_string("velocity"),
+            {0: {0: "velocity"}}
+        )
+
+        # Test that semi-colon separates models.
+        self.assertEqual(
+            UCVM.parse_model_string("velocity1;velocity2"),
+            {0: {0: "velocity1"}, 1: {0: "velocity2"}}
+        )
+
+        # Test that operators/additional models parse correctly and that parameters parse correctly.
+        self.assertEqual(
+            UCVM.parse_model_string("velocity1.operator[500];velocity2"),
+            {0: {0: "velocity1", 1: "operator;-;500"}, 1: {0: "velocity2"}}
+        )
+
+        # Check that parentheses allow for modifiers to apply to multiple models.
+        self.assertEqual(
+            UCVM.parse_model_string("(velocity1;velocity2).modifier1[50].modifier2;velocity3"),
+            {
+                0: {0: "velocity1", 1: "modifier1;-;50", 2: "modifier2"},
+                1: {0: "velocity2", 1: "modifier1;-;50", 2: "modifier2"},
+                2: {0: "velocity3"}
+            }
+        )
+
+        # Second check that readjusting order still allows for parentheses to apply correctly.
+        self.assertEqual(
+            UCVM.parse_model_string("velocity3;(velocity1;velocity2).modifier1[50].modifier2"),
+            {
+                0: {0: "velocity3"},
+                1: {0: "velocity1", 1: "modifier1;-;50", 2: "modifier2"},
+                2: {0: "velocity2", 1: "modifier1;-;50", 2: "modifier2"}
+            }
+        )
+
+        # Third check that just the parentheses allow for models to be parsed correctly.
+        self.assertEqual(
+            UCVM.parse_model_string("(velocity1;velocity2).modifier1[50].modifier2"),
+            {
+                0: {0: "velocity1", 1: "modifier1;-;50", 2: "modifier2"},
+                1: {0: "velocity2", 1: "modifier1;-;50", 2: "modifier2"},
+            }
+        )
+
+        # Check to make sure that if we add modifier1 to a model inside the parentheses that it adds things correctly.
+        self.assertEqual(
+            UCVM.parse_model_string("(velocity1.modifier1[50];velocity2).modifier2"),
+            {
+                0: {0: "velocity1", 1: "modifier1;-;50", 2: "modifier2"},
+                1: {0: "velocity2", 1: "modifier2"}
+            }
+        )
+
+        # Check to make sure that special characters in parameters don't break it...
+        self.assertEqual(
+            UCVM.parse_model_string("(velocity1.modifier1[1.0];velocity2).modifier2"),
+            {
+                0: {0: "velocity1", 1: "modifier1;-;1.0", 2: "modifier2"},
+                1: {0: "velocity2", 1: "modifier2"}
+            }
+        )
 
     def test_ucvm_load_models(self):
         """
@@ -69,50 +140,40 @@ class UCVMFrameworkTest(unittest.TestCase):
         self.assertEqual(data_1[0].velocity_properties.qp, (34 - (-118)) / 4)
         self.assertEqual(data_1[0].velocity_properties.qs, (34 + (-118)) / 4)
 
-    def test_ucvm_parse_string(self):
+    def test_ucvm_raises_error_on_bad_model_combinations(self):
         """
-        Test that UCVM can parse the model strings correctly. This just tests the actual parsing
-        for the syntax (i.e. brackets, semi-colons, parameters, etc.)
+        Tests that UCVM errors out gracefully when a bad model name is called.
         """
-        self.assertEqual(
-            UCVM.parse_model_string("velocity"),
-            {0: {0: "velocity"}}
-        )
-        self.assertEqual(
-            UCVM.parse_model_string("velocity1;velocity2"),
-            {0: {0: "velocity1"}, 1: {0: "velocity2"}}
-        )
-        self.assertEqual(
-            UCVM.parse_model_string("velocity1.operator[500];velocity2"),
-            {0: {0: "velocity1", 1: "operator;-;500"}, 1: {0: "velocity2"}}
-        )
-        self.assertEqual(
-            UCVM.parse_model_string("(velocity1;velocity2).modifier1[50].modifier2;velocity3"),
-            {
-                0: {0: "velocity1", 1: "modifier1;-;50", 2: "modifier2"},
-                1: {0: "velocity2", 1: "modifier1;-;50", 2: "modifier2"},
-                2: {0: "velocity3"}
-            }
-        )
-        self.assertEqual(
-            UCVM.parse_model_string("velocity3;(velocity1;velocity2).modifier1[50].modifier2"),
-            {
-                0: {0: "velocity3"},
-                1: {0: "velocity1", 1: "modifier1;-;50", 2: "modifier2"},
-                2: {0: "velocity2", 1: "modifier1;-;50", 2: "modifier2"}
-            }
-        )
-        self.assertEqual(
-            UCVM.parse_model_string("(velocity1;velocity2).modifier1[50].modifier2"),
-            {
-                0: {0: "velocity1", 1: "modifier1;-;50", 2: "modifier2"},
-                1: {0: "velocity2", 1: "modifier1;-;50", 2: "modifier2"},
-            }
-        )
+        data_1 = [
+            SeismicData(Point(-118, 34, 0))
+        ]
+        stdout = sys.stdout
+        sys.stdout = None
+        with self.assertRaises(UCVMError):
+            UCVM.query(data_1, "nonexistantvelocitymodel")
+        with self.assertRaises(UCVMError):
+            UCVM.query(data_1, None)
+        with self.assertRaises(UCVMError):
+            UCVM.query(data_1, "")
+        with self.assertRaises(UCVMError):
+            UCVM.query(data_1, "34[]34")
+        with self.assertRaises(UCVMError):
+            UCVM.query(data_1, "cvms426 vs30-calc")
+        sys.stdout = stdout
 
     def test_ucvm_select_right_models_for_query(self):
+        """
+        Tests that given a desired set of properties, UCVM picks the correct models to query (for example if we are
+        querying a depth model by elevation, we need to get the DEM).
+        """
         self.assertEqual(
             UCVM.get_models_for_query("1d.depth", ["velocity"]),
+            {
+                0: {0: "1d"}
+            }
+        )
+        self.assertEqual(
+            UCVM.get_models_for_query("1d", ["velocity"]),
             {
                 0: {0: "1d"}
             }
@@ -130,6 +191,52 @@ class UCVMFrameworkTest(unittest.TestCase):
                 0: {0: "usgs-noaa", 1: "1d", 2: "vs30-calc"}
             }
         )
+
+    def test_ucvm_get_model_type(self):
+        """
+        Tests that given a model, it correctly identifies the model type. Because we cannot guarantee that any
+        operators will be installed on the user's system, we don't test for this.
+        """
+        self.assertEqual(UCVM.get_model_type("1d"), "velocity")
+        self.assertEqual(UCVM.get_model_type("usgs-noaa"), "elevation")
+        self.assertEqual(UCVM.get_model_type("wills-wald-2006"), "vs30")
+
+    def test_ucvm_get_model_instance(self):
+        """
+        Tests that UCVM can retrieve a model instance correctly. Also tests to ensure that providing a bad model to
+        this raises the correct error.
+        """
+        self.assertEqual(UCVM.get_model_instance("1d").get_metadata()["id"], "1d")
+        stdout = sys.stdout
+        sys.stdout = None
+        with self.assertRaises(UCVMError):
+            UCVM.get_model_instance("bob")
+        sys.stdout = stdout
+
+    def test_ucvm_get_list_of_installed_models(self):
+        """
+        Tests that we can retrieve the list of installed models. This helps verify that there are no permission
+        problems reading the model XML file for example.
+        """
+        models = UCVM.get_list_of_installed_models()
+        self.assertTrue("velocity" in models)
+        self.assertTrue(len(models["velocity"]) >= 1)
+        self.assertTrue("elevation" in models)
+        self.assertTrue(len(models["elevation"]) >= 1)
+        self.assertTrue("vs30" in models)
+        self.assertTrue(len(models["vs30"]) >= 1)
+
+    def test_ucvm_print_version(self):
+        """
+        Tests that the replacements are done correctly when printing UCVM's version info.
+        """
+        f = StringIO()
+        with redirect_stdout(f):
+            UCVM.print_version()
+        out = f.getvalue()
+        self.assertIn("17.3.0", out)
+        self.assertIn("2017", out)
+        self.assertIn("LICENSE", out)
 
 
 def make_suite() -> unittest.TestSuite:

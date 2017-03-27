@@ -2,13 +2,20 @@
 Defines the various property classes (SeismicData, Point, etc.) that UCVM uses to represent
 material properties.
 
-:copyright: Southern California Earthquake Center
-:author:    David Gill <davidgil@usc.edu>
-:created:   July 6, 2016
-:modified:  October 17, 2016
-"""
-import copy
+Copyright 2017 Southern California Earthquake Center
 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
 from collections import namedtuple
 
 try:
@@ -51,16 +58,22 @@ class Point:
     latitude and longitude. A point can have either a depth or elevation and also be
     provided some metadata.
 
-    :param float x: Longitude/x co-ordinate.
-    :param float y: Latitude/y co-ordinate.
-    :param float z: The depth or elevation of the point.
-    :param int depth_elev: A flag of either Point.DEPTH or Point.ELEVATION.
-    :param dictionary metadata: A dictionary of metadata.
-    :param str projection: A Proj.4 projection string indicating the point's projection.
-    :Example: To declare point (-118, 34) at depth 0 using WGS 84 longitude, latitude projection, \
-              do: ``Point(-118, 34, 0)``. If you wanted to declare that same point in UTM, you \
-              would need to do the Proj.4 string which would be \
-              ``Point(407650.4, 3762606.7, 0, projection="+proj=utm +datum=WGS84 +zone=11")``.
+    Parameters:
+        x (float): Longitude/x co-ordinate.
+        y (float): Latitude/y co-ordinate.
+        z (float): The depth or elevation of the point.
+        depth_elev (int): A flag of either UCVM_DEPTH or UCVM_ELEVATION.
+        metadata (dict): A dictionary of metadata.
+        projection (str): A Proj.4 projection string indicating the point's projection.
+
+    Example:
+        To declare point (-118, 34) at depth 0 using WGS 84 longitude, latitude projection, do:
+
+        Point(-118, 34, 0)
+
+        If you wanted to declare that same point in UTM, you would need to specify the Proj.4 string which would be:
+
+        Point(407650.4, 3762606.7, 0, projection="+proj=utm +datum=WGS84 +zone=11").
     """
 
     loaded_projections = {}
@@ -95,15 +108,18 @@ class Point:
         else:
             self.projection = projection
 
-        self.depth_elev = depth_elev  #: int: Depth / elevation (DEPTH = 0, ELEVATION = 1)
+        self.depth_elev = depth_elev  #: int: Depth / elevation (UCVM_DEPTH = 0, UCVM_ELEVATION = 1)
         self.metadata = metadata  #: dictionary: A key-value array of metadata.
 
     def convert_to_projection(self, projection: str):
         """
         Returns an equivalent point in a different projection.
 
-        :param str projection: The new projection string in Proj.4.
-        :return: A Point in the new projection.
+        Parameters:
+            projection (str): The new projection string in Proj.4.
+
+        Returns:
+            Point: A Point in the new projection.
         """
         if projection == self.projection:
             return self
@@ -142,18 +158,23 @@ class SeismicData:
     point on the Earth. A SeismicData object also contains the model from which the data was
     retrieved for easy reference.
 
-    :param Point point: The point to which these properties belong.
-    :param dictionary extras: Possible extra parameters (e.g. Vs30, elevation, etc.).
-    :Example: To return material properties from model "foo" at (-118, 34, 0) of (Vp: 1000, \
-              Vs: 1000, Density: 1000), the code would be \
-              ``SeismicData(MaterialProperties(1000, 1000, 1000), None, Point(-118, 34, 0), \
-              "foo")``.
+    Parameters:
+
+        point (Point): The point to which these properties belong.
+        extras (dict): Possible extra parameters (i.e. metadata you wished to attach to this object).
+
+    Example:
+        To fill a SeismicData object with the material properties from model "foo" at (-118, 34, 0) of
+        (Vp: 1000, Vs: 1000, Density: 1000), the code would be:
+
+        s = SeismicData(Point(-118, 34, 0), "foo") |br|
+        s.set_velocity_data(VelocityProperties(1000, 1000, 1000, "foo", "foo", "foo"))
     """
 
     def __init__(self, point: Point=None, extras: dict=None):
         if point is not None:
-            self.original_point = point              #: Point: The original point given.
-            self.converted_point = None
+            self.original_point = point         #: Point: The original point given.
+            self.converted_point = None         #: Point: If a different projection is required, this holds that point.
         elif point is not None:
             raise TypeError("The point must be an instance of the Point class")
         else:
@@ -174,8 +195,12 @@ class SeismicData:
     def set_elevation_data(self, elevation_properties: ElevationProperties) -> bool:
         """
         Sets the elevation data for this particular seismic data instance.
-        :param namedtuple elevation_properties: The ElevationProperties namedtuple to set.
-        :return: True when successful, error raised if not.
+
+        Parameters:
+            elevation_properties (namedtuple): The ElevationProperties namedtuple to set.
+
+        Returns:
+            bool: True when successful. An error is raised if not.
         """
         if not isinstance(elevation_properties, ElevationProperties):
             raise TypeError("Elevation properties must be a namedtuple of type "
@@ -187,8 +212,12 @@ class SeismicData:
     def set_velocity_data(self, velocity_properties: VelocityProperties) -> bool:
         """
         Sets the velocity data for this particular seismic data instance.
-        :param namedtuple velocity_properties: The VelocityProperties namedtuple to set.
-        :return: True when successful, error raised if not.
+
+        Parameters:
+            velocity_properties (namedtuple): The VelocityProperties namedtuple to set.
+
+        Returns:
+            bool: True when successful. An error is raised if not.
         """
         if not isinstance(velocity_properties, VelocityProperties):
             raise TypeError("Velocity properties must be a namedtuple of type "
@@ -200,8 +229,12 @@ class SeismicData:
     def set_vs30_data(self, vs30_properties: Vs30Properties) -> bool:
         """
         Sets the Vs30 data for this particular seismic data instance.
-        :param namedtuple vs30_properties: The Vs30Properties namedtuple to set.
-        :return: True when successful, error raised if not.
+
+        Parameters:
+            vs30_properties (namedtuple): The Vs30Properties namedtuple to set.
+
+        Returns:
+            bool: True when successful. An error is raised if not.
         """
         if not isinstance(vs30_properties, Vs30Properties):
             raise TypeError("Vs30 properties must be a namedtuple of type "
@@ -211,33 +244,51 @@ class SeismicData:
         return True
 
     def set_z_data(self, z_properties: ZProperties) -> bool:
+        """
+        Sets the Z1.0 and Z2.5 property data for this particular instance.
+
+        Parameters:
+            z_properties (namedtuple): The ZProperties namedtuple to set.
+
+        Returns:
+            bool: True when successful. An error is raised if not.
+        """
         if not isinstance(z_properties, ZProperties):
             raise TypeError("Z properties must be a namedtuple of type ZProperties.")
 
         self.z_properties = z_properties
         return True
 
-    def set_model_string(self, model_string: dict) -> bool:
+    def set_model_string(self, model_string: str) -> bool:
         """
-        Sets the model string from which this data came.
-        :param model_string: The model string.
-        :return: None
+        Sets the model string from which this data came (e.g. "cvms426.usgs-noaa").
+
+        Parameters:
+            model_string (str): The model string.
+
+        Returns:
+            bool: True
         """
         self.model_string = model_string
         return True
 
     def is_property_type_set(self, property_type: str) -> bool:
         """
-        Check to see if the given property type is set.
-        :param property_type: The property type.
-        :return: True if set, false if not.
+        Check to see if the given property type is set. Valid property types include velocity, elevation, and vs30. That
+        is, has this SeismicData object been populated with values of that type?
+
+        Parameters:
+            property_type (str): The property type. Valid values include velocity, elevation, and vs30.
+
+        Returns:
+            bool: True if type is set, false if not.
         """
         if property_type == "velocity":
             return self.velocity_properties is not None and \
                    self.velocity_properties.vp is not None
-        if property_type == "elevation":
+        elif property_type == "elevation":
             return self.elevation_properties is not None
-        if property_type == "vs30":
+        elif property_type == "vs30":
             return self.vs30_properties is not None
 
         return False
@@ -246,13 +297,16 @@ class SeismicData:
     def from_old_ucvm(cls, output_string, point=None, model=None):
         """
         Generates a new instance of SeismicData, from the old UCVM output.
+
+        Parameters:
         :param str output_string: The string returned by UCVM.
         :param Point point: The point to which this SeismicData belongs.
         :param str model: The model identifier as a string.
         :return: A new instance of SeismicData.
         """
-        line_array = output_string.split()
-        return cls(line_array[14], line_array[15], line_array[16], point, model)
+        pass
+        #line_array = output_string.split()
+        #return cls(line_array[14], line_array[15], line_array[16], point, model)
 
     def __str__(self, *args, **kwargs):
         """
@@ -263,24 +317,16 @@ class SeismicData:
                                        float(self.velocity_properties.vs),
                                        float(self.velocity_properties.density))
 
-    def get_property(self, prop) -> float:
-        """
-        Given a property (vp, vs, density, etc.) returns the value for that property.
-        :param str prop: The property to retrieve.
-        :return: The value for the property.
-        """
-        if prop == "vp":
-            return self.velocity_properties.vp
-        elif prop == "vs":
-            return self.velocity_properties.vs
-        elif prop == "dn":
-            return self.velocity_properties.density
-
     def convert_point_to_projection(self, projection: str) -> None:
         """
-        Given a projection, sets converted point property to be the new projection.
-        :param projection: The projection as a string.
-        :return: Nothing.
+        Given a projection, sets converted_point to be a copy of this object's Point but converted to the new
+        projection.
+
+        Parameters:
+            projection (str): The projection as a Proj.4 string.
+
+        Returns:
+            None
         """
         if self.original_point.projection == projection:
             self.converted_point = Point(self.original_point.x_value, self.original_point.y_value,
@@ -292,11 +338,15 @@ class SeismicData:
 
     def set_point_to_depth_or_elev(self, depth_or_elev: int=UCVM_DEPTH) -> bool:
         """
-        Sets the point to either be a depth or elevation. Elevation_properties must be set
-        for a conversion to happen. If it is not set, and a conversion is required, false is
-        returned.
-        :param depth_or_elev: Either UCVM_DEPTH or UCVM_ELEVATION.
-        :return: True if conversion was not needed or conversion was successful. False if not.
+        Sets the point to either be a depth or elevation. Elevation_properties must be set for a conversion to happen.
+        If it is not set, and a conversion is required, false is returned.
+
+        Parameters:
+            depth_or_elev (int): Either UCVM_DEPTH or UCVM_ELEVATION.
+
+        Returns:
+            bool: True if conversion was not needed or conversion was successful. False if there was an error (e.g.
+            elevation properties were not set).
         """
         if self.converted_point.get_depth_or_elevation() == depth_or_elev or \
            depth_or_elev == UCVM_ELEV_ANY:

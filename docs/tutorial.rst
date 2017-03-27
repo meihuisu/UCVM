@@ -7,6 +7,27 @@ This tutorial works through three typical use-cases for the new UCVM. This tutor
 distribution of the software which has CVM-S4.26 installed. Three hypothetical scenarios are explored and these
 represent the most common use cases for the UCVM platform.
 
+Activate Python Environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Every time you want to run UCVM, you must ensure that all the Python paths are configured properly.
+
+If you installed via Anaconda and you named your environment "ucvm-17.3.0", run:
+
+* source activate ucvm-17.3.0
+
+If you installed via virtual environment and you put your installation in a folder like "/your/path/to/ucvm-17.3.0", run:
+
+* source /your/path/to/ucvm-17.3.0/bin/activate
+
+Otherwise, if you installed UCVM to a custom location, please configure your PYTHONPATH and PATH variables correctly.
+To do this, assuming you installed to /your/path/to/ucvm-17.3.0, the commands would be:
+
+* export PATH="/your/path/to/ucvm-17.3.0/bin"
+* export PYTHONPATH="/your/path/to/ucvm-17.3.0/lib/python3.5/site-packages:$PYTHONPATH"
+
+It may be helpful to add those to your ~/.bashrc or ~/.bash_profile to avoid having to run them each time.
+
 Query
 ~~~~~
 
@@ -28,7 +49,7 @@ visit the :ref:`AvailableModels` page). This tutorial assumes that you want thes
 which is the latest Southern California full 3D tomographic improvement model. The command to run ucvm_query is:
 ::
 
-    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426
+    ucvm_query -m cvms426
 
 UCVM will then ask you to input your desired query points.
 ::
@@ -82,14 +103,20 @@ site, but rather from the model itself. That is, you want to calculate Vs30 dire
 combine multiple data sources together using dots. To accomplish this, do the following:
 ::
 
-    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc
-    Enter points to query. The X, Y, and Z components should be separated by spaces. When you have
-    entered all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
-    -118.28631  34.01919  0
+    Command:
+        ucvm_query -m cvms426.vs30-calc
 
-    Retrieving material properties...
-    X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
-    -118.2863   34.0192     0.0000      1766.6285   895.5740    2014.7020   N/A         N/A         cvms426             60.1029     usgs-noaa   901.0089    vs30-calc
+    Output:
+        Enter points to query. The X, Y, and Z components should be separated by spaces. When you have
+        entered all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
+
+    Input:
+        -118.28631  34.01919  0
+
+    Response:
+        Retrieving material properties...
+        X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
+        -118.2863   34.0192     0.0000      1766.6285   895.5740    2014.7020   N/A         N/A         cvms426             60.1029     usgs-noaa   901.0089    vs30-calc
 
 Taking Vs30 direct from the CVM-S4.26 model results in a 901m/s value instead of a 280m/s one. For GMPEs and other
 equations that require Vs30, you may need to use the Wills Vs30 or the model Vs30 or both and compare.
@@ -102,29 +129,41 @@ query the SCEC 1D model to have some material properties for our equations. Runn
 will return no material properties.
 ::
 
-    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc
-    Enter points to query. The X, Y, and Z components should be separated by spaces. When you have
-    entered all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
-    -121.91088  37.38332  0
+    Command:
+        ucvm_query -m cvms426.vs30-calc
 
-    Retrieving material properties...
-    X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
-    -121.9109   37.3833     0.0000      N/A         N/A         N/A         N/A         N/A         N/A                 11.7362     usgs-noaa   N/A         N/A
+    Output:
+        Enter points to query. The X, Y, and Z components should be separated by spaces. When you have
+        entered all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
+
+    Input:
+        -121.91088  37.38332  0
+
+    Response:
+        Retrieving material properties...
+        X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
+        -121.9109   37.3833     0.0000      N/A         N/A         N/A         N/A         N/A         N/A                 11.7362     usgs-noaa   N/A         N/A
 
 Tiling is done by sequencing models using semi-colons. So if we want to query cvms426 and then the 1D SCEC model, we would
 do the following:
 ::
 
-    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc;1d[SCEC]
-    Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
-    all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
-    -118.28631  34.01919  0
-    -121.91088  37.38332  0
+    Command:
+        ucvm_query -m cvms426.vs30-calc;1d[SCEC]
 
-    Retrieving material properties...
-    X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
-    -118.2863   34.0192     0.0000      1766.6285   895.5740    2014.7020   N/A         N/A         cvms426             60.1029     usgs-noaa   901.0089    vs30-calc
-    -121.9109   37.3833     0.0000      5000.0000   2886.7513   2654.5000   N/A         N/A         scec 1d (interpolat 11.7362     usgs-noaa   2886.7513   vs30-calc
+    Output:
+        Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
+        all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
+
+    Input:
+        -118.28631  34.01919  0
+        -121.91088  37.38332  0
+
+    Response:
+        Retrieving material properties...
+        X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
+        -118.2863   34.0192     0.0000      1766.6285   895.5740    2014.7020   N/A         N/A         cvms426             60.1029     usgs-noaa   901.0089    vs30-calc
+        -121.9109   37.3833     0.0000      5000.0000   2886.7513   2654.5000   N/A         N/A         scec 1d (interpolat 11.7362     usgs-noaa   2886.7513   vs30-calc
 
 Notice how material properties are now returned for both points but the one USC station that lies within the CVM-S4.26
 model domain has a source of cvms426. The San Jose point, which falls outside of the domain, has the 1D SCEC background
@@ -135,25 +174,31 @@ be helpful when writing a paper or when attempting to better understand the scie
 citations are also given on the :ref:`AvailableModels` page.
 ::
 
-    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_query -m cvms426.vs30-calc;1d[SCEC] -a
-    Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
-    all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
-    -118.28631  34.01919  0
-    -121.91088  37.38332  0
+    Command:
+        ucvm_query -m cvms426.vs30-calc;1d[SCEC] -a
 
-    Retrieving material properties...
-    X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
-    -118.2863   34.0192     0.0000      1766.6285   895.5740    2014.7020   N/A         N/A         cvms426             60.1029     usgs-noaa   901.0089    vs30-calc
-    -121.9109   37.3833     0.0000      5000.0000   2886.7513   2654.5000   N/A         N/A         scec 1d (interpolat 11.7362     usgs-noaa   2886.7513   vs30-calc
+    Output:
+        Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
+        all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
 
-    References:
+    Input:
+        -118.28631  34.01919  0
+        -121.91088  37.38332  0
 
-    CVM-S4.26 has 1 reference:
-	    - Lee, E.-J., P. Chen, T. H. Jordan, P. J. Maechling, M. A. M. Denolle, and G. C.Beroza (2014), Full 3-D tomography for crustal structure in Southern California based on the scattering-integral and the adjoint-wave?eld methods, J. Geophys. Res. Solid Earth, 119, doi:10.1002/2014JB011346.
+    Response:
+        Retrieving material properties...
+        X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
+        -118.2863   34.0192     0.0000      1766.6285   895.5740    2014.7020   N/A         N/A         cvms426             60.1029     usgs-noaa   901.0089    vs30-calc
+        -121.9109   37.3833     0.0000      5000.0000   2886.7513   2654.5000   N/A         N/A         scec 1d (interpolat 11.7362     usgs-noaa   2886.7513   vs30-calc
 
-    USGS/NOAA Digital Elevation Model has 2 references:
-	    - The National Map 1/3rd arc-second DEM (http://www.nationalmap.gov)
-	    - Amante, C. and B.W. Eakins, 2009. ETOPO1 1 Arc-Minute Global Relief Model: Procedures, Data Sources and Analysis. NOAA Technical Memorandum NESDIS NGDC-24. National Geophysical Data Center, NOAA. doi:10.7289/V5C8276M
+        References:
+
+        CVM-S4.26 has 1 reference:
+	        - Lee, E.-J., P. Chen, T. H. Jordan, P. J. Maechling, M. A. M. Denolle, and G. C.Beroza (2014), Full 3-D tomography for crustal structure in Southern California based on the scattering-integral and the adjoint-wave?eld methods, J. Geophys. Res. Solid Earth, 119, doi:10.1002/2014JB011346.
+
+        USGS/NOAA Digital Elevation Model has 2 references:
+	        - The National Map 1/3rd arc-second DEM (http://www.nationalmap.gov)
+	        - Amante, C. and B.W. Eakins, 2009. ETOPO1 1 Arc-Minute Global Relief Model: Procedures, Data Sources and Analysis. NOAA Technical Memorandum NESDIS NGDC-24. National Geophysical Data Center, NOAA. doi:10.7289/V5C8276M
 
 
 
@@ -176,7 +221,7 @@ in the Vs velocities at 0m depth.
 To accomplish this task, we need the horizontal slice plotting utility.
 ::
 
-    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_plot_horizontal_slice
+    ucvm_plot_horizontal_slice
 
 This utility will ask a series of questions. Please answer the questions as follows.
 ::
@@ -216,7 +261,7 @@ This utility will ask a series of questions. Please answer the questions as foll
 
 After a minute or so, you will see a plot appear on your screen that looks like this:
 
-.. image:: _static/tutorial1.png
+.. image:: http://hypocenter.usc.edu/research/ucvm/17.3.0/docs/_static/tutorial1.png
     :width: 500px
 
 We can also analyze cross-sections through the earth as well. Suppose we wanted to get a better idea of the material
@@ -224,7 +269,7 @@ properties from depth 0m to depth 10km between the Garden Grove CE13884 station 
 We can visualize this by using the cross-section plotting utility.
 ::
 
-    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_plot_cross_section
+    ucvm_plot_cross_section
 
 Like the previous utility, this will ask a series of questions. Please answer the questions as follows.
 ::
@@ -270,7 +315,7 @@ Like the previous utility, this will ask a series of questions. Please answer th
 
 You will see a plot appear on your screen that looks like this:
 
-.. image:: _static/tutorial2.png
+.. image:: http://hypocenter.usc.edu/research/ucvm/17.3.0/docs/_static/tutorial2.png
     :width: 500px
 
 Finally, we can also plot depth profiles to get a better sense of the material properties at each station. If we wished
@@ -278,7 +323,7 @@ to analyze the material properties below the Santa Monica station, we could do s
 utility.
 ::
 
-    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_plot_depth_profile
+    ucvm_plot_depth_profile
 
 This utility also asks a series of questions. Please answer them as follows.
 ::
@@ -319,7 +364,7 @@ This utility also asks a series of questions. Please answer them as follows.
 
 You will see a plot appear on your screen that looks like this:
 
-.. image:: _static/tutorial3.png
+.. image:: http://hypocenter.usc.edu/research/ucvm/17.3.0/docs/_static/tutorial3.png
     :width: 500px
 
 Meshing
@@ -334,7 +379,7 @@ for a single core to extract.
 We need to use the cartesian mesh generation utility to extract this mesh.
 ::
 
-    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_mesh_create
+    ucvm_mesh_create
 
 This utility will ask a series of questions. Please answer them as follows.
 ::
@@ -392,7 +437,7 @@ its own model within UCVM.
 We can then use the ucvm_plot_comparison utility to visualize and see differences between the two meshes.
 ::
 
-    (ucvm-17.3.0) scec@scec-VirtualBox:~$ ucvm_plot_comparison
+    ucvm_plot_comparison
 
 This utility also asks a series of questions. Please answer them as follows.
 ::
@@ -429,7 +474,7 @@ This utility also asks a series of questions. Please answer them as follows.
 
 You will see a plot appear on your screen that looks like this:
 
-.. image:: _static/tutorial4.png
+.. image:: http://hypocenter.usc.edu/research/ucvm/17.3.0/docs/_static/tutorial4.png
     :width: 500px
 
 Notice how the differences are very, very small. There will be some differences due to trilinear interpolation and

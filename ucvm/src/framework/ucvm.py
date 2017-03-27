@@ -21,19 +21,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 # Python Imports
-import sys
-import os
-import xmltodict
-import logging
-import pkg_resources
-import getopt
-import re
-import math
-import psutil
 import copy
+import getopt
+import logging
+import math
+import os
+import re
+import sys
+from typing import List
 
 # Package Imports
-from typing import List
+import pkg_resources
+import psutil
+import xmltodict
 
 # UCVM Imports
 from ucvm.src.shared.constants import UCVM_MODEL_LIST_FILE, UCVM_MODELS_DIRECTORY, UCVM_LIBRARIES_DIRECTORY, \
@@ -45,6 +45,10 @@ from ucvm.src.model.model import Model
 
 
 class UCVM:
+    """
+    The UCVM class provides the primary interface for interacting with the underlying velocity, elevation, Vs30, and
+    operator models.
+    """
 
     instantiated_models = {}  #: dict: A dictionary of instantiated models.
 
@@ -63,8 +67,8 @@ class UCVM:
 
         # Open the model list file.
         try:
-            with open(UCVM_MODEL_LIST_FILE, "r") as fd:
-                model_xml = xmltodict.parse(fd.read())
+            with open(UCVM_MODEL_LIST_FILE, "r") as xml_model_file:
+                xmltodict.parse(xml_model_file.read())
         except FileNotFoundError:
             display_and_raise_error(1, (UCVM_MODEL_LIST_FILE,))
             sys.exit(-1)
@@ -99,22 +103,45 @@ class UCVM:
         try:
             os.environ["ucvm_has_bootstrapped"] = "Yes"
             os.execv(sys.executable, [sys.executable] + sys.argv)
-        except Exception as e:
+        except Exception as excep:
             display_and_raise_error(2)
-            logging.exception(e)
+            logging.exception(excep)
             sys.exit(-1)
 
     @classmethod
-    def query(cls, points: List[SeismicData], model_string: str,
-              desired_properties: List[str]=None, custom_model_query: dict=None, add_params: str="") -> bool:
+    def query(cls, points: List[SeismicData], model_string: str, desired_properties: List[str]=None,
+              custom_model_query: dict=None, add_params: str="") -> bool:
         """
         Given a list of SeismicData objects, each one containing a valid Point object, and a model_string to parse,
         this function will get the velocity, elevation, and Vs30 data.
-        :param points:
-        :param model_string:
-        :param desired_properties:
-        :return:
+
+        Parameters:
+            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects on which to perform the query.
+            model_string (str): The model string, like "cvms4" or "cvms426.vs30-calc" to query.
+            desired_properties (:obj:`list` of :obj:`str`): List of desired properties to retrieve
+                (velocity, etc.).
+            custom_model_query (dict): A dictionary specifying precisely how to query the models
+                (usually not needed).
+            add_params (str): Parameters to apply to all models (usually not needed).
+
+        Returns:
+            bool: True if the query was successful. Raises an error if it was not.
+
+        Example:
+            Querying point (-118, 34) at depth 0 is as simple as the following three lines (after loading the UCVM
+            class in your script).
+
+            # Create SeismicData array containing one point. |br|
+            points = [SeismicData(Point(-118, 34, 0))] |br|
+            # Query the cvms4 model at the array of points. |br|
+            UCVM.query(points, "cvms4") |br|
+            # Print out the retrieved Vs value. |br|
+            print(points[0].velocity_properties.vs)
         """
+        if model_string == "" or model_string is None:
+            display_and_raise_error(23)
+            return False
+
         if custom_model_query is None:
             models_to_query = UCVM.get_models_for_query(
                 model_string,
@@ -158,10 +185,13 @@ class UCVM:
     @classmethod
     def get_model_type(cls, model: str) -> str:
         """
-        Given one model string, return the type of model (velocity, elevation, vs30, or operator)
-        as a string.
-        :param str model: The model string to check.
-        :return: Velocity, vs30, or elevation depending on the model type.
+        Given one model string, return the type of model (velocity, elevation, vs30, or operator) as a string.
+
+        Args:
+            model (str): The model ID to check.
+
+        Returns:
+            Velocity, vs30, elevation, or operator, depending on the underlying model type.
         """
         all_models = UCVM.get_list_of_installed_models()
 
@@ -186,24 +216,21 @@ class UCVM:
     @classmethod
     def get_model_instance(cls, model: str) -> Model:
         """
-        Given a model string, return the instantiated model object. If the model has not been
-        instantiated yet, this will instantiate it.
-        :param model: The model string.
-        :return: The model class.
+        Given a model string, return the instantiated model object. If the model has not been instantiated yet, this
+        will instantiate it.
+
+        Args:
+            model (str): The model string.
+
+        Returns:
+            The instantiated model.
         """
+        # Check to see if we have already instantiated this model. IF so, we just return that.
         if model in UCVM.instantiated_models:
             return UCVM.instantiated_models[model]
 
-        model_list = UCVM.get_list_of_installed_models()
-        model_list = model_list["velocity"] + model_list["elevation"] + model_list["vs30"] + \
-                     model_list["operator"]
-
-        # Do a quick check just to make sure the model does, indeed, exist.
-        found = False
-        for item in model_list:
-            if item["id"] == model:
-                found = item
-                break
+        # We haven't loaded this model before. We need to check if it is installed. If not, then we throw an error.
+        found = UCVM.is_model_installed(model)
 
         if not found:
             display_and_raise_error(5, (model,))
@@ -217,40 +244,33 @@ class UCVM:
             else:
                 new_class = __import__(found["class"], fromlist=found["class"])
                 UCVM.instantiated_models[model] = \
-                    getattr(new_class, found["class"])(model_location=
-                                                       os.path.join(UCVM_MODELS_DIRECTORY, found["id"]))
+                    getattr(new_class, found["class"])(model_location=os.path.join(UCVM_MODELS_DIRECTORY, found["id"]))
         except ImportError:
             display_and_raise_error(22, (model,))
 
         return UCVM.instantiated_models[model]
 
     @classmethod
-    def is_model_installed(cls, model: str) -> bool:
+    def is_model_installed(cls, model: str) -> dict:
         """
-        Checks to see if the model string is installed or not. If it is installed, then true is returned. Otherwise,
-        this method returns false.
+        Checks to see if the model string is installed or not. If it is installed, then the model's metadata is
+        returned. Otherwise, this method returns None.
 
         Args:
            model (str): The model string (in id format) to search for.
 
         Returns:
-            True if the model exists, false otherwise.
+            The model metadata if it exists, None otherwise.
         """
-        if model in UCVM.instantiated_models:
-            return UCVM.instantiated_models[model]
-
         model_list = UCVM.get_list_of_installed_models()
-        model_list = model_list["velocity"] + model_list["elevation"] + model_list["vs30"] + \
-                     model_list["operator"]
+        model_list = model_list["velocity"] + model_list["elevation"] + model_list["vs30"] + model_list["operator"]
 
         # Do a quick check just to make sure the model does, indeed, exist.
-        found = False
         for item in model_list:
             if item["id"] == model:
-                found = True
-                break
+                return item
 
-        return found
+        return None
 
     @classmethod
     def parse_model_string(cls, string: str) -> dict:
@@ -277,7 +297,7 @@ class UCVM:
                     for model_id in grouped_models.group(0).split(";"):
                         model_strings_expanded.append(
                             (model_id + model_string.split(")")[1]).
-                                replace("(", "").replace(")", "")
+                            replace("(", "").replace(")", "")
                         )
                 else:
                     for model_id in grouped_models.group(0).split(";"):
@@ -293,14 +313,16 @@ class UCVM:
             if model_strings_expanded[i].strip() is "":
                 continue
 
-            individual_models = model_strings_expanded[i].split(".")
+            # Fix for decimal regex error.
+            individual_models = re.sub(r"\[(.*)\.(.*)\]", r"[\1~!~\2]", model_strings_expanded[i])
+            individual_models = re.split(r"\.", individual_models)
             models_to_add = {}
             current_index = 0
 
             for individual_model in individual_models:
                 parsed = UCVM._strip_and_return_parameters(individual_model)
                 models_to_add[current_index] = parsed["string"] + (
-                    ";-;" + parsed["parameters"] if parsed["parameters"] != "" else ""
+                    ";-;" + parsed["parameters"].replace("~!~", ".") if parsed["parameters"] != "" else ""
                 )
                 current_index += 1
 
@@ -330,15 +352,14 @@ class UCVM:
             temp_models = {}
             new_model_array[full_index] = {}
             desired_properties = copy.copy(desired_properties_copy)
-            for index, model_id in dict(full_list).items():
+            for _, model_id in dict(full_list).items():
                 model_desc = {
                     "id": str(model_id).split(";-;")[0],
-                    "params": str(model_id).split(";-;")[1] if len(str(model_id).split(";-;")) > 1 \
-                              else ""
+                    "params": str(model_id).split(";-;")[1] if len(str(model_id).split(";-;")) > 1 else ""
                 }
                 model = UCVM.get_model_instance(model_desc["id"])
                 if model.get_metadata()["type"] in will_return and \
-                    model.get_metadata()["type"] != "operator":
+                   model.get_metadata()["type"] != "operator":
                     display_and_raise_error(20)
                 elif model.get_metadata()["type"] not in will_return:
                     will_return[model.get_metadata()["type"]] = {
@@ -366,11 +387,11 @@ class UCVM:
             # Check to see if any desired properties remain.
             if len(desired_properties) > 0:
                 for prop in desired_properties:
-                    temp_models[prop] = {0: {"id": \
-                        UCVM.get_model_instance(temp_models["velocity"][0]["id"]).\
-                        get_private_metadata("defaults")[prop] if \
-                        "velocity" in temp_models else (UCVM_DEFAULT_DEM if prop == "elevation" \
-                        else (UCVM_DEFAULT_VS30 if prop == "vs30" else (UCVM_DEFAULT_VELOCITY if \
+                    temp_models[prop] = {0: {"id":
+                        UCVM.get_model_instance(temp_models["velocity"][0]["id"]).
+                        get_private_metadata("defaults")[prop] if
+                        "velocity" in temp_models else (UCVM_DEFAULT_DEM if prop == "elevation"
+                        else (UCVM_DEFAULT_VS30 if prop == "vs30" else (UCVM_DEFAULT_VELOCITY if
                         prop == "velocity" else None))), "params": ""}}
 
             # Assemble the new array.
@@ -397,7 +418,7 @@ class UCVM:
                     (";-;" + temp_models["vs30"][0]["params"] if
                      temp_models["vs30"][0]["params"] != "" else "")
             if "operator" in will_return:
-                for key, val in will_return["operator"].items():
+                for _, val in will_return["operator"].items():
                     new_model_array[full_index][len(new_model_array[full_index])] = \
                         val["id"] + (";-;" + val["params"] if val["params"] != "" else "")
 
@@ -411,11 +432,11 @@ class UCVM:
         :param string: The string to parse.
         :return: The dictionary in the format described in main comment.
         """
-        first_re = re.compile(".*?\[(.*?)\]")
+        first_re = re.compile(r".*?\[(.*?)\]")
         result = re.findall(first_re, string)
 
         if len(result) > 0:
-            second_re = re.compile("\[[^)]*\]")
+            second_re = re.compile(r"\[[^)]*\]")
             string = re.sub(second_re, "", string)
             return {"string": string, "parameters": result[0]}
         else:
@@ -424,8 +445,11 @@ class UCVM:
     @classmethod
     def get_list_of_installed_models(cls) -> dict:
         """
-        Gets the full list of installed models.
-        :return: Returns the full list of installed models.
+        Gets the full list of installed models. The keys for the dictionary are velocity, elevation, vs30, and operator
+        which correspond to the four model types in UCVM.
+
+        Returns:
+            dict: The full list of installed models.
         """
         with open(UCVM_MODEL_LIST_FILE, "r") as fd:
             model_xml = xmltodict.parse(fd.read())
@@ -464,7 +488,8 @@ class UCVM:
             "Copyright (C) [year] Southern California Earthquake Center. All rights reserved.\n"
             "\n"
             "This software is licensed under the Apache 2 license. More information on this\n"
-            "license can be found on the Apache website.\n"
+            "license can be found on the Apache website and in the LICENSE file contained within\n"
+            "the source distribution of this software.\n"
             "\n"
         )
 
@@ -472,8 +497,7 @@ class UCVM:
     def print_with_replacements(cls, string: str) -> None:
         print_str = string
         print_str = print_str.replace("[version]", pkg_resources.require("ucvm")[0].version)
-        print_str = print_str.replace("[year]", "20" +
-                                      pkg_resources.require("ucvm")[0].version.split(".")[0])
+        print_str = print_str.replace("[year]", "20" + pkg_resources.require("ucvm")[0].version.split(".")[0])
         print(print_str)
 
     @classmethod

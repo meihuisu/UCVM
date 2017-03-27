@@ -126,18 +126,26 @@ That's it! UCVM should now be installed and operational on your USC HPC account!
 4. Running Your Installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-UCVM is now fully installed. Try running an example query as follows:
+To quickly test if UCVM is installed correctly run the following command, enter the given input of "-118 34 0" and
+ensure that the output you see matches the provided output below.
+::
+    Command:
+        ucvm_query -m 1d[SCEC]
 
-.. code-block:: bash
+    Output:
+        Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
+        all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
 
-    ucvm_query -m 1d[SCEC]
-    Enter points to query. The X, Y, and Z components should be separated by spaces. When you have entered
-    all of your points, hit enter twice or press Ctrl-D to retrieve the material properties.
-    -118 34 0
+    Input:
+        -118 34 0
 
-    Retrieving material properties...
-    X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
-    -118.0000   34.0000     0.0000      5000.0000   2886.7513   2654.5000   N/A         N/A         scec 1d (interpolat 287.9969    usgs-noaa   2886.7513   vs30-calc
+    Response:
+        Retrieving material properties...
+        X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source
+        -118.0000   34.0000     0.0000      5000.0000   2886.7513   2654.5000   N/A         N/A         scec 1d (interpolat 287.9969    usgs-noaa   2886.7513   vs30-calc
+
+The above command queries the 1D SCEC model at point (-118, 34, 0) for material properties. If you do not see the above,
+please email software@scec.org.
 
 Examples
 --------
