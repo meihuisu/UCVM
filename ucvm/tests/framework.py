@@ -270,6 +270,17 @@ class UCVMFrameworkTest(unittest.TestCase):
         self.assertEqual(velocity_properties_by_depth.vp, velocity_properties_by_elevation.vp)
         self.assertEqual(velocity_properties_by_depth.density, velocity_properties_by_elevation.density)
 
+    def test_ucvm_returns_nothing_for_elevation_in_air(self):
+        """
+        Tests that querying a point in air with a model that is queryable by depth returns N/A for material properties
+        across the board.
+        """
+        s = SeismicData(Point(-118, 34, 1000, UCVM_ELEVATION))
+        UCVM.query([s], "1d[SCEC].elevation")
+        self.assertIsNone(s.velocity_properties.vp)
+        self.assertIsNone(s.velocity_properties.vs)
+        self.assertIsNone(s.velocity_properties.density)
+
 
 def make_suite() -> unittest.TestSuite:
     suite = unittest.TestSuite()
