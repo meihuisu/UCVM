@@ -5,6 +5,10 @@ UCVM is, at its core, a Python library that happens to also provide some command
 be extended to include your own models and it can also be used in your own software. For this guide, we will assume
 that you wish to interact with it through the Python interface.
 
+.. toctree::
+
+    developers_api
+
 Using UCVM In Your Software
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -193,4 +197,3 @@ hypothetical material properties:
     -118.0000   34.0000     0.0000      0.0000      0.0000      0.0000      0.0000      0.0000      OneFiveVM           287.9969    usgs-noaa   390.0000    wills-wald-2006
     -118.0000   34.0000     100.0000    150.0000    150.0000    150.0000    150.0000    150.0000    OneFiveVM           287.9969    usgs-noaa   390.0000    wills-wald-2006
     -118.0000   34.0000     5000.0000   5000.0000   5000.0000   5000.0000   5000.0000   5000.0000   OneFiveVM           287.9969    usgs-noaa   390.0000    wills-wald-2006
-

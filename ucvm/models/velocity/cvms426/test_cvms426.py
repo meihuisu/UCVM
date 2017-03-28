@@ -85,3 +85,30 @@ class CVMS426VelocityModelTest(UCVMTestCase):
             self.assertLess(sd_test[i].velocity_properties.density / points[i][5], 1 + epsilon)
 
         self._test_end()
+
+    def test_cvms426_add_1d_model(self):
+        """
+        Tests that we can add a 1D background model to CVM-S4.26 using tiling. This is a generic verification just
+        to ensure that tiling works on the user's computer as we expect them to use it with this model.
+
+        Returns:
+            None
+        """
+        self._test_start("CVM-S4.26 tiling with 1D model works")
+
+        sd_test = [
+            SeismicData(Point(-118, 34, 0)),
+            SeismicData(Point(-125, 40, 0))
+        ]
+        self.assertTrue(UCVM.query(sd_test, "cvms426;1d[SCEC]", ["velocity"]))
+
+        self.assertAlmostEqual(sd_test[0].velocity_properties.vp, 1860.9648, 4)
+        self.assertAlmostEqual(sd_test[0].velocity_properties.vs, 909.3662, 4)
+        self.assertAlmostEqual(sd_test[0].velocity_properties.density, 2050.1179, 4)
+        self.assertEqual(sd_test[0].velocity_properties.vp_source, "cvms426")
+        self.assertAlmostEqual(sd_test[1].velocity_properties.vp, 5000, 4)
+        self.assertAlmostEqual(sd_test[1].velocity_properties.vs, 2886.7513, 4)
+        self.assertAlmostEqual(sd_test[1].velocity_properties.density, 2654.5000, 4)
+        self.assertEqual(sd_test[1].velocity_properties.vp_source, "scec 1d (interpolated)")
+
+        self._test_end()

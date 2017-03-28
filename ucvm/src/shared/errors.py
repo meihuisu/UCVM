@@ -42,7 +42,9 @@ _ERROR_LIST = {
     21: "No file was specified as a parameter to the data product reader model. Please call the "
         "model like this: dataproductreader[xml file name]. If that doesn't work,",
     22: "Could not load model. Please try reinstalling the model by running ucvm_model_manager -a %s. "
-        "If that doesn't work,"
+        "If that doesn't work,",
+    23: "No model provided to the UCVM query function. Please make sure the model is not blank. If this "
+        "still doesn't work,"
 }
 
 

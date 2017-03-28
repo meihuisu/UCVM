@@ -12,7 +12,8 @@ UCVM_DEFAULT_VS30 = "wills-wald-2006"                        #: str: The default
 UCVM_DEFAULT_VELOCITY = "1d"                            #: str: The default velocity model.
 UCVM_DEFAULT_INTERPOLATION = "bilinear"                 #: str: The default interpolation method.
 
-UCVM_DEPTH = 0                                          #: int: UCVM constant for query by depth.
+#: int: UCVM constant for query by depth.
+UCVM_DEPTH = 0
 UCVM_ELEVATION = 1                                      #: int: UCVM constant for query by elev.
 UCVM_ELEV_ANY = 2                                       #: int: UCVM constant for query by any.
 

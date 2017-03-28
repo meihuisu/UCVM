@@ -94,7 +94,6 @@ download_everything = os.environ["ucvm_download"] == "everything"
 download_minimum = os.environ["ucvm_download"] == "minimum"
 no_pip = os.environ["ucvm_no_pip"] == "true"
 
-print(os.environ["ucvm_download"])
 
 def execute(cmd, **kwargs):
     env = os.environ
