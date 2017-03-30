@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<cvm_list>cvms4</cvm_list>
+	<bottom_left_point>
+		<z>0.0</z>
+		<projection>+proj=latlong +datum=WGS84</projection>
+		<x>-125</x>
+		<y>31</y>
+		<depth_elev>0</depth_elev>
+	</bottom_left_point>
+	<properties>
+		<rotation>0.0</rotation>
+		<num_y>1151</num_y>
+		<spacing>0.01</spacing>
+		<num_x>1101</num_x>
+	</properties>
+	<plot>
+		<property>density</property>
+		<features>
+			<colormap>RdBu</colormap>
+			<faults>No</faults>
+			<scale>discrete</scale>
+			<topography>No</topography>
+		</features>
+		<title>CVM-S4 Verification Density 0m</title>
+		<generate>y</generate>
+		<save>_static/cvms4_0m_check_dn.png</save>
+	</plot>
+</root>

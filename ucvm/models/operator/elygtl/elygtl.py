@@ -60,7 +60,8 @@ class ElyGTLOperator(OperatorModel):
             if datum.velocity_properties is None or \
                datum.velocity_properties.vs is None or datum.velocity_properties.vs == 0 or \
                datum.velocity_properties.vp is None or datum.velocity_properties.vp == 0 or \
-               datum.velocity_properties.density is None or datum.velocity_properties.density == 0:
+               datum.velocity_properties.density is None or datum.velocity_properties.density == 0 or \
+               datum.vs30_properties is None or datum.vs30_properties.vs30 == 0 or datum.vs30_properties.vs30 is None:
                 continue
 
             if datum.converted_point.z_value < zmin:

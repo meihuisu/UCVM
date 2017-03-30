@@ -12,19 +12,11 @@ This internal map represents a "splicing" together of two datasets:
 2) USGS National Map Data - Source: http://www.nationalmap.gov
    This data represents the California digital elevation model.
 
-Copyright 2017 Southern California Earthquake Center
+Copyright:
+    Southern California Earthquake Center
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Developer:
+    David Gill <davidgil@usc.edu>
 """
 # Python Imports
 import os
@@ -118,20 +110,21 @@ class USGSNOAAElevationModel(ElevationModel):
             0
         )
 
+        if not hasattr(self, "etopo1_data"):
+            self.etopo1_data = self._opened_file["dem_etopo1"]["data"][:, :]
+            self.etopo1_metadata = self._opened_file["dem_etopo1"]["metadata"][:, :]
+
         if bilinear_point.x < -180 or bilinear_point.x > 180 or \
            bilinear_point.y < -90 or bilinear_point.y > 90:
             return False
 
         rect = SimpleRotatedRectangle(
-            self._opened_file["dem_etopo1"]["metadata"][1][0],
-            self._opened_file["dem_etopo1"]["metadata"][2][0],
+            self.etopo1_metadata[1][0],
+            self.etopo1_metadata[2][0],
             0,
-            self._opened_file["dem_etopo1"]["metadata"][0][0],
-            self._opened_file["dem_etopo1"]["metadata"][0][0]
+            self.etopo1_metadata[0][0],
+            self.etopo1_metadata[0][0]
         )
-
-        if not hasattr(self, "etopo1_data"):
-            self.etopo1_data = self._opened_file["dem_etopo1"]["data"][:,:]
 
         datum.set_elevation_data(ElevationProperties(
             calculate_bilinear_value(bilinear_point, rect, self.etopo1_data),

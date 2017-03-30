@@ -114,6 +114,7 @@ class Plot:
         colormap = cm.RdBu
         norm = mcolors.Normalize(vmin=self.bounds[0], vmax=self.bounds[len(self.bounds) - 1])
         faults = False
+        save = False
 
         if "basic" in kwargs:
             basic = kwargs["basic"]
@@ -122,6 +123,8 @@ class Plot:
 
         if hasattr(self, "extras"):
             if "plot" in self.extras:
+                if "save" in self.extras["plot"]:
+                    save = self.extras["plot"]["save"]
                 if "features" in self.extras["plot"]:
                     if "colormap" in self.extras["plot"]["features"]:
                         try:
@@ -265,7 +268,10 @@ class Plot:
 
             cbar.set_label(self.plot_cbar_label if isinstance(self.plot_cbar_label, str) else "")
 
-            plt.show()
+            if not save:
+                plt.show()
+            else:
+                plt.savefig(save)
         else:
             return t
 

@@ -7,6 +7,44 @@ UCVM allows users to interact with multiple 3D seismic velocity models. Broadly,
 material models for use with 3D wave propagation simulation codes, and visualize those models. Each command comes
 with help documentation which can be accessed by passing the "-h" parameter to any command line tool.
 
+Model Cheat Sheet
+~~~~~~~~~~~~~~~~~
+
+The following are the model codes that you can use for the commands below. If you do not have the model installed, run
+ucvm_model_manager -a [model code] to install it (e.g. ucvm_model_manager -a cvms4 will install CVM-S4). All 1d models,
+usgs-noaa, and wills-wald-2006 are installed with UCVM by default and you do not need to do ucvm_model_manager -a to
+install them.
+
+Please remember to always *source activate ucvm-17.3.0* (Anaconda) or *source ucvm-17.3.0/bin/activate* (regular
+install) before running any of the commands below.
+
+Full details about each one of these models, including citations, are available on the Available Models page.
+::
+
+    Velocity:
+        cvms426                         -- CVM-S4.26, Southern California
+        cvms426m01                      -- CVM-S4.26.M01, Southern California
+        cvmh1510                        -- CVM-H 15.1.0, Southern California
+        cca06                           -- CCA 06, Central California
+        bayarea                         -- Bay Area, San Francisco Bay Region
+        linthurber                      -- Lin-Thurber, California Statewide
+        1d[SCEC]                        -- SCEC 1D Background Model, Global
+        1d[BBP_LA_Basin]                -- Broadband LA Basin 1D Background Model, Global
+        1d[CyberShake_BBP_LA_Basin]     -- Modified LA Basin 1D Model, With Moho, Global
+        dataproductreader               -- Reads Generated Material Models (Meshes and E-trees), Global
+
+    Elevation:
+        usgs-noaa                       -- USGS/NOAA Digital Elevation Map, Global
+
+    Vs30:
+        wills-wald-2006                 -- Wills 2006/Wald 2007 Vs30 Map, California Statewide
+        vs30-calc                       -- Vs30 Calculated From Model, Global
+
+    Operators:
+        elygtl                          -- Geoff Ely's Vs30-Based GTL, California Statewide
+        trilinear                       -- Trilinearly Interpolate at Model Edges, Global
+        z-calc                          -- Calculate Z1.0 and Z2.5, Global
+
 Query
 ~~~~~
 
@@ -218,18 +256,11 @@ Parameters:
 
     -l, --list:            Lists all models available and states which ones are installed.
     -a, --add model:       Downloads and installs "model" and adds it to UCVM.
-    -d, --directory dir:   Installs a model from a local directory. The directory must have
-                           the proper ucvm_model.xml descriptor. If that is not found, UCVM
-                           cannot install the model.
-    -r, --remove model:    Removes "model" from the UCVM list of models. For models
-                           downloaded and installed from the web, or copied locally, this
-                           will also delete the model code and data itself.
 
 Example usage:
 ::
 
     ucvm_model_manager -a cvms426       -- Adds CVM-S4.26 to your UCVM installation.
-    ucvm_model_manager -r cvms426       -- Removes CVM-S4.26 from your UCVM installation.
     ucvm_model_manager -l               -- Lists all models installed within your copy of UCVM.
 
 **ucvm_help**: Launches a web browser with the address of the help documentation for UCVM. There are no parameters

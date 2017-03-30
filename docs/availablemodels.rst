@@ -6,6 +6,45 @@ Available Models
 UCVM can download and install multiple community models. These models are broadly categorized as "velocity",
 "elevation", and "vs30". Each model represents a different area of scientific research.
 
+Model Cheat Sheet
+~~~~~~~~~~~~~~~~~
+
+The following are the model codes that are available to install as well as a brief synopsis of their area of coverage.
+If you do not have the model installed, run ucvm_model_manager -a [model code] to install it (e.g. ucvm_model_manager
+-a cvms4 will install CVM-S4). All 1d models, usgs-noaa, and wills-wald-2006 are installed with UCVM by default and
+you do not need to do ucvm_model_manager -a to install them. To learn more about each model and see citations, please
+scroll down past this section.
+
+Please remember to always *source activate ucvm-17.3.0* (Anaconda) or *source ucvm-17.3.0/bin/activate* (regular
+install) before running UCVM.
+
+Full details about each one of these models, including citations, are available on the Available Models page.
+::
+
+    Velocity:
+        cvms426                         -- CVM-S4.26, Southern California
+        cvms426m01                      -- CVM-S4.26.M01, Southern California
+        cvmh1510                        -- CVM-H 15.1.0, Southern California
+        cca06                           -- CCA 06, Central California
+        bayarea                         -- Bay Area, San Francisco Bay Region
+        linthurber                      -- Lin-Thurber, California Statewide
+        1d[SCEC]                        -- SCEC 1D Background Model, Global
+        1d[BBP_LA_Basin]                -- Broadband LA Basin 1D Background Model, Global
+        1d[CyberShake_BBP_LA_Basin]     -- Modified LA Basin 1D Model, With Moho, Global
+        dataproductreader               -- Reads Generated Material Models (Meshes and E-trees), Global
+
+    Elevation:
+        usgs-noaa                       -- USGS/NOAA Digital Elevation Map, Global
+
+    Vs30:
+        wills-wald-2006                 -- Wills 2006/Wald 2007 Vs30 Map, California Statewide
+        vs30-calc                       -- Vs30 Calculated From Model, Global
+
+    Operators:
+        elygtl                          -- Geoff Ely's Vs30-Based GTL, California Statewide
+        trilinear                       -- Trilinearly Interpolate at Model Edges, Global
+        z-calc                          -- Calculate Z1.0 and Z2.5, Global
+
 Velocity
 ~~~~~~~~
 
