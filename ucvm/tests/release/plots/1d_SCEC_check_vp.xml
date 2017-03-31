@@ -22,7 +22,7 @@
 			<scale>discrete</scale>
 			<topography>No</topography>
 		</features>
-		<title>SCEC 1D Model Verification Vp</title>
+		<title>SCEC 1D Model Verification Vp 0m</title>
 		<generate>y</generate>
 		<save>_static/1d_SCEC_check_vp.png</save>
 	</plot>

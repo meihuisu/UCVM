@@ -22,7 +22,7 @@
 			<scale>discrete</scale>
 			<topography>No</topography>
 		</features>
-		<title>1d[SCEC] Slice From (-120.00, 32.00)</title>
+		<title>SCEC 1D Model Verification Vs 0m</title>
 		<generate>y</generate>
 		<save>_static/1d_SCEC_check_vs.png</save>
 	</plot>

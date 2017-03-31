@@ -210,11 +210,6 @@ def main() -> int:
         }
         tests = conn.execute("SELECT * FROM TestCase WHERE `Category ID`= ? ORDER BY ID ASC", (category[0],))
         for test in tests:
-            if test[2] != "CVM-S4 horizontal slices":
-                continue
-            print("\t%-70s" % str(test[2]).title(), end="")
-            sys.stdout.flush()
-
             # Create entry for this particular test. This is then inserted into the tests array.
             rst_test_entry = {
                 "name": str(test[2]).title(),
@@ -231,14 +226,19 @@ def main() -> int:
             # model and concatenate the output. Otherwise, we just run it for the one.
             if len(str(test[8]).split(",")) > 1 and "[models]" in test[4]:
                 models = [x.strip() for x in str(test[8]).split(",")]
+                current_command = 1
                 for model in models:
+                    print("\r\t%-70stest %d of %d" % (str(test[2]).title(), current_command, len(models)), end="")
                     data = execute_command(test[4].replace("[models]", model), test[5])
                     rst_test_entry["result_out"] += str(data[0]) + "\n\n"
                     rst_test_entry["result_err"] += str(data[1]) + "\n\n"
+                    current_command += 1
             else:
                 if len(str(test[4]).split("\n")) > 1:
                     commands = str(test[4]).split("\n")
+                    current_command = 1
                     for command in commands:
+                        print("\r\t%-70stest %d of %d" % (str(test[2]).title(), current_command, len(commands)), end="")
                         data = execute_command(command, test[5])
                         if "ucvm_plot_" in command:
                             rst_test_entry["result_out"] += command.split()[2] + "\n"
@@ -246,7 +246,9 @@ def main() -> int:
                         else:
                             rst_test_entry["result_out"] += str(data[0]) + "\n\n"
                             rst_test_entry["result_err"] += str(data[1]) + "\n\n"
+                        current_command += 1
                 else:
+                    print("\r\t%-70stest %d of %d" % (str(test[2]).title(), 1, 1), end="")
                     (rst_test_entry["result_out"], rst_test_entry["result_err"]) = execute_command(test[4], test[5])
 
             # Strip extra characters.
@@ -260,6 +262,7 @@ def main() -> int:
             )
 
             # Print success if result is true.
+            print("\r\t%-70s" % str(test[2]).title(), end="")
             print("[SUCCESS]" if rst_test_entry["result"] is True else "[FAIL]")
 
             # Add test to relevant tests key in dictionary.

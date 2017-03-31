@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<cvm_list>wills-wald-2006</cvm_list>
+	<cvm_list>cca06</cvm_list>
 	<bottom_left_point>
 		<z>0.0</z>
 		<projection>+proj=latlong +datum=WGS84</projection>
@@ -15,15 +15,15 @@
 		<num_x>1101</num_x>
 	</properties>
 	<plot>
-		<property>vs30</property>
+		<property>vp</property>
 		<features>
 			<colormap>RdBu</colormap>
 			<faults>No</faults>
 			<scale>discrete</scale>
 			<topography>No</topography>
 		</features>
-		<title>Wills-Wald Vs30 Verification</title>
+		<title>CCA06 Verification Vp 0m</title>
 		<generate>y</generate>
-		<save>_static/vs30_map_check.png</save>
+		<save>_static/cca06_0m_check_vp.png</save>
 	</plot>
 </root>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<cvm_list>1d[BBP_LA_Basin]</cvm_list>
+	<cvm_list>bayarea</cvm_list>
 	<bottom_left_point>
-		<z>0.0</z>
+		<z>5000</z>
 		<projection>+proj=latlong +datum=WGS84</projection>
-		<x>-124</x>
+		<x>-125</x>
 		<y>31</y>
 		<depth_elev>0</depth_elev>
 	</bottom_left_point>
@@ -18,12 +18,12 @@
 		<property>density</property>
 		<features>
 			<colormap>RdBu</colormap>
-			<faults>Yes</faults>
+			<faults>No</faults>
 			<scale>discrete</scale>
 			<topography>No</topography>
 		</features>
-		<title>BBP 1D Model Verification Density 0m</title>
+		<title>Bay Area Verification Density 5000m</title>
 		<generate>y</generate>
-		<save>_static/1d_BBP_check_dn.png</save>
+		<save>_static/bayarea_5000m_check_dn.png</save>
 	</plot>
 </root>

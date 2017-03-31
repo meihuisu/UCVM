@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<cvm_list>1d[BBP_LA_Basin]</cvm_list>
+	<cvm_list>1d[SCEC].usgs-noaa</cvm_list>
 	<bottom_left_point>
 		<z>0.0</z>
 		<projection>+proj=latlong +datum=WGS84</projection>
-		<x>-124</x>
+		<x>-125</x>
 		<y>31</y>
 		<depth_elev>0</depth_elev>
 	</bottom_left_point>
@@ -15,15 +15,15 @@
 		<num_x>1101</num_x>
 	</properties>
 	<plot>
-		<property>density</property>
+		<property>elevation</property>
 		<features>
 			<colormap>RdBu</colormap>
-			<faults>Yes</faults>
-			<scale>discrete</scale>
+			<faults>No</faults>
+			<scale>smooth</scale>
 			<topography>No</topography>
 		</features>
-		<title>BBP 1D Model Verification Density 0m</title>
+		<title>Elevation Verification</title>
 		<generate>y</generate>
-		<save>_static/1d_BBP_check_dn.png</save>
+		<save>_static/elevation_map_check_notopo.png</save>
 	</plot>
 </root>

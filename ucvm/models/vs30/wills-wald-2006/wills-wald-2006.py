@@ -59,12 +59,12 @@ class WillsWaldModel(Vs30Model):
 
             # Get four corners.
             x_vals = [
-                (math.floor(datum.converted_point.x_value * 100) / 100 - (-130)) / 0.01,
-                (math.ceil(datum.converted_point.x_value * 100) / 100 - (-130)) / 0.01
+                (math.floor(datum.converted_point.x_value * 100) / 100 - (-130)) * 100,
+                (math.ceil(datum.converted_point.x_value * 100) / 100 - (-130)) * 100
             ]
             y_vals = [
-                (math.floor(datum.converted_point.y_value * 100) / 100 - 27) / 0.01,
-                (math.ceil(datum.converted_point.y_value * 100) / 100 - 27) / 0.01
+                (math.floor(datum.converted_point.y_value * 100) / 100 - 27) * 100,
+                (math.ceil(datum.converted_point.y_value * 100) / 100 - 27) * 100
             ]
 
             ret_val = 0

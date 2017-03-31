@@ -22,7 +22,7 @@
 			<scale>discrete</scale>
 			<topography>No</topography>
 		</features>
-		<title>CyberShake Model Verification Density</title>
+		<title>CyberShake 1D Model Verification Density 0m</title>
 		<generate>y</generate>
 		<save>_static/1d_CyberShake_check_dn.png</save>
 	</plot>

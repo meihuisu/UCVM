@@ -22,7 +22,7 @@
 			<scale>discrete</scale>
 			<topography>No</topography>
 		</features>
-		<title>BBP Model Verification Vp</title>
+		<title>BBP 1D Model Verification Vp 0m</title>
 		<generate>y</generate>
 		<save>_static/1d_BBP_check_vp.png</save>
 	</plot>

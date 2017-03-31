@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<cvm_list>1d[BBP_LA_Basin]</cvm_list>
+	<cvm_list>cvms426;cca06;bayarea;linthurber;1d[SCEC]</cvm_list>
 	<bottom_left_point>
-		<z>0.0</z>
+		<z>5000.0</z>
 		<projection>+proj=latlong +datum=WGS84</projection>
-		<x>-124</x>
+		<x>-125</x>
 		<y>31</y>
 		<depth_elev>0</depth_elev>
 	</bottom_left_point>
@@ -15,15 +15,15 @@
 		<num_x>1101</num_x>
 	</properties>
 	<plot>
-		<property>density</property>
+		<property>vs</property>
 		<features>
 			<colormap>RdBu</colormap>
-			<faults>Yes</faults>
+			<faults>No</faults>
 			<scale>discrete</scale>
 			<topography>No</topography>
 		</features>
-		<title>BBP 1D Model Verification Density 0m</title>
+		<title>Tiling Verification Vs 5000m</title>
 		<generate>y</generate>
-		<save>_static/1d_BBP_check_dn.png</save>
+		<save>_static/tiling_5000m_check_vs.png</save>
 	</plot>
 </root>

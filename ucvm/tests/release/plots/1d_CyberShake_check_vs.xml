@@ -22,7 +22,7 @@
 			<scale>discrete</scale>
 			<topography>No</topography>
 		</features>
-		<title>1d[CyberShake_BBP_LA_Basin] Slice From (-120.00, 32.00)</title>
+		<title>CyberShake 1D Model Verification Vs</title>
 		<generate>y</generate>
 		<save>_static/1d_CyberShake_check_vs.png</save>
 	</plot>
