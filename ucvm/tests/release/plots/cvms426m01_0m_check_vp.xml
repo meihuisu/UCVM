@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<cvm_list>cvms42m01</cvm_list>
+	<cvm_list>cvms426m01</cvm_list>
 	<bottom_left_point>
 		<z>0.0</z>
 		<projection>+proj=latlong +datum=WGS84</projection>

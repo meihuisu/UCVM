@@ -22,8 +22,8 @@
 			<scale>discrete</scale>
 			<topography>No</topography>
 		</features>
-		<title>Tiling Verification Density 0m</title>
+		<title>Tiled Verification Density 0m</title>
 		<generate>y</generate>
-		<save>_static/tiling_0m_check_dn.png</save>
+		<save>_static/tiled_0m_check_dn.png</save>
 	</plot>
 </root>

@@ -20,10 +20,10 @@ limitations under the License.
 """
 # Python Imports
 import os
+import multiprocessing
 import sqlite3
 import sys
 
-from collections import OrderedDict
 from subprocess import Popen, PIPE
 
 
@@ -88,12 +88,12 @@ def compare_against_known_data(command_output: tuple, known_output: tuple) -> bo
     return True
 
 
-def write_rst_doc(test_results: dict) -> bool:
+def write_rst_doc(test_results: list) -> bool:
     """
     Writes out the RST test result documentation that is available either on hypocenter.usc.edu or on GitHub.
 
     Parameters:
-        test_results (dict): A dictionary containing the test results. The format of this dictionary can be found by
+        test_results (list): A sorted list containing the test results. The format of the list's entries can be found by
             looking at the code.
 
     Returns:
@@ -102,85 +102,145 @@ def write_rst_doc(test_results: dict) -> bool:
     # Open the RST file and begin writing.
     with open("tests_release_verification_include.rst", "w") as output_file:
         # Loop through all the categories.
-        for category, values in test_results.items():
-            output_file.write("%s\n" % category)
-            output_file.write(("{:-<" + str(len(category)) + "}\n\n").format("-"))
-            output_file.write("%s\n\n" % values["description"])
+        current_group = ""
+        for test in test_results:
 
-            # Now loop through the tests.
-            for test in values["tests"]:
-                output_file.write("%s\n" % test["name"])
-                output_file.write(("{:~<" + str(len(test["name"])) + "}\n\n").format("~"))
-                output_file.write("%s\n\n" % test["description"])
-                output_file.write("Result: %s\n\n" % ("PASSED" if test["result"] is True else "**FAILED**"))
+            if test["category"]["group"] != current_group:
+                output_file.write("%s\n" % test["category"]["group"])
+                output_file.write(("{:-<" + str(len(test["category"]["group"])) + "}\n\n").format("-"))
+                output_file.write("%s\n\n" % test["category"]["description"])
+                current_group = test["category"]["group"]
 
-                # Print out the models that we checked this test against.
-                output_file.write("Models Checked:\n")
+            output_file.write("%s\n" % test["name"])
+            output_file.write(("{:~<" + str(len(test["name"])) + "}\n\n").format("~"))
+            output_file.write("%s\n\n" % test["description"])
+            output_file.write("Result: %s\n\n" % ("PASSED" if test["result"] is True else "**FAILED**"))
+
+            # Print out the models that we checked this test against.
+            output_file.write("Models Checked:\n")
+            output_file.write("::\n\n")
+
+            models = [x.strip() for x in str(test["required_models"]).split(",")]
+            for model in models:
+                output_file.write("    %s\n" % model)
+            output_file.write("\n")
+
+            if "[models]" in test["command"]:
+                # Print out the precise commands (plural) that were tested.
+                output_file.write("Commands Tested:\n")
                 output_file.write("::\n\n")
 
-                models = [x.strip() for x in str(test["required_models"]).split(",")]
                 for model in models:
-                    output_file.write("    %s\n" % model)
+                    output_file.write("    %s\n" % test["command"].replace("[models]", model))
+                output_file.write("\n")
+            elif len(test["command"].split("\n")) > 1:
+                # Print out the precise commands (plural) that were tested.
+                output_file.write("Commands Tested:\n")
+                output_file.write("::\n\n")
+
+                for command in test["command"].split("\n"):
+                    output_file.write("    %s\n" % command.strip())
+                output_file.write("\n")
+            else:
+                # Print out the precise command that were tested.
+                output_file.write("Command Tested:\n")
+                output_file.write("::\n\n")
+                output_file.write("    %s\n" % test["command"])
                 output_file.write("\n")
 
-                if "[models]" in test["command"]:
-                    # Print out the precise commands (plural) that were tested.
-                    output_file.write("Commands Tested:\n")
-                    output_file.write("::\n\n")
+            if test["input"].strip() != "":
+                # Print out the uniform input that was provided to each command.
+                output_file.write("Input:\n")
+                output_file.write("::\n\n")
+                for line in test["input"].strip().split("\n"):
+                    output_file.write("    %s\n" % line)
+                output_file.write("\n")
 
-                    for model in models:
-                        output_file.write("    %s\n" % test["command"].replace("[models]", model))
-                    output_file.write("\n")
-                elif len(test["command"].split("\n")) > 1:
-                    # Print out the precise commands (plural) that were tested.
-                    output_file.write("Commands Tested:\n")
+            # Print out the standard out that the commands produced, if there was one.
+            if test["result_out"] != "":
+                if "ucvm_query" in test["command"]:
+                    output_file.write("Actual Output:\n")
                     output_file.write("::\n\n")
-
-                    for command in test["command"].split("\n"):
-                        output_file.write("    %s\n" % command.strip())
+                    for line in test["result_out"].strip().split("\n"):
+                        output_file.write("    %s\n" % line)
                     output_file.write("\n")
                 else:
-                    # Print out the precise command that were tested.
-                    output_file.write("Command Tested:\n")
-                    output_file.write("::\n\n")
-                    output_file.write("    %s\n" % test["command"])
-                    output_file.write("\n")
+                    output_file.write("Plots:\n\n")
+                    for plot in str(test["command"]).split("\n"):
+                        output_file.write(".. image:: _static/" + plot.split("/")[1].replace(".xml", ".png") + "\n")
+                        output_file.write("    :width: 500px\n\n")
 
-                if test["input"].strip() != "":
-                    # Print out the uniform input that was provided to each command.
-                    output_file.write("Input:\n")
-                    output_file.write("::\n\n")
-                    for line in test["input"].strip().split("\n"):
-                        output_file.write("    %s\n" % line)
-                    output_file.write("\n")
-
-                # Print out the standard out that the commands produced, if there was one.
-                if test["result_out"] != "":
-                    if "ucvm_query" in test["command"]:
-                        output_file.write("Actual Output:\n")
-                        output_file.write("::\n\n")
-                        for line in test["result_out"].strip().split("\n"):
-                            output_file.write("    %s\n" % line)
-                        output_file.write("\n")
-                    else:
-                        output_file.write("Plots:\n\n")
-                        for plot in str(test["command"]).split("\n"):
-                            output_file.write(".. image:: _static/" + plot.split("/")[1].replace(".xml", ".png") + "\n")
-                            output_file.write("    :width: 500px\n\n")
-
-                # Print out the standard error that the commands produced, if there was one.
-                if test["result_err"] != "" and "ucvm_plot_horizontal_slice" not in test["command"]:
-                    output_file.write("Actual Error:\n")
-                    output_file.write("::\n\n")
-                    for line in test["result_err"].strip().split("\n"):
-                        output_file.write("    %s\n" % line)
-                    output_file.write("\n")
-
-    # Close the file.
-    output_file.close()
+            # Print out the standard error that the commands produced, if there was one.
+            if test["result_err"] != "" and "ucvm_plot_horizontal_slice" not in test["command"]:
+                output_file.write("Actual Error:\n")
+                output_file.write("::\n\n")
+                for line in test["result_err"].strip().split("\n"):
+                    output_file.write("    %s\n" % line)
+                output_file.write("\n")
 
     # All done, return true.
     return True
+
+
+def mp_run(*args):
+    """
+    This function is called by multiprocessing.Pool to run the commands in parallel.
+
+    Parameters:
+        args (list): Only one argument is ever passed to this function and that is the array of test entries.
+
+    Returns:
+        dict: The revised test entry with the result keys filled in.
+    """
+    test_entry = dict(args[0])
+
+    # Check to see if we need to run this command for multiple models. If we do, then we run it for each
+    # model and concatenate the output. Otherwise, we just run it for the one.
+    if len(str(test_entry["required_models"]).split(",")) > 1 and "[models]" in test_entry["command"]:
+        models = [x.strip() for x in str(test_entry["required_models"]).split(",")]
+        current_command = 1
+        for model in models:
+            print("%-30s%-70s%s" % (
+                test_entry["category"]["group"], test_entry["name"], test_entry["command"].replace("[models]", model)
+            ))
+            data = execute_command(test_entry["command"].replace("[models]", model), test_entry["input"])
+            test_entry["result_out"] += str(data[0]) + "\n\n"
+            test_entry["result_err"] += str(data[1]) + "\n\n"
+            current_command += 1
+    else:
+        if len(str(test_entry["command"]).split("\n")) > 1:
+            commands = str(test_entry["command"]).split("\n")
+            current_command = 1
+            for command in commands:
+                print("%-30s%-70s%s" % (
+                    test_entry["category"]["group"], test_entry["name"], command
+                ))
+                data = execute_command(command, test_entry["input"])
+                if "ucvm_plot_" in command:
+                    test_entry["result_out"] += command.split()[2] + "\n"
+                    test_entry["result_err"] += str(data[1]) + "\n\n"
+                else:
+                    test_entry["result_out"] += str(data[0]) + "\n\n"
+                    test_entry["result_err"] += str(data[1]) + "\n\n"
+                current_command += 1
+        else:
+            print("%-30s%-70s%s" % (
+                test_entry["category"]["group"], test_entry["name"], test_entry["command"]
+            ))
+            (test_entry["result_out"], test_entry["result_err"]) = \
+                execute_command(test_entry["command"], test_entry["input"])
+
+    # Strip extra characters.
+    test_entry["result_out"] = test_entry["result_out"].strip()
+    test_entry["result_err"] = test_entry["result_err"].strip()
+
+    # Compare against known data.
+    test_entry["result"] = compare_against_known_data(
+        (test_entry["result_out"], test_entry["result_err"]),
+        (test_entry["known_out"], test_entry["known_err"])
+    )
+
+    return test_entry
 
 
 def main() -> int:
@@ -199,19 +259,15 @@ def main() -> int:
 
     # Create the RST dictionary which will hold the results of all the tests in memory before writing them to
     # a RST file to be included within the documentation.
-    rst_test_dict = OrderedDict()
+    test_entries = []
+    command_count = 0
 
     for category in categories:
-        print("Testing " + category[1])
-        # Add category to RST dictionary.
-        rst_test_dict[category[1]] = {
-            "description": category[2],
-            "tests": []
-        }
         tests = conn.execute("SELECT * FROM TestCase WHERE `Category ID`= ? ORDER BY ID ASC", (category[0],))
         for test in tests:
-            # Create entry for this particular test. This is then inserted into the tests array.
-            rst_test_entry = {
+            # Create entry for this particular test and append it to the test entries array.
+            test_entries.append({
+                "id": test[0],
                 "name": str(test[2]).title(),
                 "description": str(test[3]),
                 "command": str(test[4]),
@@ -219,58 +275,46 @@ def main() -> int:
                 "input": str(test[5]),
                 "result_out": "",
                 "result_err": "",
-                "result": None
-            }
+                "known_out": str(test[6]),
+                "known_err": str(test[7]),
+                "result": None,
+                "category": {
+                    "group": category[1],
+                    "description": category[2]
+                }
+            })
 
-            # Check to see if we need to run this command for multiple models. If we do, then we run it for each
-            # model and concatenate the output. Otherwise, we just run it for the one.
-            if len(str(test[8]).split(",")) > 1 and "[models]" in test[4]:
-                models = [x.strip() for x in str(test[8]).split(",")]
-                current_command = 1
-                for model in models:
-                    print("\r\t%-70stest %d of %d" % (str(test[2]).title(), current_command, len(models)), end="")
-                    data = execute_command(test[4].replace("[models]", model), test[5])
-                    rst_test_entry["result_out"] += str(data[0]) + "\n\n"
-                    rst_test_entry["result_err"] += str(data[1]) + "\n\n"
-                    current_command += 1
+            if "[models]" in str(test[4]):
+                command_count += len(str(test[8]).split(","))
+            elif len(str(test[4]).split("\n")) > 1:
+                command_count += len(str(test[4]).split("\n"))
             else:
-                if len(str(test[4]).split("\n")) > 1:
-                    commands = str(test[4]).split("\n")
-                    current_command = 1
-                    for command in commands:
-                        print("\r\t%-70stest %d of %d" % (str(test[2]).title(), current_command, len(commands)), end="")
-                        data = execute_command(command, test[5])
-                        if "ucvm_plot_" in command:
-                            rst_test_entry["result_out"] += command.split()[2] + "\n"
-                            rst_test_entry["result_err"] += str(data[1]) + "\n\n"
-                        else:
-                            rst_test_entry["result_out"] += str(data[0]) + "\n\n"
-                            rst_test_entry["result_err"] += str(data[1]) + "\n\n"
-                        current_command += 1
-                else:
-                    print("\r\t%-70stest %d of %d" % (str(test[2]).title(), 1, 1), end="")
-                    (rst_test_entry["result_out"], rst_test_entry["result_err"]) = execute_command(test[4], test[5])
+                command_count += 1
 
-            # Strip extra characters.
-            rst_test_entry["result_out"] = rst_test_entry["result_out"].strip()
-            rst_test_entry["result_err"] = rst_test_entry["result_err"].strip()
+    # Number of cores to run on.
+    cores = 4
 
-            # Compare against known data.
-            rst_test_entry["result"] = compare_against_known_data(
-                (rst_test_entry["result_out"], rst_test_entry["result_err"]),
-                (test[6], test[7])
-            )
+    # Print our header statistics first.
+    print("UCVM Release Tests")
+    print("")
+    print("Running %d tests consisting of %d commands on %d cores. Estimated time to complete is %d minutes.\n" % (
+        len(test_entries), command_count, cores, len(test_entries) / cores * 5
+    ))
+    print("%-30s%-70s%s" % ("Test Category", "Test Title", "Command"))
 
-            # Print success if result is true.
-            print("\r\t%-70s" % str(test[2]).title(), end="")
-            print("[SUCCESS]" if rst_test_entry["result"] is True else "[FAIL]")
+    # Now we need to run all the tests using the multiprocessing pool. This helps speed up the test results as we can
+    # run all the tests in parallel instead of requiring sequential tests.
+    pool = multiprocessing.Pool(cores)
+    results = pool.map(mp_run, test_entries)
+    pool.close()
+    pool.join()
 
-            # Add test to relevant tests key in dictionary.
-            rst_test_dict[category[1]]["tests"].append(rst_test_entry)
+    # Sort the array by id.
+    results.sort(key=lambda x: x["id"])
 
     # Generate the RST content for the relevant tests page either with the GitHub documentation or the more extensive
     # documentation on hypocenter.usc.edu.
-    write_rst_doc(rst_test_dict)
+    write_rst_doc(results)
 
     return 0
 

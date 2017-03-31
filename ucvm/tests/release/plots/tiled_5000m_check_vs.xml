@@ -22,8 +22,8 @@
 			<scale>discrete</scale>
 			<topography>No</topography>
 		</features>
-		<title>Tiling Verification Vs 5000m</title>
+		<title>Tiled Verification Vs 5000m</title>
 		<generate>y</generate>
-		<save>_static/tiling_5000m_check_vs.png</save>
+		<save>_static/tiled_5000m_check_vs.png</save>
 	</plot>
 </root>

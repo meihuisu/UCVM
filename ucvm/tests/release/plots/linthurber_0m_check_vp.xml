@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<cvm_list>cvms426;cca06;bayarea;linthurber;1d[SCEC]</cvm_list>
+	<cvm_list>linthurber</cvm_list>
 	<bottom_left_point>
 		<z>0.0</z>
 		<projection>+proj=latlong +datum=WGS84</projection>
@@ -22,8 +22,8 @@
 			<scale>discrete</scale>
 			<topography>No</topography>
 		</features>
-		<title>Tiled Verification Vp 0m</title>
+		<title>Lin-Thurber Verification Vp 0m</title>
 		<generate>y</generate>
-		<save>_static/tiled_0m_check_vp.png</save>
+		<save>_static/linthurber_0m_check_vp.png</save>
 	</plot>
 </root>
