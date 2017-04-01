@@ -203,6 +203,7 @@ def mp_run(*args):
             print("%-30s%-70s%s" % (
                 test_entry["category"]["group"], test_entry["name"], test_entry["command"].replace("[models]", model)
             ))
+            sys.stdout.flush()
             data = execute_command(test_entry["command"].replace("[models]", model), test_entry["input"])
             test_entry["result_out"] += str(data[0]) + "\n\n"
             test_entry["result_err"] += str(data[1]) + "\n\n"
@@ -215,6 +216,7 @@ def mp_run(*args):
                 print("%-30s%-70s%s" % (
                     test_entry["category"]["group"], test_entry["name"], command
                 ))
+                sys.stdout.flush()
                 data = execute_command(command, test_entry["input"])
                 if "ucvm_plot_" in command:
                     test_entry["result_out"] += command.split()[2] + "\n"
@@ -227,6 +229,7 @@ def mp_run(*args):
             print("%-30s%-70s%s" % (
                 test_entry["category"]["group"], test_entry["name"], test_entry["command"]
             ))
+            sys.stdout.flush()
             (test_entry["result_out"], test_entry["result_err"]) = \
                 execute_command(test_entry["command"], test_entry["input"])
 
@@ -287,7 +290,7 @@ def main() -> int:
             if "[models]" in str(test[4]):
                 command_count += len(str(test[8]).split(","))
             elif len(str(test[4]).split("\n")) > 1:
-                command_count += len(str(test[4]).split("\n"))
+                command_count += len(str(test[4]).strip().split("\n"))
             else:
                 command_count += 1
 
@@ -298,9 +301,11 @@ def main() -> int:
     print("UCVM Release Tests")
     print("")
     print("Running %d tests consisting of %d commands on %d cores. Estimated time to complete is %d minutes.\n" % (
-        len(test_entries), command_count, cores, len(test_entries) / cores * 5
+        len(test_entries), command_count, cores, len(test_entries) / cores * 6
     ))
     print("%-30s%-70s%s" % ("Test Category", "Test Title", "Command"))
+    print("%-30s%-70s%s" % ("-------------", "----------", "-------"))
+    #print("")
 
     # Now we need to run all the tests using the multiprocessing pool. This helps speed up the test results as we can
     # run all the tests in parallel instead of requiring sequential tests.
