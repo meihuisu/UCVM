@@ -73,6 +73,10 @@ def compare_against_known_data(command_output: tuple, known_output: tuple) -> bo
         if stdout.strip() != command_output[0].strip():
             print(command_output[0])
             return False
+    elif stdout_compare_method == "Contains":
+        if stdout.strip() not in command_output[1].strip():
+            print(command_output[1])
+            return False
 
     # Compare standard error second. Get comparison method, then compare.
     stderr_compare_method = known_output[1].split("\n")[0].strip()
@@ -158,7 +162,7 @@ def write_rst_doc(test_results: list) -> bool:
 
             # Print out the standard out that the commands produced, if there was one.
             if test["result_out"] != "":
-                if "ucvm_query" in test["command"]:
+                if "ucvm_query" in test["command"] or "ucvm_mesh_create" in test["command"]:
                     output_file.write("Actual Output:\n")
                     output_file.write("::\n\n")
                     for line in test["result_out"].strip().split("\n"):
@@ -254,6 +258,9 @@ def main() -> int:
     Returns:
         int: 0 if successful. Raises an error if not.
     """
+    # Remove everything in the scratch directory.
+    execute_command("rm ./scratch/*", "")
+
     # Open the SQLite connection.
     conn = sqlite3.connect(os.path.join(os.path.dirname(__file__), "testsuite.db"))
 
@@ -268,6 +275,8 @@ def main() -> int:
     for category in categories:
         tests = conn.execute("SELECT * FROM TestCase WHERE `Category ID`= ? ORDER BY ID ASC", (category[0],))
         for test in tests:
+            if test[0] != 48:
+                continue
             # Create entry for this particular test and append it to the test entries array.
             test_entries.append({
                 "id": test[0],
@@ -305,7 +314,10 @@ def main() -> int:
     ))
     print("%-30s%-70s%s" % ("Test Category", "Test Title", "Command"))
     print("%-30s%-70s%s" % ("-------------", "----------", "-------"))
-    #print("")
+
+    # Append total number of commands
+    for entry in test_entries:
+        entry["total"] = command_count
 
     # Now we need to run all the tests using the multiprocessing pool. This helps speed up the test results as we can
     # run all the tests in parallel instead of requiring sequential tests.

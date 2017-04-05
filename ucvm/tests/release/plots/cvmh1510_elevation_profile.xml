@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<profile_point>
+		<y>34.29</y>
+		<depth_elev>1</depth_elev>
+		<x>-117.65</x>
+		<z>3000.0</z>
+		<projection>+proj=latlong +datum=WGS84</projection>
+	</profile_point>
+	<profile_properties>
+		<spacing>20.0</spacing>
+		<properties>vp, vs, density, qp, qs</properties>
+		<depth>13000.0</depth>
+	</profile_properties>
+	<plot>
+		<title>CVM-H 15.1.0 Verification Elevation Profile (-117.65, 34.29)</title>
+		<save>_static/cvmh1510_elevation_profile.png</save>
+	</plot>
+	<cvm_list>cvmh1510.elevation</cvm_list>
+</root>

@@ -70,11 +70,9 @@ class DepthProfile(Plot):
             cvm_list += ".elevation"
 
         if "plot" in dictionary:
-            if "title" in dictionary["plot"]:
-                return DepthProfile(profile_point, depth_profile_properties, cvm_list,
-                                    title=dictionary["plot"]["title"])
-
-        return DepthProfile(profile_point, depth_profile_properties, cvm_list)
+            return DepthProfile(profile_point, depth_profile_properties, cvm_list, plot=dictionary["plot"])
+        else:
+            return DepthProfile(profile_point, depth_profile_properties, cvm_list)
 
     def extract(self):
         num_points = int(math.ceil((self.profile_properties.depth - self.profile_point.z_value) /
