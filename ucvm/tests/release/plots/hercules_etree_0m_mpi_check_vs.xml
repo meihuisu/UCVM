@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<bottom_left_point>
+		<depth_elev>0</depth_elev>
+		<z>0.0</z>
+		<y>33.4</y>
+		<projection>+proj=latlong +datum=WGS84</projection>
+		<x>-118.6</x>
+	</bottom_left_point>
+	<plot>
+		<generate>y</generate>
+		<title>Etree MPI LA Basin Verification 0m Vs</title>
+		<features>
+			<topography>No</topography>
+			<colormap>RdBu</colormap>
+			<faults>Yes</faults>
+			<scale>discrete</scale>
+		</features>
+		<property>vs</property>
+		<save>_static/hercules_etree_0m_mpi_check_vs.png</save>
+	</plot>
+	<properties>
+		<num_y>300</num_y>
+		<rotation>0.0</rotation>
+		<spacing>0.002</spacing>
+		<num_x>350</num_x>
+	</properties>
+	<cvm_list>dataproductreader[meshes/hercules_etree_compare_mpi]</cvm_list>
+</root>

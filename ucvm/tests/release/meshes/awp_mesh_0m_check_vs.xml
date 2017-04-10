@@ -9,7 +9,7 @@
 	</bottom_left_point>
 	<plot>
 		<generate>y</generate>
-		<title>AWP LA Basin Verification Vs</title>
+		<title>AWP LA Basin Verification 0m Vs</title>
 		<features>
 			<topography>No</topography>
 			<colormap>RdBu</colormap>
@@ -25,5 +25,5 @@
 		<spacing>0.002</spacing>
 		<num_x>350</num_x>
 	</properties>
-	<cvm_list>dataproductreader[awp_la_basin]</cvm_list>
+	<cvm_list>dataproductreader[meshes/awp_mesh]</cvm_list>
 </root>

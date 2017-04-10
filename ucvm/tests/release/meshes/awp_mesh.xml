@@ -2,7 +2,7 @@
 <root>
 	<cvm_list>cvms4</cvm_list>
 	<format>awp</format>
-	<out_dir>./</out_dir>
+	<out_dir>./scratch</out_dir>
 	<projection>+proj=utm +datum=WGS84 +zone=11</projection>
 	<grid_type>vertex</grid_type>
 	<spacing>500</spacing>

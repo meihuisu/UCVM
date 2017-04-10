@@ -4,19 +4,11 @@ Data Product Reader Velocity Model
 This "velocity model" reads from an AWP mesh, an RWG mesh, or an e-tree. It then retrieves the
 material properties stored within the data structure. For meshes, this is trilinearly interpolated.
 
-Copyright 2017 Southern California Earthquake Center
+Copyright:
+    Southern California Earthquake Center
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Developer:
+    David Gill <davidgil@usc.edu>
 """
 # Python Imports
 import os
@@ -188,33 +180,33 @@ class DataProductReaderVelocityModel(VelocityModel):
 
             # Check to see if we are outside of the model boundaries.
             if coords["x"] < 0 or coords["y"] < 0 or coords["z"] < 0 or \
-                            coords["x"] > self.dims["x"] - 2 or coords["y"] > self.dims["y"] - 2 or \
-                            coords["z"] > self.dims["z"] - 1:
+               coords["x"] > self.dims["x"] - 2 or coords["y"] > self.dims["y"] - 2 or \
+               coords["z"] > self.dims["z"] - 2:
                 self._set_velocity_properties_none(data[i])
                 continue
 
-            values["tsw"] = (self.dims["z"] - coords["z"] - 1) * \
+            values["tsw"] = (coords["z"]) * \
                             (self.dims["y"] * self.dims["x"]) + \
                             (coords["y"] * self.dims["x"]) + coords["x"]
-            values["tse"] = (self.dims["z"] - coords["z"] - 1) * \
+            values["tse"] = (coords["z"]) * \
                             (self.dims["y"] * self.dims["x"]) + \
                             (coords["y"] * self.dims["x"]) + (coords["x"] + 1)
-            values["tnw"] = (self.dims["z"] - coords["z"] - 1) * \
+            values["tnw"] = (coords["z"]) * \
                             (self.dims["y"] * self.dims["x"]) + \
                             ((coords["y"] + 1) * self.dims["x"]) + coords["x"]
-            values["tne"] = (self.dims["z"] - coords["z"] - 1) * \
+            values["tne"] = (coords["z"]) * \
                             (self.dims["y"] * self.dims["x"]) + \
                             ((coords["y"] + 1) * self.dims["x"]) + (coords["x"]) + 1
-            values["bsw"] = (self.dims["z"] - coords["z"]) * \
+            values["bsw"] = (coords["z"] + 1) * \
                             (self.dims["y"] * self.dims["x"]) + \
                             (coords["y"] * self.dims["x"]) + coords["x"]
-            values["bse"] = (self.dims["z"] - coords["z"]) * \
+            values["bse"] = (coords["z"] + 1) * \
                             (self.dims["y"] * self.dims["x"]) + \
                             (coords["y"] * self.dims["x"]) + (coords["x"] + 1)
-            values["bnw"] = (self.dims["z"] - coords["z"]) * \
+            values["bnw"] = (coords["z"] + 1) * \
                             (self.dims["y"] * self.dims["x"]) + \
                             ((coords["y"] + 1) * self.dims["x"]) + coords["x"]
-            values["bne"] = (self.dims["z"] - coords["z"]) * \
+            values["bne"] = (coords["z"] + 1) * \
                             (self.dims["y"] * self.dims["x"]) + \
                             ((coords["y"] + 1) * self.dims["x"]) + (coords["x"] + 1)
 
@@ -315,27 +307,27 @@ class DataProductReaderVelocityModel(VelocityModel):
 
             # Check to see if we are outside of the model boundaries.
             if coords["x"] < 0 or coords["y"] < 0 or coords["z"] < 0 or \
-                            coords["x"] > self.dims["x"] - 2 or coords["y"] > self.dims["y"] - 2 or \
-                            coords["z"] > self.dims["z"] - 1:
+               coords["x"] > self.dims["x"] - 2 or coords["y"] > self.dims["y"] - 2 or \
+               coords["z"] > self.dims["z"] - 2:
                 self._set_velocity_properties_none(data[i])
                 continue
 
             values["tsw"] = (coords["y"] * (self.dims["z"] * self.dims["x"])) + \
-                            ((self.dims["z"] - coords["z"] - 1) * self.dims["x"]) + coords["x"]
+                            (coords["z"] * self.dims["x"]) + coords["x"]
             values["tse"] = (coords["y"] * (self.dims["z"] * self.dims["x"])) + \
-                            ((self.dims["z"] - coords["z"] - 1) * self.dims["x"]) + coords["x"] + 1
+                            (coords["z"] * self.dims["x"]) + coords["x"] + 1
             values["tnw"] = ((coords["y"] + 1) * (self.dims["z"] * self.dims["x"])) + \
-                            ((self.dims["z"] - coords["z"] - 1) * self.dims["x"]) + coords["x"]
+                            (coords["z"] * self.dims["x"]) + coords["x"]
             values["tne"] = ((coords["y"] + 1) * (self.dims["z"] * self.dims["x"])) + \
-                            ((self.dims["z"] - coords["z"] - 1) * self.dims["x"]) + coords["x"] + 1
+                            (coords["z"] * self.dims["x"]) + coords["x"] + 1
             values["bsw"] = (coords["y"] * (self.dims["z"] * self.dims["x"])) + \
-                            ((self.dims["z"] - coords["z"]) * self.dims["x"]) + coords["x"]
+                            ((coords["z"] + 1) * self.dims["x"]) + coords["x"]
             values["bse"] = (coords["y"] * (self.dims["z"] * self.dims["x"])) + \
-                            ((self.dims["z"] - coords["z"]) * self.dims["x"]) + coords["x"] + 1
+                            ((coords["z"] + 1) * self.dims["x"]) + coords["x"] + 1
             values["bnw"] = ((coords["y"] + 1) * (self.dims["z"] * self.dims["x"])) + \
-                            ((self.dims["z"] - coords["z"]) * self.dims["x"]) + coords["x"]
+                            ((coords["z"] + 1) * self.dims["x"]) + coords["x"]
             values["bne"] = ((coords["y"] + 1) * (self.dims["z"] * self.dims["x"])) + \
-                            ((self.dims["z"] - coords["z"]) * self.dims["x"]) + coords["x"] + 1
+                            ((coords["z"] + 1) * self.dims["x"]) + coords["x"] + 1
 
             for key in values.keys():
                 fin_vp.seek(values[key] * 4)
@@ -428,11 +420,11 @@ class DataProductReaderVelocityModel(VelocityModel):
         try:
             with open(kwargs["params"], "r") as fd:
                 xml_in = xmltodict.parse(fd.read())
-                self.data_dir = os.path.dirname(kwargs["params"])
+                self.data_dir = xml_in["root"]["out_dir"]
         except FileNotFoundError:
             with open(kwargs["params"] + ".xml", "r") as fd:
                 xml_in = xmltodict.parse(fd.read())
-                self.data_dir = os.path.dirname(kwargs["params"] + ".xml")
+                self.data_dir = xml_in["root"]["out_dir"]
 
         self._initialize(xml_in["root"])
 

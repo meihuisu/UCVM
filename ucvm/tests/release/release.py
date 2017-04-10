@@ -26,6 +26,8 @@ import sys
 
 from subprocess import Popen, PIPE
 
+from ucvm.src.framework.ucvm import UCVM
+
 
 def execute_command(command: str, stdinput: str) -> (str, str):
     """
@@ -40,15 +42,22 @@ def execute_command(command: str, stdinput: str) -> (str, str):
         tuple: A tuple of two strings containing the relevant output from the command on both standard out and standard
         error.
     """
-    process = Popen(command.split(), stdout=PIPE, stdin=PIPE, stderr=PIPE)
+    command_parts = command.split()
+
+    process = Popen(command_parts, stdout=PIPE, stdin=PIPE, stderr=PIPE)
     process.stdin.write(stdinput.encode("UTF-8"))
     streams = process.communicate()
     str_out = streams[0].decode("utf-8")
     str_err = streams[1].decode("utf-8")
 
-    if "ucvm_query" in command:
+    if "ucvm_query" in command or "ucvm_mesh" in command or "ucvm_etree" in command:
         return (command + "\n" + "\n".join(str_out.strip().split("\n")[3:])) if str_out.strip() != "" else "", \
                (command + "\n" + str_err.strip()) if str_err.strip() != "" else ""
+    elif "diff" in command:
+        if str_out == "":
+            return "No difference between " + command_parts[1] + " and " + command_parts[2] + " found.", ""
+        else:
+            return "", "Difference found between " + command_parts[1] + " and " + command_parts[2] + "."
     else:
         return str_out, str_err
 
@@ -74,8 +83,8 @@ def compare_against_known_data(command_output: tuple, known_output: tuple) -> bo
             print(command_output[0])
             return False
     elif stdout_compare_method == "Contains":
-        if stdout.strip() not in command_output[1].strip():
-            print(command_output[1])
+        if stdout.strip() not in command_output[0].strip():
+            print(command_output[0])
             return False
 
     # Compare standard error second. Get comparison method, then compare.
@@ -83,6 +92,7 @@ def compare_against_known_data(command_output: tuple, known_output: tuple) -> bo
     stderr = "\n".join(known_output[1].split("\n")[1:])
     if stderr_compare_method == "Equal":
         if stderr.strip() != command_output[1].strip():
+            print(command_output[1])
             return False
     elif stderr_compare_method == "Contains":
         if stderr.strip() not in command_output[1].strip():
@@ -162,7 +172,8 @@ def write_rst_doc(test_results: list) -> bool:
 
             # Print out the standard out that the commands produced, if there was one.
             if test["result_out"] != "":
-                if "ucvm_query" in test["command"] or "ucvm_mesh_create" in test["command"]:
+                if "ucvm_query" in test["command"] or "ucvm_mesh_create" in test["command"] or \
+                   "ucvm_etree_create" in test["command"]:
                     output_file.write("Actual Output:\n")
                     output_file.write("::\n\n")
                     for line in test["result_out"].strip().split("\n"):
@@ -259,7 +270,9 @@ def main() -> int:
         int: 0 if successful. Raises an error if not.
     """
     # Remove everything in the scratch directory.
-    execute_command("rm ./scratch/*", "")
+    for item in os.listdir("./scratch"):
+        if ".awp" in item or ".rwg" in item or ".e" in item:
+            execute_command("rm ./scratch/" + item, "")
 
     # Open the SQLite connection.
     conn = sqlite3.connect(os.path.join(os.path.dirname(__file__), "testsuite.db"))
@@ -275,7 +288,7 @@ def main() -> int:
     for category in categories:
         tests = conn.execute("SELECT * FROM TestCase WHERE `Category ID`= ? ORDER BY ID ASC", (category[0],))
         for test in tests:
-            if test[0] != 48:
+            if test[0] != 53:
                 continue
             # Create entry for this particular test and append it to the test entries array.
             test_entries.append({
@@ -304,7 +317,7 @@ def main() -> int:
                 command_count += 1
 
     # Number of cores to run on.
-    cores = 4
+    cores = 6
 
     # Print our header statistics first.
     print("UCVM Release Tests")
@@ -332,6 +345,11 @@ def main() -> int:
     # Generate the RST content for the relevant tests page either with the GitHub documentation or the more extensive
     # documentation on hypocenter.usc.edu.
     write_rst_doc(results)
+
+    # Remove everything in the scratch directory.
+    # for item in os.listdir("./scratch"):
+    #     if ".awp" in item or ".rwg" in item:
+    #         execute_command("rm ./scratch/" + item, "")
 
     return 0
 

@@ -494,7 +494,7 @@ def ask_questions() -> dict:
     )
 
     answers["cvm_list"] = ask_and_validate(
-        "From which velocity model(s) should this mesh be generated:"
+        "From which velocity model(s) should this etree be generated:"
     )
 
     print(
