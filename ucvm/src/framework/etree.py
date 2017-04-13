@@ -736,6 +736,8 @@ def ask_questions() -> dict:
         "e-tree, and the\nKML file to visualize the boundaries."
     )
 
+    return answers
+
 
 def _get_grid(sd_array: List[SeismicData], cfg: dict, stats: dict, level: int, column: int,
               row: int, ztics: int) -> (int, dict):

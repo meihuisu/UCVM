@@ -9,7 +9,7 @@
 	</bottom_left_point>
 	<plot>
 		<generate>y</generate>
-		<title>Etree UCVMC LA Basin Verification 5000m Vs</title>
+		<title>Etree UCVMC LA Basin Verification 0m Vs</title>
 		<features>
 			<topography>No</topography>
 			<colormap>RdBu</colormap>
@@ -17,7 +17,7 @@
 			<scale>discrete</scale>
 		</features>
 		<property>vs</property>
-		<save>_static/hercules_etree_5000m_ucvmc_check_vs.png</save>
+		<save>_static/hercules_etree_0m_ucvmc_check_vs.png</save>
 	</plot>
 	<properties>
 		<num_y>300</num_y>

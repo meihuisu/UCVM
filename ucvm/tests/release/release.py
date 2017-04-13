@@ -173,7 +173,7 @@ def write_rst_doc(test_results: list) -> bool:
             # Print out the standard out that the commands produced, if there was one.
             if test["result_out"] != "":
                 if "ucvm_query" in test["command"] or "ucvm_mesh_create" in test["command"] or \
-                   "ucvm_etree_create" in test["command"]:
+                   "ucvm_etree_create" in test["command"] or "ucvm_model_manager" in test["command"]:
                     output_file.write("Actual Output:\n")
                     output_file.write("::\n\n")
                     for line in test["result_out"].strip().split("\n"):
@@ -288,8 +288,8 @@ def main() -> int:
     for category in categories:
         tests = conn.execute("SELECT * FROM TestCase WHERE `Category ID`= ? ORDER BY ID ASC", (category[0],))
         for test in tests:
-            if test[0] != 53:
-                continue
+            # if test[0] != 25:
+            #    continue
             # Create entry for this particular test and append it to the test entries array.
             test_entries.append({
                 "id": test[0],
@@ -323,7 +323,7 @@ def main() -> int:
     print("UCVM Release Tests")
     print("")
     print("Running %d tests consisting of %d commands on %d cores. Estimated time to complete is %d minutes.\n" % (
-        len(test_entries), command_count, cores, len(test_entries) / cores * 6
+        len(test_entries), command_count, cores, len(test_entries) / cores * 10
     ))
     print("%-30s%-70s%s" % ("Test Category", "Test Title", "Command"))
     print("%-30s%-70s%s" % ("-------------", "----------", "-------"))

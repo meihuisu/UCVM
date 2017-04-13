@@ -1,0 +1,117 @@
+"""
+Plots The Vp/Vs Ratio For The Basin
+
+This is a one-off utility to check the Vp/Vs ratio for the Z2.5 isosurface in CCA06.
+
+Copyright 2017 Southern California Earthquake Center
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+# Python Imports
+import os
+import struct
+import sys
+
+# Package Imports
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+import matplotlib.cm as cm
+from mpl_toolkits import basemap
+
+# UCVM Imports
+from ucvm.src.framework.ucvm import UCVM
+from ucvm.src.shared.properties import Point, SeismicData
+from ucvm.src.shared.constants import UCVM_DEPTH, UCVM_DEFAULT_PROJECTION
+
+
+def main() -> int:
+    _grid_defs = {
+        "dimensions": {
+            "nx": 1551,
+            "ny": 1201,
+            "spacing": 0.005
+        },
+        "start": {
+            "x": -123,
+            "y": 33.35
+        }
+    }
+
+    _ratios = []
+    _sd_object = SeismicData()
+
+    plt.figure(figsize=(20, 20), dpi=100)
+
+    if os.path.exists("cca_temp.npy"):
+        _ratios_reshaped = np.load("cca_temp.npy")
+    else:
+        with open("cca06_z25_map.bin", "rb") as fd:
+            _depths = struct.unpack("f" * _grid_defs["dimensions"]["nx"] * _grid_defs["dimensions"]["ny"], fd.read())
+
+        counter = 0
+        for y in range(0, _grid_defs["dimensions"]["ny"]):
+            for x in range(0, _grid_defs["dimensions"]["nx"]):
+                if _depths[counter] == -1:
+                    _ratios.append(-1)
+                    counter += 1
+                    continue
+                _sd_object.original_point.x_value = _grid_defs["start"]["x"] + x * _grid_defs["dimensions"]["spacing"]
+                _sd_object.original_point.y_value = _grid_defs["start"]["y"] + y * _grid_defs["dimensions"]["spacing"]
+                _sd_object.original_point.z_value = _depths[counter]
+                UCVM.query([_sd_object], "cca06", ["velocity"])
+                _ratios.append(_sd_object.velocity_properties.vp / _sd_object.velocity_properties.vs)
+                counter += 1
+
+        _ratios_reshaped = np.reshape(_ratios, (_grid_defs["dimensions"]["ny"], _grid_defs["dimensions"]["nx"]))
+        np.save("cca_temp", _ratios_reshaped)
+
+    colormap = cm.RdBu
+    colormap.set_bad("gray", 1)
+    _ratios_reshaped_cpy = np.ma.masked_less(_ratios_reshaped, 0)
+    norm = mcolors.Normalize(vmin=1.4, vmax=2.0)
+
+    plt.axes([0.15, 0.2, 0.70, 0.70])
+
+    # Check to see if we have pickled this particular basemap instance.
+    m = basemap.Basemap(projection='cyl',
+                        llcrnrlat=33.5,
+                        urcrnrlat=36.5,
+                        llcrnrlon=-121.25,
+                        urcrnrlon=-118.25,
+                        resolution='f',
+                        anchor='C')
+
+    m.drawparallels([33.5, 35, 36.5], linewidth=1.0, labels=[1, 0, 0, 0])
+    m.drawmeridians([-121.25, -119.75, -118.25], linewidth=1.0, labels=[0, 0, 0, 1])
+
+    m.drawstates()
+    m.drawcountries()
+    m.drawcoastlines()
+
+    x_values = np.arange(-123, -115.25 + 0.005, 0.005)
+    y_values = np.arange(33.35, 39.35 + 0.005, 0.005)
+
+    t = m.pcolormesh(x_values, y_values, _ratios_reshaped_cpy, cmap=colormap, norm=norm)
+
+    cax = plt.axes([0.05, 0.1, 0.90, 0.02])
+    cbar = plt.colorbar(t, cax=cax, orientation='horizontal', ticks=[1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0])
+    cbar.set_label("Vp/Vs")
+
+    plt.savefig("cca_z25_vpvs_all.png")
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
