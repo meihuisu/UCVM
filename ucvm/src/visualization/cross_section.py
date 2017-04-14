@@ -99,8 +99,11 @@ class CrossSection(Plot):
             cvm_list += ".elevation"
 
         plot_properties = dictionary["plot"]
+        data_properties = dictionary["data"]
 
-        return CrossSection(start_point, end_point, cross_section_properties, cvm_list, plot=plot_properties)
+        return CrossSection(
+            start_point, end_point, cross_section_properties, cvm_list, plot=plot_properties, data=data_properties
+        )
 
     def extract(self):
         proj = pyproj.Proj(proj='utm', zone=11, ellps='WGS84')

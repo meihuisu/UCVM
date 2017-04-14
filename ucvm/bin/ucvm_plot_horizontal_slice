@@ -89,7 +89,9 @@ def ask_questions(advanced: bool, test: bool) -> dict:
             "property": ""
         },
         "data": {
-            "save": ""
+            "save": "n",
+            "location": "",
+            "name": ""
         }
     }
 
@@ -244,6 +246,39 @@ def ask_questions(advanced: bool, test: bool) -> dict:
 
         file_str = hashlib.sha224(str(answers["plot"]["title"]).encode("UTF-8")).hexdigest()[0:5]
         answers["data"]["save"] = "extraction_" + file_str + ".data"
+
+    answers["data"]["save"] = ask_and_validate(
+        "\nWould you like the horizontal slice saved to disk? Type 'y' for yes, 'n' for no:",
+        is_acceptable_value, "Enter y for yes, n for no.", allowed=["y", "n"]
+    )
+
+    if answers["data"]["save"].lower() == "y":
+        answers["data"]["location"] = ask_and_validate(
+            "Enter the folder location where this horizontal slice plot should be stored: "
+        )
+        answers["data"]["name"] = ask_and_validate(
+            "Enter the file name (leave off the .png extension): "
+        )
+
+    save_config = ask_and_validate(
+        "\nWould you like to save this configuration file for future use? Type 'y' for yes, 'n' for no:",
+        is_acceptable_value, "Enter y for yes, n for no.", allowed=["y", "n"]
+    )
+
+    if save_config == "y":
+        name = ask_and_validate(
+            "Enter the file name to which this configuration should be saved (leave off the '.xml' ending): ",
+        )
+
+        if name.strip() == "":
+            name = "plot_depth_profile.xml"
+
+        with open(name.replace(".xml", "") + ".xml", "w") as fd:
+            fd.write(xmltodict.unparse({"root": answers}, pretty=True))
+
+    print(
+        "\nThe configuration is now complete. The depth profile will generate now."
+    )
 
     return answers
 

@@ -69,10 +69,9 @@ class DepthProfile(Plot):
         if int(dictionary["profile_point"]["depth_elev"]) == UCVM_ELEVATION and ".depth" not in cvm_list:
             cvm_list += ".elevation"
 
-        if "plot" in dictionary:
-            return DepthProfile(profile_point, depth_profile_properties, cvm_list, plot=dictionary["plot"])
-        else:
-            return DepthProfile(profile_point, depth_profile_properties, cvm_list)
+        return DepthProfile(
+            profile_point, depth_profile_properties, cvm_list, plot=dictionary["plot"], data=dictionary["data"]
+        )
 
     def extract(self):
         num_points = int(math.ceil((self.profile_properties.depth - self.profile_point.z_value) /

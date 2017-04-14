@@ -81,7 +81,12 @@ def ask_questions(test: bool) -> dict:
                 "colormap": ""
             }
         },
-        "cvm_list": ""
+        "cvm_list": "",
+        "data": {
+            "save": "n",
+            "location": "",
+            "name": ""
+        }
     }
 
     # Get list of installed models.
@@ -175,6 +180,35 @@ def ask_questions(test: bool) -> dict:
     answers["plot"]["features"]["scale"] = "discrete"
     answers["plot"]["features"]["colormap"] = "RdBu"
 
+    answers["data"]["save"] = ask_and_validate(
+        "\nWould you like the plot saved to disk? Type 'y' for yes, 'n' for no:",
+        is_acceptable_value, "Enter y for yes, n for no.", allowed=["y", "n"]
+    )
+
+    if answers["data"]["save"].lower() == "y":
+        answers["data"]["location"] = ask_and_validate(
+            "Enter the folder location where this plot should be stored: "
+        )
+        answers["data"]["name"] = ask_and_validate(
+            "Enter the file name (leave off the .png extension): "
+        )
+
+    save_config = ask_and_validate(
+        "\nWould you like to save this configuration file for future use? Type 'y' for yes, 'n' for no:",
+        is_acceptable_value, "Enter y for yes, n for no.", allowed=["y", "n"]
+    )
+
+    if save_config == "y":
+        name = ask_and_validate(
+            "Enter the file name to which this configuration should be saved (leave off the '.xml' ending): ",
+        )
+
+        if name.strip() == "":
+            name = "plot_cross_section.xml"
+
+        with open(name.replace(".xml", "") + ".xml", "w") as fd:
+            fd.write(xmltodict.unparse({"root": answers}, pretty=True))
+
     return answers
 
 
@@ -199,8 +233,6 @@ def main() -> int:
             section_info = xmltodict.parse(fd.read())["root"]
     else:
         section_info = ask_questions(options["test"] is not None)
-        with open("cross_section.xml", "w") as fd:
-            fd.write(xmltodict.unparse({"root": section_info}, pretty=True))
 
     if options["test"] is None:
         CrossSection.from_dictionary(section_info).plot()
@@ -215,5 +247,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
-

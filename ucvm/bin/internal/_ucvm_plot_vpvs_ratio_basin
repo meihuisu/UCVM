@@ -70,7 +70,10 @@ def main() -> int:
                 _sd_object.original_point.y_value = _grid_defs["start"]["y"] + y * _grid_defs["dimensions"]["spacing"]
                 _sd_object.original_point.z_value = _depths[counter]
                 UCVM.query([_sd_object], "cca06", ["velocity"])
-                _ratios.append(_sd_object.velocity_properties.vp / _sd_object.velocity_properties.vs)
+                if _sd_object.velocity_properties.vp is not None and _sd_object.velocity_properties.vs is not None:
+                    _ratios.append(_sd_object.velocity_properties.vp / _sd_object.velocity_properties.vs)
+                else:
+                    _ratios.append(-1)
                 counter += 1
 
         _ratios_reshaped = np.reshape(_ratios, (_grid_defs["dimensions"]["ny"], _grid_defs["dimensions"]["nx"]))
@@ -107,6 +110,8 @@ def main() -> int:
     cax = plt.axes([0.05, 0.1, 0.90, 0.02])
     cbar = plt.colorbar(t, cax=cax, orientation='horizontal', ticks=[1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0])
     cbar.set_label("Vp/Vs")
+
+    #plt.title("Vp/Vs Ratio Surface")
 
     plt.savefig("cca_z25_vpvs_all.png")
 

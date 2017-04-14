@@ -15,6 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import os
 import subprocess
 import numpy as np
 
@@ -87,6 +88,10 @@ class Plot:
             if "plot" in self.extras:
                 if "save" in self.extras["plot"]:
                     save = self.extras["plot"]["save"]
+            if "data" in self.extras:
+                if "save" in self.extras["data"]:
+                    if str(self.extras["data"]["save"]).lower() == "y":
+                        save = os.path.join(self.extras["data"]["location"], self.extras["data"]["name"] + ".png")
 
         plt.axes([0.2, 0.125, 0.70, 0.80])
         for key, item in properties.items():
@@ -134,6 +139,10 @@ class Plot:
             basic = False
 
         if hasattr(self, "extras"):
+            if "data" in self.extras:
+                if "save" in self.extras["data"]:
+                    if str(self.extras["data"]["save"]).lower() == "y":
+                        save = os.path.join(self.extras["data"]["location"], self.extras["data"]["name"] + ".png")
             if "plot" in self.extras:
                 if "save" in self.extras["plot"]:
                     save = self.extras["plot"]["save"]

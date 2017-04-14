@@ -173,7 +173,8 @@ def write_rst_doc(test_results: list) -> bool:
             # Print out the standard out that the commands produced, if there was one.
             if test["result_out"] != "":
                 if "ucvm_query" in test["command"] or "ucvm_mesh_create" in test["command"] or \
-                   "ucvm_etree_create" in test["command"] or "ucvm_model_manager" in test["command"]:
+                   "ucvm_etree_create" in test["command"] or "ucvm_model_manager" in test["command"] or \
+                   "ucvm_run_tests" in test["command"]:
                     output_file.write("Actual Output:\n")
                     output_file.write("::\n\n")
                     for line in test["result_out"].strip().split("\n"):
@@ -182,8 +183,12 @@ def write_rst_doc(test_results: list) -> bool:
                 else:
                     output_file.write("Plots:\n\n")
                     for plot in str(test["command"]).split("\n"):
-                        output_file.write(".. image:: _static/" + plot.split("/")[1].replace(".xml", ".png") + "\n")
-                        output_file.write("    :width: 500px\n\n")
+                        if len(plot.split("/")) > 1:
+                            output_file.write(".. image:: _static/" + plot.split("/")[1].replace(".xml", ".png") + "\n")
+                            output_file.write("    :width: 500px\n\n")
+                        else:
+                            output_file.write(".. image:: _static/" + plot + "_cmd_check.png\n")
+                            output_file.write("    :width: 500px\n\n")
 
             # Print out the standard error that the commands produced, if there was one.
             if test["result_err"] != "" and "ucvm_plot_horizontal_slice" not in test["command"]:
@@ -288,8 +293,8 @@ def main() -> int:
     for category in categories:
         tests = conn.execute("SELECT * FROM TestCase WHERE `Category ID`= ? ORDER BY ID ASC", (category[0],))
         for test in tests:
-            # if test[0] != 25:
-            #    continue
+            if test[0] != 62:
+                continue
             # Create entry for this particular test and append it to the test entries array.
             test_entries.append({
                 "id": test[0],
