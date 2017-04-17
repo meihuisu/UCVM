@@ -29,4 +29,9 @@
 		<depth_elev>0</depth_elev>
 		<projection>+proj=latlong +datum=WGS84</projection>
 	</start_point>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>1d_BBP_cross_section_vs</name>
+	</data>
 </root>

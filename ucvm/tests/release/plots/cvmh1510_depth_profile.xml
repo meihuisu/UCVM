@@ -14,7 +14,11 @@
 	</profile_properties>
 	<plot>
 		<title>CVM-H 15.1.0 Verification Depth Profile (-118, 34)</title>
-		<save>_static/cvmh1510_depth_profile.png</save>
 	</plot>
 	<cvm_list>cvmh1510</cvm_list>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cvmh1510_depth_profile</name>
+	</data>
 </root>

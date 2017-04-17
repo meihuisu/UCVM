@@ -14,7 +14,11 @@
 	</profile_properties>
 	<plot>
 		<title>CyberShake 1D Verification Depth Profile (-118, 34)</title>
-		<save>_static/1d_CyberShake_depth_profile.png</save>
 	</plot>
 	<cvm_list>1d[CyberShake_BBP_LA_Basin]</cvm_list>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>1d_CyberShake_depth_profile</name>
+	</data>
 </root>

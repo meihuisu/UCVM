@@ -24,6 +24,10 @@
 		</features>
 		<title>CVM-S4 Verification Density 0m</title>
 		<generate>y</generate>
-		<save>_static/cvms4_0m_check_dn.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cvms4_0m_check_dn</name>
+	</data>
 </root>

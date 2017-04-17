@@ -14,7 +14,11 @@
 	</profile_properties>
 	<plot>
 		<title>Bay Area Verification Depth Profile (-121.89, 37.34)</title>
-		<save>_static/bayarea_depth_profile.png</save>
 	</plot>
 	<cvm_list>bayarea</cvm_list>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>bayarea_depth_profile</name>
+	</data>
 </root>

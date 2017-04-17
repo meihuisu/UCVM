@@ -293,7 +293,7 @@ def main() -> int:
     for category in categories:
         tests = conn.execute("SELECT * FROM TestCase WHERE `Category ID`= ? ORDER BY ID ASC", (category[0],))
         for test in tests:
-            if test[0] != 62:
+            if test[0] != 41:
                 continue
             # Create entry for this particular test and append it to the test entries array.
             test_entries.append({
@@ -350,6 +350,14 @@ def main() -> int:
     # Generate the RST content for the relevant tests page either with the GitHub documentation or the more extensive
     # documentation on hypocenter.usc.edu.
     write_rst_doc(results)
+
+    all_good = True
+    for result in results:
+        if not result["result"]:
+            all_good = False
+
+    print("")
+    print("All tests passed!" if all_good else "One or more tests failed!")
 
     # Remove everything in the scratch directory.
     # for item in os.listdir("./scratch"):

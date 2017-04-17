@@ -14,7 +14,11 @@
 	</profile_properties>
 	<plot>
 		<title>CVM-H 15.1.0 Verification Elevation Profile (-117.65, 34.29)</title>
-		<save>_static/cvmh1510_elevation_profile.png</save>
 	</plot>
 	<cvm_list>cvmh1510.elevation</cvm_list>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cvmh1510_elevation_profile</name>
+	</data>
 </root>

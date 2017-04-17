@@ -24,6 +24,10 @@
 		</features>
 		<title>Bay Area Verification Density 0m</title>
 		<generate>y</generate>
-		<save>_static/bayarea_0m_check_dn.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>bayarea_0m_check_dn</name>
+	</data>
 </root>

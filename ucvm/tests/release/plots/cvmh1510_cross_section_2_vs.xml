@@ -20,7 +20,6 @@
 			<scale>discrete</scale>
 		</features>
 		<title>CVM-H 15.1.0 Verification Vs Cross-Section 2</title>
-		<save>_static/cvmh1510_cross_section_2_vs.png</save>
 	</plot>
 	<start_point>
 		<x>-119.5</x>
@@ -29,4 +28,9 @@
 		<depth_elev>0</depth_elev>
 		<projection>+proj=latlong +datum=WGS84</projection>
 	</start_point>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cvmh1510_cross_section_2_vs</name>
+	</data>
 </root>

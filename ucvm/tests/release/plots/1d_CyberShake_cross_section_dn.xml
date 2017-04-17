@@ -20,7 +20,6 @@
 			<scale>discrete</scale>
 		</features>
 		<title>CyberShake 1D Verification Density Cross-Section</title>
-		<save>_static/1d_CyberShake_cross_section_dn.png</save>
 	</plot>
 	<start_point>
 		<x>-119.5</x>
@@ -29,4 +28,9 @@
 		<depth_elev>0</depth_elev>
 		<projection>+proj=latlong +datum=WGS84</projection>
 	</start_point>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>1d_CyberShake_cross_section_dn</name>
+	</data>
 </root>

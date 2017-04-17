@@ -217,14 +217,14 @@ def ask_questions(advanced: bool, test: bool) -> dict:
             if answers["plot"]["features"]["topography"] == "y":
                 answers["plot"]["features"]["topography"] = "yes"
 
-            answers["data"]["save"] = ask_and_validate(
-                "\nWould you like to save the extracted data for future use?\nType 'y' for yes:"
-            )
+        # answers["data"]["save"] = ask_and_validate(
+        #     "\nWould you like to save the extracted data for future use?\nType 'y' for yes:"
+        # )
 
-        if str(answers["data"]["save"]).strip().lower() == "y" or \
-           str(answers["data"]["save"]).strip().lower() == "yes":
-            answers["data"]["save"] = ask_and_validate("What file name would you like to give\n"
-                                                       "the data?") + ".data"
+        # if str(answers["data"]["save"]).strip().lower() == "y" or \
+        #    str(answers["data"]["save"]).strip().lower() == "yes":
+        #     answers["data"]["save"] = ask_and_validate("What file name would you like to give\n"
+        #                                                "the data?") + ".data"
     else:
         answers["plot"]["generate"] = "y"
 
@@ -271,13 +271,13 @@ def ask_questions(advanced: bool, test: bool) -> dict:
         )
 
         if name.strip() == "":
-            name = "plot_depth_profile.xml"
+            name = "plot_horizontal_slice.xml"
 
         with open(name.replace(".xml", "") + ".xml", "w") as fd:
             fd.write(xmltodict.unparse({"root": answers}, pretty=True))
 
     print(
-        "\nThe configuration is now complete. The depth profile will generate now."
+        "\nThe configuration is now complete. The horizontal slice will generate now."
     )
 
     return answers
@@ -309,9 +309,6 @@ def main() -> int:
             slice_info = xmltodict.parse(fd.read())["root"]
     else:
         slice_info = ask_questions(advanced, options["test"] is not None)
-        with open("plot_" + str(slice_info["data"]["save"]).replace(".data", "") + ".xml", "w") \
-                as fd:
-            fd.write(xmltodict.unparse({"root": slice_info}, pretty=True))
 
     if options["test"] is None:
         HorizontalSlice.from_dictionary(slice_info).plot()

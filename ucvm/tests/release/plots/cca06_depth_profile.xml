@@ -14,7 +14,11 @@
 	</profile_properties>
 	<plot>
 		<title>CCA06 Verification Depth Profile (-119.02, 35.37)</title>
-		<save>_static/cca06_depth_profile.png</save>
 	</plot>
 	<cvm_list>cca06</cvm_list>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cca06_depth_profile</name>
+	</data>
 </root>

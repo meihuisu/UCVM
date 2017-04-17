@@ -217,9 +217,9 @@ class HorizontalSlice(Plot):
 
         print("Done extracting %d points." % im.total_size)
 
-        if self.save_extraction:
-            with open(self.extras["save_file"], "wb") as fd:
-                np.save(fd, self.extracted_data)
+        # if self.save_extraction:
+        #     with open(self.extras["save_file"], "wb") as fd:
+        #         np.save(fd, self.extracted_data)
 
     def plot(self, basic: bool=False):
         if self.needs_extraction:

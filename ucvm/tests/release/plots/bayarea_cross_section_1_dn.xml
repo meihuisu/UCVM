@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
 	<end_point>
-		<x>-115.0</x>
-		<y>31.0</y>
+		<x>-121.9</x>
+		<y>37.3</y>
 		<z>20000.0</z>
 		<depth_elev>0</depth_elev>
 		<projection>+proj=latlong +datum=WGS84</projection>
@@ -20,13 +20,17 @@
 			<scale>discrete</scale>
 		</features>
 		<title>Bay Area Verification Density Cross-Section 1</title>
-		<save>_static/bayarea_cross_section_1_dn.png</save>
 	</plot>
 	<start_point>
-		<x>-119.5</x>
-		<y>35.0</y>
+		<x>-122.5</x>
+		<y>38.5</y>
 		<z>0.0</z>
 		<depth_elev>0</depth_elev>
 		<projection>+proj=latlong +datum=WGS84</projection>
 	</start_point>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>bayarea_cross_section_1_dn</name>
+	</data>
 </root>

@@ -24,6 +24,10 @@
 		</features>
 		<title>BBP 1D Model Verification Vs 0m</title>
 		<generate>y</generate>
-		<save>_static/1d_BBP_check_vs.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>1d_BBP_check_vs</name>
+	</data>
 </root>

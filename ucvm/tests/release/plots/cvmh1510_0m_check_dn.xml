@@ -24,6 +24,10 @@
 		</features>
 		<title>CVM-H 15.1.0 Verification Density 0m</title>
 		<generate>y</generate>
-		<save>_static/cvmh1510_0m_check_dn.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cvmh1510_0m_check_dn</name>
+	</data>
 </root>
