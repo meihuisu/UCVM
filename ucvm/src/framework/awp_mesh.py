@@ -153,14 +153,16 @@ def _mesh_extract_mpi_awp(sd_array: List[SeismicData], information: dict, im: In
     fh.Close()
 
     if rank == 0:
-        print("\n[Node " + str(rank) + "] Expected file size is " + im.get_grid_file_size()["display"] + ". " +
-              "Actual size is " + humanize.naturalsize(os.path.getsize( os.path.join(file_out)), gnu=False) + ".",
-              flush=True)
+        print("\n[Node " + str(rank) + "] Extraction job fully complete.")
 
-        if im.get_grid_file_size()["real"] == os.path.getsize(file_out):
-            print("Generated file size matches the expected file size.")
-        else:
-            print("ERROR! File sizes DO NOT MATCH!")
+        # print("\n[Node " + str(rank) + "] Expected file size is " + im.get_grid_file_size()["display"] + ". " +
+        #       "Actual size is " + humanize.naturalsize(os.path.getsize(os.path.join(file_out)), gnu=False) + ".",
+        #       flush=True)
+
+        # if im.get_grid_file_size()["real"] == os.path.getsize(file_out):
+        #     print("Generated file size matches the expected file size.")
+        # else:
+        #     print("ERROR! File sizes DO NOT MATCH!")
 
     return True
 
@@ -249,19 +251,21 @@ def _mesh_extract_mpi_rwg(sd_array: List[SeismicData], information: dict, im: In
     fh_dn.Close()
 
     if rank == 0:
-        print("\n[Node " + str(rank) + "] Expected file size is " + im.get_grid_file_size()["display"] + ". " +
-              "Actual size is " + humanize.naturalsize(os.path.getsize(
-              os.path.join(information["out_dir"], file_out_vp)), gnu=False) + ".", flush=True)
+        print("\n[Node " + str(rank) + "] Extraction job fully complete.")
 
-        if im.get_grid_file_size()["real"] == \
-           os.path.getsize(os.path.join(information["out_dir"], file_out_vp)) and \
-           im.get_grid_file_size()["real"] == \
-           os.path.getsize(os.path.join(information["out_dir"], file_out_vs)) and \
-           im.get_grid_file_size()["real"] == \
-           os.path.getsize(os.path.join(information["out_dir"], file_out_dn)):
-            print("Generated file size matches the expected file size.")
-        else:
-            print("ERROR! File sizes DO NOT MATCH!")
+        # print("\n[Node " + str(rank) + "] Expected file size is " + im.get_grid_file_size()["display"] + ". " +
+        #       "Actual size is " + humanize.naturalsize(os.path.getsize(
+        #       os.path.join(information["out_dir"], file_out_vp)), gnu=False) + ".", flush=True)
+
+        # if im.get_grid_file_size()["real"] == \
+        #    os.path.getsize(os.path.join(information["out_dir"], file_out_vp)) and \
+        #    im.get_grid_file_size()["real"] == \
+        #    os.path.getsize(os.path.join(information["out_dir"], file_out_vs)) and \
+        #    im.get_grid_file_size()["real"] == \
+        #    os.path.getsize(os.path.join(information["out_dir"], file_out_dn)):
+        #     print("Generated file size matches the expected file size.")
+        # else:
+        #     print("ERROR! File sizes DO NOT MATCH!")
 
     return True
 

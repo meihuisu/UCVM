@@ -4,7 +4,7 @@
 		<x>-115.0</x>
 		<y>31.0</y>
 		<z>20000.0</z>
-		<depth_elev>0</depth_elev>
+		<depth_elev>1</depth_elev>
 		<projection>+proj=latlong +datum=WGS84</projection>
 	</end_point>
 	<cvm_list>(cvms426;cca06;bayarea;linthurber;1d[SCEC]).elevation</cvm_list>
@@ -25,7 +25,7 @@
 		<x>-119.5</x>
 		<y>35.0</y>
 		<z>0.0</z>
-		<depth_elev>0</depth_elev>
+		<depth_elev>1</depth_elev>
 		<projection>+proj=latlong +datum=WGS84</projection>
 	</start_point>
 	<data>

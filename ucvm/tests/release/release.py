@@ -21,6 +21,7 @@ limitations under the License.
 # Python Imports
 import os
 import multiprocessing
+import psutil
 import sqlite3
 import sys
 
@@ -172,9 +173,7 @@ def write_rst_doc(test_results: list) -> bool:
 
             # Print out the standard out that the commands produced, if there was one.
             if test["result_out"] != "":
-                if "ucvm_query" in test["command"] or "ucvm_mesh_create" in test["command"] or \
-                   "ucvm_etree_create" in test["command"] or "ucvm_model_manager" in test["command"] or \
-                   "ucvm_run_tests" in test["command"]:
+                if "ucvm_plot" not in test["command"]:
                     output_file.write("Actual Output:\n")
                     output_file.write("::\n\n")
                     for line in test["result_out"].strip().split("\n"):
@@ -183,6 +182,8 @@ def write_rst_doc(test_results: list) -> bool:
                 else:
                     output_file.write("Plots:\n\n")
                     for plot in str(test["command"]).split("\n"):
+                        if "ucvm_plot" not in plot:
+                            continue
                         if len(plot.split("/")) > 1:
                             output_file.write(".. image:: _static/" + plot.split("/")[1].replace(".xml", ".png") + "\n")
                             output_file.write("    :width: 500px\n\n")
@@ -191,7 +192,7 @@ def write_rst_doc(test_results: list) -> bool:
                             output_file.write("    :width: 500px\n\n")
 
             # Print out the standard error that the commands produced, if there was one.
-            if test["result_err"] != "" and "ucvm_plot_horizontal_slice" not in test["command"]:
+            if test["result_err"] != "" and "ucvm_plot" not in test["command"]:
                 output_file.write("Actual Error:\n")
                 output_file.write("::\n\n")
                 for line in test["result_err"].strip().split("\n"):
@@ -279,6 +280,11 @@ def main() -> int:
         if ".awp" in item or ".rwg" in item or ".e" in item:
             execute_command("rm ./scratch/" + item, "")
 
+    # Remove everything in the static directory.
+    for item in os.listdir("./_static"):
+        if ".png" in item:
+            execute_command("rm ./_static/" + item, "")
+
     # Open the SQLite connection.
     conn = sqlite3.connect(os.path.join(os.path.dirname(__file__), "testsuite.db"))
 
@@ -293,10 +299,11 @@ def main() -> int:
     for category in categories:
         tests = conn.execute("SELECT * FROM TestCase WHERE `Category ID`= ? ORDER BY ID ASC", (category[0],))
         for test in tests:
-            if test[0] != 41:
-                continue
+            # if test[0] != 66:
+            #     continue
             # Create entry for this particular test and append it to the test entries array.
             test_entries.append({
+                "category_id": category[0],
                 "id": test[0],
                 "name": str(test[2]).title(),
                 "description": str(test[3]),
@@ -321,8 +328,11 @@ def main() -> int:
             else:
                 command_count += 1
 
-    # Number of cores to run on.
-    cores = 6
+    # Number of cores to run on. This is set automatically.
+    cores = int(round(min(
+        multiprocessing.cpu_count(),
+        psutil.virtual_memory().total / 3221225472
+    ), 0))
 
     # Print our header statistics first.
     print("UCVM Release Tests")
@@ -345,7 +355,7 @@ def main() -> int:
     pool.join()
 
     # Sort the array by id.
-    results.sort(key=lambda x: x["id"])
+    results.sort(key=lambda x: (x["category_id"], x["id"]))
 
     # Generate the RST content for the relevant tests page either with the GitHub documentation or the more extensive
     # documentation on hypocenter.usc.edu.
@@ -360,9 +370,9 @@ def main() -> int:
     print("All tests passed!" if all_good else "One or more tests failed!")
 
     # Remove everything in the scratch directory.
-    # for item in os.listdir("./scratch"):
-    #     if ".awp" in item or ".rwg" in item:
-    #         execute_command("rm ./scratch/" + item, "")
+    for item in os.listdir("./scratch"):
+        if ".awp" in item or ".rwg" in item:
+            execute_command("rm ./scratch/" + item, "")
 
     return 0
 

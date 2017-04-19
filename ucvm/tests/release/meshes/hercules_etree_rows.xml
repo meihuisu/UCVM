@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<properties>
+		<columns>2</columns>
+		<max_frequency>0.5</max_frequency>
+		<rows>2</rows>
+		<parts_per_wavelength>4.0</parts_per_wavelength>
+		<max_octant_size>10000.0</max_octant_size>
+	</properties>
+	<format>etree</format>
+	<out_dir>./scratch</out_dir>
+	<dimensions>
+		<z>50000.0</z>
+		<y>50000.0</y>
+		<x>50000.0</x>
+	</dimensions>
+	<minimums>
+		<vs>200</vs>
+		<vp>200</vp>
+	</minimums>
+	<corners>
+		<ul>
+			<y>33.95081</y>
+			<x>-118.50786</x>
+		</ul>
+		<ur>
+			<y>33.95625</y>
+			<x>-117.96686</x>
+		</ur>
+		<bl>
+			<y>33.5</y>
+			<x>-118.5</x>
+		</bl>
+		<br>
+			<y>33.50535</y>
+			<x>-117.96181</x>
+		</br>
+	</corners>
+	<cvm_list>cvms4</cvm_list>
+	<projection>geo-bilinear</projection>
+	<etree_name>hercules_etree_rows</etree_name>
+	<author>
+		<person>David Gill</person>
+		<title>Hercules Etree</title>
+		<date>2017-04-05 13:30:56.236569</date>
+	</author>
+</root>

@@ -4,7 +4,7 @@
 	<bottom_left_point>
 		<z>0.0</z>
 		<projection>+proj=latlong +datum=WGS84</projection>
-		<x>-124</x>
+		<x>-125</x>
 		<y>31</y>
 		<depth_elev>0</depth_elev>
 	</bottom_left_point>
