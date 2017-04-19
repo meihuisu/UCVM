@@ -20,7 +20,6 @@
 			<scale>discrete</scale>
 		</features>
 		<title>Tiled Verification Vs Cross-Section 1</title>
-        <save>_static/tiled_cross_section_1_vs.png</save>
 	</plot>
 	<start_point>
 		<x>-119.5</x>
@@ -29,4 +28,9 @@
 		<depth_elev>0</depth_elev>
 		<projection>+proj=latlong +datum=WGS84</projection>
 	</start_point>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>tiled_cross_section_1_vs</name>
+	</data>
 </root>

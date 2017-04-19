@@ -24,6 +24,10 @@
 		</features>
 		<title>Elevation Verification With Topography</title>
 		<generate>y</generate>
-		<save>_static/elevation_map_check_topo.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>elevation_map_check_topo</name>
+	</data>
 </root>

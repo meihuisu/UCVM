@@ -24,6 +24,10 @@
 		</features>
 		<title>Tiled Verification Vs 0m</title>
 		<generate>y</generate>
-		<save>_static/tiled_0m_check_vs.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>tiled_0m_check_vs</name>
+	</data>
 </root>

@@ -24,6 +24,10 @@
 		</features>
 		<title>Elevation Verification</title>
 		<generate>y</generate>
-		<save>_static/elevation_map_check_notopo.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>elevation_map_check_notopo</name>
+	</data>
 </root>

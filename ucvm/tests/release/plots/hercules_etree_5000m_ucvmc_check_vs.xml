@@ -17,7 +17,6 @@
 			<scale>discrete</scale>
 		</features>
 		<property>vs</property>
-		<save>_static/hercules_etree_5000m_ucvmc_check_vs.png</save>
 	</plot>
 	<properties>
 		<num_y>300</num_y>
@@ -26,4 +25,9 @@
 		<num_x>350</num_x>
 	</properties>
 	<cvm_list>dataproductreader[ucvmc/hercules_etree_compare_ucvmc]</cvm_list>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>hercules_etree_5000m_ucvmc_check_vs</name>
+	</data>
 </root>

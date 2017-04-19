@@ -24,6 +24,10 @@
 		</features>
 		<title>CVM-S4.26.M01 Verification Vp 0m</title>
 		<generate>y</generate>
-		<save>_static/cvms426m01_0m_check_vp.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cvms426m01_0m_check_vp</name>
+	</data>
 </root>

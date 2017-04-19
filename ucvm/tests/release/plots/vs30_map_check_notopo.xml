@@ -24,6 +24,10 @@
 		</features>
 		<title>Wills-Wald Vs30 Verification</title>
 		<generate>y</generate>
-		<save>_static/vs30_map_check_notopo.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>vs30_map_check_notopo</name>
+	</data>
 </root>

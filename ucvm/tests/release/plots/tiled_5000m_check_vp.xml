@@ -24,6 +24,10 @@
 		</features>
 		<title>Tiled Verification Vp 5000m</title>
 		<generate>y</generate>
-		<save>_static/tiled_5000m_check_vp.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>tiled_5000m_check_vp</name>
+	</data>
 </root>

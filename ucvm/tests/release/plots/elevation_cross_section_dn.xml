@@ -20,7 +20,6 @@
 			<scale>discrete</scale>
 		</features>
 		<title>Elevation Verification Density Cross-Section</title>
-		<save>_static/elevation_cross_section_dn.png</save>
 	</plot>
 	<start_point>
 		<x>-119.5</x>
@@ -29,4 +28,9 @@
 		<depth_elev>0</depth_elev>
 		<projection>+proj=latlong +datum=WGS84</projection>
 	</start_point>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>elevation_cross_section_dn</name>
+	</data>
 </root>

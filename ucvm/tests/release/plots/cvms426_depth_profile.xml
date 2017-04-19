@@ -14,7 +14,11 @@
 	</profile_properties>
 	<plot>
 		<title>CVM-S4.26 Verification Depth Profile (-118, 34)</title>
-		<save>_static/cvms426_depth_profile.png</save>
 	</plot>
 	<cvm_list>cvms426</cvm_list>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cvms426_depth_profile</name>
+	</data>
 </root>

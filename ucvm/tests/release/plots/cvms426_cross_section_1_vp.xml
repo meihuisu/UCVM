@@ -20,7 +20,6 @@
 			<scale>discrete</scale>
 		</features>
 		<title>CVM-S4.26 Verification Vp Cross-Section 1</title>
-		<save>_static/cvms426_cross_section_1_vp.png</save>
 	</plot>
 	<start_point>
 		<x>-119.5</x>
@@ -29,4 +28,9 @@
 		<depth_elev>0</depth_elev>
 		<projection>+proj=latlong +datum=WGS84</projection>
 	</start_point>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cvms426_cross_section_1_vp</name>
+	</data>
 </root>

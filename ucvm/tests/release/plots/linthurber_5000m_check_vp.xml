@@ -24,6 +24,10 @@
 		</features>
 		<title>Lin-Thurber Verification Vp 5000m</title>
 		<generate>y</generate>
-		<save>_static/linthurber_5000m_check_vp.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>linthurber_5000m_check_vp</name>
+	</data>
 </root>

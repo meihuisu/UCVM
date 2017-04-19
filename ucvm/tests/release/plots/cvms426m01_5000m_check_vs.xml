@@ -24,6 +24,10 @@
 		</features>
 		<title>CVM-S4.26.M01 Verification Vs 5000m</title>
 		<generate>y</generate>
-		<save>_static/cvms426m01_5000m_check_vs.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cvms426m01_5000m_check_vs</name>
+	</data>
 </root>

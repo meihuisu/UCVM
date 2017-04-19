@@ -24,6 +24,10 @@
 		</features>
 		<title>Wills-Wald Vs30 Verification With Topography</title>
 		<generate>y</generate>
-		<save>_static/vs30_map_check_topo.png</save>
 	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>vs30_map_check_topo</name>
+	</data>
 </root>
