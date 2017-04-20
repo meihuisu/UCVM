@@ -19,8 +19,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 # Python Imports
-import os
+import math
 import multiprocessing
+import os
 import psutil
 import sqlite3
 import sys
@@ -51,7 +52,7 @@ def execute_command(command: str, stdinput: str) -> (str, str):
     str_out = streams[0].decode("utf-8")
     str_err = streams[1].decode("utf-8")
 
-    if "ucvm_query" in command or "ucvm_mesh" in command or "ucvm_etree" in command:
+    if "ucvm_query" in command:
         return (command + "\n" + "\n".join(str_out.strip().split("\n")[3:])) if str_out.strip() != "" else "", \
                (command + "\n" + str_err.strip()) if str_err.strip() != "" else ""
     elif "diff" in command:
@@ -60,7 +61,8 @@ def execute_command(command: str, stdinput: str) -> (str, str):
         else:
             return "", "Difference found between " + command_parts[1] + " and " + command_parts[2] + "."
     else:
-        return str_out, str_err
+        return (command + "\n" + "\n".join(str_out.strip().split("\n"))) if str_out.strip() != "" else "", \
+               (command + "\n" + str_err.strip()) if str_err.strip() != "" else ""
 
 
 def compare_against_known_data(command_output: tuple, known_output: tuple) -> bool:
@@ -328,11 +330,12 @@ def main() -> int:
             else:
                 command_count += 1
 
-    # Number of cores to run on. This is set automatically.
-    cores = int(round(min(
+    # Number of cores to run on. This is set automatically. We choose the minimum of the core count or the amount of
+    # RAM divided by 3GB per process for ample buffer. The latter is rounded up.
+    cores = math.ceil(min(
         multiprocessing.cpu_count(),
         psutil.virtual_memory().total / 3221225472
-    ), 0))
+    ))
 
     # Print our header statistics first.
     print("UCVM Release Tests")
@@ -371,7 +374,12 @@ def main() -> int:
 
     # Remove everything in the scratch directory.
     for item in os.listdir("./scratch"):
-        if ".awp" in item or ".rwg" in item:
+        if ".awp" in item or ".rwg" in item or ".e" in item:
+            execute_command("rm ./scratch/" + item, "")
+
+    # Remove the generated XML and KML files in the root directory.
+    for item in os.listdir("./"):
+        if ".xml" in item or ".kml" in item:
             execute_command("rm ./scratch/" + item, "")
 
     return 0

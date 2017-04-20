@@ -9,7 +9,7 @@
 	</bottom_left_point>
 	<plot>
 		<generate>y</generate>
-		<title>RWG LA Basin Verification 5000m Vs</title>
+		<title>RWG LA Basin Verification 0m Vs</title>
 		<features>
 			<topography>No</topography>
 			<colormap>RdBu</colormap>
@@ -17,7 +17,6 @@
 			<scale>discrete</scale>
 		</features>
 		<property>vs</property>
-		<save>_static/rwg_mesh_5000m_check_vs.png</save>
 	</plot>
 	<properties>
 		<num_y>300</num_y>
@@ -26,4 +25,9 @@
 		<num_x>350</num_x>
 	</properties>
 	<cvm_list>dataproductreader[meshes/rwg_mesh]</cvm_list>
+    <data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>rwg_mesh_0m_check_vs</name>
+	</data>
 </root>

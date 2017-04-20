@@ -181,9 +181,9 @@ def _mesh_extract_mpi_rwg(sd_array: List[SeismicData], information: dict, im: In
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
-    file_out_vp = information["mesh_name"] + ".rwgvp"
-    file_out_vs = information["mesh_name"] + ".rwgvs"
-    file_out_dn = information["mesh_name"] + ".rwgdn"
+    file_out_vp = os.path.join(information["out_dir"], information["mesh_name"]) + ".rwgvp"
+    file_out_vs = os.path.join(information["out_dir"], information["mesh_name"]) + ".rwgvs"
+    file_out_dn = os.path.join(information["out_dir"], information["mesh_name"]) + ".rwgdn"
 
     im_iter = RWGInternalMeshIterator(im, start_end[0], start_end[1], len(sd_array), sd_array)
 
