@@ -64,14 +64,18 @@ class USGSNOAAElevationModel(ElevationModel):
             return False
 
         # Make sure we can get the National Map data.
-        if hasattr(self._opened_file, "dem_nationalmap_" +
-                   str(math.ceil(-1 * datum.converted_point.x_value)) +
-                   "_" + str(math.floor(datum.converted_point.y_value))):
-            use_data = getattr(self._opened_file, "dem_nationalmap_" +
-                               str(-1 * math.floor(datum.converted_point.x_value)) +
-                               "_" + str(math.floor(datum.converted_point.y_value)))
+        if hasattr(self, "dem_nationalmap_" + str(-1 * math.floor(datum.converted_point.x_value)) + "_" +
+           str(math.floor(datum.converted_point.y_value))):
+            use_data = getattr(self, "dem_nationalmap_" + str(-1 * math.floor(datum.converted_point.x_value)) + "_" +
+                               str(math.floor(datum.converted_point.y_value)))
         else:
-            return False
+            if hasattr(self._opened_file, "dem_nationalmap_" + str(math.ceil(-1 * datum.converted_point.x_value)) +
+                       "_" + str(math.floor(datum.converted_point.y_value))):
+                use_data = getattr(self._opened_file, "dem_nationalmap_" +
+                                   str(-1 * math.floor(datum.converted_point.x_value)) + "_" +
+                                   str(math.floor(datum.converted_point.y_value)))[:, :]
+            else:
+                return False
 
         rect = SimpleRotatedRectangle(
             use_data["metadata"][1][0],

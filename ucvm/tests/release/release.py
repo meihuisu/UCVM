@@ -23,7 +23,10 @@ import math
 import multiprocessing
 import os
 import psutil
-import sqlite3
+try:
+    import sqlite3
+except ImportError:
+    sqlite3 = None
 import sys
 
 from subprocess import Popen, PIPE
@@ -287,11 +290,18 @@ def main() -> int:
         if ".png" in item:
             execute_command("rm ./_static/" + item, "")
 
-    # Open the SQLite connection.
-    conn = sqlite3.connect(os.path.join(os.path.dirname(__file__), "testsuite.db"))
-
-    # Read through the categories. These are sorted by ID, so we don't need to re-sort.
-    categories = conn.execute("SELECT * FROM Category ORDER BY ID ASC")
+    # Open the SQLite connection, if it exists.
+    if sqlite3 is not None:
+        conn = sqlite3.connect(os.path.join(os.path.dirname(__file__), "testsuite.db"))
+        # Read through the categories. These are sorted by ID, so we don't need to re-sort.
+        categories = conn.execute("SELECT * FROM Category ORDER BY ID ASC")
+    else:
+        results = execute_command("sqlite3 testsuite.db", "select * from category;")
+        results = results[0].split("\n")[1:]
+        categories = []
+        for result in results:
+            categories.append(tuple(result.split("|")))
+        categories.sort(key=lambda x: int(x[0]))
 
     # Create the RST dictionary which will hold the results of all the tests in memory before writing them to
     # a RST file to be included within the documentation.
@@ -299,7 +309,32 @@ def main() -> int:
     command_count = 0
 
     for category in categories:
-        tests = conn.execute("SELECT * FROM TestCase WHERE `Category ID`= ? ORDER BY ID ASC", (category[0],))
+        if sqlite3 is not None:
+            tests = conn.execute("SELECT * FROM TestCase WHERE `Category ID`= ? ORDER BY ID ASC", (category[0],))
+        else:
+            results = execute_command("sqlite3 testsuite.db", "select * from testcase;")
+            results = "\n".join(results[0].split("\n")[1:]).split("|")
+            tests = []
+            column = 0
+            while column < len(results) - 1:
+                if int(results[column + 1]) == int(category[0]):
+                    last_col = ""
+                    if results[column + 9].strip() != "":
+                        try:
+                            int(results[column + 9].strip())
+                        except ValueError:
+                            split_line = results[column + 9].split("\n")
+                            last_col = split_line[0]
+                            results[column + 9] = split_line[1]
+                    tests.append(
+                        (
+                            results[column].strip(), results[column + 1], results[column + 2], results[column + 3],
+                            results[column + 4], results[column + 5], results[column + 6], results[column + 7],
+                            results[column + 8], last_col
+                        )
+                    )
+                column += 9
+
         for test in tests:
             # if test[0] != 66:
             #     continue
