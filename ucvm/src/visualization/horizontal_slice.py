@@ -127,13 +127,15 @@ class HorizontalSlice(Plot):
             cvm_list += ".elevation"
 
         plot_properties = parsed_dictionary["plot"]
-        try:
-            save_file = parsed_dictionary["data"]["save"]
-        except KeyError:
-            save_file = None
+        data_properties = parsed_dictionary["data"]
+
+        # try:
+        #     save_file = parsed_dictionary["data"]["save"]
+        # except KeyError:
+        #     save_file = None
 
         return HorizontalSlice(origin_point, slice_properties, cvm_list,
-                               plot=plot_properties, save_file=save_file)
+                               plot=plot_properties, data=data_properties)
 
     @classmethod
     def from_xml_file(cls, xml_file: str):
