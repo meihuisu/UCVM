@@ -71,7 +71,7 @@ def etree_extract_mpi(information: dict, rows: str=None, interval: str=None) -> 
 
     if rank == 0:
         schema = "float Vp; float Vs; float density;".encode("ASCII")
-        path = (information["etree_name"] + ".e").encode("ASCII")
+        path = (os.path.join(information["out_dir"], information["etree_name"] + ".e")).encode("ASCII")
 
         if sys.byteorder == "little" and sys.platform != "darwin":
             if start_rc[0] == 1 and start_rc[1] == 1:
@@ -170,7 +170,7 @@ def etree_extract_mpi(information: dict, rows: str=None, interval: str=None) -> 
 
 def etree_extract_single(information: dict, rows: str=None, interval: str=None) -> bool:
     schema = "float Vp; float Vs; float density;".encode("ASCII")
-    path = (information["etree_name"] + ".e").encode("ASCII")
+    path = (os.path.join(information["out_dir"], information["etree_name"] + ".e")).encode("ASCII")
 
     start_rc = [1, 1]
     end_rc = [int(information["properties"]["rows"]), int(information["properties"]["columns"])]
