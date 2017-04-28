@@ -38,11 +38,15 @@ class DepthProfile(Plot):
 
         self.sd_array = None
 
-        if "title" in self.extras:
-            self.plot_title = self.extras["title"]
+        if "title" in self.extras["plot"]:
+            self.plot_title = self.extras["plot"]["title"]
         else:
-            self.plot_title = "Depth Profile at (%.2f, %.2f)" % \
-                              (self.profile_point.x_value, self.profile_point.y_value)
+            if self.profile_point.depth_elev == UCVM_ELEVATION:
+                self.plot_title = "Elevation Profile at (%.2f, %.2f)" % \
+                                  (self.profile_point.x_value, self.profile_point.y_value)
+            else:
+                self.plot_title = "Depth Profile at (%.2f, %.2f)" % \
+                                  (self.profile_point.x_value, self.profile_point.y_value)
 
         super().__init__(**kwargs)
 
@@ -69,12 +73,9 @@ class DepthProfile(Plot):
         if int(dictionary["profile_point"]["depth_elev"]) == UCVM_ELEVATION and ".depth" not in cvm_list:
             cvm_list += ".elevation"
 
-        if "plot" in dictionary:
-            if "title" in dictionary["plot"]:
-                return DepthProfile(profile_point, depth_profile_properties, cvm_list,
-                                    title=dictionary["plot"]["title"])
-
-        return DepthProfile(profile_point, depth_profile_properties, cvm_list)
+        return DepthProfile(
+            profile_point, depth_profile_properties, cvm_list, plot=dictionary["plot"], data=dictionary["data"]
+        )
 
     def extract(self):
         num_points = int(math.ceil((self.profile_properties.depth - self.profile_point.z_value) /
@@ -84,10 +85,11 @@ class DepthProfile(Plot):
         for i in range(0, num_points):
             self.sd_array[i].original_point.x_value = self.profile_point.x_value
             self.sd_array[i].original_point.y_value = self.profile_point.y_value
-            if self.sd_array[i].original_point.depth_elev == UCVM_DEPTH:
+            if self.profile_point.depth_elev == UCVM_DEPTH:
                 self.sd_array[i].original_point.z_value = \
                     self.profile_point.z_value + (i * self.profile_properties.spacing)
             else:
+                self.sd_array[i].original_point.depth_elev = UCVM_ELEVATION
                 self.sd_array[i].original_point.z_value = \
                     self.profile_point.z_value - (i * self.profile_properties.spacing)
 

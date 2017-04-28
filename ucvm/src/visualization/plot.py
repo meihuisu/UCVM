@@ -15,6 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import os
 import subprocess
 import numpy as np
 
@@ -32,12 +33,14 @@ try:
         mpl.use("qt4agg")
     else:
         proc = subprocess.Popen(
-            ["python3", "-c",
-             "import matplotlib as mpl;mpl.use(\'qt5agg\');import matplotlib.pyplot as plt;plt.figure()"],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE
+             ["python3", "-c",
+              "import matplotlib as mpl;mpl.use(\'qt5agg\');import matplotlib.pyplot as plt;plt.figure()"],
+             stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
         if proc.communicate()[1].decode("UTF-8") == "":
             mpl.use("qt5agg")
+        else:
+            mpl.use("agg")
     import matplotlib.pyplot as plt
     import matplotlib.colors as mcolors
     import matplotlib.cm as cm
@@ -82,17 +85,33 @@ class Plot:
         :param properties: The properties as a dictionary.
         :return: True if profile shown, false if error.
         """
+        save = None
+        if hasattr(self, "extras"):
+            if "plot" in self.extras:
+                if "save" in self.extras["plot"]:
+                    save = self.extras["plot"]["save"]
+            if "data" in self.extras:
+                if "save" in self.extras["data"]:
+                    if str(self.extras["data"]["save"]).lower() == "y":
+                        save = os.path.join(self.extras["data"]["location"], self.extras["data"]["name"] + ".png")
+
         plt.axes([0.2, 0.125, 0.70, 0.80])
         for key, item in properties.items():
             plt.gca().plot(item["x_values"], item["y_values"], "-",
                            color=item["info"]["color"], label=item["info"]["label"])
 
         plt.gca().invert_yaxis()
+        plt.gca().set_ylim([item["y_values"][len(item["y_values"]) - 1], item["y_values"][0]])
+        plt.gca().set_xlim([0, 8500])
         plt.xlabel(self.plot_xlabel if isinstance(self.plot_xlabel, str) else "", fontsize=14)
         plt.ylabel(self.plot_ylabel if isinstance(self.plot_ylabel, str) else "", fontsize=14)
         plt.title(self.plot_title if isinstance(self.plot_title, str) else "")
         plt.legend(loc="upper right")
-        plt.show()
+
+        if not save:
+            plt.show()
+        else:
+            plt.savefig(save)
 
     def show_plot(self, x_points: np.array, y_points: np.array, data: np.ndarray,
                   map_plot: bool, **kwargs) -> bool:
@@ -114,6 +133,7 @@ class Plot:
         colormap = cm.RdBu
         norm = mcolors.Normalize(vmin=self.bounds[0], vmax=self.bounds[len(self.bounds) - 1])
         faults = False
+        save = False
 
         if "basic" in kwargs:
             basic = kwargs["basic"]
@@ -121,7 +141,13 @@ class Plot:
             basic = False
 
         if hasattr(self, "extras"):
+            if "data" in self.extras:
+                if "save" in self.extras["data"]:
+                    if str(self.extras["data"]["save"]).lower() == "y":
+                        save = os.path.join(self.extras["data"]["location"], self.extras["data"]["name"] + ".png")
             if "plot" in self.extras:
+                if "save" in self.extras["plot"]:
+                    save = self.extras["plot"]["save"]
                 if "features" in self.extras["plot"]:
                     if "colormap" in self.extras["plot"]["features"]:
                         try:
@@ -181,6 +207,11 @@ class Plot:
                 kwargs["topography"][low_indices] = 0
                 rgb = ls.shade_rgb(colormap(norm(data_cpy)), kwargs["topography"],
                                    blend_mode="overlay", vert_exag=2)
+                for y in range(len(rgb)):
+                    for x in range(len(rgb[0])):
+                        rgb[y][x][0] *= 0.90
+                        rgb[y][x][1] *= 0.90
+                        rgb[y][x][2] *= 0.90
                 t = m.imshow(rgb, cmap=colormap, norm=norm)
             else:
                 t = m.pcolormesh(x_points, y_points, data_cpy, cmap=colormap, norm=norm)
@@ -214,7 +245,7 @@ class Plot:
                      kwargs["boundaries"]["ep"][1] else kwargs["boundaries"]["ep"][1]
             ll_lon = kwargs["boundaries"]["sp"][0] if kwargs["boundaries"]["sp"][0] < \
                      kwargs["boundaries"]["ep"][0] else kwargs["boundaries"]["ep"][0]
-            ur_lat = kwargs["bo undaries"]["sp"][1] if kwargs["boundaries"]["sp"][1] > \
+            ur_lat = kwargs["boundaries"]["sp"][1] if kwargs["boundaries"]["sp"][1] > \
                      kwargs["boundaries"]["ep"][1] else kwargs["boundaries"]["ep"][1]
             ur_lon = kwargs["boundaries"]["sp"][0] if kwargs["boundaries"]["sp"][0] > \
                      kwargs["boundaries"]["ep"][0] else kwargs["boundaries"]["ep"][0]
@@ -265,7 +296,10 @@ class Plot:
 
             cbar.set_label(self.plot_cbar_label if isinstance(self.plot_cbar_label, str) else "")
 
-            plt.show()
+            if not save:
+                plt.show()
+            else:
+                plt.savefig(save)
         else:
             return t
 

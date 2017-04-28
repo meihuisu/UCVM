@@ -37,7 +37,7 @@ class ZOperator(OperatorModel):
         super().__init__(**kwargs)
 
     @classmethod
-    def _get_z_data(cls, p: Point, model: str, spacing: int=10, depth: int=50000) -> (float, float):
+    def _get_z_data(cls, p: Point, model: str, spacing: int=50, depth: int=10000) -> dict:
         """
         Gets the Z1.0 and Z2.5 data for a given point which has all the projection, metadata, x, y, etc. specified.
 
@@ -48,25 +48,79 @@ class ZOperator(OperatorModel):
             depth (int): Check for Vs values down to this depth. The default is 70 kilometers.
 
         Returns:
-            A tuple containing the Z1.0 (first) and Z2.5 (second) when successful. None if an error occurs.
+            dict: A dict containing the Z1.0 (first) and Z2.5 (second) when successful. None if an error occurs.
         """
-        velocities_to_find = (1000, 2500)
-        depths = {}
+        _interval_size = 1000
+        _velocities_to_find = (1000, 2500)
 
-        query_points = [SeismicData(Point(p.x_value, p.y_value, z * spacing, UCVM_DEPTH, p.metadata, p.projection))
-                        for z in range(0, int(depth / spacing) + 1)]
-        UCVM.query(query_points, model.replace(".z-calc", ""), ["velocity"])
+        if True:
+            _current_interval = 0
+            _depths = {1000: depth, 2500: depth}
 
-        for target in velocities_to_find:
-            for point in query_points:
-                if point.velocity_properties is not None and point.velocity_properties.vs is not None:
-                    if point.velocity_properties.vs >= target:
-                        depths[target] = point.converted_point.z_value
-                        break
-            if target not in depths:
-                depths[target] = depth
+            while _current_interval < depth:
+                _query_points = [SeismicData(Point(p.x_value, p.y_value, _current_interval + (z * spacing), UCVM_DEPTH,
+                                 None, p.projection)) for z in range(0, int(_interval_size / spacing) + 1)]
+                UCVM.query(_query_points, model.replace(".z-calc", ""), ["velocity"])
 
-        return depths
+                for target in _velocities_to_find:
+                    for point in _query_points:
+                        if point.velocity_properties is not None and point.velocity_properties.vs is not None:
+                            if point.velocity_properties.vs >= target and _depths[target] == depth:
+                                _depths[target] = point.converted_point.z_value
+                                break
+
+                if _depths[1000] != depth and _depths[2500] != depth:
+                    return _depths
+                else:
+                    _current_interval += _interval_size
+        elif False:
+            _current_interval = depth
+            _depths = {1000: 0, 2500: 0}
+            while _current_interval > 0:
+                _query_points = [SeismicData(Point(p.x_value, p.y_value, _current_interval - (z * spacing), UCVM_DEPTH,
+                                 None, p.projection)) for z in range(0, int(_interval_size / spacing) + 1)]
+                UCVM.query(_query_points, model.replace(".z-calc", ""), ["velocity"])
+
+                for target in _velocities_to_find:
+                    for point in _query_points:
+                        if point.velocity_properties is not None and point.velocity_properties.vs is not None:
+                            if point.velocity_properties.vs <= target and _depths[target] == 0:
+                                _depths[target] = point.converted_point.z_value
+                                break
+
+                if _depths[1000] != 0 and _depths[2500] != 0:
+                    return _depths
+                else:
+                    _current_interval -= _interval_size
+        else:
+            _current_interval = 0
+            _depths = {1000: depth, 2500: depth}
+            _flags = {1000: 0, 2500: 0}
+
+            while _current_interval < depth:
+                _query_points = [SeismicData(Point(p.x_value, p.y_value, _current_interval + (z * spacing), UCVM_DEPTH,
+                                 None, p.projection)) for z in range(0, int(_interval_size / spacing) + 1)]
+                UCVM.query(_query_points, model.replace(".z-calc", ""), ["velocity"])
+
+                for target in _velocities_to_find:
+                    for point in _query_points:
+                        if point.velocity_properties is not None and point.velocity_properties.vs is not None:
+                            if point.velocity_properties.vs >= target and _flags[target] == 0:
+                                _depths[target] = point.converted_point.z_value
+                                _flags[target] = 1
+                            elif point.velocity_properties.vs < target and _flags[target] == 1:
+                                _flags[target] = 2
+                            elif point.velocity_properties.vs >= target and _flags[target] == 2:
+                                _depths[target] = point.converted_point.z_value
+                                _flags[target] = 3
+                                break
+
+                if _flags[2500] == 3:
+                    return _depths
+                else:
+                    _current_interval += _interval_size
+
+        return _depths
 
     def _query(self, data: List[SeismicData], **kwargs) -> bool:
         """
@@ -74,17 +128,18 @@ class ZOperator(OperatorModel):
         and filling in the SeismicData structures.
 
         Args:
-            data (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the points. These are to
-                be populated with :obj:`ZProperties`:
+            points (:obj:`list` of :obj:`SeismicData`): List of SeismicData objects containing the
+                points. These are to be populated with :obj:`ZProperties`:
 
         Returns:
             True on success, false if there is an error.
         """
         for datum in data:
             if datum.model_string is not None:
-                z_data = self._get_z_data(datum.original_point, datum.model_string)
-                datum.set_z_data(
-                    ZProperties(z_data[1000], z_data[2500])
-                )
+                if datum.velocity_properties is not None and datum.velocity_properties.vs is not None:
+                    z_data = self._get_z_data(datum.original_point, datum.model_string)
+                    datum.set_z_data(ZProperties(z_data[1000], z_data[2500]))
+                else:
+                    datum.set_z_data(ZProperties(None, None))
 
         return True

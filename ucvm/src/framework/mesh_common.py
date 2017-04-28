@@ -200,7 +200,11 @@ class AWPInternalMeshIterator:
             y_point = self.internal_mesh.origin.y_value + (
                 self.internal_mesh.sin_angle * x_val + self.internal_mesh.cos_angle * y_val
             ) * self.internal_mesh.spacing
-            z_point = z_val * self.internal_mesh.spacing
+
+            if self.internal_mesh.origin.depth_elev == UCVM_ELEVATION:
+                z_point = (z_val * self.internal_mesh.spacing) - self.internal_mesh.origin.z_value
+            else:
+                z_point = (z_val * self.internal_mesh.spacing) + self.internal_mesh.origin.z_value
 
             self.init_array[internal_counter].original_point.depth_elev = \
                 self.internal_mesh.origin.depth_elev

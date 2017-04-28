@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<profile_point>
+		<y>34.0</y>
+		<depth_elev>0</depth_elev>
+		<x>-118.0</x>
+		<z>0.0</z>
+		<projection>+proj=latlong +datum=WGS84</projection>
+	</profile_point>
+	<profile_properties>
+		<spacing>20.0</spacing>
+		<properties>vp, vs, density, qp, qs</properties>
+		<depth>60000.0</depth>
+	</profile_properties>
+	<plot>
+		<title>CVM-S4 1D Verification Depth Profile (-118, 34)</title>
+	</plot>
+	<cvm_list>cvms4</cvm_list>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cvms4_depth_profile</name>
+	</data>
+</root>

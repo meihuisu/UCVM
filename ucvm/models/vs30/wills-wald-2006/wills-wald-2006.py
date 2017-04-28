@@ -55,15 +55,16 @@ class WillsWaldModel(Vs30Model):
             if datum.converted_point.x_value < -130 or datum.converted_point.x_value > -110 or \
                datum.converted_point.y_value < 27 or datum.converted_point.y_value > 47:
                 datum.set_vs30_data(Vs30Properties(None, None))
+                continue
 
             # Get four corners.
             x_vals = [
-                (math.floor(datum.converted_point.x_value * 100) / 100 - (-130)) / 0.01,
-                (math.ceil(datum.converted_point.x_value * 100) / 100 - (-130)) / 0.01
+                (math.floor(datum.converted_point.x_value * 100) / 100 - (-130)) * 100,
+                (math.ceil(datum.converted_point.x_value * 100) / 100 - (-130)) * 100
             ]
             y_vals = [
-                (math.floor(datum.converted_point.y_value * 100) / 100 - 27) / 0.01,
-                (math.ceil(datum.converted_point.y_value * 100) / 100 - 27) / 0.01
+                (math.floor(datum.converted_point.y_value * 100) / 100 - 27) * 100,
+                (math.ceil(datum.converted_point.y_value * 100) / 100 - 27) * 100
             ]
 
             ret_val = 0

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<profile_point>
+		<y>37.34</y>
+		<depth_elev>0</depth_elev>
+		<x>-121.89</x>
+		<z>0.0</z>
+		<projection>+proj=latlong +datum=WGS84</projection>
+	</profile_point>
+	<profile_properties>
+		<spacing>20.0</spacing>
+		<properties>vp, vs, density, qp, qs</properties>
+		<depth>60000.0</depth>
+	</profile_properties>
+	<plot>
+		<title>Bay Area Verification Depth Profile (-121.89, 37.34)</title>
+	</plot>
+	<cvm_list>bayarea</cvm_list>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>bayarea_depth_profile</name>
+	</data>
+</root>

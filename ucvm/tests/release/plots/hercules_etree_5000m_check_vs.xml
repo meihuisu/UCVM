@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<bottom_left_point>
+		<depth_elev>0</depth_elev>
+		<z>5000.0</z>
+		<y>33.4</y>
+		<projection>+proj=latlong +datum=WGS84</projection>
+		<x>-118.6</x>
+	</bottom_left_point>
+	<plot>
+		<generate>y</generate>
+		<title>Hercules Etree LA Basin Verification 5000m Vs</title>
+		<features>
+			<topography>No</topography>
+			<colormap>RdBu</colormap>
+			<faults>Yes</faults>
+			<scale>discrete</scale>
+		</features>
+		<property>vs</property>
+	</plot>
+	<properties>
+		<num_y>300</num_y>
+		<rotation>0.0</rotation>
+		<spacing>0.002</spacing>
+		<num_x>350</num_x>
+	</properties>
+	<cvm_list>dataproductreader[meshes/hercules_etree]</cvm_list>
+    <data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>hercules_etree_5000m_check_vs</name>
+	</data>
+</root>

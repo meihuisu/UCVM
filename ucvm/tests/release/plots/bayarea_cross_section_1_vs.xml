@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<end_point>
+		<x>-121.9</x>
+		<y>37.3</y>
+		<z>20000.0</z>
+		<depth_elev>0</depth_elev>
+		<projection>+proj=latlong +datum=WGS84</projection>
+	</end_point>
+	<cvm_list>bayarea</cvm_list>
+	<cross_section_properties>
+		<height_spacing>100</height_spacing>
+		<property>vs</property>
+		<width_spacing>500</width_spacing>
+		<end>0</end>
+	</cross_section_properties>
+	<plot>
+		<features>
+			<colormap>RdBu</colormap>
+			<scale>discrete</scale>
+		</features>
+		<title>Bay Area Verification Vs Cross-Section 1</title>
+	</plot>
+	<start_point>
+		<x>-122.5</x>
+		<y>38.5</y>
+		<z>0.0</z>
+		<depth_elev>0</depth_elev>
+		<projection>+proj=latlong +datum=WGS84</projection>
+	</start_point>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>bayarea_cross_section_1_vs</name>
+	</data>
+</root>

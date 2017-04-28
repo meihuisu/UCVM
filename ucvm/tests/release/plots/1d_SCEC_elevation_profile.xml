@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<profile_point>
+		<y>34.29</y>
+		<depth_elev>1</depth_elev>
+		<x>-117.65</x>
+		<z>3000.0</z>
+		<projection>+proj=latlong +datum=WGS84</projection>
+	</profile_point>
+	<profile_properties>
+		<spacing>20.0</spacing>
+		<properties>vp, vs, density, qp, qs</properties>
+		<depth>13000.0</depth>
+	</profile_properties>
+	<plot>
+		<title>SCEC 1D Verification Elevation Profile (-117.65, 34.29)</title>
+	</plot>
+	<cvm_list>1d[SCEC].elevation</cvm_list>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>1d_SCEC_elevation_profile</name>
+	</data>
+</root>

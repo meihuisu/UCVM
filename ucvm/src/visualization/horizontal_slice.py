@@ -27,7 +27,7 @@ from ucvm.src.shared.errors import display_and_raise_error
 from ucvm.src.framework.ucvm import UCVM
 from ucvm.src.visualization.plot import Plot
 from ucvm.src.shared.constants import UCVM_DEFAULT_PROJECTION, UCVM_ELEVATION
-from ucvm.src.shared.properties import Point
+from ucvm.src.shared.properties import Point, SeismicData
 from ucvm.src.framework.mesh_common import InternalMesh, AWPInternalMeshIterator
 
 # Matplotlib Import
@@ -76,6 +76,9 @@ class HorizontalSlice(Plot):
                         self.extras["plot"]["property"] == "vs30":
             self.extracted_data = np.zeros(self.slice_properties.num_x *
                                            self.slice_properties.num_y, dtype="<f8")
+        elif self.extras["plot"]["property"] == "z10" or self.extras["plot"]["property"] == "z25":
+            self.extracted_data = np.zeros((self.slice_properties.num_x *
+                                           self.slice_properties.num_y) * 2, dtype="<f8")
         else:
             self.extracted_data = np.zeros((self.slice_properties.num_x *
                                            self.slice_properties.num_y) * 6, dtype="<f8")
@@ -124,13 +127,15 @@ class HorizontalSlice(Plot):
             cvm_list += ".elevation"
 
         plot_properties = parsed_dictionary["plot"]
-        try:
-            save_file = parsed_dictionary["data"]["save"]
-        except KeyError:
-            save_file = None
+        data_properties = parsed_dictionary["data"]
+
+        # try:
+        #     save_file = parsed_dictionary["data"]["save"]
+        # except KeyError:
+        #     save_file = None
 
         return HorizontalSlice(origin_point, slice_properties, cvm_list,
-                               plot=plot_properties, save_file=save_file)
+                               plot=plot_properties, data=data_properties)
 
     @classmethod
     def from_xml_file(cls, xml_file: str):
@@ -148,7 +153,7 @@ class HorizontalSlice(Plot):
         return HorizontalSlice.from_dictionary(info)
 
     def extract(self):
-        init_array = UCVM.create_max_seismicdata_array(self.QUERY_AT_ONCE, 1)
+        init_array = [SeismicData() for _ in range(0, 250000)]
 
         im = InternalMesh.from_parameters(
             self.origin,
@@ -165,21 +170,36 @@ class HorizontalSlice(Plot):
         )
         im_iterator = AWPInternalMeshIterator(im, 0, im.total_size, len(init_array), init_array)
 
+        print("Beginning extraction...")
+
         counter = 0
+        total_counter = 0
         num_queried = next(im_iterator)
         while num_queried > 0:
             if self.extras["plot"]["property"] == "elevation":
-                UCVM.query(init_array, self.cvms, ["elevation"])
+                UCVM.query(init_array[0:num_queried], self.cvms, ["elevation"])
                 for sd_prop in init_array[0:num_queried]:
                     self.extracted_data[counter] = sd_prop.elevation_properties.elevation
                     counter += 1
             elif self.extras["plot"]["property"] == "vs30":
-                UCVM.query(init_array, self.cvms, ["vs30", "elevation", "velocity"])
+                UCVM.query(init_array[0:num_queried], self.cvms, ["vs30", "elevation", "velocity"])
                 for sd_prop in init_array[0:num_queried]:
                     self.extracted_data[counter] = sd_prop.vs30_properties.vs30
                     counter += 1
+            elif self.extras["plot"]["property"] == "z10" or self.extras["plot"]["property"] == "z25":
+                if "z-calc" not in self.cvms:
+                    self.cvms += ".z-calc"
+                UCVM.query(init_array[0:num_queried], self.cvms, ["velocity"])
+                for sd_prop in init_array[0:num_queried]:
+                    if sd_prop.z_properties is not None:
+                        self.extracted_data[counter] = sd_prop.z_properties.z10
+                        self.extracted_data[counter + 1] = sd_prop.z_properties.z25
+                    else:
+                        self.extracted_data[counter] = None
+                        self.extracted_data[counter + 1] = None
+                    counter += 2
             else:
-                UCVM.query(init_array, self.cvms, ["elevation", "velocity"])
+                UCVM.query(init_array[0:num_queried], self.cvms, ["elevation", "velocity"])
                 for sd_prop in init_array[0:num_queried]:
                     self.extracted_data[counter] = sd_prop.velocity_properties.vp
                     self.extracted_data[counter + 1] = sd_prop.velocity_properties.vs
@@ -189,14 +209,19 @@ class HorizontalSlice(Plot):
                     self.extracted_data[counter + 5] = sd_prop.elevation_properties.elevation
                     counter += 6
 
+            total_counter += num_queried
+            print("\t%.2f%% extracted." % ((total_counter / im.total_size) * 100))
+
             try:
                 num_queried = next(im_iterator)
             except StopIteration:
                 break
 
-        if self.save_extraction:
-            with open(self.extras["save_file"], "wb") as fd:
-                np.save(fd, self.extracted_data)
+        print("Done extracting %d points." % im.total_size)
+
+        # if self.save_extraction:
+        #     with open(self.extras["save_file"], "wb") as fd:
+        #         np.save(fd, self.extracted_data)
 
     def plot(self, basic: bool=False):
         if self.needs_extraction:
@@ -259,6 +284,16 @@ class HorizontalSlice(Plot):
                            4.50, 5.00]
             self.ticks = [0, 0.50, 1.00, 1.50, 2.00, 2.50, 3.00, 3.50, 4.00, 4.50, 5.00]
             self.plot_cbar_label = "Vs (km/s)"
+        elif str(self.extras["plot"]["property"]).lower().strip() == "z10":
+            position = 0
+            self.bounds = [0, 1.00, 2.00, 3.00, 4.00, 5.00, 6.00, 7.00, 8.00, 9.00, 10.00]
+            self.ticks = self.bounds
+            self.plot_cbar_label = "Depth (km)"
+        elif str(self.extras["plot"]["property"]).lower().strip() == "z25":
+            position = 1
+            self.bounds = [0, 1.00, 2.00, 3.00, 4.00, 5.00, 6.00, 7.00, 8.00, 9.00, 10.00]
+            self.ticks = self.bounds
+            self.plot_cbar_label = "Depth (km)"
         else:
             position = 0
 
@@ -289,9 +324,11 @@ class HorizontalSlice(Plot):
                 if str(self.extras["plot"]["property"]).lower().strip() == "elevation" or \
                    str(self.extras["plot"]["property"]).lower().strip() == "vs30":
                     data[j][i] = self.extracted_data[j * self.slice_properties.num_x + i] / 1000
+                elif str(self.extras["plot"]["property"]).lower().strip() == "z10" or \
+                     str(self.extras["plot"]["property"]).lower().strip() == "z25":
+                    data[j][i] = self.extracted_data[((j * self.slice_properties.num_x) + i) * 2 + position] / 1000
                 else:
-                    data[j][i] = self.extracted_data[((j * self.slice_properties.num_x) + i) *
-                                                     6 + position] / 1000
+                    data[j][i] = self.extracted_data[((j * self.slice_properties.num_x) + i) * 6 + position] / 1000
                     if topography is not None:
                         topography[j][i] = self.extracted_data[
                                                ((j * self.slice_properties.num_x) + i) * 6 + 5

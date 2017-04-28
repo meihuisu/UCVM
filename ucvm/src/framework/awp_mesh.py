@@ -98,7 +98,7 @@ def _mesh_extract_mpi_awp(sd_array: List[SeismicData], information: dict, im: In
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
-    file_out = information["mesh_name"] + ".awp"
+    file_out = os.path.join(information["out_dir"], information["mesh_name"]) + ".awp"
 
     im_iter = AWPInternalMeshIterator(im, start_end[0], start_end[1], len(sd_array), sd_array)
 
@@ -141,25 +141,28 @@ def _mesh_extract_mpi_awp(sd_array: List[SeismicData], information: dict, im: In
                     rank, s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                 ), flush=True)
         s = struct.pack('f' * len(fl_array), *fl_array)
-        fh.Write_at_all(progress * 12, s)
+        fh.Write_at(progress * 12, s)
+        fh.Sync()
 
         progress += count
 
         print("[Node %d] %-4.2f" % (rank, ((progress - start_end[0]) / (start_end[1] - start_end[0])) * 100.0) +
               "% complete. Wrote " + humanize.intcomma(count) + " more grid points.", flush=True)
 
+    comm.Barrier()
     fh.Close()
 
     if rank == 0:
-        print("\n[Node " + str(rank) + "] Expected file size is " + im.get_grid_file_size()["display"] + ". " +
-              "Actual size is " + humanize.naturalsize(os.path.getsize(
-              os.path.join(information["out_dir"], file_out)), gnu=False) + ".", flush=True)
+        print("\n[Node " + str(rank) + "] Extraction job fully complete.")
 
-        if im.get_grid_file_size()["real"] == \
-           os.path.getsize(os.path.join(information["out_dir"], file_out)):
-            print("Generated file size matches the expected file size.")
-        else:
-            print("ERROR! File sizes DO NOT MATCH!")
+        # print("\n[Node " + str(rank) + "] Expected file size is " + im.get_grid_file_size()["display"] + ". " +
+        #       "Actual size is " + humanize.naturalsize(os.path.getsize(os.path.join(file_out)), gnu=False) + ".",
+        #       flush=True)
+
+        # if im.get_grid_file_size()["real"] == os.path.getsize(file_out):
+        #     print("Generated file size matches the expected file size.")
+        # else:
+        #     print("ERROR! File sizes DO NOT MATCH!")
 
     return True
 
@@ -178,9 +181,9 @@ def _mesh_extract_mpi_rwg(sd_array: List[SeismicData], information: dict, im: In
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
 
-    file_out_vp = information["mesh_name"] + ".rwgvp"
-    file_out_vs = information["mesh_name"] + ".rwgvs"
-    file_out_dn = information["mesh_name"] + ".rwgdn"
+    file_out_vp = os.path.join(information["out_dir"], information["mesh_name"]) + ".rwgvp"
+    file_out_vs = os.path.join(information["out_dir"], information["mesh_name"]) + ".rwgvs"
+    file_out_dn = os.path.join(information["out_dir"], information["mesh_name"]) + ".rwgdn"
 
     im_iter = RWGInternalMeshIterator(im, start_end[0], start_end[1], len(sd_array), sd_array)
 
@@ -227,35 +230,42 @@ def _mesh_extract_mpi_rwg(sd_array: List[SeismicData], information: dict, im: In
                     rank, s.original_point.x_value, s.original_point.y_value, s.original_point.z_value
                 ), flush=True)
         s = struct.pack('f' * len(vp_array), *vp_array)
-        fh_vp.Write_at_all(progress * 4, s)
+        fh_vp.Write_at(progress * 4, s)
+        fh_vp.Sync()
         s = struct.pack('f' * len(vs_array), *vs_array)
-        fh_vs.Write_at_all(progress * 4, s)
+        fh_vs.Write_at(progress * 4, s)
+        fh_vs.Sync()
         s = struct.pack('f' * len(dn_array), *dn_array)
-        fh_dn.Write_at_all(progress * 4, s)
+        fh_dn.Write_at(progress * 4, s)
+        fh_dn.Sync()
 
         progress += count
 
         print("[Node %d] %-4.2f" % (rank, ((progress - start_end[0]) / (start_end[1] - start_end[0])) * 100.0) +
               "% complete. Wrote " + humanize.intcomma(count) + " more grid points.", flush=True)
 
+    comm.Barrier()
+
     fh_vp.Close()
     fh_vs.Close()
     fh_dn.Close()
 
     if rank == 0:
-        print("\n[Node " + str(rank) + "] Expected file size is " + im.get_grid_file_size()["display"] + ". " +
-              "Actual size is " + humanize.naturalsize(os.path.getsize(
-              os.path.join(information["out_dir"], file_out_vp)), gnu=False) + ".", flush=True)
+        print("\n[Node " + str(rank) + "] Extraction job fully complete.")
 
-        if im.get_grid_file_size()["real"] == \
-           os.path.getsize(os.path.join(information["out_dir"], file_out_vp)) and \
-           im.get_grid_file_size()["real"] == \
-           os.path.getsize(os.path.join(information["out_dir"], file_out_vs)) and \
-           im.get_grid_file_size()["real"] == \
-           os.path.getsize(os.path.join(information["out_dir"], file_out_dn)):
-            print("Generated file size matches the expected file size.")
-        else:
-            print("ERROR! File sizes DO NOT MATCH!")
+        # print("\n[Node " + str(rank) + "] Expected file size is " + im.get_grid_file_size()["display"] + ". " +
+        #       "Actual size is " + humanize.naturalsize(os.path.getsize(
+        #       os.path.join(information["out_dir"], file_out_vp)), gnu=False) + ".", flush=True)
+
+        # if im.get_grid_file_size()["real"] == \
+        #    os.path.getsize(os.path.join(information["out_dir"], file_out_vp)) and \
+        #    im.get_grid_file_size()["real"] == \
+        #    os.path.getsize(os.path.join(information["out_dir"], file_out_vs)) and \
+        #    im.get_grid_file_size()["real"] == \
+        #    os.path.getsize(os.path.join(information["out_dir"], file_out_dn)):
+        #     print("Generated file size matches the expected file size.")
+        # else:
+        #     print("ERROR! File sizes DO NOT MATCH!")
 
     return True
 

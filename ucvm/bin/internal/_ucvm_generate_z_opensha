@@ -1,0 +1,165 @@
+"""
+Generate Z Binary Float Grid For OpenSHA
+
+Generates a binary grid float file for use with OpenSHA and the CyberShake map generation system. For now this is
+an internal tool as it has a relatively limited use case.
+
+Copyright 2017 Southern California Earthquake Center
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+# Python Imports
+import multiprocessing
+import sys
+
+# Package Imports
+import numpy as np
+import xmltodict
+
+# UCVM Imports
+from ucvm.src.framework.ucvm import UCVM
+from ucvm.src.shared.properties import Point, SeismicData
+from ucvm.src.shared.constants import UCVM_DEPTH, UCVM_DEFAULT_PROJECTION
+
+
+def usage() -> None:
+    """
+    Displays the help text associated with this utility.
+
+    Returns:
+        None
+    """
+    UCVM.print_with_replacements(
+        "\n"
+        "_ucvm_generate_z_opensha - UCVM Version [version]\n"
+        "\n"
+        "Generates a Z1.0 and Z2.5 binary float file for use with OpenSHA and CyberShake calculations.\n"
+        "\n"
+        "-f, --file f:          Specifies the configuration file from which this utility should read."
+    )
+
+
+def _mp_run(*args) -> dict:
+    """
+
+    :param args:
+    :return:
+    """
+    input_tuple = tuple(args[0])
+    output_dict = {
+        "row": input_tuple[0],
+        "data": {
+            "z10": np.zeros(input_tuple[1], dtype="<f4"),
+            "z25": np.zeros(input_tuple[1], dtype="<f4")
+        }
+    }
+
+    y_val = input_tuple[2] + input_tuple[0] * input_tuple[4]
+
+    sd_array = []
+
+    for x_val in range(0, input_tuple[1]):
+        sd_array.append(SeismicData(Point(
+            float(input_tuple[3] + x_val * input_tuple[4]),
+            float(y_val),
+            0,
+            UCVM_DEPTH,
+            UCVM_DEFAULT_PROJECTION
+        )))
+
+    UCVM.query(sd_array, input_tuple[5], ["velocity"])
+
+    for x_val in range(0, input_tuple[1]):
+        if sd_array[x_val].z_properties is not None:
+            output_dict["data"]["z10"][x_val] = sd_array[x_val].z_properties.z10
+            output_dict["data"]["z25"][x_val] = sd_array[x_val].z_properties.z25
+        else:
+            output_dict["data"]["z10"][x_val] = -1
+            output_dict["data"]["z25"][x_val] = -1
+
+    print("Row %04d extracted" % input_tuple[0])
+
+    return output_dict
+
+
+def main() -> int:
+    """
+
+    :return:
+    """
+    try:
+        options = UCVM.parse_options([
+            {"short": "f", "long": "file", "value": True, "required": False}
+        ], usage)
+    except ValueError as v_err:
+        print("[ERROR]: " + str(v_err) + "\n")
+        sys.exit(-1)
+
+    if options["file"] is not None:
+        with open(options["file"], "r") as fd:
+            extraction_info = xmltodict.parse(fd.read())["root"]
+    else:
+        usage()
+        return -1
+
+    model_string = extraction_info["cvm_list"]
+    if ".z-calc" not in model_string:
+        model_string += ".z-calc"
+
+    out_arrays = {
+        "z10": np.zeros(
+            int(extraction_info["region"]["dimensions"]["y"]) * int(extraction_info["region"]["dimensions"]["x"]),
+            dtype="<f4"
+        ),
+        "z25": np.zeros(
+            int(extraction_info["region"]["dimensions"]["y"]) * int(extraction_info["region"]["dimensions"]["x"]),
+            dtype="<f4"
+        )
+    }
+
+    entries = []
+    for y_val in range(0, int(extraction_info["region"]["dimensions"]["y"])):
+        entries.append(
+            (
+                y_val,
+                int(extraction_info["region"]["dimensions"]["x"]),
+                float(extraction_info["region"]["bottom_left"]["y"]),
+                float(extraction_info["region"]["bottom_left"]["x"]),
+                float(extraction_info["region"]["spacing"]),
+                model_string
+            )
+        )
+
+    pool = multiprocessing.Pool(multiprocessing.cpu_count())
+    results = pool.map(_mp_run, entries)
+
+    for result in results:
+        for x_val in range(0, int(extraction_info["region"]["dimensions"]["x"])):
+            out_arrays["z10"][result["row"] * int(extraction_info["region"]["dimensions"]["x"]) + x_val] = \
+                result["data"]["z10"][x_val]
+            out_arrays["z25"][result["row"] * int(extraction_info["region"]["dimensions"]["x"]) + x_val] = \
+                result["data"]["z25"][x_val]
+
+    out_file = open(extraction_info["output_files"]["z10"], "wb")
+    out_arrays["z10"].tofile(out_file)
+    out_file.close()
+
+    out_file = open(extraction_info["output_files"]["z25"], "wb")
+    out_arrays["z25"].tofile(out_file)
+    out_file.close()
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

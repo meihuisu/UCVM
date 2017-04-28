@@ -71,7 +71,7 @@ def etree_extract_mpi(information: dict, rows: str=None, interval: str=None) -> 
 
     if rank == 0:
         schema = "float Vp; float Vs; float density;".encode("ASCII")
-        path = (information["etree_name"] + ".e").encode("ASCII")
+        path = (os.path.join(information["out_dir"], information["etree_name"] + ".e")).encode("ASCII")
 
         if sys.byteorder == "little" and sys.platform != "darwin":
             if start_rc[0] == 1 and start_rc[1] == 1:
@@ -170,7 +170,7 @@ def etree_extract_mpi(information: dict, rows: str=None, interval: str=None) -> 
 
 def etree_extract_single(information: dict, rows: str=None, interval: str=None) -> bool:
     schema = "float Vp; float Vs; float density;".encode("ASCII")
-    path = (information["etree_name"] + ".e").encode("ASCII")
+    path = (os.path.join(information["out_dir"], information["etree_name"] + ".e")).encode("ASCII")
 
     start_rc = [1, 1]
     end_rc = [int(information["properties"]["rows"]), int(information["properties"]["columns"])]
@@ -494,7 +494,7 @@ def ask_questions() -> dict:
     )
 
     answers["cvm_list"] = ask_and_validate(
-        "From which velocity model(s) should this mesh be generated:"
+        "From which velocity model(s) should this etree be generated:"
     )
 
     print(
@@ -735,6 +735,8 @@ def ask_questions() -> dict:
         "to\n" + kml_filename + ". You can use the XML file to generate and regenerate the " +
         "e-tree, and the\nKML file to visualize the boundaries."
     )
+
+    return answers
 
 
 def _get_grid(sd_array: List[SeismicData], cfg: dict, stats: dict, level: int, column: int,

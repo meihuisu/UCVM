@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<cvm_list>cvms4</cvm_list>
+	<format>awp</format>
+	<out_dir>./scratch</out_dir>
+	<projection>+proj=utm +datum=WGS84 +zone=11</projection>
+	<grid_type>vertex</grid_type>
+	<spacing>500</spacing>
+	<minimums>
+		<vs>0</vs>
+		<vp>0</vp>
+	</minimums>
+	<initial_point>
+		<z>0.0</z>
+		<depth_elev>depth</depth_elev>
+		<y>33.5</y>
+		<projection>+proj=latlong +datum=WGS84</projection>
+		<x>-118.5</x>
+	</initial_point>
+	<rotation>0.0</rotation>
+	<mesh_name>awp_mesh</mesh_name>
+	<dimensions>
+		<z>100</z>
+		<y>100</y>
+		<x>100</x>
+	</dimensions>
+</root>

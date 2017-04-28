@@ -205,11 +205,11 @@ Horizontal Slice
     	</data>
     	<cvm_list>1d[SCEC]</cvm_list>           <!-- the list of CVMs to query -->
     	<bottom_left_point>
-    		<x>-119.0</x>                       <!-- x or longitude coordinate -->
-    		<depth_elev>0</depth_elev>          <!-- 0 means point is depth, 1 for elev -->
-    		<y>33.0</y>                         <!-- y or latitude coordinate -->
     		<projection>+proj=latlong +datum=WGS84</projection>     <!-- Proj. 4 projection -->
+    		<x>-119.0</x>                       <!-- x or longitude coordinate -->
+    		<y>33.0</y>                         <!-- y or latitude coordinate -->
     		<z>0.0</z>                          <!-- horizontal slice depth or elev in m -->
+    		<depth_elev>0</depth_elev>          <!-- 0 means point is depth, 1 for elev -->
     	</bottom_left_point>
     	<plot>
     		<property>vs</property>             <!-- material property to plot -->
@@ -229,3 +229,29 @@ Horizontal Slice
     		<num_x>10</num_x>                   <!-- number of y points to query -->
     	</properties>
     </root>
+
+The horizontal slice XML configuration file has many parameters that can be edited.
+
+    data/save:
+        Specifies the file to which the extracted data (not plot, but the underlying material model data) will be
+        written.
+    cvm_list:
+        The model list containing the CVMs to query. In the above example configuration file, we are querying the
+        1d[SCEC] model. This list can be any combination of models that you can find on the Available Models page.
+    bottom_left_point/projection:
+        This specifies the projection scheme via which we are specifying the bottom left point. This is given as a
+        Proj.4 string. The details of generating a Proj.4 string are available here. Some common strings include
+        "+proj=latlong +datum=WGS84" (the default UCVM WGS84 latitude, longitude projection) and
+        "+proj=utm +zone=11 +datum=WGS84" (UTM zone 11 with the WGS84 datum).
+    bottom_left_point/x:
+        The x or longitude coordinate for the point. This is specified the units as determined by
+        bottom_left_point/projection. If the projection tag is set to UTM, then this would be an X UTM coordinate. In
+        the example above, this is WGS84 latitude, longitude so the x parameter is the longitude.
+    bottom_left_point/y:
+        The y or latitude coordinate for the point. This is specified the units as determined by
+        bottom_left_point/projection. If the projection tag is set to UTM, then this would be an Y UTM coordinate. In
+        the example above, this is WGS84 latitude, longitude so the y parameter is the latitude.
+    bottom_left_point/z (meters):
+        The z or depth/elevation coordinate for the point. If bottom_left_point/depth_or_elev is 0, then this value
+        is the depth from the surface down. In this case it must always be a positive number (i.e. 100m below the
+        surface). If it is a 1, then

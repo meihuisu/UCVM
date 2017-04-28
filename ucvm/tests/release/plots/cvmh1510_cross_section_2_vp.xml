@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<end_point>
+		<x>-115.0</x>
+		<y>36.0</y>
+		<z>20000.0</z>
+		<depth_elev>0</depth_elev>
+		<projection>+proj=latlong +datum=WGS84</projection>
+	</end_point>
+	<cvm_list>cvmh1510</cvm_list>
+	<cross_section_properties>
+		<height_spacing>100</height_spacing>
+		<property>vp</property>
+		<width_spacing>500</width_spacing>
+		<end>0</end>
+	</cross_section_properties>
+	<plot>
+		<features>
+			<colormap>RdBu</colormap>
+			<scale>discrete</scale>
+		</features>
+		<title>CVM-H 15.1.0 Verification Vp Cross-Section 2</title>
+	</plot>
+	<start_point>
+		<x>-119.5</x>
+		<y>32.5</y>
+		<z>0.0</z>
+		<depth_elev>0</depth_elev>
+		<projection>+proj=latlong +datum=WGS84</projection>
+	</start_point>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cvmh1510_cross_section_2_vp</name>
+	</data>
+</root>

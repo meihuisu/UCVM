@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<cvm_list>cvms426;cca06;bayarea;linthurber;1d[SCEC]</cvm_list>
+	<bottom_left_point>
+		<z>5000.0</z>
+		<projection>+proj=latlong +datum=WGS84</projection>
+		<x>-125</x>
+		<y>31</y>
+		<depth_elev>0</depth_elev>
+	</bottom_left_point>
+	<properties>
+		<rotation>0.0</rotation>
+		<num_y>1151</num_y>
+		<spacing>0.01</spacing>
+		<num_x>1101</num_x>
+	</properties>
+	<plot>
+		<property>vp</property>
+		<features>
+			<colormap>RdBu</colormap>
+			<faults>No</faults>
+			<scale>discrete</scale>
+			<topography>No</topography>
+		</features>
+		<title>Tiled Verification Vp 5000m</title>
+		<generate>y</generate>
+	</plot>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>tiled_5000m_check_vp</name>
+	</data>
+</root>

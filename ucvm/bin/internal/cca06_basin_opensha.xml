@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <cvm_list>cca06</cvm_list>
+    <output_files>
+        <z10>cca06_z10_map.bin</z10>
+        <z25>cca06_z25_map.bin</z25>
+    </output_files>
+    <region>
+        <bottom_left>
+            <x>-123</x>
+            <y>33.35</y>
+        </bottom_left>
+        <spacing>0.005</spacing>
+        <dimensions>
+            <x>1551</x>
+            <y>1201</y>
+        </dimensions>
+    </region>
+</root>

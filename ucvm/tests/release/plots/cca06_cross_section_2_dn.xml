@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<end_point>
+		<x>-118.5</x>
+		<y>37.5</y>
+		<z>20000.0</z>
+		<depth_elev>0</depth_elev>
+		<projection>+proj=latlong +datum=WGS84</projection>
+	</end_point>
+	<cvm_list>cca06</cvm_list>
+	<cross_section_properties>
+		<height_spacing>100</height_spacing>
+		<property>density</property>
+		<width_spacing>500</width_spacing>
+		<end>0</end>
+	</cross_section_properties>
+	<plot>
+		<features>
+			<colormap>RdBu</colormap>
+			<scale>discrete</scale>
+		</features>
+		<title>CCA06 Verification Density Cross-Section 2</title>
+	</plot>
+	<start_point>
+		<x>-120.5</x>
+		<y>35.5</y>
+		<z>0.0</z>
+		<depth_elev>0</depth_elev>
+		<projection>+proj=latlong +datum=WGS84</projection>
+	</start_point>
+	<data>
+		<save>y</save>
+		<location>./_static</location>
+		<name>cca06_cross_section_2_dn</name>
+	</data>
+</root>
