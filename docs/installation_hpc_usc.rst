@@ -1,7 +1,7 @@
 USC (HPC)
 =========
 
-UCVM is fully compatible with the HPC cluster at USC. This document describes how to install UCVM on the USC cluster
+UCVM is mostly compatible with the HPC cluster at USC. This document describes how to install UCVM on the USC cluster
 and also how to find and submit the example jobs.
 
 Supported Capabilities
@@ -18,7 +18,7 @@ Supported Capabilities
 Setup
 -----
 
-Installing UCVM on HPC is a straightforward process requiring .
+Installing UCVM on USC HPC is a straightforward process requiring a few steps.
 
 1. Configuration
 ~~~~~~~~~~~~~~~~
@@ -76,9 +76,9 @@ UCVM will detect that you are running on USC HPC (look for the last line below i
 
    Setup has detected that you are installing on USC HPC.
 
-Set the location to which UCVM should be installed. Due to disk quotas, UCVM cannot be installed on rcf filesystems.
-You will need to install to either a SCEC disk (if you have a SCEC account), your own disk space with a quota that is
-big enough for the UCVM distribution, or your staging filesystem (/staging/<pi>/<your username>).
+Due to disk quotas, UCVM cannot be installed on rcf filesystems. You will need to install to either a SCEC disk (if you
+have a SCEC account), your own disk space with a quota that is big enough for the UCVM distribution, or your staging
+filesystem (/staging/<pi>/<your username>).
 
 Also select the models you want to install. Hit return.
 
@@ -157,8 +157,9 @@ your desired models</cvm_list>.
 UCVM includes multiple execution examples for a variety of platforms. Two examples are included in your GitHub
 UCVM/examples directory:
 
-* extract_test_mesh_mpi_awp.usc
-* extract_test_tree_mpi_her.usc
+* extract_large_mesh_mpi_awp_example.usc
+* extract_large_mesh_mpi_rwg_example.usc
+* extract_large_etree_mpi_her_example.usc
 
 These extract a test AWP cartesian mesh and a test E-tree for Hercules. To use this examples you will need to open
 the extract_test files and change the following line:
@@ -174,8 +175,7 @@ Then you can run the examples using the following commands.
 .. code-block:: text
 
    cd <github UCVM directory>/examples
-   qsub extract_test_mesh_mpi_awp.usc
-   qsub extract_test_etree_mpi_her.usc
+   qsub extract_large_mesh_mpi_awp_example.usc
 
 .. toctree::
    :maxdepth: 2

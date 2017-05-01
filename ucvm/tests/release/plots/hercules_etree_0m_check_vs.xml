@@ -24,7 +24,7 @@
 		<spacing>0.002</spacing>
 		<num_x>350</num_x>
 	</properties>
-	<cvm_list>dataproductreader[meshes/hercules_etree]</cvm_list>
+	<cvm_list>dataproductreader[scratch/hercules_etree]</cvm_list>
     <data>
 		<save>y</save>
 		<location>./_static</location>
