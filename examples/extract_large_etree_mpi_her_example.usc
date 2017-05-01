@@ -9,12 +9,12 @@ PATH_TO_UCVM=/staging/path/to/your/ucvm-venv
 
 source $PATH_TO_UCVM/bin/activate
 
-LIB_PATH=$PATH_TO_UCVM/lib/python3.5/site-packages/ucvm-17.2.0-py3.5.egg/ucvm/libraries
+LIB_PATH=$PATH_TO_UCVM/lib/python3.5/site-packages/ucvm-17.3.0-py3.5.egg/ucvm/libraries
 for d in $(find $LIB_PATH -mindepth 1 -maxdepth 1 -type d); do
         LD_LIBRARY_PATH="$d/lib:$LD_LIBRARY_PATH"
 done
 
-MODEL_PATH=$PATH_TO_UCVM/lib/python3.5/site-packages/ucvm-17.2.0-py3.5.egg/ucvm/models
+MODEL_PATH=$PATH_TO_UCVM/lib/python3.5/site-packages/ucvm-17.3.0-py3.5.egg/ucvm/models
 echo $(find $MODEL_PATH -mindepth 1 -maxdepth 1 -type d)
 for d in $(find $MODEL_PATH -mindepth 1 -maxdepth 1 -type d); do
         LD_LIBRARY_PATH="$d/lib:$LD_LIBRARY_PATH"

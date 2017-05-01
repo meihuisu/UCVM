@@ -415,7 +415,7 @@ def main() -> int:
     # Remove the generated XML and KML files in the root directory.
     for item in os.listdir("./"):
         if ".xml" in item or ".kml" in item:
-            execute_command("rm ./scratch/" + item, "")
+            execute_command("rm ./" + item, "")
 
     return 0
 

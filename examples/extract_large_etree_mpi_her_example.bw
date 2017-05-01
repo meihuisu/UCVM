@@ -1,0 +1,29 @@
+#!/bin/bash
+#PBS -l nodes=5:ppn=16:xe
+#PBS -l walltime=04:00:00
+#PBS -N ucvm_extraction
+#PBS -m bea
+#PBS -M email@myemail.com
+#PBS -A myallocation
+
+cd $PBS_O_WORKDIR
+
+module load bwpy
+module load bwpy-mpi
+
+PATH_TO_UCVM=/scratch/sciteam/path/to/ucvm
+
+LIB_PATH=$PATH_TO_UCVM/lib/python3.5/site-packages/ucvm-17.3.0-py3.5.egg/ucvm/libraries
+for d in $(find $LIB_PATH -mindepth 1 -maxdepth 1 -type d); do
+        LD_LIBRARY_PATH="$d/lib:$LD_LIBRARY_PATH"
+done
+
+MODEL_PATH=$PATH_TO_UCVM/lib/python3.5/site-packages/ucvm-17.3.0-py3.5.egg/ucvm/models
+echo $(find $MODEL_PATH -mindepth 1 -maxdepth 1 -type d)
+for d in $(find $MODEL_PATH -mindepth 1 -maxdepth 1 -type d); do
+        LD_LIBRARY_PATH="$d/lib:$LD_LIBRARY_PATH"
+done
+
+source $PATH_TO_UCVM/bin/activate
+
+aprun -n 80 ucvm_etree_create_mpi -f high_f_etree_highres.xml
