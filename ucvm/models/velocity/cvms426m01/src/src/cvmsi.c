@@ -181,7 +181,7 @@ int cvmsi_init(const char *dir)
   fclose(ip);
   cvmsi_strip_trailing_whitespace(cvmsi_version_id);
 
-  char modeldir[128];
+  char modeldir[256];
   sprintf(modeldir, "%s/../cvms", modelpath);
   int errcode = 0;
 

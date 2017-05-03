@@ -10,7 +10,7 @@ c RWG 2007/04/04
 c RWG 2007/04/04
          common/filestuff/rpath,fname,loc1
 
-         rpath=modeldir(1:128)
+         rpath=modeldir(1:256)
          loc1= index(rpath,achar(0))-1
 
 c         write(*,*)' modeldir=',modeldir
