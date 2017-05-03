@@ -31,7 +31,7 @@ c
 
          include 'in.h'
 
-         character(128) modelpath
+         character(256) modelpath
          character(64) version
          integer ecode
 

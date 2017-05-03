@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#PBS -q nbns
+#PBS -l arch=x86_64,walltime=4:00:00,nodes=1:ppn=1
+#PBS -V
+#PBS -e /home/rcf-104/patrices/opt/cvmsi/scripts/text2grid.err
+#PBS -o /home/rcf-104/patrices/opt/cvmsi/scripts/text2grid.out
+
+SRC_DIR=/home/rcf-104/patrices/opt/cvmsi/scripts
+
+cd ${SRC_DIR}
+
+./Text2Grid.py ../model CVM4MDL_ 992 1536 100 ../model/cvmsi.bin
+
+echo "Jobs done"
+date
+exit 0

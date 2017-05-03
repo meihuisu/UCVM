@@ -1,0 +1,23 @@
+CVM-S4.26 README
+March 1, 2014
+
+1) Installation
+
+$ aclocal
+$ autoconf
+$ automake
+$ ./configure --prefix=/dir/to/install
+$ make
+$ make install
+
+This will install the model in /dir/to/install.
+
+2) Programs
+
+cvmsi_query - Queries the model given a lat, lon, depth.
+
+3) Library
+
+The library ./lib/libcvmsi.a may be statically linked into any
+user application. The header file defining the API is located
+in ./include/cvmsi.h.

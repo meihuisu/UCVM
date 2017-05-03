@@ -1,16 +1,16 @@
 c PES 2011/02/04
 c The 'modeldir' argument must be 128 bytes in size
          subroutine cvms_init(modeldir, ecode)
-         character(128) modeldir
+         character(256) modeldir
 
 c RWG 2007/04/04
-         character(128) rpath
-         character(180) fname
+         character(256) rpath
+         character(280) fname
 
 c RWG 2007/04/04
          common/filestuff/rpath,fname,loc1
 
-         rpath=modeldir(1:128)
+         rpath=modeldir(1:256)
          loc1= index(rpath,achar(0))-1
 
 c         write(*,*)' modeldir=',modeldir
@@ -168,8 +168,8 @@ c
          integer ecode
 
 c RWG 2007/04/04
-c         character(128) rpath
-c         character(180) fname
+c         character(256) rpath
+c         character(280) fname
 
 c RWG 2007/04/04
          common/filestuff/rpath,fname,loc1
@@ -991,8 +991,8 @@ c-----reads strat surface edges---------------
 c---reads x-y pairs--------------------------
 
 c RWG 2007/04/04
-         character(128) rpath
-         character(180) fname
+         character(256) rpath
+         character(280) fname
          common/filestuff/rpath,fname,loc1
 
          include 'surface.h'
@@ -1025,8 +1025,8 @@ c-----read model edge file, kept separate from surface edge-----
 c-------to simplify index counts--------------------------------
 
 c RWG 2007/04/04
-          character(128) rpath
-          character(180) fname
+          character(256) rpath
+          character(280) fname
           common/filestuff/rpath,fname,loc1
 
           include 'surface.h'
@@ -1055,8 +1055,8 @@ c        read(18,*)i3   !i3 now set at top
 c reads geologic contours
 
 c RWG 2007/04/04
-         character(128) rpath
-         character(180) fname
+         character(256) rpath
+         character(280) fname
          common/filestuff/rpath,fname,loc1
 
          include 'sgeo.h'
@@ -1136,8 +1136,8 @@ c---reads stratigraphic surfaces-------------------------
 c---reads spyglass ascii output--------------------------
 
 c RWG 2007/04/04
-         character(128) rpath
-         character(180) fname
+         character(256) rpath
+         character(280) fname
          common/filestuff/rpath,fname,loc1
 
          include 'surface.h'
@@ -1187,8 +1187,8 @@ c-reads uplift file for LAB--------------------
 c-----just like readsur-------------
 
 c RWG 2007/04/04
-         character(128) rpath
-         character(180) fname
+         character(256) rpath
+         character(280) fname
          common/filestuff/rpath,fname,loc1
 
         include 'labup.h'
@@ -1335,8 +1335,8 @@ c
 c-----read Imperial Valley surfaces--------------
 
 c RWG 2007/04/04
-         character(128) rpath
-         character(180) fname
+         character(256) rpath
+         character(280) fname
          common/filestuff/rpath,fname,loc1
 
          include 'params.h'
@@ -1372,8 +1372,8 @@ c-----read Imp valley- Salton Trough edge file,-----------------
 c  and iv model edge file
 
 c RWG 2007/04/04
-         character(128) rpath
-         character(180) fname
+         character(256) rpath
+         character(280) fname
          common/filestuff/rpath,fname,loc1
 
          include 'params.h'
@@ -1417,8 +1417,8 @@ c Using Egill Hauksson's so cal model at 15 km horizontal
 c  spacing, variable vertical spacing
 
 c RWG 2007/04/04
-         character(128) rpath
-         character(180) fname
+         character(256) rpath
+         character(280) fname
          common/filestuff/rpath,fname,loc1
 
          include 'params.h'
@@ -1720,8 +1720,8 @@ c Do the interpolation
 c--read geotech borehole data-------------- 
 
 c RWG 2007/04/04
-         character(128) rpath
-         character(180) fname
+         character(256) rpath
+         character(280) fname
          common/filestuff/rpath,fname,loc1
 
          include 'borehole.h'
@@ -1770,8 +1770,8 @@ c         open(15,file=fileib,status='old',err=2978)
 c--read generic borehole profiles--------------
 
 c RWG 2007/04/04
-         character(128) rpath
-         character(180) fname
+         character(256) rpath
+         character(280) fname
          common/filestuff/rpath,fname,loc1
 
          include 'genpro.h'
@@ -1980,8 +1980,8 @@ c--reads soil type info---------------------------------
 c Reads a modified .pgm ascii file
 
 c RWG 2007/04/04
-         character(128) rpath
-         character(180) fname
+         character(256) rpath
+         character(280) fname
          common/filestuff/rpath,fname,loc1
 
         include 'soil1.h'
@@ -2243,8 +2243,8 @@ c remember a better number to interpolate from rather than hard generic
 c--reads the moho surface file--------------------------
 
 c RWG 2007/04/04
-        character(128) rpath
-        character(180) fname
+        character(256) rpath
+        character(280) fname
         common/filestuff/rpath,fname,loc1
 
         include 'moho1.h'
@@ -2340,8 +2340,8 @@ c Using Monica Kohler's so cal model at xx km horizontal
 c  spacing, 10 km vertical spacing
 
 c RWG 2007/04/04
-         character(128) rpath
-         character(180) fname
+         character(256) rpath
+         character(280) fname
          common/filestuff/rpath,fname,loc1
 
          include 'mantle.h'
