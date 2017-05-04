@@ -127,7 +127,10 @@ class HorizontalSlice(Plot):
             cvm_list += ".elevation"
 
         plot_properties = parsed_dictionary["plot"]
-        data_properties = parsed_dictionary["data"]
+        try:
+            data_properties = parsed_dictionary["data"]
+        except KeyError:
+            data_properties = {"save": "n"}
 
         # try:
         #     save_file = parsed_dictionary["data"]["save"]
