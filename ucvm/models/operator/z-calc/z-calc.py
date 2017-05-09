@@ -37,7 +37,7 @@ class ZOperator(OperatorModel):
         super().__init__(**kwargs)
 
     @classmethod
-    def _get_z_data(cls, p: Point, model: str, spacing: int=50, depth: int=10000) -> dict:
+    def _get_z_data(cls, p: Point, model: str, spacing: int=50, depth: int=70000) -> dict:
         """
         Gets the Z1.0 and Z2.5 data for a given point which has all the projection, metadata, x, y, etc. specified.
 
@@ -53,7 +53,10 @@ class ZOperator(OperatorModel):
         _interval_size = 1000
         _velocities_to_find = (1000, 2500)
 
-        if True:
+        #This if statement is a toggle to select three different algorithms for finding Z-values:
+        #   1st occurrence, 2nd occurrence, last occurrence (probably the same as 2nd for all 17.5 models)
+        if False:
+            #This one checks for 1st occurrence
             _current_interval = 0
             _depths = {1000: depth, 2500: depth}
 
@@ -74,6 +77,7 @@ class ZOperator(OperatorModel):
                 else:
                     _current_interval += _interval_size
         elif False:
+            #This one checks for last occurrence
             _current_interval = depth
             _depths = {1000: 0, 2500: 0}
             while _current_interval > 0:
@@ -85,7 +89,9 @@ class ZOperator(OperatorModel):
                     for point in _query_points:
                         if point.velocity_properties is not None and point.velocity_properties.vs is not None:
                             if point.velocity_properties.vs <= target and _depths[target] == 0:
-                                _depths[target] = point.converted_point.z_value
+                                #This will give us the first point which is less than the target; we want the previous
+                                #(deeper) point to be consistent with Z2.5 def
+                                _depths[target] = point.converted_point.z_value + spacing
                                 break
 
                 if _depths[1000] != 0 and _depths[2500] != 0:
@@ -93,6 +99,8 @@ class ZOperator(OperatorModel):
                 else:
                     _current_interval -= _interval_size
         else:
+            #This one checks for 2nd occurrence
+            print("2nd occurrence")
             _current_interval = 0
             _depths = {1000: depth, 2500: depth}
             _flags = {1000: 0, 2500: 0}
@@ -119,6 +127,8 @@ class ZOperator(OperatorModel):
                     return _depths
                 else:
                     _current_interval += _interval_size
+
+        #If we get here, we didn't find valid depths
 
         return _depths
 

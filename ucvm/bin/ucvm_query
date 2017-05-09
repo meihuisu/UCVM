@@ -44,6 +44,7 @@ from ucvm.src.shared.functions import is_number
 
 HEADER = "X           Y           Z           Vp (m/s)    Vs (m/s)    Dn (kg/m^3) Qp          " \
          "Qs          Source              Elev. (m)   Source      Vs30 (m/s)  Source"
+ZHEADER = "%s          Z1.0        Z2.5" % HEADER
 OUTPUT_FORMAT = "%-12.4%-12.4f%-12.4f%s%s%s%s%s%s%s%s%s%s"
 
 
@@ -160,17 +161,28 @@ def generate_output_line(seismicdata: SeismicData) -> str:
     if seismicdata.vs30_properties is not None:
         vs30_out = "%-12.4f" % seismicdata.vs30_properties.vs30 \
                    if seismicdata.vs30_properties.vs30 is not None else "N/A".ljust(12)
-        vs30_source = seismicdata.vs30_properties.vs30_source.ljust(12) \
-                      if seismicdata.vs30_properties.vs30_source is not None else "N/A".ljust(12)
+        vs30_source = seismicdata.vs30_properties.vs30_source.ljust(16) \
+                      if seismicdata.vs30_properties.vs30_source is not None else "N/A".ljust(16)
     else:
         vs30_out = "N/A".ljust(12)
-        vs30_source = "N/A".ljust(12)
+        vs30_source = "N/A".ljust(16)
 
-    return "%-12.4f%-12.4f%-12.4f" % \
+    if seismicdata.z_properties is not None:
+        z10_out = "%-12.4f" % seismicdata.z_properties.z10 \
+            if seismicdata.z_properties.z10 is not None else "N/A".ljust(12)
+        z25_out = "%-12.4f" % seismicdata.z_properties.z25 \
+            if seismicdata.z_properties.z25 is not None else "N/A".ljust(12)
+
+    return_string = "%-12.4f%-12.4f%-12.4f" % \
            (seismicdata.original_point.x_value, seismicdata.original_point.y_value,
             seismicdata.original_point.z_value) + \
            vp_out + vs_out + dn_out + qp_out + qs_out + vy_source + el_out + el_source + \
            vs30_out + vs30_source
+
+    if seismicdata.z_properties is not None:
+        return return_string + z10_out + z25_out
+    else:
+        return return_string
 
 
 def main() -> int:
@@ -230,7 +242,11 @@ def main() -> int:
 
     UCVM.query(points, options["model"])
 
-    print(HEADER)
+    #If one of the models is z-calc, then print the header which includes the Z information; otherwise, don't.
+    if options["model"].find("z-calc")>-1:
+        print(ZHEADER)
+    else:
+        print(HEADER)
 
     if options["output"] is not None:
         with open(options["output"]) as the_file:
