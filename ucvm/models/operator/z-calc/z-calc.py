@@ -100,7 +100,6 @@ class ZOperator(OperatorModel):
                     _current_interval -= _interval_size
         else:
             #This one checks for 2nd occurrence
-            print("2nd occurrence")
             _current_interval = 0
             _depths = {1000: depth, 2500: depth}
             _flags = {1000: 0, 2500: 0}
